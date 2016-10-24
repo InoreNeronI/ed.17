@@ -1,6 +1,4 @@
 
-<article id="bg-fields" class="pv2 mh2 mh4-ns" style="background: url('{{ bg_url }}') no-repeat; background-size: cover;">
-    <div class="pb3 dt v-top w-100 w-75-m w-75-ns white">
         <div class="dtc mt3 fl w-100 tl-l tc">
             <label class="db f4 fw3 lh-copy dib v-top mv0 w-100 w-60-m w-60-ns tr-l" for="fcodalued">{{ code }}</label>
             <input class="b pa2 input-reset ba bg-transparent white w-75 w-40-m w-25-ns tc" type="text" name="fcodalued" id="fcodalued" required />
@@ -41,21 +39,3 @@
             <label class="db f4 fw3 lh-copy dib v-top mv0 w-100 w-60-m w-60-ns tr-l" for="fcodprueba">{{ codpro }}</label>
             <input class="b pa2 input-reset ba bg-transparent white w-75 w-40-m w-25-ns tc" type="text" name="fcodprueba" id="fcodprueba" required />
         </div>
-    </div>{#
-</article>
-
-<article class="cf ph4 pv2 tc">#}
-    <div class="mt3 w-100 tc">
-        <a href="#" target="_self">
-            <img src="{{ audio_sample_img }}" alt="{{ audio_sample }}" width="70" height="70"/>
-            <audio src="{{ audio_sample_url }}" controls></audio>
-        </a>
-    </div>{#
-</article>
-
-<article class="cf ph4 pv2 tc">#}
-    <div class="mt3 w-100 tc">
-        <input name="fperiodo" id="fperiodo" type="hidden" value="{{ course }}"/>
-        <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="{{ submit_text }}"/>
-    </div>
-</article>

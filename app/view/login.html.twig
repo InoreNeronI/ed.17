@@ -12,9 +12,23 @@
             <h3 class="f3 mb2"><strong>{{ title_label }}</strong></h3>
         </div>
     </article>
-    <form action="{{ form_action }}" accept-charset="utf-8" method="post">
-        {% include 'partial/_login-fields.html.twig' %}
-    </form>
+    <article id="bg-fields" class="pv2 mh2 mh4-ns" style="background: url('{{ bg_url }}') no-repeat; background-size: cover;">
+        <form action="{{ form_action }}" accept-charset="utf-8" method="post">
+            <div class="pb3 dt v-top w-100 w-75-m w-75-ns white">
+                {% include 'partial/_login-fields.html.twig' %}
+            </div>
+            <div class="mt3 w-100 tc">
+                <a href="#" target="_self">
+                    <img src="{{ audio_sample_img }}" alt="{{ audio_sample }}" width="70" height="70"/>
+                    <audio src="{{ audio_sample_url }}" controls></audio>
+                </a>
+            </div>
+            <div class="mt3 w-100 tc">
+                <input name="fperiodo" id="fperiodo" type="hidden" value="{{ course }}"/>
+                <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="{{ submit_text }}"/>
+            </div>
+        </form>
+    </article>
     <article class="cf ph4 pv2 tc">
         <div class="fl w-100 tc">
             <img src="{{ logo_url_footer }}" class="dib" title="{{ title.eu }} / {{ title.es }}"/>
