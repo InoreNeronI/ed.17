@@ -1,0 +1,12 @@
+{
+    "name": "isei-ivei/ed17probak",
+    "description": "Irakas Sistema Ebaluatu eta Ikertzeko Erakundea | Instituto Vasco de Evaluación e Investigación Educativa",
+    "authors": [{
+        "name": "Martin Mozos",
+        "email": "mmozos@isei-ivei.net"
+    }],
+    "dependencies": {
+        "tachyons": ">=4.5.4",
+        "font-awesome": ">=4.6.3"
+    }
+}

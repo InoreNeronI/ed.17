@@ -1,0 +1,36 @@
+{
+  "name": "isei-ivei/ed17probak",
+  "type": "project",
+  "description": "Irakas Sistema Ebaluatu eta Ikertzeko Erakundea | Instituto Vasco de Evaluación e Investigación Educativa",
+  "autoload": {
+    "classmap": [ "src/" ]
+  },
+  "require": {
+    "php": "^5.4.0|^7.0",
+    "catfan/medoo": "@stable",
+    "incenteev/composer-parameter-handler": "@stable",
+    "twig/twig": "@stable",
+    "symfony/http-foundation": "~2.3|~3.0",
+    "symfony/routing": "~2.3|~3.0"
+  },
+  "authors": [{
+    "name": "Martin Mozos",
+    "email": "mmozos@isei-ivei.net"
+  }],
+  "minimum-stability": "stable",
+  "scripts": {
+    "post-install-cmd": [
+      "npm install bower",
+      "node node_modules/bower/bin/bower install"
+    ],
+    "post-update-cmd": [
+      "npm update bower",
+      "node node_modules/bower/bin/bower update"
+    ]
+  },
+  "config": {
+    "platform": {
+      "php": "5.4.0"
+    }
+  }
+}
