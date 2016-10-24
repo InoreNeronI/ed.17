@@ -34,8 +34,8 @@ class Route
 		if (true === static::$initialized)
 			return;
 
-		static::$translations = Yaml::parse(file_get_contents(__DIR__.'/../../app/config/messages.yml'));
 		static::$paths = Yaml::parse(file_get_contents(__DIR__.'/../../app/config/routes.yml'));
+		static::$translations = Yaml::parse(file_get_contents(__DIR__.'/../../app/config/messages.yml'));
 		static::$routes = new Routing\RouteCollection();
 		static::$initialized = true;
 
@@ -80,7 +80,7 @@ class Route
 			new Routing\Route(
 				$path, // path
 				array('_controller' => 'App\\Controller\\Test::'.$slug.'Action', 'parameters' => $parameters), // defaults
-				array(), // array('month' => '[0-9]{4}-[0-9]{2}', 'subdomain' => 'www|m'), // requirements
+				array(), //array('month' => '[0-9]{4}-[0-9]{2}', 'subdomain' => 'www|m'), // requirements
 				array(), // options
 				'', //'{subdomain}.example.com', // host
 				$schemes, // schemes

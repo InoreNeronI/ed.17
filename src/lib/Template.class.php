@@ -19,23 +19,23 @@ class Template
      */
     private function __construct() {}
 
-    /** @var boolean */
-    private static $debug = true;
-
-    /** @var string */
-    private static $templatesDir = __DIR__.'/../../app/view';
+    /** @var array */
+    private static $templatesDirs = array( __DIR__.'/../../app/view' );
 
     /** @var \Twig_Loader_Filesystem */
-    private static $loader = null;
+    private static $loader;
 
 	/** @var \Twig_Environment */
-    private static $environment = null;
+    private static $environment;
 
 	/** @var boolean */
     private static $initialized = false;
 
+	/** @var boolean */
+	private static $debug = true;
+
     /**
-     * @param string $loader_dir    Twig_Loader_Filesystem loads templates from the file system. This loader can find templates in folders on the file system and is the preferred way to load them:
+     * @param string $loader_dir    Twig_Loader_Filesystem loads templates from the file system. This loader can find templates in folders on the file system and is the preferred way to load them.
      * @param string $cache_dir
      */
     private static function initialize($loader_dir = null, $cache_dir = null)
@@ -45,26 +45,26 @@ class Template
 	    }
 
         if (!is_null($loader_dir))
-	        static::$templatesDir = $loader_dir;
+	        array_push(static::$templatesDirs, $loader_dir);
 
-        static::$loader = new Twig_Loader_Filesystem([ static::$templatesDir ]);
+        static::$loader = new Twig_Loader_Filesystem(static::$templatesDirs);
         static::$environment = new Twig_Environment(static::$loader, array(
-            'cache' => is_null($cache_dir) ? static::$templatesDir.'/cache' : $cache_dir,
+            'cache' => is_null($cache_dir) ? static::$templatesDirs[0].'/cache' : $cache_dir,
             'debug' => static::$debug
         ));
         static::$initialized = true;
     }
 
 	/**
-	 * @param string $template
+	 * @param string $slug
 	 * @param array $parameters
 	 * @param string $extension
 	 *
 	 * @return string
 	 */
-    public static function render($template = 'index', $parameters = array(), $extension = 'html.twig')
+    public static function render($slug = 'index', $parameters = array(), $extension = 'html.twig')
     {
         static::initialize();
-        return static::$environment->render($template.'.'.$extension, $parameters);
+        return static::$environment->render($slug.'.'.$extension, $parameters);
     }
 }

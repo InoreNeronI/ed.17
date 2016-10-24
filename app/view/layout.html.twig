@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{% block title %}{{ logo_title_eu }} | {{ logo_title_es }}{% endblock %}</title>
+        <title>{% block title %}{{ logo_title_eu }} / {{ logo_title_es }}{% endblock %}</title>
 
         <link rel="stylesheet" href="./vendor/tachyons/css/tachyons.min.css" type="text/css" />
         <link rel="stylesheet" href="./vendor/font-awesome/css/font-awesome.min.css" type="text/css" />
         {#<link rel="stylesheet" href="{{ asset('css/main.css') }}" type="text/css" />#}
+        <style type="text/css">
+            html, body { min-width: 370px; max-width: 1230px; }
+        </style>
     </head>
     <body>
         {% block content %}{% endblock %}

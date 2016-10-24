@@ -4,87 +4,46 @@
 
 {% block content %}
     <article class="cf ph4 pv2 tc">
-        <div class="fl w-100 w-50-ns tc">
-            <img src="{{ logo_url }}" class="h4 dib" title="{{ title.eu }} | {{ title.es }}"/>
+        <div class="fl w-100 w-100-m w-50-ns tc">
+            <img src="{{ logo_url }}" class="dib" title="{{ title.eu }} / {{ title.es }}"/>
         </div>
-        <div class="fl w-100 w-50-ns tc">
+        <div class="fl w-100 w-100-m w-50-ns tc">
             <h3 class="blue ph0 mh0 fw6 w-100">{{ course }}</h3>
             <h3 class="f3 mb2"><strong>{{ title_label }}</strong></h3>
         </div>
     </article>
-
-    <article class="pv2 mh2 mh4-m mh7-ns">
-        <div class="vh-100 dt w-100 white" style="background: url('{{ bg_url }}') repeat-x;">
-            <div class="dtc v-mid tc ph3 ph4-l">
-
-                <form action="{{ form_action }}" method="post" accept-charset="utf-8">
-
-                    <div class="mt3">
-                        <label class="db f4 fw3 lh-copy dib v-mid mv0" for="fcodalued">{{ code }}:</label>
-                        <input class="pa2 input-reset ba bg-transparent w-100 measure" type="email" name="fcodalued" id="fcodalued"/>
-                    </div>
-                    <div class="mt3">
-                        <div class="fl w-100 w-50-ns tc">
-                            <label class="db f4 fw3 lh-copy dib v-mid mv0" for="ffnacidia">{{ bdate }}:</label>
-                        </div>
-                        <div class="fl w-100 w-50-ns tl">
-                            <div class="pv1 w-100">
-                                <label for="ffnacidia" class="db f5 fw4 dib v-mid mv0 mr3 w-25">{{ bday }}:</label>
-                                <select class="f6 no-underline dib v-mid mb0 b pa1 input-reset ba bg-transparent white" name="ffnacidia" id="ffnacidia">
-                                    <option class="black" value="00" selected="selected">-------</option>
-                                    {% for i in 1..31 %}
-                                        <option class="black" value="{{ (1 == loop.index|length ? '0' : '') ~ loop.index|raw }}">{{ loop.index|raw }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="pv1 w-100">
-                                <label for="ffnacimes" class="db f5 fw4 dib v-mid mv0 mr3 w-25">{{ bmonth }}:</label>
-                                <select class="f6 no-underline dib v-mid mb0 b pa1 input-reset ba bg-transparent white" name="ffnacimes" id="ffnacimes">
-                                    <option class="black" value="00" selected="selected">-------</option>
-                                    <option class="black" value="01">{{ jan }}</option>
-                                    <option class="black" value="02">{{ feb }}</option>
-                                    <option class="black" value="03">{{ mar }}</option>
-                                    <option class="black" value="04">{{ apr }}</option>
-                                    <option class="black" value="05">{{ may }}</option>
-                                    <option class="black" value="06">{{ jun }}</option>
-                                    <option class="black" value="07">{{ jul }}</option>
-                                    <option class="black" value="08">{{ aug }}</option>
-                                    <option class="black" value="09">{{ sep }}</option>
-                                    <option class="black" value="10">{{ oct }}</option>
-                                    <option class="black" value="11">{{ nov }}</option>
-                                    <option class="black" value="12">{{ dec }}</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt3">
-                        <label class="db f4 fw3 lh-copy dib v-mid mv0" for="fcodprueba">{{ codpro }}:</label>
-                        <input class="b pa2 input-reset ba bg-transparent" type="text" name="fcodprueba" id="fcodprueba"/>
-                    </div>
-
-                    <div class="mt3">
-                        <a href="#" target="_self">
-                            <img src="{{ audio_sample_img }}" alt="{{ audio_sample }}" width="70" height="70"/>
-                            <audio src="{{ audio_sample_url }}" controls></audio>
-                        </a>
-                    </div>
-                    <div class="mt3">
-                        <input name="fperiodo" id="fperiodo" type="hidden" value="{{ course }}"/>
-                        <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="{{ submit_text }}"/>
-                    </div>
-
-                </form>
-
-            </div>
-        </div>
-    </article>
-
+    <form action="{{ form_action }}" accept-charset="utf-8" method="post">
+        {% include 'partial/_login-fields.html.twig' %}
+    </form>
     <article class="cf ph4 pv2 tc">
         <div class="fl w-100 tc">
-            <img src="{{ logo_url_footer }}" class="pa2" title="{{ title.eu }} | {{ title.es }}"/>
+            <img src="{{ logo_url_footer }}" class="dib" title="{{ title.eu }} / {{ title.es }}"/>
         </div>
     </article>
-
 {% endblock %}
 
-{% block javascript %}{% endblock %}
+{% block javascript %}
+    <script type="text/javascript" src="./vendor/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="./vendor/jquery-smartresize/jquery.debouncedresize.js"></script>
+    <script type="text/javascript" src="./vendor/jquery-smartresize/jquery.throttledresize.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            var bgResize = function(_window) {
+                if (_window.width() < 944)
+                    document.getElementById('bg-fields').style.backgroundSize = '100% 100%';
+            };
+            $(window).bind("resize", function() {
+                bgResize($(this));
+                //console.log( 'Resize event fired:'+ (+new Date()) );
+            });
+            $(window).bind("debouncedresize", function() {
+                bgResize($(this));
+                //console.log( 'Debounce event fired:'+ (+new Date()) );
+            });
+            $(window).bind("throttledresize", function() {
+                bgResize($(this));
+                //console.log( 'Throttle event fired:'+ (+new Date()) );
+            });
+        });
+    </script>
+{% endblock %}
