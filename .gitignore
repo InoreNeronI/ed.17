@@ -2,4 +2,5 @@
 cache
 composer.lock
 node_modules
+parameters.yml
 vendor

@@ -1,2 +1,12 @@
-
-language: [ 'eu', 'es', 'en' ]
+# This file is auto-generated during the composer install
+parameters:
+    languages:
+        - eu
+        - es
+        - en
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: ed17probak
+    database_user: root
+    database_password: toor
+    secret: w454g556765767j6+66787687k768l789

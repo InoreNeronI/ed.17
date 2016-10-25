@@ -19,14 +19,24 @@
   }],
   "minimum-stability": "stable",
   "scripts": {
+    "symfony-scripts": [
+      "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+    ],
     "post-install-cmd": [
+      "@symfony-scripts",
       "npm install bower",
       "node node_modules/bower/bin/bower install"
     ],
     "post-update-cmd": [
+      "@symfony-scripts",
       "npm update bower",
       "node node_modules/bower/bin/bower update"
     ]
+  },
+  "extra": {
+    "incenteev-parameters": {
+      "file": "app/config/parameters.yml"
+    }
   },
   "config": {
     "platform": {
