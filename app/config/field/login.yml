@@ -1,0 +1,101 @@
+# Forms' input field-name and database matching.
+# form-field
+fcodalued:
+    # db-table: table-field
+    edg020_ikasleak: edg020_libro_escolaridad
+    edg050_erantzunak_:
+        dbh_:
+            eusa: edg050_codalued
+            eusbd: edg050_codalued
+            gaz: edg050_codalued
+            ing: edg050_codalued
+            mat: edg050_codalued
+            zie: edg050_codalued
+            gsorta_:
+                a: gs04_codalued
+                b: gs04_codalued
+                c: gs04_codalued
+        lh_:
+            eusa: edg050_codalued
+            eusbd: edg050_codalued
+            gaz: edg050_codalued
+            ing: edg050_codalued
+            mat: edg050_codalued
+            zie: edg050_codalued
+            gsorta_:
+                a: gs04_codalued
+                b: gs04_codalued
+                c: gs04_codalued
+ffnacimes:
+    edg020_ikasleak: edg020_fec_mes
+    edg050_erantzunak_:
+        dbh_:
+            gsorta_:
+                a: gs04_fnacimes
+                b: gs04_fnacimes
+                c: gs04_fnacimes
+        lh_:
+            gsorta_:
+                a: gs04_fnacimes
+                b: gs04_fnacimes
+                c: gs04_fnacimes
+ffnacidia:
+    edg020_ikasleak: edg020_fec_dia
+    edg050_erantzunak_:
+        dbh_:
+            gsorta_:
+                a: gs04_fnacidia
+                b: gs04_fnacidia
+                c: gs04_fnacidia
+        lh_:
+            gsorta_:
+                a: gs04_fnacidia
+                b: gs04_fnacidia
+                c: gs04_fnacidia
+fcodprueba:
+    edg050_erantzunak_:
+        dbh_:
+            eusa: edg050_codprueba
+            eusbd: edg050_codprueba
+            gaz: edg050_codprueba
+            ing: edg050_codprueba
+            mat: edg050_codprueba
+            zie: edg050_codprueba
+            gsorta_:
+                a: gs04_codprueba
+                b: gs04_codprueba
+                c: gs04_codprueba
+        lh_:
+            eusa: edg050_codprueba
+            eusbd: edg050_codprueba
+            gaz: edg050_codprueba
+            ing: edg050_codprueba
+            mat: edg050_codprueba
+            zie: edg050_codprueba
+            gsorta_:
+                a: gs04_codprueba
+                b: gs04_codprueba
+                c: gs04_codprueba
+    edg051_testuak_:
+        dbh_:
+            eusa: edg051_codprueba
+            eusbd: edg051_codprueba
+            gaz: edg051_codprueba
+            ing: edg051_codprueba
+            mat: edg051_codprueba
+            zie: edg051_codprueba
+            gsorta_:
+                a: gs04_codprueba
+                b: gs04_codprueba
+                c: gs04_codprueba
+        lh_:
+            eusa: edg051_codprueba
+            eusbd: edg051_codprueba
+            gaz: edg051_codprueba
+            ing: edg051_codprueba
+            mat: edg051_codprueba
+            zie: edg051_codprueba
+            gsorta_:
+                a: gs04_codprueba
+                b: gs04_codprueba
+                c: gs04_codprueba

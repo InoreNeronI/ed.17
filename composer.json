@@ -3,15 +3,18 @@
   "type": "project",
   "description": "Irakas Sistema Ebaluatu eta Ikertzeko Erakundea | Instituto Vasco de Evaluación e Investigación Educativa",
   "autoload": {
-    "classmap": [ "lib/" ]
+    "classmap": ["lib/"]
   },
   "require": {
     "php": "^5.4.0|^7.0",
     "catfan/medoo": "@stable",
-    "incenteev/composer-parameter-handler": "@stable",
     "twig/twig": "@stable",
-    "symfony/http-kernel": "~2.3|~3.0",
-    "symfony/routing": "~2.3|~3.0"
+    "symfony/http-kernel": "@stable",
+    "symfony/routing": "@stable",
+    "symfony/yaml": "@stable"
+  },
+  "require-dev": {
+    "incenteev/composer-parameter-handler": "@stable"
   },
   "authors": [{
     "name": "Martin Mozos",

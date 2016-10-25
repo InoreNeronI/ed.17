@@ -1,8 +1,10 @@
 parameters:
     languages: ['eu', 'es', 'en']
 
+    database_type:     mysql
+    database_charset:  utf8
     database_host:     127.0.0.1
-    database_port:     ~
+    database_port:     3306
     database_name:     symfony
     database_user:     root
     database_password: ~
