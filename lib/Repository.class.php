@@ -51,29 +51,46 @@ class Repository extends medoo
 	}
 
 	/**
-	 * @param string $slug
+	 * @param string $map
 	 *
 	 * @return array
 	 */
-	private static function parseDBFields($slug = 'login')
+	private static function parseDBFields($map = 'login')
 	{
-		return static::parseConfig("field/$slug");
+		return static::parseConfig("map/$map");
+	}
+
+	/**
+	 * @param $form_fields
+	 * @param string $map
+	 * @param string $table
+	 *
+	 * @return array
+	 */
+	public static function checkCredentials($form_fields, $map = 'login', $table = 'edg020_ikasleak')
+	{
+		$db_fields = array();
+		$config = static::parseDBFields($map);
+		foreach ($form_fields as $form_field_name => $form_field_value) {
+			if (array_key_exists($form_field_name, $config))
+				$db_fields[$form_field_name] = static::mergeDBFields($config[$form_field_name], '', $table);
+		}
+		//print_r($db_fields);
 	}
 
 	/**
 	 * @param $tables
-	 * @param string $prefix
-	 * @param string $break_table
+	 * @param string|null $prefix
+	 * @param string|null $break_table
 	 *
 	 * @return array
 	 */
-	private static function mergeDBFields($tables, $prefix = '', $break_table = 'edg020_ikasleak')
+	private static function mergeDBFields($tables, $prefix = null, $break_table = null)
 	{
 		$db_fields = array();
 		foreach ($tables as $table_name => $table_field) {
-			//$length = strlen($table_name);
 			$name = $prefix . $table_name;
-			if (/*strrpos($table_name, '_') === --$length*/is_array($table_field))
+			if (is_array($table_field))
 				$db_fields = array_merge( $db_fields, static::mergeDBFields($table_field, $name, $break_table) );
 			else
 				$db_fields[$name] = $table_field;
@@ -81,23 +98,5 @@ class Repository extends medoo
 				return $db_fields;
 		}
 		return $db_fields;
-	}
-
-	/**
-	 * @param $form_fields
-	 * @param string $slug
-	 * @param string $table
-	 *
-	 * @return array
-	 */
-	public static function checkCredentials($form_fields, $slug = 'login', $table = 'edg020_ikasleak')
-	{
-		$db_fields = array();
-		$config = static::parseDBFields($slug);
-		foreach ($form_fields as $form_field_name => $form_field_value) {
-			if (array_key_exists($form_field_name, $config))
-				$db_fields[$form_field_name] = static::mergeDBFields($config[$form_field_name], $table);
-		}
-		print_r($db_fields);
 	}
 }
