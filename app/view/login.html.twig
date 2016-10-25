@@ -8,24 +8,27 @@
             <img src="{{ logo_url }}" class="dib" title="{{ title.eu }} / {{ title.es }}"/>
         </div>
         <div class="fl w-100 w-100-m w-50-ns tc">
-            <h3 class="blue ph0 mh0 fw6 w-100">{{ course }}</h3>
+            <h3 class="navy ph0 mh0 fw6 w-100">{{ course }}</h3>
             <h3 class="f3 mb2"><strong>{{ title_label }}</strong></h3>
         </div>
     </article>
-    <article id="bg-fields" class="pv2 mh2 mh4-ns" style="background: url('{{ bg_url }}') no-repeat; background-size: cover;">
+    <article id="has-bg-image" class="pv2 mh2 mh4-ns" style="background: url('{{ bg_url }}') no-repeat; background-size: cover;">
         <form action="{{ form_action }}" accept-charset="utf-8" method="post">
             <div class="pb3 dt v-top w-100 w-75-m w-75-ns white">
-                {% include 'partial/_login-fields.html.twig' %}
+                {% include 'login/fields.html.twig' %}
             </div>
             <div class="mt3 w-100 tc">
                 <a href="#" target="_self">
-                    <img src="{{ audio_sample_img }}" alt="{{ audio_sample }}" width="70" height="70"/>
+                    {#<img src="{{ audio_sample_img }}" alt="{{ audio_sample }}" width="70" height="70"/>
                     <audio src="{{ audio_sample_url }}" controls></audio>
+                    <audio src="{{ audio_sample_url }}" preload autoplay></audio>#}
+                    <i class="fa fa-play fa-inverse fa-5x"></i>
+                    <audio src="{{ audio_sample_url }}" preload></audio>
                 </a>
             </div>
             <div class="mt3 w-100 tc">
                 <input name="fperiodo" id="fperiodo" type="hidden" value="{{ course }}"/>
-                <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="{{ submit_text }}"/>
+                <input class="f5 link dim br2 ph3 pv2 mb2 dib white bg-navy" type="submit" value="{{ submit_text }}"/>
             </div>
         </form>
     </article>
@@ -42,19 +45,23 @@
     <script type="text/javascript" src="./vendor/jquery-smartresize/jquery.throttledresize.js"></script>
     <script type="text/javascript">
         $(function() {
-            var bgResize = function(_window) {
-                if (_window.width() < 944)
-                    document.getElementById('bg-fields').style.backgroundSize = '100% 100%';
-            };
-            $(window).bind("resize", function() {
+            var _window = $(window),
+                bgResize = function(_window) {
+                    if (_window.width() < 944)
+                        document.getElementById('has-bg-image').style.backgroundSize = '100% 100%';
+                    else
+                        document.getElementById('has-bg-image').style.backgroundSize = 'cover';
+                };
+            bgResize(_window);
+            _window.on('resize', function() {
                 bgResize($(this));
                 //console.log( 'Resize event fired:'+ (+new Date()) );
             });
-            $(window).bind("debouncedresize", function() {
+            _window.on('debouncedresize', function() {
                 bgResize($(this));
                 //console.log( 'Debounce event fired:'+ (+new Date()) );
             });
-            $(window).bind("throttledresize", function() {
+            _window.on('throttledresize', function() {
                 bgResize($(this));
                 //console.log( 'Throttle event fired:'+ (+new Date()) );
             });

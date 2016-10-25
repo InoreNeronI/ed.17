@@ -1,24 +1,17 @@
 # Do not repeat field names in any block...
-index:
+common:
     course: '2017'
-    bg_url: '/irudiak/ed_ikasleak1.jpg'
-    logo_url: '/irudiak/logoed1.jpg'
-    logo_url_footer: 'irudiak/logo_hezkuntza.png'
     title:
         eu: 'Ebaluazio diagnostikoa'
         es: 'Evaluación diagnóstica'
         en: ''
-    title_lh:
-        eu: 'LHko ebaluazio probak'
-        es: 'Pruebas de evaluación de EP'
-        en: ''
-    title_dbh:
-        eu: 'DBHko ebaluazio probak'
-        es: 'Pruebas de evaluación de la ESO'
-        en: ''
+home:
+    bg_url: '/irudiak/ed_ikasleak1.jpg'
+    logo_url: '/irudiak/logoed1.jpg'
+    logo_url_footer: 'irudiak/logo_hezkuntza.png'
 login:
     title_label: 'Identifikazioa / Identificación'
-    form_action: ''
+    form_action: '/board'
     code: 'Ikaslearen kodea / Código del alumno-a'
     bdate: 'Jaiotze data / Fecha nacimiento'
     bday: 'Eguna / Día'
@@ -37,6 +30,14 @@ login:
     dec: 'abendua / diciembre'
     codpro: 'Probaren kodea / Código de la prueba'
     audio_sample: 'Audio proba / Prueba de audio'
-    audio_sample_url: '0_audio_proba_labur.ogg'
-    audio_sample_img: '/irudiak/play1.jpg'
+    audio_sample_url: '/audioak/audio_proba_labur.ogg'
     submit_text: 'Bidali / Enviar'
+board:
+    title_lh:
+        eu: 'LHko ebaluazio probak'
+        es: 'Pruebas de evaluación de EP'
+        en: ''
+    title_dbh:
+        eu: 'DBHko ebaluazio probak'
+        es: 'Pruebas de evaluación de la ESO'
+        en: ''

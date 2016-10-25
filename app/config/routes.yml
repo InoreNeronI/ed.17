@@ -1,4 +1,0 @@
-indexView: 'login'
-paths:
-    - '/sample'
-    - { path: '/', methods: ['GET'] }

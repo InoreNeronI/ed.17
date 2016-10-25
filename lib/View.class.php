@@ -9,18 +9,18 @@ use Twig_Loader_Filesystem;
  * Class Template
  * @package App
  */
-class Template
+class View
 {
     /**
-     * Construct won't be called inside this class and is uncallable from
-     * the outside. This prevents instantiating this class.
+     * Construct won't be called inside this class and is uncallable from the outside. This prevents instantiating this class.
      * This is by purpose, because we want a static class.
+     *
      * @url http://stackoverflow.com/a/11576945
      */
     private function __construct() {}
 
     /** @var array */
-    private static $templatesDirs = array( __DIR__.'/../../app/view' );
+    private static $templatesDirs = array( __DIR__.'/../app/view' );
 
     /** @var \Twig_Loader_Filesystem */
     private static $loader;
@@ -35,7 +35,10 @@ class Template
 	private static $debug = true;
 
     /**
-     * @param string $loader_dir    Twig_Loader_Filesystem loads templates from the file system. This loader can find templates in folders on the file system and is the preferred way to load them.
+     * Twig_Loader_Filesystem loads templates from the file system.
+     * This loader can find templates in folders on the file system and is the preferred way to load them.
+     *
+     * @param string $loader_dir
      * @param string $cache_dir
      */
     private static function initialize($loader_dir = null, $cache_dir = null)
@@ -56,6 +59,8 @@ class Template
     }
 
 	/**
+	 * Renders a template.
+	 *
 	 * @param string $slug
 	 * @param array $parameters
 	 * @param string $extension

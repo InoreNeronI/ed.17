@@ -1,0 +1,7 @@
+homePath: '/'
+homeSlug: 'login'
+
+routes:
+    - '/sample'
+    - { path: '/', methods: ['GET'] }
+    - { path: '/board', methods: ['GET','POST'] }
