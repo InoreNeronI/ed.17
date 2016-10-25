@@ -29,8 +29,10 @@ login:
     nov: 'azaroa / noviembre'
     dec: 'abendua / diciembre'
     codpro: 'Probaren kodea / Código de la prueba'
-    audio_sample: 'Audio proba / Prueba de audio'
-    audio_sample_url: '/audioak/audio_proba_labur.ogg'
+    audio_sample_tip: 'Audio proba / Prueba de audio'
+    audio_sample_url:
+        mp3: ''
+        ogg: '/audioak/audio_proba_labur.ogg'
     submit_text: 'Bidali / Enviar'
 board:
     title_lh:

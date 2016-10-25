@@ -18,12 +18,13 @@
                 {% include 'login/fields.html.twig' %}
             </div>
             <div class="mt3 w-100 tc">
-                <a href="#" target="_self">
-                    {#<img src="{{ audio_sample_img }}" alt="{{ audio_sample }}" width="70" height="70"/>
-                    <audio src="{{ audio_sample_url }}" controls></audio>
-                    <audio src="{{ audio_sample_url }}" preload autoplay></audio>#}
-                    <i class="fa fa-play fa-inverse fa-5x"></i>
-                    <audio src="{{ audio_sample_url }}" preload></audio>
+                <a id="playAudioSample" href="" target="_self" title="{{ audio_sample_tip }}">
+                    <i class="fa fa-play fa-inverse fa-5x">
+                        <audio id="audioSample" preload>
+                            <source src="{{ audio_sample_url.mp3 }}" type="audio/mpeg">
+                            <source src="{{ audio_sample_url.ogg }}" type="audio/ogg">
+                        </audio>
+                    </i>
                 </a>
             </div>
             <div class="mt3 w-100 tc">
@@ -53,6 +54,11 @@
                         document.getElementById('has-bg-image').style.backgroundSize = 'cover';
                 };
             bgResize(_window);
+            $('#playAudioSample').on('click', function(ev) {
+                document.getElementById('audioSample').play();
+                ev.preventDefault();
+                return false;
+            });
             _window.on('resize', function() {
                 bgResize($(this));
                 //console.log( 'Resize event fired:'+ (+new Date()) );
