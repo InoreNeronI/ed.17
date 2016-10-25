@@ -5,8 +5,9 @@ fcodalued:
     edg020_ikasleak: edg020_libro_escolaridad
     edg050_erantzunak_:
         dbh_:
-            eusa: edg050_codalued
-            eusbd: edg050_codalued
+            eus:
+               a: edg050_codalued
+               bd: edg050_codalued
             gaz: edg050_codalued
             ing: edg050_codalued
             mat: edg050_codalued
@@ -16,8 +17,9 @@ fcodalued:
                 b: gs04_codalued
                 c: gs04_codalued
         lh_:
-            eusa: edg050_codalued
-            eusbd: edg050_codalued
+            eus:
+                a: edg050_codalued
+                bd: edg050_codalued
             gaz: edg050_codalued
             ing: edg050_codalued
             mat: edg050_codalued
@@ -55,8 +57,9 @@ ffnacidia:
 fcodprueba:
     edg050_erantzunak_:
         dbh_:
-            eusa: edg050_codprueba
-            eusbd: edg050_codprueba
+            eus:
+                a: edg050_codprueba
+                bd: edg050_codprueba
             gaz: edg050_codprueba
             ing: edg050_codprueba
             mat: edg050_codprueba
@@ -66,8 +69,9 @@ fcodprueba:
                 b: gs04_codprueba
                 c: gs04_codprueba
         lh_:
-            eusa: edg050_codprueba
-            eusbd: edg050_codprueba
+            eus:
+                a: edg050_codprueba
+                bd: edg050_codprueba
             gaz: edg050_codprueba
             ing: edg050_codprueba
             mat: edg050_codprueba
@@ -78,8 +82,9 @@ fcodprueba:
                 c: gs04_codprueba
     edg051_testuak_:
         dbh_:
-            eusa: edg051_codprueba
-            eusbd: edg051_codprueba
+            eus:
+                a: edg051_codprueba
+                bd: edg051_codprueba
             gaz: edg051_codprueba
             ing: edg051_codprueba
             mat: edg051_codprueba
@@ -89,8 +94,9 @@ fcodprueba:
                 b: gs04_codprueba
                 c: gs04_codprueba
         lh_:
-            eusa: edg051_codprueba
-            eusbd: edg051_codprueba
+            eus:
+                a: edg051_codprueba
+                bd: edg051_codprueba
             gaz: edg051_codprueba
             ing: edg051_codprueba
             mat: edg051_codprueba

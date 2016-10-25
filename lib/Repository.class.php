@@ -71,9 +71,9 @@ class Repository extends medoo
 	{
 		$db_fields = array();
 		foreach ($tables as $table_name => $table_field) {
-			$length = strlen($table_name);
+			//$length = strlen($table_name);
 			$name = $prefix . $table_name;
-			if (strrpos($table_name, '_') === --$length )
+			if (/*strrpos($table_name, '_') === --$length*/is_array($table_field))
 				$db_fields = array_merge( $db_fields, static::mergeDBFields($table_field, $name, $break_table) );
 			else
 				$db_fields[$name] = $table_field;
@@ -98,6 +98,6 @@ class Repository extends medoo
 			if (array_key_exists($form_field_name, $config))
 				$db_fields[$form_field_name] = static::mergeDBFields($config[$form_field_name], $table);
 		}
-		//print_r($db_fields);
+		print_r($db_fields);
 	}
 }
