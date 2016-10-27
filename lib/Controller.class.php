@@ -31,7 +31,10 @@ class Controller
 
 		/** @var HttpFoundation\Response $response */
 		$response = new HttpFoundation\Response(View::render($slug, $parameters), 200);
+
+        // Avoid one of the most widespread Internet security issue, XSS (Cross-Site Scripting)
 		$response->headers->set('Content-Type', 'text/html');
+
 		// configure the HTTP cache headers
 		//$response->setMaxAge(10);
 

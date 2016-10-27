@@ -2,7 +2,7 @@
 namespace App;
 
 use Symfony\Component\Routing as BaseRouting;
-use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml;
 
 /**
  * Class Route
@@ -34,10 +34,10 @@ class Routing
 		if (true === static::$initialized)
 			return;
 
-		$routes = Yaml::parse(file_get_contents(__DIR__.'/../app/config/routing.yml'));
+		$routes = Yaml\Yaml::parse(file_get_contents(__DIR__.'/../app/config/routing.yml'));
 		$homePath = $routes['homePath'];
 		static::$homeSlug = $routes['homeSlug'];
-		static::$messages = Yaml::parse(file_get_contents(__DIR__.'/../app/config/messages.yml'));
+		static::$messages = Yaml\Yaml::parse(file_get_contents(__DIR__.'/../app/config/messages.yml'));
 		static::$routes = new BaseRouting\RouteCollection();
 		static::$initialized = true;
 

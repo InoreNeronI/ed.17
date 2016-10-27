@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\ResponseEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpKernel;
@@ -49,6 +50,9 @@ class Kernel implements HttpKernel\HttpKernelInterface
 	 */
 	public function handle(HttpFoundation\Request $request, $type = HttpKernel\HttpKernelInterface::MASTER_REQUEST, $catch = true)
 	{
+        // Feed the RequestContext
+        $this->matcher->getContext()->fromRequest($request);
+
 		// Next we take our HTTP request object and see if our Request contains a routing match (see our routes class below for a match)
 		try {
 			$request->attributes->add($this->matcher->match($request->getPathInfo()));
@@ -75,8 +79,10 @@ class Kernel implements HttpKernel\HttpKernelInterface
 			$response = new HttpFoundation\Response(sprintf('An error occurred: %s', $e->getMessage()), 500);
 		}
 
-		//**Note: If you need any event listeners for specific actions to take on your response object after
-		// returned from your business logic / controller and before you return to the client you can invoke them here.
-		return $response;
+        // The dispatcher, the central object of the event dispatcher system, notifies listeners of an event dispatched to it.
+        // Put another way: your code dispatches an event to the dispatcher, the dispatcher notifies all registered listeners for the event, and each listener do whatever it wants with the event.
+        $this->dispatcher->dispatch('response', ResponseEvent($response, $request));
+
+        return $response;
 	}
 }

@@ -3,7 +3,7 @@
 namespace App;
 
 use medoo;
-use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml;
 
 /**
  * Class Repository
@@ -46,7 +46,7 @@ class Repository extends medoo
 	 */
 	private static function parseConfig($slug = 'parameters')
 	{
-		$config = Yaml::parse(file_get_contents(__DIR__."/../app/config/$slug.yml"));
+		$config = Yaml\Yaml::parse(file_get_contents(__DIR__."/../app/config/$slug.yml"));
 		return $slug === 'parameters' ? $config[$slug] : $config;
 	}
 
