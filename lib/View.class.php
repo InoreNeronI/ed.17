@@ -74,7 +74,7 @@ class View
     public static function render($slug = 'index', $variables = array(), $extension = null)
     {
 	    static::initialize();
-	    $ext = empty($extension) ? static::$templatesExtension : $extension;
-        return static::$environment->render($slug.'.'.$ext, $variables);
+	    empty($extension) ?: static::$templatesExtension = $extension;
+        return static::$environment->render($slug.'.'.static::$templatesExtension, $variables);
     }
 }
