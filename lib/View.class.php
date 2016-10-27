@@ -29,22 +29,13 @@ class View
 	/** @var boolean */
     private static $initialized = false;
 
-	/** @var boolean */
-	private static $debug = false;
-
 	/**
-	 * View constructor.
+	 * Construct won't be called inside this class and is uncallable from the outside. This prevents instantiating this class.
+	 * This is by purpose, because we want a static class.
 	 *
-	 * @param string|null $dir
-	 * @param string|null $ext
-	 * @param bool $debug
+	 * @url http://stackoverflow.com/a/11576945
 	 */
-	private function __construct($dir = null, $ext = null, $debug = true) {
-		static::$templatesDirs = is_null($dir) ? dirname(__DIR__).static::$templatesDirs : $dir;
-		static::$templatesExtension = is_null($ext) ? static::$templatesDirs : $ext;
-		static::$debug = $debug;
-		static::initialize();
-	}
+	private function __construct() {}
 
 	/**
      * Twig_Loader_Filesystem loads templates from the file system.
@@ -52,19 +43,21 @@ class View
      *
      * @param string|null $loader_dir
      * @param string|null $cache_dir
+	 * @param string|null $ext
+	 * @param bool $debug
      */
-    private static function initialize($loader_dir = null, $cache_dir = null)
+    private static function initialize($loader_dir = null, $cache_dir = null, $ext = null, $debug = true)
     {
 	    if (true === static::$initialized)
 		    throw new \RuntimeException('Error: template-engine had been already initialized.');
 
-        if (!is_null($loader_dir))
-	        array_push(static::$templatesDirs, $loader_dir);
-
+	    static::$templatesDirs = [dirname(__DIR__).static::$templatesDirs];
+	    empty($loader_dir) ?: static::$templatesDirs[] = $loader_dir;
+	    empty($ext) ?: static::$templatesExtension = $ext;
         static::$loader = new Twig_Loader_Filesystem(static::$templatesDirs);
         static::$environment = new Twig_Environment(static::$loader, array(
             'cache' => is_null($cache_dir) ? static::$templatesDirs[0].'/cache' : $cache_dir,
-            'debug' => static::$debug
+            'debug' => $debug
         ));
         static::$initialized = true;
     }
@@ -73,17 +66,15 @@ class View
 	 * Renders a template.
 	 *
 	 * @param string $slug
-	 * @param array $parameters
+	 * @param array $variables
 	 * @param string $extension
 	 *
 	 * @return string
 	 */
-    public static function render($slug = 'index', $parameters = array(), $extension = null)
+    public static function render($slug = 'index', $variables = array(), $extension = null)
     {
 	    static::initialize();
-	    echo static::$templatesDirs;
-	    exit;
 	    $ext = empty($extension) ? static::$templatesExtension : $extension;
-        return static::$environment->render($slug.'.'.$ext, $parameters);
+        return static::$environment->render($slug.'.'.$ext, $variables);
     }
 }

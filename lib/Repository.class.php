@@ -37,9 +37,9 @@ class Repository extends medoo
 	public function __construct($dir = null, $mapSlug = null, $userTable = null)
 	{
 		static::$parameters = static::parseConfig();
-		static::$configFilesDir = is_null($dir) ?: $dir;
-		static::$mapSlug = is_null($mapSlug) ?: $mapSlug;
-		static::$userTable = is_null($userTable) ?: $userTable;
+		empty($dir) ?: static::$configFilesDir = $dir;
+		empty($mapSlug) ?: static::$mapSlug = $mapSlug;
+		empty($userTable) ?: static::$userTable = $userTable;
 		return parent::__construct( array(
 			'database_type' => static::$parameters['database_type'],
 			'database_name' => static::$parameters['database_name'],
@@ -60,14 +60,14 @@ class Repository extends medoo
 	}
 
 	/**
-	 * @param string $name
+	 * @param string $filename
 	 *
 	 * @return array
 	 */
-	private static function parseConfig($name = 'parameters')
+	private static function parseConfig($filename = 'parameters')
 	{
-		$config = Yaml\Yaml::parse(file_get_contents(dirname(__DIR__).static::$configFilesDir."/$name.yml"));
-		return $name === 'parameters' ? $config[$name] : $config;
+		$config = Yaml\Yaml::parse(file_get_contents(dirname(__DIR__).static::$configFilesDir."/$filename.yml"));
+		return $filename === 'parameters' ? $config[$filename] : $config;
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Repository extends medoo
 		foreach ($tables as $table_name => $table_field) {
 			$name = $prefix . $table_name;
 			if (is_array($table_field))
-				$db_fields = array_merge( $db_fields, static::mapFields($table_field, $name, $break_table) );
+				$db_fields = array_merge($db_fields, static::mapFields($table_field, $name, $break_table));
 			else
 				$db_fields[$name] = $table_field;
 			if ($table_name === $break_table)
@@ -102,7 +102,7 @@ class Repository extends medoo
 	private static function parseFields($fields, $prefix = null, $break_table = null)
 	{
 		$db_fields = array();
-		$config = static::parseConfig('map/' . static::$mapSlug);
+		$config = static::parseConfig('map/'.static::$mapSlug);
 		foreach ($fields as $form_field_name => $form_field_value) {
 			if (array_key_exists($form_field_name, $config))
 				$db_fields[$form_field_name] = static::mapFields($config[$form_field_name], $prefix, $break_table);
@@ -117,7 +117,7 @@ class Repository extends medoo
 	 */
 	public static function checkCredentials($fields)
 	{
-		$fields = static::parseFields($fields/*, null, static::$userTable*/);
+		$fields = static::parseFields($fields, null, static::$userTable);
 		print_r($fields);
 	}
 }

@@ -4,7 +4,7 @@ namespace App;
 use Symfony\Component\Routing as BaseRouting;
 use Symfony\Component\Yaml;
 
-const CONFIG  = '/app/config/routing.yml';
+const CONFIG    = '/app/config/routing.yml';
 const MESSAGES  = '/app/config/messages.yml';
 
 /**
