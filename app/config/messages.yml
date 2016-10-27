@@ -1,4 +1,4 @@
-# Do not repeat field names in any block...
+# Do not repeat variable names that are in 'common', neither the ones that are shared blocks' like 'home' and 'login'.
 common:
     course: '2017'
     title:

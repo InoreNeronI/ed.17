@@ -81,7 +81,7 @@ class Kernel implements HttpKernel\HttpKernelInterface
 
         // The dispatcher, the central object of the event dispatcher system, notifies listeners of an event dispatched to it.
         // Put another way: your code dispatches an event to the dispatcher, the dispatcher notifies all registered listeners for the event, and each listener do whatever it wants with the event.
-        $this->dispatcher->dispatch('response', ResponseEvent($response, $request));
+        $this->dispatcher->dispatch('response', new ResponseEvent($response, $request));
 
         return $response;
 	}

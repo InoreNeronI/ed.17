@@ -5,6 +5,10 @@ namespace App;
 use medoo;
 use Symfony\Component\Yaml;
 
+const CONFIG_FILES_DIR  = '/app/config';
+const USER_TABLE        = 'edg020_ikasleak';
+const MAP_SLUG          = 'login';
+
 /**
  * Class Repository
  * @package App
@@ -12,22 +16,38 @@ use Symfony\Component\Yaml;
 class Repository extends medoo
 {
 	/** @var array $parameters */
-	private $parameters;
+	private static $parameters;
+
+	/** @var string $configFilesDir */
+	private static $configFilesDir = CONFIG_FILES_DIR;
+
+	/** @var string $homeSlug */
+	private static $mapSlug = MAP_SLUG;
+
+	/** @var string $userTable */
+	private static $userTable = USER_TABLE;
 
 	/**
 	 * Repository constructor.
+	 *
+	 * @param string|null $dir
+	 * @param string|null $mapSlug
+	 * @param string|null $userTable
 	 */
-	public function __construct()
+	public function __construct($dir = null, $mapSlug = null, $userTable = null)
 	{
-		$this->parameters = static::parseConfig();
+		static::$parameters = static::parseConfig();
+		static::$configFilesDir = is_null($dir) ?: $dir;
+		static::$mapSlug = is_null($mapSlug) ?: $mapSlug;
+		static::$userTable = is_null($userTable) ?: $userTable;
 		return parent::__construct( array(
-			'database_type' => $this->parameters['database_type'],
-			'database_name' => $this->parameters['database_name'],
-			'server' => $this->parameters['database_host'],
-			'port' => $this->parameters['database_port'],
-			'username' => $this->parameters['database_user'],
-			'password' => $this->parameters['database_password'],
-			'charset' => $this->parameters['database_charset']
+			'database_type' => static::$parameters['database_type'],
+			'database_name' => static::$parameters['database_name'],
+			'server' => static::$parameters['database_host'],
+			'port' => static::$parameters['database_port'],
+			'username' => static::$parameters['database_user'],
+			'password' => static::$parameters['database_password'],
+			'charset' => static::$parameters['database_charset']
 		) );
 	}
 
@@ -36,67 +56,68 @@ class Repository extends medoo
 	 */
 	public function getParameters()
 	{
-		return $this->parameters;
+		return static::$parameters;
 	}
 
 	/**
-	 * @param string $slug
+	 * @param string $name
 	 *
 	 * @return array
 	 */
-	private static function parseConfig($slug = 'parameters')
+	private static function parseConfig($name = 'parameters')
 	{
-		$config = Yaml\Yaml::parse(file_get_contents(__DIR__."/../app/config/$slug.yml"));
-		return $slug === 'parameters' ? $config[$slug] : $config;
+		$config = Yaml\Yaml::parse(file_get_contents(dirname(__DIR__).static::$configFilesDir."/$name.yml"));
+		return $name === 'parameters' ? $config[$name] : $config;
 	}
 
 	/**
-	 * @param string $map
-	 *
-	 * @return array
-	 */
-	private static function parseDBFields($map = 'login')
-	{
-		return static::parseConfig("map/$map");
-	}
-
-	/**
-	 * @param $form_fields
-	 * @param string $map
-	 * @param string $table
-	 *
-	 * @return array
-	 */
-	public static function checkCredentials($form_fields, $map = 'login', $table = 'edg020_ikasleak')
-	{
-		$db_fields = array();
-		$config = static::parseDBFields($map);
-		foreach ($form_fields as $form_field_name => $form_field_value) {
-			if (array_key_exists($form_field_name, $config))
-				$db_fields[$form_field_name] = static::mergeDBFields($config[$form_field_name], '', $table);
-		}
-		//print_r($db_fields);
-	}
-
-	/**
-	 * @param $tables
+	 * @param array $tables
 	 * @param string|null $prefix
 	 * @param string|null $break_table
 	 *
 	 * @return array
 	 */
-	private static function mergeDBFields($tables, $prefix = null, $break_table = null)
+	private static function mapFields($tables, $prefix = null, $break_table = null)
 	{
 		$db_fields = array();
 		foreach ($tables as $table_name => $table_field) {
 			$name = $prefix . $table_name;
 			if (is_array($table_field))
-				$db_fields = array_merge( $db_fields, static::mergeDBFields($table_field, $name, $break_table) );
+				$db_fields = array_merge( $db_fields, static::mapFields($table_field, $name, $break_table) );
 			else
 				$db_fields[$name] = $table_field;
 			if ($table_name === $break_table)
 				return $db_fields;
 		}
 		return $db_fields;
+	}
+
+	/**
+	 * @param array $fields
+	 * @param string|null $prefix
+	 * @param string|null $break_table
+	 *
+	 * @return array
+	 */
+	private static function parseFields($fields, $prefix = null, $break_table = null)
+	{
+		$db_fields = array();
+		$config = static::parseConfig('map/' . static::$mapSlug);
+		foreach ($fields as $form_field_name => $form_field_value) {
+			if (array_key_exists($form_field_name, $config))
+				$db_fields[$form_field_name] = static::mapFields($config[$form_field_name], $prefix, $break_table);
+		}
+		return $db_fields;
+	}
+
+	/**
+	 * @param array $fields
+	 *
+	 * @return array
+	 */
+	public static function checkCredentials($fields)
+	{
+		$fields = static::parseFields($fields/*, null, static::$userTable*/);
+		print_r($fields);
 	}
 }

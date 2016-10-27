@@ -5,7 +5,15 @@ use App\ResponseEvent;
 
 class ContentLengthListener
 {
-    public function onResponse(ResponseEvent $event)
+	/**
+	 * Construct won't be called inside this class and is uncallable from the outside. This prevents instantiating this class.
+	 * This is by purpose, because we want a static class.
+	 *
+	 * @url http://stackoverflow.com/a/11576945
+	 */
+	private function __construct() {}
+
+	public function onResponse(ResponseEvent $event)
     {
         $response = $event->getResponse();
 

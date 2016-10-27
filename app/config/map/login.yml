@@ -1,5 +1,5 @@
 # Forms' input field-name and database matching.
-# form-field
+# form-field:
 fcodalued:
     # db-table: table-field
     edg020_ikasleak: edg020_libro_escolaridad

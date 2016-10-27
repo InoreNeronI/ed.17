@@ -3,9 +3,7 @@
   "type": "project",
   "description": "Irakas Sistema Ebaluatu eta Ikertzeko Erakundea | Instituto Vasco de Evaluación e Investigación Educativa",
   "autoload": {
-    "psr-4": {
-      "": "lib/"
-    }
+    "classmap": ["lib/"]
   },
   "require": {
     "php": "^5.4.0|^7.0",

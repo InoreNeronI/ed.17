@@ -29,8 +29,8 @@ $matcher = $routing::getMatcher($context);
 $resolver = new HttpKernel\Controller\ControllerResolver;
 
 /** @var EventDispatcher\EventDispatcher $dispatcher */
-//$dispatcher = new EventDispatcher\EventDispatcher;
-//$dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($matcher, new HttpFoundation\RequestStack));
+$dispatcher = new EventDispatcher\EventDispatcher;
+$dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($matcher, new HttpFoundation\RequestStack));
 
 /** @var App\Kernel $framework */
 $framework = new Kernel($matcher, $resolver, $dispatcher);

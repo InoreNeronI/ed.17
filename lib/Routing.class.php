@@ -4,6 +4,9 @@ namespace App;
 use Symfony\Component\Routing as BaseRouting;
 use Symfony\Component\Yaml;
 
+const CONFIG  = '/app/config/routing.yml';
+const MESSAGES  = '/app/config/messages.yml';
+
 /**
  * Class Route
  * @package App
@@ -23,50 +26,48 @@ class Routing
 	private static $initialized = false;
 
 	/**
-	 * Route constructor.
+	 * Routing constructor.
 	 *
+	 * @param array $arguments
 	 * @param array $methods
 	 * @param array $schemes
-	 * @param array $parameters
 	 */
-	public function __construct($methods = array('GET'), $schemes = array('http', 'https'), $parameters = array())
+	public function __construct($arguments = array(), $methods = array('GET', 'POST'), $schemes = array('http', 'https'))
 	{
 		if (true === static::$initialized)
 			return;
 
-		$routes = Yaml\Yaml::parse(file_get_contents(__DIR__.'/../app/config/routing.yml'));
-		$homePath = $routes['homePath'];
-		static::$homeSlug = $routes['homeSlug'];
-		static::$messages = Yaml\Yaml::parse(file_get_contents(__DIR__.'/../app/config/messages.yml'));
+		$config = Yaml\Yaml::parse(file_get_contents(dirname(__DIR__).CONFIG));
+		static::$homeSlug = $config['homeSlug'];
+		static::$messages = Yaml\Yaml::parse(file_get_contents(dirname(__DIR__).MESSAGES));
 		static::$routes = new BaseRouting\RouteCollection();
 		static::$initialized = true;
 
-		foreach ($routes['routes'] as $route) {
+		foreach ($config['routes'] as $route) {
 			if (is_array($route)) {
+				if (isset($route['arguments']))
+					$arguments = array_merge($route['arguments'], $arguments);
 				if (isset($route['methods']))
 					$methods = array_merge($route['methods'], $methods);
 				if (isset($route['schemes']))
 					$schemes = array_merge($route['schemes'], $schemes);
-				if (isset($route['parameters']))
-					$parameters = array_merge($route['parameters'], $parameters);
 				$route = $route['path'];
 			}
 			// Merge common messages
-			$parameters = array_merge(static::$messages['common'], $parameters);
+			$arguments = array_merge(static::$messages['common'], $arguments);
 			// Merge home specific messages and set slug
-			if ($route === $homePath) {
+			if ($route === $config['homePath']) {
 				$slug = static::$homeSlug;
 				if ($slug !== 'home')
-					$parameters = array_merge(static::$messages['home'], $parameters);
+					$arguments = array_merge(static::$messages['home'], $arguments);
 			} else
 				$slug = str_replace('/', '', $route);   // Template name without extension
 			// Merge current view messages
-			$parameters = isset(static::$messages[$slug]) ? array_merge(static::$messages[$slug], $parameters) : $parameters;
+			$arguments = isset(static::$messages[$slug]) ? array_merge(static::$messages[$slug], $arguments) : $arguments;
 			// Add route to collection
-			static::addRoute($route, $slug, $methods, $schemes, $parameters);
+			static::addRoute($route, $slug, $arguments, $methods, $schemes);
 		}
 	}
-
 
 	// We register a route by invoking the add method with specific arguments. The first argument is a unique name for this route.
 	// Next we instantiate a Route object with our route. Our route is /docs/{ID} Our associative array contains the controller that we
@@ -79,15 +80,16 @@ class Routing
 	 * @param string $slug
 	 * @param array $methods
 	 * @param array $schemes
-	 * @param array $parameters
+	 * @param array $arguments
+	 * TODO: addRoute($path = '/tests/{testId}', ...
 	 */
-	private static function addRoute($path = '/'/*'/tests/{testId}'*/, $slug = 'index', $methods = array('GET'), $schemes = array('http', 'https'), $parameters = array())
+	private static function addRoute($path = '/', $slug = 'index', $arguments = array(), $methods = array('GET', 'POST'), $schemes = array('http', 'https'))
 	{
 		static::$routes->add(
 			$slug,
 			new BaseRouting\Route(
 				$path, // path
-				array('_controller' => 'App\\Controller::action', 'parameters' => $parameters), // defaults
+				array('_controller' => 'App\\Controller::renderAction', 'arguments' => $arguments), // defaults
 				array(), //array('month' => '[0-9]{4}-[0-9]{2}', 'subdomain' => 'www|m'), // requirements
 				array(), // options
 				'', //'{subdomain}.example.com', // host
