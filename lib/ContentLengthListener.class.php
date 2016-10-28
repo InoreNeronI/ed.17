@@ -2,28 +2,34 @@
 namespace App;
 
 use App\ResponseEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ContentLengthListener
+/**
+ * Class ContentLengthListener
+ * @package App
+ */
+class ContentLengthListener implements EventSubscriberInterface
 {
-	/**
-	 * Construct won't be called inside this class and is uncallable from the outside. This prevents instantiating this class.
-	 * This is by purpose, because we want a static class.
-	 *
-	 * @url http://stackoverflow.com/a/11576945
-	 */
-	private function __construct() {}
-
+    /**
+     * @param \App\ResponseEvent $event
+     */
 	public function onResponse(ResponseEvent $event)
     {
         $response = $event->getResponse();
+        $headers = $response->headers;
 
-        if ($response->isRedirection()
-            || ($response->headers->has('Content-Type') && false === strpos($response->headers->get('Content-Type'), 'html'))
-            || 'html' !== $event->getRequest()->getRequestFormat()
-        ) {
-            return;
+        if (!$headers->has('Content-Length') && !$headers->has('Transfer-Encoding')) {
+            $headers->set('Content-Length', strlen($response->getContent()));
         }
+    }
 
-        $response->setContent($response->getContent().'GA CODE');
+    /**
+     * A single subscriber can host as many listeners as you want on as many events as needed.
+     *
+     * @return array
+     */
+    public static function getSubscribedEvents()
+    {
+        return array('response' => array('onResponse', -255));
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\ContentLengthListener;
 use App\Kernel;
 use App\Routing;
 use Symfony\Component\EventDispatcher;
