@@ -18,18 +18,20 @@
                 {% include 'login/fields.html.twig' %}
             </div>
             <div class="mt3 w-100 tc">
-                <a id="playAudioSample" href="" target="_self" title="{{ audio_sample_tip }}">
-                    <i class="fa fa-play fa-inverse fa-5x">
-                        <audio id="audioSample" preload>
-                            <source src="{{ audio_sample_url.mp3 }}" type="audio/mpeg">
-                            <source src="{{ audio_sample_url.ogg }}" type="audio/ogg">
-                        </audio>
-                    </i>
-                </a>
-            </div>
-            <div class="mt3 w-100 tc">
-                <input name="fperiodo" id="fperiodo" type="hidden" value="{{ course }}"/>
-                <input class="f5 link dim br2 ph3 pv2 mb2 dib white bg-navy" type="submit" value="{{ submit_text }}"/>
+                <div class="fl w-100 w-50-ns pt3-ns pt0 tr-ns tc">
+                    <input name="fperiodo" id="fperiodo" type="hidden" value="{{ course }}"/>
+                    <input class="f5 link dim br2 ph3 pv2 mb2 dib white bg-navy" type="submit" value="{{ submit_text }}"/>
+                </div>
+                <div class="dib w-100 w-50-ns">
+                    <a id="playAudioSample" href="" target="_self" title="{{ audio_sample_tip }}">
+                        <i class="fa fa-play fa-inverse fa-5x">
+                            <audio id="audioSample" preload>
+                                <source src="{{ audio_sample_url.mp3 }}" type="audio/mpeg">
+                                <source src="{{ audio_sample_url.ogg }}" type="audio/ogg">
+                            </audio>
+                        </i>
+                    </a>
+                </div>
             </div>
         </form>
     </article>
@@ -41,9 +43,9 @@
 {% endblock %}
 
 {% block javascript %}
-    <script type="text/javascript" src="./vendor/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="./vendor/jquery-smartresize/jquery.debouncedresize.js"></script>
-    <script type="text/javascript" src="./vendor/jquery-smartresize/jquery.throttledresize.js"></script>
+    <script type="text/javascript" src="./js/jquery.slim.min.js"></script>
+    <script type="text/javascript" src="./js/jquery.debouncedresize.js"></script>
+    {#<script type="text/javascript" src="./js/jquery.throttledresize.js"></script>#}
     <script type="text/javascript">
         $(function() {
             var _window = $(window),
@@ -67,10 +69,10 @@
                 bgResize($(this));
                 //console.log( 'Debounce event fired:'+ (+new Date()) );
             });
-            _window.on('throttledresize', function() {
+            {#_window.on('throttledresize', function() {
                 bgResize($(this));
                 //console.log( 'Throttle event fired:'+ (+new Date()) );
-            });
+            });#}
         });
     </script>
 {% endblock %}

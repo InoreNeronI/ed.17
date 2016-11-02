@@ -1,0 +1,15 @@
+{
+  "name": "app",
+  "authors": [
+    {
+      "name": "Martin Mozos",
+      "email": "martinmozos@gmail.com"
+    }
+  ],
+  "dependencies": {
+    "font-awesome": ">=4.7.0",
+    "jquery": ">=3.1.1",
+    "jquery-debounced-and-throttled-resize": ">=1.0.1",
+    "tachyons": ">=4.5.4"
+  }
+}

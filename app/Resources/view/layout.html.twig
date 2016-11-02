@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="stylesheet" href="./css/tachyons.min.css" type="text/css" />
+        <link rel="stylesheet" href="./css/font-awesome.min.css" type="text/css" />
+        {#<link rel="stylesheet" href="{{ asset('css/main.css') }}" type="text/css" />
+        <style type="text/css">
+            html, body { min-width: 370px; }
+        </style>#}
+    </head>
+    <body class="calisto">
+        {% block content %}{% endblock %}
+        {% block javascript %}
+            <script type="text/javascript">
+                var mouseWheelHandler =
+                    function(ev) {
+                        var scrollTop = this.scrollTop,
+                            scrollHeight = this.scrollHeight,
+                            height = this.offsetHeight,
+                            delta = (ev.type == 'DOMMouseScroll' ? ev.originalEvent.detail * -40 : ev.originalEvent.wheelDelta),
+                            up = delta > 0,
+                            prevent = function() {
+                                ev.stopPropagation();
+                                ev.preventDefault();
+                                ev.returnValue = false;
+                                return false;
+                            };
+                        // Scrolling down, but this will take us past the bottom.
+                        if (!up && -delta > scrollHeight - height - scrollTop) {
+                            this.scrollTop(scrollHeight);
+                            return prevent();
+                        // Scrolling up, but this will take us past the top.
+                        } else if (up && delta > scrollTop) {
+                            this.scrollTop(0);
+                            return prevent();
+                        }
+                    },
+                    boxes = document.getElementsByClassName('scrollable'),
+                    i = boxes.length;
+                {#$('.scrollable').on('DOMMouseScroll mousewheel', mouseWheelHandler);#}
+                while(i--) {
+                    if (boxes[i].addEventListener) {
+                        // IE9, Chrome, Safari, Opera
+                        boxes[i].addEventListener('mousewheel', mouseWheelHandler, false);
+                        // Firefox
+                        boxes[i].addEventListener('DOMMouseScroll', mouseWheelHandler, false);
+                    }{# // IE 6/7/8
+                    else boxes[i].attachEvent('onmousewheel', mouseWheelHandler);#}
+                }
+                {#var _gaq = _gaq || [];
+                _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
+                _gaq.push(['_trackPageview']);
+                (function() {
+                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                })();#}
+            </script>
+        {% endblock %}
+    </body>
+</html>

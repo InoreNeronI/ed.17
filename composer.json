@@ -1,49 +1,92 @@
 {
-  "name": "isei-ivei/ed17probak",
+  "name": "isei-ivei/app",
   "type": "project",
   "description": "Irakas Sistema Ebaluatu eta Ikertzeko Erakundea | Instituto Vasco de Evaluación e Investigación Educativa",
+  "authors": [{
+    "name": "Martin Mozos",
+    "email": "martinmozos@gmail.com"
+  }],
   "autoload": {
-    "classmap": ["lib/"]
+    "psr-4": {"": "src/"}
+  },
+  "autoload-dev": {
+    "psr-4": {"": "test/"}
   },
   "require": {
     "php": "^5.4.0|^7.0",
-    "catfan/medoo": "@stable",
-    "twig/twig": "@stable",
+    "doctrine/dbal": "@stable",
+    "acelaya/doctrine-enum-type": "@stable",
     "symfony/http-kernel": "@stable",
     "symfony/routing": "@stable",
-    "symfony/yaml": "@stable"
+    "symfony/yaml": "@stable",
+    "twig/twig": "@stable"
   },
   "require-dev": {
-    "incenteev/composer-parameter-handler": "@stable"
+    "andig/dbcopy": "@stable",
+    "incenteev/composer-parameter-handler": "@stable",
+    "neronmoon/scriptsdev": "@stable",
+    "phpunit/phpunit": "@stable",
+    "slowprog/composer-copy-file": "@stable",
+    "symfony/phpunit-bridge": "@stable",
+    "symfony/process": "@stable",
+    "symfony/var-dumper": "@stable"
   },
-  "authors": [{
-    "name": "Martin Mozos",
-    "email": "mmozos@isei-ivei.net"
-  }],
-  "minimum-stability": "stable",
   "scripts": {
-    "symfony-scripts": [
-      "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+    "code-fix": ["php bin/fixer-php fix src || true", "php bin/fixer-symfony fix src || true"],
+    "deploy": "php bin/deployer deploy",
+    "deptrac": "php bin/deptrac",
+    "optimize": "@composer dump-autoload --optimize",
+    "post-install-cmd": ["@composer optimize", "printf \"\\n\\tVendors had been installed succesfully\\n\\n\""],
+    "post-update-cmd": ["@composer optimize", "printf \"\\n\\tVendors had been updated succesfully\\n\\n\""],
+    "pre-install-cmd": "printf \"\\n\\tInstalling dependencies\\n\\n\"",
+    "pre-update-cmd": "printf \"\\n\\tUpdating dependencies\\n\\n\"",
+    "production-install": "@composer install --no-dev --optimize-autoloader -vv",
+    "production-update": "@composer update --no-dev --optimize-autoloader -vv",
+    "security-check": "php bin/checker security:check composer.lock"
+  },
+  "scripts-dev": {
+    "bin-install": [
+      "php -r \"is_dir('bin') ?: mkdir('bin');\"",
+      "php -r \"is_file('bin/checker') ?: copy('http://get.sensiolabs.org/security-checker.phar', 'bin/checker');\"",
+      "php -r \"is_file('bin/deployer') ?: copy('https://deployer.org/deployer.phar', 'bin/deployer');\"",
+      "php -r \"is_file('bin/deptrac') ?: copy('http://get.sensiolabs.de/deptrac.phar', 'bin/deptrac');\"",
+      "php -r \"is_file('bin/fixer-php') ?: copy('https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.12.2/php-cs-fixer.phar', 'bin/fixer-php');\"",
+      "php -r \"is_file('bin/fixer-symfony') ?: copy('https://github.com/umpirsky/Symfony-Upgrade-Fixer/releases/download/v0.1.5/symfony-upgrade-fixer.phar', 'bin/fixer-symfony');\"",
+      "php -r \"passthru('which yarn 2>&1', $yarn); empty($yarn) ?: exec('npm install --global yarn 2>&1', $output) && printf(implode(PHP_EOL, $output));\"",
+      "printf \"\\n\\tBinaries had been installed succesfully\\n\\n\"",
+      "printf \"\\n\\tInstalling Node Packaged Modules\\n\\n\"",
+      "yarn install"
     ],
-    "post-install-cmd": [
-      "@symfony-scripts",
-      "npm install bower",
-      "node node_modules/bower/bin/bower install"
+    "bin-update": [
+      "@bin-install",
+      "php bin/deployer self-update",
+      "php bin/deptrac selfupdate",
+      "php bin/fixer-php selfupdate",
+      "npm update --global yarn",
+      "printf \"\\n\\tBinaries had been updated succesfully\\n\\n\"",
+      "printf \"\\n\\tUpdating Node Packaged Modules\\n\\n\"",
+      "yarn upgrade"
     ],
-    "post-update-cmd": [
-      "@symfony-scripts",
-      "npm update bower",
-      "node node_modules/bower/bin/bower update"
-    ]
+    "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
+    "copy-assets": ["printf \"\\n\\tCopying assets\\n\\n\"", "SlowProg\\CopyFile\\ScriptHandler::copy"],
+    "post-install-cmd": ["@bin-install", "@copy-assets", "@build-parameters"],
+    "post-update-cmd": ["@bin-update", "@copy-assets", "@build-parameters"]
   },
   "extra": {
-    "incenteev-parameters": {
-      "file": "app/config/parameters.yml"
-    }
+    "copy-file": {
+      "node_modules/font-awesome/css/font-awesome.min.css": "public/css",
+      "node_modules/font-awesome/fonts": "public/fonts",
+      "node_modules/jquery/dist/jquery.slim.min.js": "public/js",
+      "node_modules/jquery-debounced-and-throttled-resize/jquery.debouncedresize.js": "public/js",
+      "node_modules/tachyons/css": "public/css"
+    },
+    "incenteev-parameters": {"file": "app/config/parameters.yml"}
   },
   "config": {
-    "platform": {
-      "php": "5.4.0"
-    }
-  }
+    "bin-dir": "bin",
+    "platform": {"php": "5.4.0"},
+    "preferred-install": "dist",
+    "vendor-dir": "vendor"
+  },
+  "minimum-stability": "stable"
 }

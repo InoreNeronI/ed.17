@@ -1,14 +1,18 @@
 # This file is auto-generated during the composer install
 parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: 3306
+    database_name: ed17probak
+    database_user: root
+    database_password: toor
     languages:
         - eu
         - es
         - en
-    database_type: mysql
-    database_charset: utf8
-    database_host: 127.0.0.1
-    database_port: 3306
-    database_name: remake
-    database_user: root
-    database_password: toor
-    secret: w454g556765767j6+66787687k768l789
+    login_slug: login
+    secret: 'w354g6b45677#$%^77676{}|"*Iz]~`{\/.'
+    template_files_dir: view
+    template_cache_dir: cache
+    template_extension: html.twig
+    user_table: edg020_ikasleak

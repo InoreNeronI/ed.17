@@ -1,14 +1,13 @@
 <?php
-namespace App;
 
-use Symfony\Component\HttpFoundation;
+namespace App\Event;
+
 use Symfony\Component\EventDispatcher;
+use Symfony\Component\HttpFoundation;
 
 /**
  * Class ResponseEvent
  * Each time the framework handles a Request, a ResponseEvent event is now dispatched.
- *
- * @package App
  */
 class ResponseEvent extends EventDispatcher\Event
 {

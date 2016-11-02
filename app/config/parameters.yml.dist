@@ -1,8 +1,6 @@
 parameters:
-    languages: ['eu', 'es', 'en']
-
-    database_type:     mysql
-    database_charset:  utf8
+    # Database configuration
+    database_driver:   pdo_mysql
     database_host:     127.0.0.1
     database_port:     3306
     database_name:     symfony
@@ -11,5 +9,19 @@ parameters:
     # You should uncomment this if you want use pdo_sqlite
     # database_path: "%kernel.root_dir%/data.db3"
 
+    # Supported locales
+    languages: ['eu', 'es', 'en']
+
+    # Login slug
+    login_slug: login
+
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+
+    # View-templates' configuration with relative paths starting from 'app/' folder
+    template_files_dir: 'view'
+    template_cache_dir: 'cache'
+    template_extension: 'html.twig'
+
+    # User table
+    user_table: edg020_ikasleak
