@@ -36,7 +36,7 @@ class View
      * @param string $cache_dir
      * @param bool   $debug
      */
-    private static function load($loader_dir, $cache_dir, $debug)
+    private static function load($loader_dir, $cache_dir = null, $debug = false)
     {
         if (true === static::$loaded) {
             throw new \RuntimeException('Error: template-engine had been already loaded.');

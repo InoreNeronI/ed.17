@@ -7,7 +7,7 @@ use Symfony\Component\Routing as BaseRouting;
 /**
  * Class Route.
  */
-class Routing
+class Route
 {
     /** @var BaseRouting\RouteCollection $routes */
     protected $routes;

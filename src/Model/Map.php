@@ -1,13 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use App\Model\DBAL\Connection;
 
 /**
  * Class Model.
  */
-class Model extends Connection
+class Map extends Connection
 {
     /**
      * Model constructor.
@@ -21,15 +21,47 @@ class Model extends Connection
      */
     public function __construct($host = null, $username = null, $password = null, $database = null, $driver = 'pdo_mysql', array $options = [])
     {
-	    $params = empty($params) ? \def::parameters() : $params;
+        $params = empty($params) ? \def::parameters() : $params;
         $host = empty($host) ? $params['database_host'] : $host;
         $username = empty($username) ? $params['database_user'] : $username;
         $password = empty($password) ? $params['database_password'] : $password;
         $database = empty($database) ? $params['database_name'] : $database;
         $driver = empty($driver) ? $params['database_driver'] : $driver;
-        parent::__construct($host, $username, $password, $database, $driver, [
-            'port' => $params['database_port'],
-        ]);
+        parent::__construct($host, $username, $password, $database, $driver, ['port' => $params['database_port']]);
+    }
+
+    /**
+     * @param $slug
+     * @param string $extension
+     * @param string $parentDir
+     * @param string $baseDir
+     *
+     * @return array
+     */
+    protected static function parseYamlFile($slug, $extension = 'yml', $parentDir = 'map', $baseDir = CONFIG_DIR)
+    {
+        return parseConfig("$baseDir/$parentDir/$slug.$extension");
+    }
+
+    /**
+     * @param array       $fields
+     * @param string      $map
+     * @param string|null $break_table
+     * @param string|null $prefix
+     *
+     * @return array
+     */
+    protected static function parseFields(array $fields, $map = 'index', $break_table = null, $prefix = null)
+    {
+        $db_fields = [];
+        $config = parseConfig($map);
+        foreach ($fields as $form_field_name => $form_field_value) {
+            if (array_key_exists($form_field_name, $config)) {
+                $db_fields[$form_field_name] = static::mapFields($config[$form_field_name], $break_table, $prefix);
+            }
+        }
+
+        return $db_fields;
     }
 
     /**
@@ -51,27 +83,6 @@ class Model extends Connection
             }
             if ($table_name === $break_table) {
                 return $db_fields;
-            }
-        }
-
-        return $db_fields;
-    }
-
-    /**
-     * @param array       $fields
-     * @param string      $map
-     * @param string|null $break_table
-     * @param string|null $prefix
-     *
-     * @return array
-     */
-    protected static function parseFields(array $fields, $map = 'index', $break_table = null, $prefix = null)
-    {
-        $db_fields = [];
-        $config = parseConfig($map);
-        foreach ($fields as $form_field_name => $form_field_value) {
-            if (array_key_exists($form_field_name, $config)) {
-                $db_fields[$form_field_name] = static::mapFields($config[$form_field_name], $break_table, $prefix);
             }
         }
 

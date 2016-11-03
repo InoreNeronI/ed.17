@@ -5,7 +5,7 @@ namespace App\Routing;
 /**
  * Class RouteRenderParser.
  */
-final class RouteMap extends Routing
+final class RouteMap extends Route
 {
     /**
      * RouteMap constructor.
@@ -27,9 +27,9 @@ final class RouteMap extends Routing
      */
     private function mapRouteRenders(array $config = [], array $messages = [], array $base_arguments = [], array $base_methods = ['GET', 'POST'], array $base_schemes = ['http', 'https'])
     {
-	    $config = empty($config) ? \def::routing() : $config;
-	    $messages = empty($messages) ? \def::messages() : $messages;
-	    $homeSlug = $config['homeSlug'];
+        $config = empty($config) ? \def::routing() : $config;
+        $messages = empty($messages) ? \def::messages() : $messages;
+        $homeSlug = $config['homeSlug'];
 
         foreach ($config['routes'] as $route) {
             $arguments = $base_arguments;
