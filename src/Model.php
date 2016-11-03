@@ -19,15 +19,16 @@ class Model extends Connection
      * @param string|null $driver
      * @param array       $options
      */
-    public function __construct($host = null, $username = null, $password = null, $database = null, $driver = 'pdo_mysql', array $options = PARAMETERS)
+    public function __construct($host = null, $username = null, $password = null, $database = null, $driver = 'pdo_mysql', array $options = [])
     {
-        $host = empty($host) ? $options['database_host'] : $host;
-        $username = empty($username) ? $options['database_user'] : $username;
-        $password = empty($password) ? $options['database_password'] : $password;
-        $database = empty($database) ? $options['database_name'] : $database;
-        $driver = empty($driver) ? $options['database_driver'] : $driver;
+	    $params = empty($params) ? \def::parameters() : $params;
+        $host = empty($host) ? $params['database_host'] : $host;
+        $username = empty($username) ? $params['database_user'] : $username;
+        $password = empty($password) ? $params['database_password'] : $password;
+        $database = empty($database) ? $params['database_name'] : $database;
+        $driver = empty($driver) ? $params['database_driver'] : $driver;
         parent::__construct($host, $username, $password, $database, $driver, [
-            'port' => $options['database_port'],
+            'port' => $params['database_port'],
         ]);
     }
 

@@ -21,47 +21,44 @@ final class MapModel extends Model
     }
 
     /**
-     * @param array $fields
+     * @param array $form_fields
      * @param mixed $slug
      * @param array $params
      * @param mixed $table
      */
-    public function checkCredentials(array $fields, $slug = LOGIN_SLUG, array $params = PARAMETERS, $table = USER_TABLE)
+    public function checkCredentials(array $form_fields, $slug = LOGIN_SLUG, array $params = [], $table = USER_TABLE)
     {
+	    $params = empty($params) ? \def::parameters() : $params;
         parent::__construct(null, null, null, null, null, $params);
-        $periodo = $fields['fperiodo'];
-        $cod_alumno = $fields['fcodalued'];
-        $naci_dia_alumno = $fields['ffnacidia'];
-        $naci_mes_alumno = $fields['ffnacimes'];
-        $cod_prueba = $fields['fcodprueba'];
 
-        dump($fields['fperiodo']);
-        //dump($fields);
-        $fields = static::parseFields($fields, static::getFilename($slug), $table);
-dump($fields['fperiodo']);
-        $queryBuilder = $this->getQueryBuilder();
-        $queryBuilder
-            ->select('u.*')
-            ->from(USER_TABLE, 'u')
+	    //$fields = static::parseFields($form_fields, static::getFilename($slug), $table);
+        $queryBuilder = $this
+	        ->getQueryBuilder()
+	        ->select('u.*')
+            ->from($table, 'u')
             ->where('u.edg020_id_periodo = :periodo')
             ->andWhere('u.edg020_libro_escolaridad = :cod_alumno')
             ->andWhere('u.edg020_fec_dia = :naci_dia_alumno')
             ->andWhere('u.edg020_fec_mes = :naci_mes_alumno')
-            ->andWhere('u.edg020_libro_escolaridad = :cod_prueba')
-            ->setParameters(['periodo' => $periodo, 'cod_alumno' => $cod_alumno, 'naci_dia_alumno' => $naci_dia_alumno, 'naci_mes_alumno' => $naci_mes_alumno])/*
+            ->setParameters([
+            	'periodo' => $form_fields['fperiodo'],
+	            'cod_alumno' => $form_fields['fcodalued'],
+	            'naci_dia_alumno' => $form_fields['ffnacidia'],
+	            'naci_mes_alumno' => $form_fields['ffnacimes']
+            ])/*
             ->leftJoin('u', 'phonenumbers', 'p', 'u.id = p.user_id')*/;
-        if ($query = $queryBuilder->execute()) {
-            dump($queryBuilder->getSQL());
-            dump($query->fetch());
-        }
-        dump($fields);
+        if ($result = $queryBuilder->execute()->fetchAll()) {
+	        echo sprintf('%s registro%s encontrado%s', $total = count($result), $plural = $total > 1 ? 's' : '', $plural);
+            dump($result);
 
-        dump($_POST);
+        }
+
+	    $cod_prueba = $form_fields['fcodprueba'];
+
+        //dump($_POST);
         /*$codigo = $fields['fcodalued'];
         $codigoOK = $this->select($table, '*', ["`$table.edg020_libro_escolaridad`" => "`$codigo`;"]);
-        //$this->select($break_table);
 
-        dump($repository);
-        dump($codigoOK);*/
+        */
     }
 }

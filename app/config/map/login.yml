@@ -1,7 +1,59 @@
 # Forms' input field-name and database matching.
 # form-field:
-fcodalued:
+fperiodo:
     # db-table: table-field
+    edg020_ikasleak: edg020_id_periodo
+    edg050_erantzunak_:
+        dbh_:
+            eus:
+                a: edg050_periodo
+                bd: edg050_periodo
+            gaz: edg050_periodo
+            ing: edg050_periodo
+            mat: edg050_periodo
+            zie: edg050_periodo
+            gsorta_:
+                a: gs04_periodo
+                b: gs04_periodo
+                c: gs04_periodo
+        lh_:
+            eus:
+                a: edg050_periodo
+                bd: edg050_periodo
+            gaz: edg050_periodo
+            ing: edg050_periodo
+            mat: edg050_periodo
+            zie: edg050_periodo
+            gsorta_:
+                a: gs04_periodo
+                b: gs04_periodo
+                c: gs04_periodo
+    edg051_testuak_:
+        dbh_:
+            eus:
+                a: edg051_periodo
+                bd: edg051_periodo
+            gaz: edg051_periodo
+            ing: edg051_periodo
+            mat: edg051_periodo
+            zie: edg051_periodo
+            gsorta_:
+                a: gs04_periodo
+                b: gs04_periodo
+                c: gs04_periodo
+        lh_:
+            eus:
+                a: edg051_periodo
+                bd: edg051_periodo
+            gaz: edg051_periodo
+            ing: edg051_periodo
+            mat: edg051_periodo
+            zie: edg051_periodo
+            gsorta_:
+                a: gs04_periodo
+                b: gs04_periodo
+                c: gs04_periodo
+fcodalued:
     edg020_ikasleak: edg020_libro_escolaridad
     edg050_erantzunak_:
         dbh_:
