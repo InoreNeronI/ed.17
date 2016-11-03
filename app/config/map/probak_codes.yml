@@ -1,0 +1,36 @@
+# Eusk
+EL1746:
+  - a: edg051_testuak_dbh_eusa
+  - bd: edg051_testuak_dbh_eusbd
+EL1963:
+  - a: edg051_testuak_lh_eusa
+  - bd: edg051_testuak_lh_eusbd
+# Gazte
+CL2736:
+  edg051_testuak_dbh_gaz
+CL1528:
+  edg051_testuak_lh_gaz
+# Inge
+IB2896:
+  edg051_testuak_dbh_ing
+IL7027:
+  edg051_testuak_lh_ing
+# Mate
+MB9406:
+  edg051_testuak_dbh_mat
+ML3612:
+  edg051_testuak_lh_mat
+# Zie
+ZB5432:
+  edg051_testuak_dbh_zie
+ZL1428:
+  edg051_testuak_lh_zie
+# G. sortak
+GB1479:
+  - a: edg051_testuak_dbh_gsorta_a
+  - b: edg051_testuak_dbh_gsorta_b
+  - c: edg051_testuak_dbh_gsorta_c
+GL9615:
+  - a: edg051_testuak_lh_gsorta_a
+  - b: edg051_testuak_lh_gsorta_b
+  - c: edg051_testuak_lh_gsorta_c

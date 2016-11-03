@@ -49,6 +49,7 @@ class ContentRenderController
     {
         $postData = $request->request->all();
         $manager = new Model\MapModel();
-        $manager->checkCredentials($postData);
+        $testuak = $manager->checkCredentials($postData);
+        dump($testuak);
     }
 }
