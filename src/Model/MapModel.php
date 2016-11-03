@@ -66,8 +66,16 @@ final class MapModel extends Model
                     $testuak_proba = $codes[$cod_prueba];
                     if (is_array($testuak_proba) && count($testuak_proba) > 1) {
                         foreach($testuak_proba as /*$key => */$value) {
-                            if (isset($value[lcfirst($alumno['edg020_codmodelo'])])) {
-                                return $value[lcfirst($alumno['edg020_codmodelo'])];
+                            /*dump($value);
+                            dump(strtolower($alumno['edg020_codmodelo']));
+                            dump(strtolower($alumno['edg020_tipo_gso']));
+                            dump(isset($value[strtolower($alumno['edg020_codmodelo'])]));*/
+                            if (isset($value[lcfirst($alumno['edg020_tipo_gso'])]) && strpos($value[strtolower($alumno['edg020_tipo_gso'])], 'gsorta') !== false) {
+                                return $value[lcfirst($alumno['edg020_tipo_gso'])];
+                            }
+                            // Falla:
+                            elseif (isset($value[strtolower($alumno['edg020_codmodelo'])]) && strpos($value[strtolower($alumno['edg020_codmodelo'])], 'eus') !== false) {
+                                return $value[strtolower($alumno['edg020_codmodelo'])];
                             }
                         }
                     } else {
