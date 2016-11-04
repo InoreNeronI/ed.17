@@ -2,23 +2,17 @@
 
 /** @author Martin Mozos <martinmozos@gmail.com> */
 
-define('DS', DIRECTORY_SEPARATOR);
-/** @var string $dir_current */
-$dir_current = __DIR__.DS;
-/** @var string $dir_parent */
-$dir_parent = dirname(__DIR__).DS;
+/** @var string $root_dir */
+$root_dir = dirname(__DIR__);
+
 // Define constants
-define('CONFIG_DIR', $dir_current.'config');
-define('PUBLIC_DIR', $dir_parent.'public');
-define('RESOURCE_DIR', $dir_current.'Resources'.DS);
-define('ROUTER', $dir_current.'router.php');
-//define('SERVER', $dir_current.'server.php');
+define('CONFIG_DIR', __DIR__.'/config');
+define('PUBLIC_DIR', $root_dir.'/public');
+define('ROUTER', __DIR__.'/router.php');
+//define('SERVER', __DIR__.'/server.php');
 //define('SERVER_DEV_ADDRESS', '0.0.0.0:8000');
-//define('PARAMETERS', parseConfig(CONFIG_DIR, 'parameters'));
-//define('MESSAGES', parseConfig(CONFIG_DIR, 'messages'));
-//define('ROUTES', parseConfig(CONFIG_DIR, 'routing'));
-define('TEMPLATE_FILES_DIR', RESOURCE_DIR.\def::parameters()['template_files_dir']);
-define('TEMPLATE_CACHE_DIR', $dir_current.\def::parameters()['template_cache_dir']);
+define('TEMPLATE_FILES_DIR', __DIR__.\def::parameters()['template_files_dir']);
+define('TEMPLATE_CACHE_DIR', __DIR__.\def::parameters()['template_cache_dir']);
 define('TEMPLATE_EXTENSION', \def::parameters()['template_extension']);
 define('USER_TABLE', \def::parameters()['user_table']);
 define('LOGIN_SLUG', \def::parameters()['login_slug']);
@@ -33,6 +27,7 @@ class def
 
 	static function load() {
 		if (!static::$loaded) {
+			echo 'va';
 			static::$messages = parseConfig(CONFIG_DIR, 'messages');
 			static::$parameters = parseConfig(CONFIG_DIR, 'parameters');
 			static::$routing = parseConfig(CONFIG_DIR, 'routing');

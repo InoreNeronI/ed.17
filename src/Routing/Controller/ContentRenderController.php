@@ -47,6 +47,7 @@ class ContentRenderController
      */
     public static function postRenderAction(HttpFoundation\Request $request)
     {
+	    dump($request->get('_route'));
         $postData = $request->request->all();
         $manager = new Model\StudentModel();
         $testuak = $manager->checkCredentials($postData);
