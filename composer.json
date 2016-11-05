@@ -22,7 +22,7 @@
     "twig/twig": "@stable"
   },
   "require-dev": {
-    "andig/dbcopy": "@stable",
+    "andig/dbcopy": "@dev",
     "incenteev/composer-parameter-handler": "@stable",
     "neronmoon/scriptsdev": "@stable",
     "phpunit/phpunit": "@stable",

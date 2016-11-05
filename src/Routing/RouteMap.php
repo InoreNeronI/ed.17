@@ -28,13 +28,16 @@ final class RouteMap extends Route
     private function mapRouteRenders(array $config = [], array $messages = [], array $base_arguments = [], array $base_methods = ['GET', 'POST'], array $base_schemes = ['http', 'https'])
     {
         $config = empty($config) ? \def::routing() : $config;
-        $messages = empty($messages) ? \def::messages() : $messages;
+        // Common messages
+        $messages = empty($messages) ? \def::translations() : array_merge(\def::translations(), $messages);
         $homeSlug = $config['homeSlug'];
 
         foreach ($config['routes'] as $route) {
             $arguments = $base_arguments;
             $methods = $base_methods;
             $schemes = $base_schemes;
+
+            // Feed variables
             if (is_array($route)) {
                 if (isset($route['arguments'])) {
                     $arguments = array_merge($route['arguments'], $arguments);
@@ -47,20 +50,20 @@ final class RouteMap extends Route
                 }
                 $route = $route['path'];
             }
-            // Merge common messages
-            $arguments = array_merge($messages['common'], $arguments);
-            // Merge homepage specific messages and set routeName
             if ($route === $config['homePath']) {
                 $routeName = $homeSlug;
-                if ($routeName !== 'home') {
-                    $arguments = array_merge($messages['home'], $arguments);
-                }
             } else {
                 // Template name without extension
                 $routeName = str_replace('/', '', $route);
             }
-            // Merge current view messages
-            $arguments = isset($messages[$routeName]) ? array_merge($messages[$routeName], $arguments) : $arguments;
+
+            // Merge arguments with common messages
+            $arguments = array_merge($messages, $arguments);
+
+            // Merge arguments with current route messages
+            $translations = \def::translations("page/$routeName");
+            empty($translations) ?: $arguments = array_merge($translations, $arguments);
+
             // Add route to collection
             static::addRouteRender($route, $routeName, $arguments, $methods, $schemes);
         }

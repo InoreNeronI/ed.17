@@ -12,16 +12,11 @@ parameters:
     # Supported locales
     #languages: ['eu', 'es', 'en']
 
-    # Login slug
-    login_slug: login
-
     # A secret key that's used to generate certain security-related tokens
     #secret: ThisTokenIsNotSoSecretChangeIt
 
-    # View-templates' configuration with relative paths starting from 'app/' folder
-    template_files_dir: '/Resources/view'
-    template_cache_dir: '/cache'
-    template_extension: 'html.twig'
+    # Cache path relative to '/app' folder
+    cache_dir: '/cache'
 
     # User table
     user_table: edg020_ikasleak

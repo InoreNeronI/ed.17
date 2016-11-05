@@ -21,14 +21,16 @@ class ContentRenderController
      */
     public static function renderAction(HttpFoundation\Request $request, $expiry_minutes = 1)
     {
-        if ($request->getMethod() === 'POST') {
-            static::postRenderAction($request);
-        }
-
         list($slug, $arguments) = [$request->get('_route'), $request->get('arguments')];
 
+        /** @var array $messages */
+        $messages = static::processRender($request, $arguments);
+
+        /** @var string $content */
+        $content = View::render($slug, $messages);
+
         /** @var HttpFoundation\Response $response */
-        $response = new HttpFoundation\Response(View::render($slug, $arguments), 200);
+        $response = new HttpFoundation\Response($content, 200);
 
         // avoid one of the most widespread Internet security issue, XSS (Cross-Site Scripting)
         $response->headers->set('Content-Type', 'text/html');
@@ -42,15 +44,20 @@ class ContentRenderController
 
     /**
      * @param HttpFoundation\Request $request
+     * @param array                  $messages
      *
-     * @return HttpFoundation\Response
+     * @return array
      */
-    public static function postRenderAction(HttpFoundation\Request $request)
+    public static function processRender(HttpFoundation\Request $request, array $messages)
     {
-	    dump($request->get('_route'));
-        $postData = $request->request->all();
-        $manager = new Model\StudentModel();
-        $testuak = $manager->checkCredentials($postData);
-        dump($testuak);
+        if ($request->getMethod() === 'POST') {
+            $manager = new Model\StudentModel();
+            $access_data = $manager->checkCredentials($request->request->all());
+            $messages = $manager::localizeMessages($messages, $access_data['lang'], $access_data['table']);
+
+            return array_merge($access_data, $messages);
+        } elseif ($request->getMethod() === 'GET') {
+            return Model\StudentModel::localizeMessages($messages);
+        }
     }
 }

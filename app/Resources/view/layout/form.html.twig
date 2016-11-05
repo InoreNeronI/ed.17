@@ -3,7 +3,7 @@
 {% block content %}
     <article class="cf ph4 pv2 tc">
         <div class="fl w-100 w-100-m w-50-ns tc">
-            <img src="{{ images.logo_url }}" class="dib" title="{{ main_title }}"/>
+            <img src="{{ images.logo_url }}" class="dib" title="{{ block('title') }}"/>
         </div>
         <div class="fl w-100 w-100-m w-50-ns tc">
             <h3 class="navy ph0 mh0 fw6 w-100">{{ course }}</h3>
@@ -17,7 +17,7 @@
     </article>
     <article class="cf ph4 pv2 tc">
         <div class="fl w-100 tc">
-            <img src="{{ images.logo_url_footer }}" class="dib" title="{{ main_title }}"/>
+            <img src="{{ images.logo_url_footer }}" class="dib" title="{{ block('title') }}"/>
         </div>
     </article>
 {% endblock %}

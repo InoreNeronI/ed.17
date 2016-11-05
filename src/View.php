@@ -66,8 +66,12 @@ class View
     public static function render($slug = 'index', $variables = [], $loader_dir = TEMPLATE_FILES_DIR, $cache_dir = TEMPLATE_CACHE_DIR, $ext = TEMPLATE_EXTENSION, $debug = DEBUG)
     {
         static::load($loader_dir, $cache_dir, $debug);
+
+        /** @var string $path */
+        $path = $slug === 'index' ? '' : '/page';
+
         /** @var string $renderPath */
-        $renderPath = "/$slug.$ext";    // path + slug + extension
+        $renderPath = "$path/$slug.$ext";   // path + slug + extension
 
         return static::$environment->render($renderPath, $variables);
     }

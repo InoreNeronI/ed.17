@@ -1,4 +1,7 @@
-title: 'Identifikazioa / Identificación'
+title:
+    eu: 'Identifikazioa'
+    es: 'Identificación'
+    en: ''
 form_action: '/board'
 code: 'Ikaslearen kodea / Código del alumno-a'
 bdate: 'Jaiotze data / Fecha nacimiento'

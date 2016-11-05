@@ -9,6 +9,9 @@ use App\Model\DBAL\Connection;
  */
 class Map extends Connection
 {
+    /** @var array */
+    protected static $localizedMsg;
+
     /**
      * Model constructor.
      *
@@ -21,26 +24,13 @@ class Map extends Connection
      */
     public function __construct($host = null, $username = null, $password = null, $database = null, $driver = 'pdo_mysql', array $options = [])
     {
-        $params = empty($params) ? \def::parameters() : $params;
+        $params = empty($options) ? \def::parameters() : $options;
         $host = empty($host) ? $params['database_host'] : $host;
         $username = empty($username) ? $params['database_user'] : $username;
         $password = empty($password) ? $params['database_password'] : $password;
         $database = empty($database) ? $params['database_name'] : $database;
         $driver = empty($driver) ? $params['database_driver'] : $driver;
         parent::__construct($host, $username, $password, $database, $driver, ['port' => $params['database_port']]);
-    }
-
-    /**
-     * @param $slug
-     * @param string $extension
-     * @param string $parentDir
-     * @param string $baseDir
-     *
-     * @return array
-     */
-    protected static function parseYamlFile($slug, $extension = 'yml', $parentDir = 'map', $baseDir = CONFIG_DIR)
-    {
-        return parseConfig("$baseDir/$parentDir/$slug.$extension");
     }
 
     /**
@@ -87,5 +77,51 @@ class Map extends Connection
         }
 
         return $db_fields;
+    }
+
+    /**
+     * @param array  $messages
+     * @param string $langISOCode
+     * @param string $tableName
+     *
+     * @return array
+     */
+    public static function localizeMessages(array $messages, $langISOCode = null, $tableName = null)
+    {
+        foreach ($messages as $key => $message) {
+            if (is_array($message)) {
+                static::$localizedMsg = [];
+                foreach ($message as $msg_key => $msg_value) {
+                    if (($msg = static::localizeMessage($msg_key, $msg_value, $langISOCode, $tableName)) !== false) {
+                        $messages[$key] = $msg;
+                    }
+                }
+                empty(static::$localizedMsg) ?: $messages[$key] = implode(' / ', static::$localizedMsg);
+            } elseif (($msg = static::localizeMessage($key, $message, $langISOCode, $tableName)) !== false) {
+                $messages = $msg;
+            }
+        }
+        return $messages;
+    }
+
+    /**
+     * @param string $msg_key
+     * @param string $msg_value
+     * @param string $langISOCode
+     * @param string $tableName
+     *
+     * @return array|false
+     */
+    public static function localizeMessage($msg_key, $msg_value, $langISOCode = null, $tableName = null)
+    {
+        if ($langISOCode === $msg_key/* && !empty($msg_value)*/) {
+            return $msg_value;
+        } elseif (is_null($langISOCode) && in_array($msg_key, \def::langISOCodes()) && !empty($msg_value)) {
+            static::$localizedMsg[] = $msg_value;
+        } elseif (strpos($tableName, $msg_key) && in_array($msg_key, \def::periods())) {
+            return static::localizeMessages($msg_value, $langISOCode, $tableName);
+        }
+
+        return false;
     }
 }
