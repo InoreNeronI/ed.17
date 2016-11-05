@@ -1,0 +1,55 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <article class="cf ph4 pv2 tc">
+        <div class="fl w-100 w-100-m w-50-ns tc">
+            <img src="{{ images.logo_url }}" class="dib" title="{{ main_title }}"/>
+        </div>
+        <div class="fl w-100 w-100-m w-50-ns tc">
+            <h3 class="navy ph0 mh0 fw6 w-100">{{ course }}</h3>
+            <h3 class="f3 mb2"><strong>{{ title }}</strong></h3>
+        </div>
+    </article>
+    <article id="has-bg-image" class="calisto pv2 mh2 mh4-ns" style="background: url('{{ images.bg_url }}') no-repeat; background-size: cover;">
+        <form action="{{ form_action }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
+            {% block form_content %}{% endblock %}
+        </form>
+    </article>
+    <article class="cf ph4 pv2 tc">
+        <div class="fl w-100 tc">
+            <img src="{{ images.logo_url_footer }}" class="dib" title="{{ main_title }}"/>
+        </div>
+    </article>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="./js/jquery.slim.min.js"></script>
+    <script type="text/javascript" src="./js/jquery.debouncedresize.js"></script>
+    {#<script type="text/javascript" src="./js/jquery.throttledresize.js"></script>#}
+    <script type="text/javascript">
+        $(function() {
+            var _window = $(window),
+                bgResize = function(_window) {
+                    if (_window.width() < 944)
+                        document.getElementById('has-bg-image').style.backgroundSize = '100% 100%';
+                    else
+                        document.getElementById('has-bg-image').style.backgroundSize = 'cover';
+                };
+            bgResize(_window);
+            _window.on('resize', function() {
+                bgResize($(this));
+                //console.log( 'Resize event fired:'+ (+new Date()) );
+            });
+            _window.on('debouncedresize', function() {
+                bgResize($(this));
+                //console.log( 'Debounce event fired:'+ (+new Date()) );
+            });
+            {#_window.on('throttledresize', function() {
+                bgResize($(this));
+                //console.log( 'Throttle event fired:'+ (+new Date()) );
+            });#}
+            {% block jq_ready %}{% endblock %}
+        });
+    </script>
+{% endblock %}

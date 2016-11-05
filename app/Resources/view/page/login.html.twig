@@ -1,0 +1,32 @@
+{% extends 'layout/form.html.twig' %}
+
+{% block form_content %}
+    <div class="pb3 dt v-top w-100 w-75-m w-75-ns white">
+        {% include 'page/login/fields.html.twig' %}
+    </div>
+    <div class="mt3 w-100 tc">
+        <div class="fl w-100 w-50-ns pt3-ns pt0 tr-ns tc">
+            <input name="fperiodo" id="fperiodo" type="hidden" value="{{ course }}"/>
+            <input class="f5 link dim br2 ph3 pv2 mb2 dib white bg-navy" type="submit" value="{{ submit_text }}"/>
+        </div>
+        <div class="dib w-100 w-50-ns">
+            <a id="playAudioSample" href="" target="_self" title="{{ audio_sample_tip }}">
+                <i class="fa fa-play fa-inverse fa-5x">
+                    <audio id="audioSample" preload>
+                        <source src="{{ audio_sample_url.mp3 }}" type="audio/mpeg">
+                        <source src="{{ audio_sample_url.ogg }}" type="audio/ogg">
+                    </audio>
+                </i>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block jq_ready %}
+    {{ parent() }}
+    $('#playAudioSample').on('click', function(ev) {
+        document.getElementById('audioSample').play();
+        ev.preventDefault();
+        return false;
+    });
+{% endblock %}

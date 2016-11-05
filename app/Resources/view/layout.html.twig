@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{% block title %}{% endblock %}</title>
+        <title>{% block title main_title|title %}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="stylesheet" href="./css/tachyons.min.css" type="text/css" />
         <link rel="stylesheet" href="./css/font-awesome.min.css" type="text/css" />
@@ -10,9 +10,9 @@
             html, body { min-width: 370px; }
         </style>#}
     </head>
-    <body class="calisto">
+    <body>
         {% block content %}{% endblock %}
-        {% block javascript %}
+        {% block scripts %}
             <script type="text/javascript">
                 var mouseWheelHandler =
                     function(ev) {
