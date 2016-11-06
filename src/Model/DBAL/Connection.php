@@ -34,14 +34,14 @@ class Connection implements ConnectionInterface
      */
     public function __construct($host, $username, $password, $database, $driver = 'pdo_mysql', array $options = [])
     {
-        $this->connectionParams = array(
+        $this->connectionParams = [
             'dbname' => $database,
             'user' => $username,
             'password' => $password,
             'host' => $host,
             'driver' => $driver,
             'driverOptions' => $options,
-        );
+        ];
     }
     /**
      * Returns a Doctrine query builder object.
@@ -100,7 +100,7 @@ class Connection implements ConnectionInterface
      *
      * @return int number of affected rows
      */
-    public function locksSafeUpdate($query, $params = array(), $maxAttempts = 3)
+    public function locksSafeUpdate($query, $params = [], $maxAttempts = 3)
     {
         for ($attempt = 1; $attempt <= $maxAttempts; ++$attempt) {
             try {

@@ -1,4 +1,5 @@
 /.idea
+/.php_cs.cache
 /app/cache
 /app/config/parameters.yml
 /bin
@@ -8,5 +9,6 @@
 /public/fonts
 /public/js
 /node_modules
+/phpunit.xml
 /vendor
 /yarn.lock

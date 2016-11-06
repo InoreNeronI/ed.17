@@ -4,10 +4,9 @@
 if (PHP_VERSION_ID < 50400) {
     /* @throw \Exception */
     throw new \Exception('At least PHP 5.4 is required; using the latest version is highly recommended.');
-
-} elseif (is_file(__DIR__.'/../vendor/autoload.php')) {
+} elseif (is_file(__DIR__ . '/../vendor/autoload.php')) {
     /** @var \Composer\Autoload\ClassLoader $autoload */
-    $autoload = require __DIR__.'/../vendor/autoload.php';
+    $autoload = require __DIR__ . '/../vendor/autoload.php';
     /**
      * @param string      $path
      * @param string|null $filename
@@ -23,11 +22,12 @@ if (PHP_VERSION_ID < 50400) {
         } else {
             return [];
         }
+
         return $filename === 'parameters' ? $config[$filename] : $config;
     }
     // Require constants and return autoload
     try {
-        require __DIR__.'/define.php';
+        require __DIR__ . '/define.php';
         /* @return \Composer\Autoload\ClassLoader */
         return $autoload;
     } catch (Exception $e) {

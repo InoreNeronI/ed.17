@@ -65,7 +65,7 @@ class Map extends Connection
     {
         $db_fields = [];
         foreach ($tables as $table_name => $table_field) {
-            $name = $prefix.$table_name;
+            $name = $prefix . $table_name;
             if (is_array($table_field)) {
                 $db_fields = array_merge($db_fields, static::mapFields($table_field, $break_table, $name));
             } else {
@@ -101,6 +101,7 @@ class Map extends Connection
                 $messages = $msg;
             }
         }
+
         return $messages;
     }
 

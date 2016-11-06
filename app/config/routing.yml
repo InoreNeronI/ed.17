@@ -4,5 +4,5 @@ homeSlug: 'login'
 routes:
     - '/sample'
     - { path: '/', methods: ['GET'] }
-    - { path: '/board', methods: ['GET','POST'] }
+    - { path: '/board', methods: ['POST'] }
     - { path: '/board/#', methods: ['GET','POST'] }

@@ -2,19 +2,19 @@
 
 /** @author Martin Mozos <martinmozos@gmail.com> */
 // Define constants
-define('CONFIG_DIR', __DIR__.'/config');
-define('PUBLIC_DIR', dirname(__DIR__).'/public');
-define('RESOURCE_DIR', __DIR__.'/Resources');
-define('TEMPLATE_CONFIG_DIR', RESOURCE_DIR.'/map');
-define('TEMPLATE_CACHE_DIR', __DIR__.\def::parameters()['cache_dir'].'/twig');
+define('CONFIG_DIR', __DIR__ . '/config');
+define('PUBLIC_DIR', dirname(__DIR__) . '/public');
+define('RESOURCE_DIR', __DIR__ . '/Resources');
+define('TEMPLATE_CONFIG_DIR', RESOURCE_DIR . '/map');
+define('TEMPLATE_CACHE_DIR', __DIR__ . \def::parameters()['cache_dir'] . '/twig');
 define('TEMPLATE_EXTENSION', 'html.twig');
-define('TEMPLATE_FILES_DIR', RESOURCE_DIR.'/view');
-define('TEMPLATE_PUBLIC_DIR', RESOURCE_DIR.'/public');
-define('TEMPLATE_MESSAGES_DIR', RESOURCE_DIR.'/translation');
+define('TEMPLATE_FILES_DIR', RESOURCE_DIR . '/view');
+define('TEMPLATE_PUBLIC_DIR', RESOURCE_DIR . '/public');
+define('TEMPLATE_MESSAGES_DIR', RESOURCE_DIR . '/translation');
 define('USER_TABLE', \def::parameters()['user_table']);
 define('DEBUG', in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'/*, '123.456.789.0'*/]) ? true : false);
-define('DEV_ROUTER', __DIR__.'/router.php');
-define('DEV_SERVER', __DIR__.'/server.php');
+define('DEV_ROUTER', __DIR__ . '/router.php');
+define('DEV_SERVER', __DIR__ . '/server.php');
 define('DEV_SERVER_ADDRESS', '0.0.0.0:8000');
 
 class def
@@ -75,10 +75,10 @@ class def
 
         return static::$routing;
     }
-	public static function translations($view = 'layout')
-	{
-		static::load();
+    public static function translations($view = 'layout')
+    {
+        static::load();
 
-		return parseConfig(TEMPLATE_MESSAGES_DIR, $view);
-	}
+        return parseConfig(TEMPLATE_MESSAGES_DIR, $view);
+    }
 }

@@ -60,14 +60,20 @@ final class StudentModel extends Map
     {
         if (is_array($data)) {
             foreach ($data as $key => $item) {
-                /* Eusk: */     if ((strpos($item, 'eus') !== false &&
+                /* Eusk: */
+                if ((strpos($item, 'eus') !== false &&
                     (strtolower($key) === strtolower($student['edg020_tipo_eus']) || strpos(strtolower($key), lcfirst($student['edg020_codmodelo'])) !== false) &&
                      $lang = static::getISOLang($student, 'eus')) ||
-/* Gazte: */        /*(strpos($item, 'cas') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_cas']) && $lang = static::getISOLang($student, 'cas')) ||*/
-/* G. sortak: */    (strpos($item, 'gsorta') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_gso']) && $lang = static::getISOLang($student, 'gso')) ||
-/* Inge: */         (strpos($item, 'ing') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_ing']) && $lang = static::getISOLang($student, 'ing')) ||
-/* Mate: */         /*(strpos($item, 'mat') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_mat']) && $lang = static::getISOLang($student, 'mat')) ||*/
-/* Zie: */          (strpos($item, 'zie') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_zie']) && $lang = static::getISOLang($student, 'zie'))) {
+                /* Gazte: */
+                    /*(strpos($item, 'cas') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_cas']) && $lang = static::getISOLang($student, 'cas')) ||*/
+                /* G. sortak: */
+                    (strpos($item, 'gsorta') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_gso']) && $lang = static::getISOLang($student, 'gso')) ||
+                /* Inge: */
+                    (strpos($item, 'ing') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_ing']) && $lang = static::getISOLang($student, 'ing')) ||
+                /* Mate: */
+                    /*(strpos($item, 'mat') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_mat']) && $lang = static::getISOLang($student, 'mat')) ||*/
+                /* Zie: */
+                    (strpos($item, 'zie') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_zie']) && $lang = static::getISOLang($student, 'zie'))) {
                     return ['lang' => $lang, 'table' => $item];
                 }
             }
@@ -109,8 +115,8 @@ final class StudentModel extends Map
     {
         if ($student['edg020_lengua_tipo'] === 'fam') {
             return $student['edg020_lengua'];
-        } elseif ($student['edg020_lengua_tipo'] === 'ins' && isset($student['edg020_lengua_'.$default])) {
-            return $student['edg020_lengua_'.$default];
+        } elseif ($student['edg020_lengua_tipo'] === 'ins' && isset($student['edg020_lengua_' . $default])) {
+            return $student['edg020_lengua_' . $default];
         }
         if (in_array($default, $asIs)) {
             return $default;

@@ -45,7 +45,7 @@ class View
         is_array($loader_dir) ?: $loader_dir = [$loader_dir];
         static::$loader = new Twig_Loader_Filesystem($loader_dir);
         static::$environment = new Twig_Environment(static::$loader, [
-            'cache' => is_null($cache_dir) ? $loader_dir[0].'/cache' : $cache_dir,
+            'cache' => is_null($cache_dir) ? $loader_dir[0] . '/cache' : $cache_dir,
             'debug' => $debug,
         ]);
         static::$loaded = true;

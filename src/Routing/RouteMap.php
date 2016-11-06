@@ -21,32 +21,29 @@ final class RouteMap extends Route
      *
      * @param array $config
      * @param array $messages
-     * @param array $base_arguments
-     * @param array $base_methods
-     * @param array $base_schemes
      */
-    private function mapRouteRenders(array $config = [], array $messages = [], array $base_arguments = [], array $base_methods = ['GET', 'POST'], array $base_schemes = ['http', 'https'])
+    private function mapRouteRenders(array $config = [], array $messages = [])
     {
         $config = empty($config) ? \def::routing() : $config;
+        $homeSlug = $config['homeSlug'];
         // Common messages
         $messages = empty($messages) ? \def::translations() : array_merge(\def::translations(), $messages);
-        $homeSlug = $config['homeSlug'];
 
         foreach ($config['routes'] as $route) {
-            $arguments = $base_arguments;
-            $methods = $base_methods;
-            $schemes = $base_schemes;
+            $arguments = [];
+            $methods = [];
+            $schemes = ['http', 'https'];
 
             // Feed variables
             if (is_array($route)) {
                 if (isset($route['arguments'])) {
-                    $arguments = array_merge($route['arguments'], $arguments);
+                    $arguments = array_unique(array_merge($route['arguments'], $arguments));
                 }
                 if (isset($route['methods'])) {
-                    $methods = array_merge($route['methods'], $methods);
+                    $methods = array_unique(array_merge($route['methods'], $methods));
                 }
                 if (isset($route['schemes'])) {
-                    $schemes = array_merge($route['schemes'], $schemes);
+                    $schemes = array_unique(array_merge($route['schemes'], $schemes));
                 }
                 $route = $route['path'];
             }
