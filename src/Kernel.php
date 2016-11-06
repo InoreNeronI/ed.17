@@ -71,10 +71,11 @@ class Kernel implements HttpKernel\HttpKernelInterface
             $response = call_user_func_array($controller, $arguments);
         } catch (BaseRouting\Exception\ResourceNotFoundException $e) {
             // No such route exception return a 404 response
-            $response = new HttpFoundation\Response(sprintf('Not Found: %s', $e->getMessage()), 404);
+            $response = new HttpFoundation\Response(sprintf('Resource not Found: %s', $e->getMessage()), 404);
         } catch (\Exception $e) {
+            $msg = $e->getMessage();
             // Something blew up exception return a 500 response
-            $response = new HttpFoundation\Response(sprintf('An error occurred: %s', $e->getMessage()), 500);
+            $response = new HttpFoundation\Response(sprintf('An error occurred: %s', empty($msg) ? $e->getTraceAsString() : $msg), 500);
         }
 
         // The dispatcher, the central object of the event dispatcher system, notifies listeners of an event dispatched to it.

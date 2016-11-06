@@ -1,5 +1,13 @@
 {% extends 'layout/form.html.twig' %}
 
 {% block form_content %}
-    {{ table }}
+    <article class="center mw5 mw6-ns br4 hidden ba b--black-10 mv4">
+        <div class="pa2 tc">
+            {% for key, value in actions %}
+                <button class="link br3 ph3 pv2 mb2 dib{{ (key is sameas(table)) ? ' dim pointer white' }} bg-navy f6 f5-ns lh-copy measure mh1 mv2 pv2 w-30-ns w-40-m" name="{{ key }}"{{ (key is not sameas(table)) ? ' disabled="disabled"' }}>
+                    {{ value }}
+                </button>
+            {% endfor %}
+        </div>
+    </article>
 {% endblock %}

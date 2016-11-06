@@ -53,7 +53,7 @@ class ContentRenderController
         if ($request->getMethod() === 'POST') {
             $manager = new Model\StudentModel();
             $access_data = $manager->checkCredentials($request->request->all());
-            $messages = $manager::localizeMessages($messages, $access_data['lang'], $access_data['table']);
+            $messages = $manager::localizeMessages(array_merge($messages, $access_data));
 
             return array_merge($access_data, $messages);
         } elseif ($request->getMethod() === 'GET') {

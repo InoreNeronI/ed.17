@@ -1,0 +1,24 @@
+# Eusk
+edg051_testuak_dbh_eusa: edg051_erantzunak_dbh_eusa
+edg051_testuak_dbh_eusbd: edg051_erantzunak_dbh_eusbd
+edg051_testuak_lh_eusa: edg051_erantzunak_lh_eusa
+edg051_testuak_lh_eusbd: edg051_erantzunak_lh_eusbd
+# Gazte
+edg051_testuak_dbh_gaz: edg051_erantzunak_dbh_gaz
+edg051_testuak_lh_gaz: edg051_erantzunak_lh_gaz
+# Inge
+edg051_testuak_dbh_ing: edg051_erantzunak_dbh_ing
+edg051_testuak_lh_ing: edg051_erantzunak_lh_ing
+# Mate
+edg051_testuak_dbh_mat: edg051_erantzunak_dbh_mat
+edg051_testuak_lh_mat: edg051_erantzunak_lh_mat
+# Zie
+edg051_testuak_dbh_zie: edg051_erantzunak_dbh_mat
+edg051_testuak_lh_zie: edg051_erantzunak_lh_mat
+# G. sortak
+edg051_testuak_dbh_gsorta_a: edg051_erantzunak_dbh_gsorta_a
+edg051_testuak_dbh_gsorta_b: edg051_erantzunak_dbh_gsorta_b
+edg051_testuak_dbh_gsorta_c: edg051_erantzunak_dbh_gsorta_c
+edg051_testuak_lh_gsorta_a: edg051_erantzunak_lh_gsorta_a
+edg051_testuak_lh_gsorta_b: edg051_erantzunak_lh_gsorta_b
+edg051_testuak_lh_gsorta_c: edg051_erantzunak_lh_gsorta_c

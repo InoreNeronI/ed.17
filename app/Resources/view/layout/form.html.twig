@@ -10,16 +10,17 @@
             <h3 class="f3 mb2"><strong>{{ title }}</strong></h3>
         </div>
     </article>
-    <article id="has-bg-image" class="calisto pv2 mh2 mh4-ns" style="background: url('{{ images.bg_url }}') no-repeat; background-size: cover;">
-        <form action="{{ form_action }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
+    <article id="has-bg-image" class="cf pv2 mh2 mh4-ns" style="background: url('{{ images.bg_url }}') no-repeat; background-size: cover;">
+        <form action="{{ form_action|default('') }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
             {% block form_content %}{% endblock %}
         </form>
     </article>
-    <article class="cf ph4 pv2 tc">
+    <footer class="pv4 ph3 ph5-m ph6-l mid-gray">
         <div class="fl w-100 tc">
             <img src="{{ images.logo_url_footer }}" class="dib" title="{{ block('title') }}"/>
         </div>
-    </article>
+    </footer>
+
 {% endblock %}
 
 {% block scripts %}

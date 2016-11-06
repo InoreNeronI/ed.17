@@ -39,7 +39,15 @@ final class StudentModel extends Map
             /** @var string $cod_prueba */
             $cod_prueba = $form_fields['fcodprueba'];
             if (isset($codes[$cod_prueba])) {
-                return static::getAccess($student, $codes[$cod_prueba]);
+                /** @var array $access_data */
+                $access_data = static::getAccess($student, $codes[$cod_prueba]);
+                foreach (\def::periods() as $period) {
+                    if (strpos($access_data['table'], $period) !== false) {
+                        $access_data['period'] = $period;
+                    }
+                }
+
+                return $access_data;
             } else {
                 throw new \Exception(sprintf('The code you have entered does not match: \'%s\'', $cod_prueba));
             }
