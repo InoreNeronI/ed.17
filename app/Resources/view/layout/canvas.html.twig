@@ -1,0 +1,43 @@
+{% extends 'layout.html.twig' %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var mouseWheelHandler =
+            function(ev) {
+                console.log(ev.originalEvent);
+                var scrollTop = this.scrollTop,
+                        scrollHeight = this.scrollHeight,
+                        height = this.offsetHeight,
+                        delta = (ev.type == 'DOMMouseScroll' ? ev.originalEvent.detail * -40 : ev.originalEvent.wheelDelta),
+                        up = delta > 0,
+                        prevent = function() {
+                            ev.stopPropagation();
+                            ev.preventDefault();
+                            ev.returnValue = false;
+                            return false;
+                        };
+                // Scrolling down, but this will take us past the bottom.
+                if (!up && -delta > scrollHeight - height - scrollTop) {
+                    this.scrollTop(scrollHeight);
+                    return prevent();
+                    // Scrolling up, but this will take us past the top.
+                } else if (up && delta > scrollTop) {
+                    this.scrollTop(0);
+                    return prevent();
+                }
+            },
+        boxes = document.getElementsByClassName('scrollable'),
+        i = boxes.length;
+        {#$('.scrollable').on('DOMMouseScroll mousewheel', mouseWheelHandler);#}
+        while(i--) {
+            if (boxes[i].addEventListener) {
+                // IE9, Chrome, Safari, Opera
+                boxes[i].addEventListener('mousewheel', mouseWheelHandler, false);
+                // Firefox
+                boxes[i].addEventListener('DOMMouseScroll', mouseWheelHandler, false);
+            }{# // IE 6/7/8
+            else boxes[i].attachEvent('onmousewheel', mouseWheelHandler);#}
+        }
+    </script>
+{% endblock %}

@@ -1,8 +1,4 @@
-homePath: '/'
-homeSlug: 'login'
-
-routes:
-    - '/sample'
-    - { path: '/', methods: ['GET'] }
-    - { path: '/board', methods: ['POST'] }
-    - { path: '/board/#', methods: ['GET','POST'] }
+- '/sample'
+- { path: '/', methods: ['GET'] }
+- { path: '/board', methods: ['POST'] }
+- { path: '/canvas/{page}', methods: ['POST'], requirements: { page: '\d+' } }

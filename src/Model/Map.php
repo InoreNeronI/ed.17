@@ -91,7 +91,7 @@ class Map extends Connection
         $lang = is_null($lang) && isset($messages['lang']) ? $messages['lang'] : $lang;
         $period = is_null($period) && isset($messages['period']) ? $messages['period'] : $period;
         foreach ($messages as $key => $message) {
-            if ($key === 'actions' && !is_null($period)) {
+            if ($key === 'actions'/* && !is_null($period)*/) {
                 foreach ($message as $k => $v) {
                     if (strpos($k, $period) === false) {
                         unset($messages[$key][$k]);

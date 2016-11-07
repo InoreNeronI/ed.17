@@ -13,56 +13,59 @@ final class RouteMap extends Route
     public function __construct()
     {
         parent::__construct();
-        $this->mapRouteRenders();
+        $this->mapRoutes();
     }
 
     /**
      * Parse routes.
-     *
-     * @param array $config
-     * @param array $messages
      */
-    private function mapRouteRenders(array $config = [], array $messages = [])
+    private function mapRoutes()
     {
-        $config = empty($config) ? \def::routing() : $config;
-        $homeSlug = $config['homeSlug'];
-        // Common messages
-        $messages = empty($messages) ? \def::translations() : array_merge(\def::translations(), $messages);
-
-        foreach ($config['routes'] as $route) {
-            $arguments = [];
+        /** @var array $route */
+        foreach (\def::routing() as $route) {
+            // Init variables
+            $defaults = [];
             $methods = [];
-            $schemes = ['http', 'https'];
+            $requirements = [];
+            $schemes = [];
+            // Common messages
+            $messages = \def::translations();
 
             // Feed variables
             if (is_array($route)) {
-                if (isset($route['arguments'])) {
-                    $arguments = array_unique(array_merge($route['arguments'], $arguments));
+                // Feed variables
+                if (isset($route['defaults'])) {
+                    $defaults = array_unique($route['defaults']);
                 }
                 if (isset($route['methods'])) {
-                    $methods = array_unique(array_merge($route['methods'], $methods));
+                    $methods = array_unique($route['methods']);
+                }
+                if (isset($route['requirements'])) {
+                    $requirements = array_unique($route['requirements']);
                 }
                 if (isset($route['schemes'])) {
-                    $schemes = array_unique(array_merge($route['schemes'], $schemes));
+                    $schemes = array_unique($route['schemes']);
                 }
-                $route = $route['path'];
+                $routePath = $route['path'];
+            } else {
+                $routePath = $route;
             }
-            if ($route === $config['homePath']) {
-                $routeName = $homeSlug;
+            if ($routePath === \def::parameters()['home_path']) {
+                $routeName = \def::parameters()['home_slug'];
             } else {
                 // Template name without extension
-                $routeName = str_replace('/', '', $route);
+                $routeName = str_replace('/', '', $routePath);
             }
 
-            // Merge arguments with common messages
-            $arguments = array_merge($messages, $arguments);
+            // Merge defaults with common messages
+            $defaults = array_merge($messages, $defaults);
 
-            // Merge arguments with current route messages
+            // Merge defaults with current route messages
             $translations = \def::translations("page/$routeName");
-            empty($translations) ?: $arguments = array_merge($translations, $arguments);
+            empty($translations) ?: $messages = array_merge($messages, $translations);
 
             // Add route to collection
-            static::addRouteRender($route, $routeName, $arguments, $methods, $schemes);
+            $this->addRouteRender($routePath, $routeName, $messages, $defaults, $methods, $requirements, $schemes);
         }
     }
 }

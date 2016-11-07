@@ -79,19 +79,20 @@ class Route
      *
      * @param string $path
      * @param string $routeName
+     * @param array  $messages
+     * @param array  $defaults
      * @param array  $methods
+     * @param array  $requirements ['parameter' => '\d+', 'month' => '[0-9]{4}-[0-9]{2}', 'subdomain' => 'www|m']
      * @param array  $schemes
-     * @param array  $arguments
      */
-    public function addRouteRender($path = '/', $routeName = 'index', $arguments = [], $methods = ['GET', 'POST'], $schemes = ['http', 'https'])
+    public function addRouteRender($path = '/', $routeName = 'index', $messages = [], $defaults = [], $methods = ['GET', 'POST'], $requirements = [], $schemes = ['http', 'https'])
     {
-        //$path = '/tests/{testId}';
-        $defaults = ['_controller' => 'App\\Routing\\Controller\\ContentRenderController::renderAction', 'arguments' => $arguments];
-        $requirements = []; //['parameter' => '\d+', 'month' => '[0-9]{4}-[0-9]{2}', 'subdomain' => 'www|m'];
+        $defaultController = ['_controller' => 'App\\Routing\\Controller\\ContentRenderController::renderAction'];
+        $defaults = empty($defaults) ? $defaultController : isset($defaults['_controller']) ? $defaults : array_merge($defaults, $defaultController);
+        empty($messages) ?: $defaults['messages'] = $messages;
         $options = [];
         $host = ''; // '{subdomain}.example.com';
         $condition = '';
-
         $route = new BaseRouting\Route($path, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
         $this->routes->add($routeName, $route);
     }

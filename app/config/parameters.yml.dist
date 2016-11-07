@@ -18,5 +18,9 @@ parameters:
     # Cache path relative to '/app' folder
     cache_dir: '/cache'
 
+    # Homepage configuration
+    home_path: '/'
+    home_slug: 'login'
+
     # User table
     user_table: edg020_ikasleak

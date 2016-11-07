@@ -24,7 +24,7 @@ final class StudentModel extends Map
                              ->andWhere('u.edg020_fec_dia = :naci_dia_alumno')
                              ->andWhere('u.edg020_fec_mes = :naci_mes_alumno')
                              ->setParameters([
-                                 'periodo' => $form_fields['fperiodo'],
+                                 'periodo' => $form_fields['fcurso'],
                                  'cod_alumno' => $form_fields['fcodalued'],
                                  'naci_dia_alumno' => $form_fields['ffnacidia'],
                                  'naci_mes_alumno' => $form_fields['ffnacimes'],
@@ -73,13 +73,13 @@ final class StudentModel extends Map
                     (strtolower($key) === strtolower($student['edg020_tipo_eus']) || strpos(strtolower($key), lcfirst($student['edg020_codmodelo'])) !== false) &&
                      $lang = static::getISOLang($student, 'eus')) ||
                 /* Gazte: */
-                    /*(strpos($item, 'cas') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_cas']) && $lang = static::getISOLang($student, 'cas')) ||*/
+                    (strpos($item, 'cas') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_cas']) && $lang = static::getISOLang($student, 'cas')) ||
                 /* G. sortak: */
                     (strpos($item, 'gsorta') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_gso']) && $lang = static::getISOLang($student, 'gso')) ||
                 /* Inge: */
                     (strpos($item, 'ing') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_ing']) && $lang = static::getISOLang($student, 'ing')) ||
                 /* Mate: */
-                    /*(strpos($item, 'mat') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_mat']) && $lang = static::getISOLang($student, 'mat')) ||*/
+                    (strpos($item, 'mat') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_mat']) && $lang = static::getISOLang($student, 'mat')) ||
                 /* Zie: */
                     (strpos($item, 'zie') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_zie']) && $lang = static::getISOLang($student, 'zie'))) {
                     return ['lang' => $lang, 'table' => $item];

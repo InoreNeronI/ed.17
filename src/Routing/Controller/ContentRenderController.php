@@ -15,19 +15,26 @@ class ContentRenderController
      * Generates a response from the given request object.
      *
      * @param HttpFoundation\Request $request
+     * @param string|null            $page
      * @param int                    $expiry_minutes
      *
      * @return HttpFoundation\Response
      */
-    public static function renderAction(HttpFoundation\Request $request, $expiry_minutes = 1)
+    public static function renderAction(HttpFoundation\Request $request, $page = null, $expiry_minutes = 1)
     {
-        list($slug, $arguments) = [$request->get('_route'), $request->get('arguments')];
+        list($slug, $messages) = [$request->get('_route'), $request->get('messages')];
 
-        /** @var array $messages */
-        $messages = static::processRender($request, $arguments);
+        if (strpos($slug, 'canvas') !== false) {
+            /** @var array $texts */
+            $texts = static::processCanvas($request, intval($page), $messages);
+            $slug = 'canvas';
+        } else {
+            /** @var array $texts */
+            $texts = static::processRender($request, $messages);
+        }
 
         /** @var string $content */
-        $content = View::render($slug, $messages);
+        $content = View::render($slug, $texts);
 
         /** @var HttpFoundation\Response $response */
         $response = new HttpFoundation\Response($content, 200);
@@ -55,9 +62,27 @@ class ContentRenderController
             $access_data = $manager->checkCredentials($request->request->all());
             $messages = $manager::localizeMessages(array_merge($messages, $access_data));
 
-            return array_merge($access_data, $messages);
+            return array_merge($access_data, $messages, ['target' => \def::dbTables()[$access_data['table']]]);
         } elseif ($request->getMethod() === 'GET') {
             return Model\StudentModel::localizeMessages($messages);
+        }
+    }
+
+    /**
+     * @param HttpFoundation\Request $request
+     * @param int                    $page
+     * @param array                  $messages
+     *
+     * @return array|false
+     */
+    public static function processCanvas(HttpFoundation\Request $request, $page, array $messages)
+    {
+        if ($request->getMethod() === 'POST') {
+            dump($request->request->all());
+
+            return $request->request->all();
+        } elseif ($request->getMethod() === 'GET') {
+            return [];
         }
     }
 }
