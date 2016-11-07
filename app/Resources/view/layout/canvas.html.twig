@@ -1,22 +1,45 @@
 {% extends 'layout.html.twig' %}
 
+{% block content %}{# @url http://tachyons.io/components/layout/two-column-collapse-one/index.html #}
+    <article class="cf">
+        <div class="fl w-50 bg-near-white tc">
+            <h1>Column One</h1>
+        </div>
+        <div class="fl w-50 bg-light-gray tc">
+            <h1>Column Two</h1>
+        </div>
+    </article>
+{% endblock %}
+
 {% block scripts %}
     {{ parent() }}
+    <script type="text/javascript" src="./js/virtual-scroll/index.js"></script>
     <script type="text/javascript">
-        var mouseWheelHandler =
+        /** Src:    @url https://github.com/drojdjou/bartekdrozdz.com/blob/master/static/src/framework/VirtualScroll.js */
+        /** Info:   @url http://www.everyday3d.com/blog/index.php/2014/08/18/smooth-scrolling-with-virtualscroll */
+        /** Demos:  @url https://github.com/drojdjou/bartekdrozdz.com/tree/master/static/test */
+        /** Readme: @url https://github.com/ayamflow/virtual-scroll */
+        /*var targetY = 0;
+
+        VirtualScroll.on(function(e) {
+            targetY += e.deltaY;
+            targetY = Math.max((scrollHeight - window.innerHeight) * -1, targetY);
+            targetY = Math.min(0, targetY);
+        });*/
+
+        /*var mouseWheelHandler =
             function(ev) {
                 console.log(ev.originalEvent);
                 var scrollTop = this.scrollTop,
-                        scrollHeight = this.scrollHeight,
-                        height = this.offsetHeight,
-                        delta = (ev.type == 'DOMMouseScroll' ? ev.originalEvent.detail * -40 : ev.originalEvent.wheelDelta),
-                        up = delta > 0,
-                        prevent = function() {
-                            ev.stopPropagation();
-                            ev.preventDefault();
-                            ev.returnValue = false;
-                            return false;
-                        };
+                    scrollHeight = this.scrollHeight,
+                    height = this.offsetHeight,
+                    delta = (ev.type == 'DOMMouseScroll' ? ev.originalEvent.detail * -40 : ev.originalEvent.wheelDelta),
+                    up = delta > 0,
+                    prevent = function() {
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        ev.returnValue = false;
+                    };
                 // Scrolling down, but this will take us past the bottom.
                 if (!up && -delta > scrollHeight - height - scrollTop) {
                     this.scrollTop(scrollHeight);
@@ -29,15 +52,15 @@
             },
         boxes = document.getElementsByClassName('scrollable'),
         i = boxes.length;
-        {#$('.scrollable').on('DOMMouseScroll mousewheel', mouseWheelHandler);#}
+        //$('.scrollable').on('DOMMouseScroll mousewheel', mouseWheelHandler);
         while(i--) {
             if (boxes[i].addEventListener) {
                 // IE9, Chrome, Safari, Opera
                 boxes[i].addEventListener('mousewheel', mouseWheelHandler, false);
                 // Firefox
                 boxes[i].addEventListener('DOMMouseScroll', mouseWheelHandler, false);
-            }{# // IE 6/7/8
-            else boxes[i].attachEvent('onmousewheel', mouseWheelHandler);#}
-        }
+            } // IE 6/7/8
+            //else boxes[i].attachEvent('onmousewheel', mouseWheelHandler);
+        }*/
     </script>
 {% endblock %}

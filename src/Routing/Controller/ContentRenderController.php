@@ -78,7 +78,7 @@ class ContentRenderController
     public static function processCanvas(HttpFoundation\Request $request, $page, array $messages)
     {
         if ($request->getMethod() === 'POST') {
-            dump($request->request->all());
+            //dump($request->request->all());
 
             return $request->request->all();
         } elseif ($request->getMethod() === 'GET') {

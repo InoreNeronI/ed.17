@@ -31,7 +31,7 @@
     "symfony/var-dumper": "@stable"
   },
   "scripts": {
-    "code-fix": ["php bin/fixer-php fix src --config-file=.php_cs || true", "php bin/fixer-symfony fix src || true"],
+    "codefix": ["php bin/fixer-php fix --config-file=.php_cs || true", "php bin/fixer-symfony fix src || true"],
     "deploy": "php bin/deployer deploy",
     "deptrac": "php bin/deptrac",
     "optimize": "@composer dump-autoload --optimize",

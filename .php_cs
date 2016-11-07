@@ -1,6 +1,7 @@
 <?php
 
 /** @url https://github.com/elcodi/elcodi/blob/master/.php_cs */
+/** @url https://github.com/serbanghita/Mobile-Detect/blob/master/.php_cs */
 
 ini_set('phar.readonly', 0); // Could be done in php.ini
 
@@ -21,10 +22,17 @@ $config = Symfony\CS\Config::create()
     ]);
 
 if (null === $input->getArgument('path')) {
-    $config
-        ->finder(
-	        Symfony\CS\Finder\DefaultFinder::create()->in('src/')
-        );
+    $config->finder(Symfony\CS\Finder\DefaultFinder::create()
+        ->notName('LICENSE')
+        ->notName('README.md')
+        ->notName('.php_cs*')
+        ->notName('composer.*')
+        ->notName('phpunit.xml*')
+        ->notName('*.phar')
+        ->exclude('vendor')
+        ->exclude('bin')
+        ->exclude('cache')
+        ->in(__DIR__));
 }
 
 return $config;
