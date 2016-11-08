@@ -1,11 +1,7 @@
 {
   "name": "isei-ivei/app",
-  "type": "project",
-  "description": "Irakas Sistema Ebaluatu eta Ikertzeko Erakundea | Instituto Vasco de Evaluación e Investigación Educativa",
-  "authors": [{
-    "name": "Martin Mozos",
-    "email": "martinmozos@gmail.com"
-  }],
+  "author": "ISEI - IVEI | Irakas Sistema Ebaluatu eta Ikertzeko Erakundea - Instituto Vasco de Evaluación e Investigación Educativa",
+  "homepage": "http://ediagnostikoak.net/",
   "autoload": {
     "psr-4": {"": "src/"}
   },
@@ -25,7 +21,6 @@
     "andig/dbcopy": "@dev",
     "incenteev/composer-parameter-handler": "@stable",
     "neronmoon/scriptsdev": "@stable",
-    "slowprog/composer-copy-file": "@stable",
     "symfony/phpunit-bridge": "@stable",
     "symfony/process": "@stable",
     "symfony/var-dumper": "@stable"
@@ -40,11 +35,21 @@
     "post-update-cmd": ["@composer optimize", "printf \"\\n\\tVendors had been updated succesfully\\n\\n\""],
     "pre-install-cmd": "printf \"\\n\\tInstalling dependencies\\n\\n\"",
     "pre-update-cmd": "printf \"\\n\\tUpdating dependencies\\n\\n\"",
-    "production-install": "@composer install --no-dev --optimize-autoloader -vv",
-    "production-update": "@composer update --no-dev --optimize-autoloader -vv",
+    "production-install": "@composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader",
+    "production-update": "@composer update --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader",
     "security-check": "php bin/checker security:check composer.lock"
   },
   "scripts-dev": {
+    "assets-copy": [
+      "printf \"\\n\\tCopying Assets\\n\\n\"",
+      "cp -rv ./node_modules/tachyons/css public",
+      "cp -rv ./node_modules/font-awesome/fonts public",
+      "cp -rv ./node_modules/font-awesome/css/font-awesome.min.css public/css",
+      "php -r \"is_dir('public/js') ?: mkdir('public/js');\"",
+      "cp -rv ./node_modules/jquery/dist/jquery.slim.min.* public/js",
+      "php -r \"is_dir('public/js/jquery-resize') ?: mkdir('public/js/jquery-resize');\"",
+      "cp -rv ./node_modules/jquery-debounced-and-throttled-resize/jquery.* public/js/jquery-resize"
+    ],
     "bin-install": [
       "php -r \"is_dir('bin') ?: mkdir('bin');\"",
       "php -r \"is_file('bin/checker') ?: copy('http://get.sensiolabs.org/security-checker.phar', 'bin/checker');\"",
@@ -70,18 +75,10 @@
       "yarn upgrade"
     ],
     "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
-    "copy-assets": ["printf \"\\n\\tCopying assets\\n\\n\"", "SlowProg\\CopyFile\\ScriptHandler::copy"],
-    "post-install-cmd": ["@bin-install", "@copy-assets", "@build-parameters"],
-    "post-update-cmd": ["@bin-update", "@copy-assets", "@build-parameters"]
+    "post-install-cmd": ["@bin-install", "@assets-copy", "@build-parameters"],
+    "post-update-cmd": ["@bin-update", "@assets-copy", "@build-parameters"]
   },
   "extra": {
-    "copy-file": {
-      "node_modules/font-awesome/css/font-awesome.min.css": "public/css",
-      "node_modules/font-awesome/fonts": "public/fonts",
-      "node_modules/jquery/dist/jquery.slim.min.js": "public/js",
-      "node_modules/jquery-debounced-and-throttled-resize/jquery.debouncedresize.js": "public/js",
-      "node_modules/tachyons/css": "public/css"
-    },
     "incenteev-parameters": {"file": "app/config/parameters.yml"}
   },
   "config": {

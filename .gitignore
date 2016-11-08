@@ -1,14 +1,13 @@
 /.idea
+/*-debug.log
+/*-error.log
 /.php_cs.cache
 /app/cache
 /app/config/parameters.yml
 /bin
-/composer.lock
 /dbcopy.json
 /public/css
 /public/fonts
 /public/js
 /node_modules
-/phpunit.xml
 /vendor
-/yarn.lock

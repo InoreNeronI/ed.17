@@ -10,7 +10,7 @@
             <h3 class="navy f3 mb2"><strong>{{ title }}</strong></h3>
         </div>
     </article>
-    <article id="has-bg-image" class="cf pv2 mh2 mh4-ns" style="background: url('{{ images.bg_url }}') no-repeat; background-size: cover;">
+    <article id="has-bg-image" class="br3 cf pv2 mh1-ns mh1-m mh3-l" style="background: url('{{ images.bg_url }}') no-repeat; background-size: cover;">
         <form action="{{ form_action|default('') }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
             {% block form_content %}{% endblock %}
         </form>
@@ -20,13 +20,12 @@
             <img src="{{ images.logo_url_footer }}" class="dib" title="{{ block('title') }}"/>
         </div>
     </footer>
-
 {% endblock %}
 
 {% block scripts %}
     {{ parent() }}
-    <script type="text/javascript" src="./js/jquery.debouncedresize.js"></script>
-    {#<script type="text/javascript" src="./js/jquery.throttledresize.js"></script>#}
+    <script type="text/javascript" src="/js/jquery-resize/jquery.debouncedresize.js"></script>
+    {#<script type="text/javascript" src="/js/jquery-resize/jquery.throttledresize.js"></script>#}
     <script type="text/javascript">
         $(function() {
             var _window = $(window),

@@ -13,21 +13,22 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script type="text/javascript" src="./js/virtual-scroll/index.js"></script>
+    <script type="text/javascript" src="/js/require.js"></script>
+    <script type="text/javascript" src="/js/virtual-scroll/index.js"></script>
     <script type="text/javascript">
-        /** Src:    @url https://github.com/drojdjou/bartekdrozdz.com/blob/master/static/src/framework/VirtualScroll.js */
-        /** Info:   @url http://www.everyday3d.com/blog/index.php/2014/08/18/smooth-scrolling-with-virtualscroll */
-        /** Demos:  @url https://github.com/drojdjou/bartekdrozdz.com/tree/master/static/test */
-        /** Readme: @url https://github.com/ayamflow/virtual-scroll */
-        /*var targetY = 0;
+        {# Src:    @url https://github.com/drojdjou/bartekdrozdz.com/blob/master/static/src/framework/VirtualScroll.js #}
+        {# Info:   @url http://www.everyday3d.com/blog/index.php/2014/08/18/smooth-scrolling-with-virtualscroll #}
+        {# Demos:  @url https://github.com/drojdjou/bartekdrozdz.com/tree/master/static/test #}
+        {# Remake: @url https://github.com/ayamflow/virtual-scroll #}
+        var targetY = 0;
 
         VirtualScroll.on(function(e) {
             targetY += e.deltaY;
             targetY = Math.max((scrollHeight - window.innerHeight) * -1, targetY);
             targetY = Math.min(0, targetY);
-        });*/
+        });
 
-        /*var mouseWheelHandler =
+        {#var mouseWheelHandler =
             function(ev) {
                 console.log(ev.originalEvent);
                 var scrollTop = this.scrollTop,
@@ -61,6 +62,6 @@
                 boxes[i].addEventListener('DOMMouseScroll', mouseWheelHandler, false);
             } // IE 6/7/8
             //else boxes[i].attachEvent('onmousewheel', mouseWheelHandler);
-        }*/
+        }#}
     </script>
 {% endblock %}
