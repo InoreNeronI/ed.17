@@ -8,11 +8,21 @@ jquery-debounced-and-throttled-resize@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/jquery-debounced-and-throttled-resize/-/jquery-debounced-and-throttled-resize-1.0.1.tgz#6dafb2441c51c18c873c5699395e122f8a99b9eb"
 
+jquery-mousewheel@>=3.0.6:
+  version "3.1.13"
+  resolved "https://registry.yarnpkg.com/jquery-mousewheel/-/jquery-mousewheel-3.1.13.tgz#06f0335f16e353a695e7206bf50503cb523a6ee5"
+
 jquery@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.1.1.tgz#347c1c21c7e004115e0a4da32cece041fad3c8a3"
 
-tachyons@^4.5.3:
+malihu-custom-scrollbar-plugin@^3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/malihu-custom-scrollbar-plugin/-/malihu-custom-scrollbar-plugin-3.1.5.tgz#310cecc5e59415a1c29e9dfb5d2b6e01d66a29ef"
+  dependencies:
+    jquery-mousewheel ">=3.0.6"
+
+tachyons@^4.5.5:
   version "4.5.5"
   resolved "https://registry.yarnpkg.com/tachyons/-/tachyons-4.5.5.tgz#8b1bde4a2659f4e17ff15ee5c313879a4236c818"
 

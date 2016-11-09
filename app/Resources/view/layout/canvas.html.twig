@@ -1,67 +1,41 @@
 {% extends 'layout.html.twig' %}
 
+{% block styles %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/css/jquery.mCustomScrollbar.css">
+{% endblock %}
+
 {% block content %}{# @url http://tachyons.io/components/layout/two-column-collapse-one/index.html #}
     <article class="cf">
-        <div class="fl w-50 bg-near-white tc">
+        <div id="side-a" class="fl w-50 bg-light-gray scrollable">
             <h1>Column One</h1>
+            <div class="nano-content">
+                {% include 'page/canvas/side-a.html.twig' %}
+            </div>
         </div>
-        <div class="fl w-50 bg-light-gray tc">
+        <div id="side-b" class="fl w-50 bg-near-white scrollable">
             <h1>Column Two</h1>
+            <div class="nano-content">
+                {% include 'page/canvas/side-b.html.twig' %}
+            </div>
         </div>
     </article>
 {% endblock %}
 
 {% block scripts %}
     {{ parent() }}
-    <script type="text/javascript" src="/js/require.js"></script>
-    <script type="text/javascript" src="/js/virtual-scroll/index.js"></script>
+    <script type="text/javascript" src="/js/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="/js/jquery.mCustomScrollbar.js"></script>
     <script type="text/javascript">
-        {# Src:    @url https://github.com/drojdjou/bartekdrozdz.com/blob/master/static/src/framework/VirtualScroll.js #}
-        {# Info:   @url http://www.everyday3d.com/blog/index.php/2014/08/18/smooth-scrolling-with-virtualscroll #}
-        {# Demos:  @url https://github.com/drojdjou/bartekdrozdz.com/tree/master/static/test #}
-        {# Remake: @url https://github.com/ayamflow/virtual-scroll #}
-        var targetY = 0;
-
-        VirtualScroll.on(function(e) {
-            targetY += e.deltaY;
-            targetY = Math.max((scrollHeight - window.innerHeight) * -1, targetY);
-            targetY = Math.min(0, targetY);
-        });
-
-        {#var mouseWheelHandler =
-            function(ev) {
-                console.log(ev.originalEvent);
-                var scrollTop = this.scrollTop,
-                    scrollHeight = this.scrollHeight,
-                    height = this.offsetHeight,
-                    delta = (ev.type == 'DOMMouseScroll' ? ev.originalEvent.detail * -40 : ev.originalEvent.wheelDelta),
-                    up = delta > 0,
-                    prevent = function() {
-                        ev.stopPropagation();
-                        ev.preventDefault();
-                        ev.returnValue = false;
-                    };
-                // Scrolling down, but this will take us past the bottom.
-                if (!up && -delta > scrollHeight - height - scrollTop) {
-                    this.scrollTop(scrollHeight);
-                    return prevent();
-                    // Scrolling up, but this will take us past the top.
-                } else if (up && delta > scrollTop) {
-                    this.scrollTop(0);
-                    return prevent();
-                }
-            },
-        boxes = document.getElementsByClassName('scrollable'),
-        i = boxes.length;
-        //$('.scrollable').on('DOMMouseScroll mousewheel', mouseWheelHandler);
-        while(i--) {
-            if (boxes[i].addEventListener) {
-                // IE9, Chrome, Safari, Opera
-                boxes[i].addEventListener('mousewheel', mouseWheelHandler, false);
-                // Firefox
-                boxes[i].addEventListener('DOMMouseScroll', mouseWheelHandler, false);
-            } // IE 6/7/8
-            //else boxes[i].attachEvent('onmousewheel', mouseWheelHandler);
-        }#}
+        (function($){
+            $(window).on('load',function(){
+                $.mCustomScrollbar.defaults.scrollButtons.enable=true; //enable scrolling buttons by default
+                //$.mCustomScrollbar.defaults.axis="yx"; //enable 2 axis scrollbars by default
+                $('.scrollable').mCustomScrollbar({
+                    theme: 'dark',
+                    mouseWheel: { preventDefault:true }
+                });
+            });
+        })(jQuery);
     </script>
 {% endblock %}
