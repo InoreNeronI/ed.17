@@ -2,36 +2,18 @@
 
 {% block styles %}
     {{ parent() }}
-    <link rel="stylesheet" href="/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="/css/scroll.css">
 {% endblock %}
 
 {% block content %}{# @url http://tachyons.io/components/layout/two-column-collapse-one/index.html #}
-    <article class="cf">
-        <div id="side-a" class="fl w-50 bg-light-gray scrollable">
+    <article class="cf container">
+        <div id="side-a" class="fl pa1-ns pa2-m pa3-l w-50 bg-light-gray left scrollable">
             <h1>Column One</h1>
             {% include 'page/canvas/side-a.html.twig' %}
         </div>
-        <div id="side-b" class="fl w-50 bg-near-white scrollable">
+        <div id="side-b" class="fl pa1-ns pa2-m pa3-l w-50 bg-near-white right scrollable">
             <h1>Column Two</h1>
             {% include 'page/canvas/side-b.html.twig' %}
         </div>
     </article>
-{% endblock %}
-
-{% block scripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="/js/jquery.mousewheel.js"></script>
-    <script type="text/javascript" src="/js/jquery.mCustomScrollbar.js"></script>
-    <script type="text/javascript">
-        (function($){
-            $(window).on('load',function(){
-                $.mCustomScrollbar.defaults.scrollButtons.enable=true; //enable scrolling buttons by default
-                //$.mCustomScrollbar.defaults.axis="yx"; //enable 2 axis scrollbars by default
-                $('.scrollable').mCustomScrollbar({
-                    theme: 'dark',
-                    mouseWheel: { preventDefault:true }
-                });
-            });
-        })(jQuery);
-    </script>
 {% endblock %}

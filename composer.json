@@ -48,11 +48,7 @@
       "php -r \"is_dir('public/js') ?: mkdir('public/js');\"",
       "cp -rv ./node_modules/jquery/dist/jquery.min.* public/js",
       "php -r \"is_dir('public/js/jquery-resize') ?: mkdir('public/js/jquery-resize');\"",
-      "cp -rv ./node_modules/jquery-debounced-and-throttled-resize/jquery.* public/js/jquery-resize",
-      "cp -rv ./node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css public/css",
-      "cp -rv ./node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js public/js",
-      "cp -rv ./node_modules/malihu-custom-scrollbar-plugin/mCSB_buttons.png public/css",
-      "cp -rv ./node_modules/jquery-mousewheel/jquery.mousewheel.js public/js"
+      "cp -rv ./node_modules/jquery-debounced-and-throttled-resize/jquery.* public/js/jquery-resize"
     ],
     "bin-install": [
       "php -r \"is_dir('bin') ?: mkdir('bin');\"",
