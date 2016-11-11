@@ -26,13 +26,13 @@ class ContentRenderController
 
         if (strpos($slug, 'canvas') !== false) {
             /** @var array $texts */
-            $texts = static::processCanvas($request, intval($page), $messages);
+            $texts = static::processSplitPanel($request, $page, $messages);
             $slug = 'canvas';
         } else {
             /** @var array $texts */
             $texts = static::processRender($request, $messages);
         }
-
+        dump($texts);
         /** @var string $content */
         $content = View::render($slug, $texts);
 
@@ -55,7 +55,7 @@ class ContentRenderController
      *
      * @return array
      */
-    public static function processRender(HttpFoundation\Request $request, array $messages)
+    private static function processRender(HttpFoundation\Request $request, array $messages)
     {
         if ($request->getMethod() === 'POST') {
             $manager = new Model\StudentModel();
@@ -70,18 +70,19 @@ class ContentRenderController
 
     /**
      * @param HttpFoundation\Request $request
-     * @param int                    $page
+     * @param string                 $page
      * @param array                  $messages
      *
      * @return array|false
      */
-    public static function processCanvas(HttpFoundation\Request $request, $page, array $messages)
+    private static function processSplitPanel(HttpFoundation\Request $request, $page, array $messages)
     {
         if ($request->getMethod() === 'POST') {
             $params = $request->request->all();
-            isset($params['lang']) ?: $params['lang'] = isset($params['flengua']) ? $params['flengua'] : $request->getLocale();
+            isset($params['lang']) ?: $params['lang'] = isset($messages['lang']) ? $messages['lang'] : $request->getLocale();
+            $manager = new Model\StudentModel();
 
-            return $params;
+            return $manager->loadPageData($params, sprintf('%02d', intval($page)));
         } elseif ($request->getMethod() === 'GET') {
             return [];
         }

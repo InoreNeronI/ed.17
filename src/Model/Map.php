@@ -30,7 +30,7 @@ class Map extends Connection
         $password = empty($password) ? $params['database_password'] : $password;
         $database = empty($database) ? $params['database_name'] : $database;
         $driver = empty($driver) ? $params['database_driver'] : $driver;
-        parent::__construct($host, $username, $password, $database, $driver, ['port' => $params['database_port']]);
+        parent::__construct($host, $username, $password, $database, $driver, isset($params['database_port']) ? ['port' => $params['database_port']] : []);
     }
 
     /**

@@ -15,16 +15,19 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     #secret: ThisTokenIsNotSoSecretChangeIt
 
-    # Cache path relative to '/app' folder
+    # Cache's path relative to '/app' folder
     cache_dir: '/cache'
 
-    # Public files path relative to '/app' folder
+    # Data files' path relative to '/app' folder
+    data_dir: '/Resources/probak'
+
+    # Public files' path relative to '/app' folder
     public_dir: '/Resources/public'
 
-    # Template files path relative to '/app' folder
+    # Template files' path relative to '/app' folder
     template_dir: '/Resources/view'
 
-    # Translation files path relative to '/app' folder
+    # Translation files' path relative to '/app' folder
     translation_dir: '/Resources/translation'
 
     # Homepage configuration
