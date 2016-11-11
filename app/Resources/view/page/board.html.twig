@@ -1,6 +1,6 @@
 {% extends 'layout/form.html.twig' %}
 
-{% block title main_title|title ~ ' - ' ~ course|title ~ ' - ' ~ title %}
+{% block title title ~ ' :: ' ~ course|title ~ ' :: ' ~ main_title|title %}
 
 {% block content_form %}
     <article class="calisto center mw5 mw6-ns br4 hidden ba b--black-10 mv4 dt w-100 w-75-m w-75-ns">
@@ -16,6 +16,7 @@
             <input name="fcurso" id="fcurso" type="hidden" value="{{ course }}"/>
             <input name="fperiodo" id="fperiodo" type="hidden" value="{{ period }}"/>
             <input name="flengua" id="flengua" type="hidden" value="{{ lang }}"/>
+            <input name="fititular" id="fititular" type="hidden" value="{{ main_title }}"/>
             <input name="fititulo" id="fititulo" type="hidden" value="{{ title }}"/>
             <input name="ftestuak" id="ftestuak" type="hidden" value="{{ table }}"/>
             <input name="ferantzunak" id="ferantzunak" type="hidden" value="{{ target }}"/>

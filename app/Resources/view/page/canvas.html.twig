@@ -1,6 +1,6 @@
 {% extends 'layout/split-panel.html.twig' %}
 
-{% block title fititulo ~ ' - ' ~ fcurso|title ~ ' - ' ~ flabel|title %}
+{% block title flabel|title ~ ' :: ' ~ fcurso|title ~ ' :: ' ~ fititulo ~ ' :: ' ~ fititular|title %}
 
 {% block content_side_a %}
     {% include 'page/canvas/side-a.html.twig' %}
