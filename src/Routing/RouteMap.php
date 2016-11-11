@@ -55,11 +55,11 @@ final class RouteMap extends Route
                 $routeName = str_replace('/', '', $routePath);
             }
 
-            // Merge defaults with common messages
-            $defaults['messages'] = empty($defaults['messages']) ? \def::translations() : array_unique(array_merge(\def::translations(), $defaults['messages']));
-
             // Current route messages
             $translations = \def::translations("page/$routeName");
+
+            // Merge defaults with common messages
+            $defaults['messages'] = empty($defaults['messages']) ? \def::translations() : array_unique(array_merge(\def::translations(), $defaults['messages']));
 
             // Add route to collection
             $this->addRouteRender($routePath, $routeName, $translations, $defaults, $methods, $requirements, $schemes);

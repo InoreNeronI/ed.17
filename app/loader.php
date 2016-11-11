@@ -1,7 +1,6 @@
 <?php
 
 /** @author Martin Mozos <martinmozos@gmail.com> */
-
 if (PHP_VERSION_ID < 50400) {
     /* @throw \Exception */
     throw new \Exception('At least PHP 5.4 is required; using the latest version is highly recommended.');

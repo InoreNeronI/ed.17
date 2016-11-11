@@ -1,7 +1,6 @@
 <?php
 
 /** @author Martin Mozos <martinmozos@gmail.com> */
-
 define('CONFIG_DIR', __DIR__ . '/config');
 define('PUBLIC_DIR', dirname(__DIR__) . '/public');
 define('TEMPLATE_DATA_DIR', __DIR__ . '/Resources/probak');
