@@ -1,7 +1,4 @@
-title:
-    eu: 'Identifikazioa'
-    es: 'Identificación'
-    en: ''
+title: 'Identifikazioa / Identificación'
 form_action: '/board'
 code: 'Ikaslearen kodea / Código del alumno-a'
 bdate: 'Jaiotze data / Fecha nacimiento'
@@ -23,5 +20,5 @@ codpro: 'Probaren kodea / Código de la prueba'
 audio_sample_tip: 'Audio proba / Prueba de audio'
 audio_sample_url:
     mp3: ''
-    ogg: '/audioak/audio_proba_labur.ogg'
+    ogg: '/media/audio_proba_labur.ogg'
 submit_text: 'Bidali / Enviar'

@@ -5,6 +5,6 @@ main_title:
     es: 'Evaluación diagnóstica'
     en: ''
 images:
-    bg_url: '/irudiak/ed_ikasleak1.jpg'
-    logo_url: '/irudiak/logoed1.jpg'
-    logo_url_footer: '/irudiak/logo_hezkuntza.png'
+    bg_url: '/images/ed_ikasleak.jpg'
+    logo_url: '/images/logoed.jpg'
+    logo_url_footer: '/images/logo_hezkuntza.png'

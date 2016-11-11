@@ -1,6 +1,8 @@
 <?php
 
-/** @url https://github.com/symfony/framework-bundle/blob/2.8/Resources/config/router_prod.php */
+/** @author: Michał Pipa <michal.pipa.xsolve@gmail.com>
+ *  @author: Albert Jessurum <ajessu@gmail.com>
+ *  @url https://github.com/symfony/framework-bundle/blob/2.8/Resources/config/router_prod.php */
 
 // Workaround https://bugs.php.net/64566
 if (ini_get('auto_prepend_file') && !in_array(realpath(ini_get('auto_prepend_file')), get_included_files(), true)) {

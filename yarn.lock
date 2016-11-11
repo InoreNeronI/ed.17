@@ -8,6 +8,10 @@ jquery-debounced-and-throttled-resize@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/jquery-debounced-and-throttled-resize/-/jquery-debounced-and-throttled-resize-1.0.1.tgz#6dafb2441c51c18c873c5699395e122f8a99b9eb"
 
+jquery-resizable-dom:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/jquery-resizable-dom/-/jquery-resizable-dom-0.18.0.tgz#3f161472078da081290f7074989ee6a5370fc2ec"
+
 jquery@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.1.1.tgz#347c1c21c7e004115e0a4da32cece041fad3c8a3"

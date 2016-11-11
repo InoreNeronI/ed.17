@@ -5,7 +5,7 @@
 
 ini_set('phar.readonly', 0); // Could be done in php.ini
 
-require_once 'bin/fixer-php';
+require_once 'bin/php-cs.phar';
 
 $config = Symfony\CS\Config::create()
     // use SYMFONY_LEVEL:
@@ -23,15 +23,17 @@ $config = Symfony\CS\Config::create()
 
 if (null === $input->getArgument('path')) {
     $config->finder(Symfony\CS\Finder\DefaultFinder::create()
-        ->notName('LICENSE')
-        ->notName('README.md')
-        ->notName('.php_cs*')
-        ->notName('composer.*')
-        ->notName('phpunit.xml*')
-        ->notName('*.phar')
-        ->exclude('vendor')
         ->exclude('bin')
         ->exclude('cache')
+        ->exclude('node_modules')
+        ->exclude('vendor')
+        ->notName('*.html.twig')
+        ->notName('*.phar')
+        ->notName('.php_cs*')
+        ->notName('composer.*')
+        ->notName('LICENSE')
+        ->notName('README.md')
+        ->notName('phpunit.xml*')
         ->in(__DIR__));
 }
 

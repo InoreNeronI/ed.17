@@ -12,7 +12,7 @@
     </article>
     <article id="has-bg-image" class="br3 cf pv2 mh1-ns mh1-m mh3-l" style="background: url('{{ images.bg_url }}') no-repeat; background-size: cover;">
         <form action="{{ form_action|default('') }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
-            {% block form_content %}{% endblock %}
+            {% block content_form %}{% endblock %}
         </form>
     </article>
     <footer class="pv4 ph3 ph5-m ph6-l mid-gray">
@@ -24,31 +24,11 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script type="text/javascript" src="/js/jquery-resize/jquery.debouncedresize.js"></script>
-    {#<script type="text/javascript" src="/js/jquery-resize/jquery.throttledresize.js"></script>#}
-    <script type="text/javascript">
-        $(function() {
-            var _window = $(window),
-                bgResize = function(_window) {
-                    if (_window.width() < 944)
-                        document.getElementById('has-bg-image').style.backgroundSize = '100% 100%';
-                    else
-                        document.getElementById('has-bg-image').style.backgroundSize = 'cover';
-                };
-            bgResize(_window);
-            _window.on('resize', function() {
-                bgResize($(this));
-                //console.log( 'Resize event fired:'+ (+new Date()) );
-            });
-            _window.on('debouncedresize', function() {
-                bgResize($(this));
-                //console.log( 'Debounce event fired:'+ (+new Date()) );
-            });
-            {#_window.on('throttledresize', function() {
-                bgResize($(this));
-                //console.log( 'Throttle event fired:'+ (+new Date()) );
-            });#}
-            {% block jq_ready %}{% endblock %}
-        });
-    </script>
+    <script type="text/javascript" src="/scripts/jquery-resize/jquery.debouncedresize.js"></script>
+    {#<script type="text/javascript" src="/scripts/jquery-resize/jquery.throttledresize.js"></script>#}
+{% endblock %}
+
+{% block jq_ready %}
+    {{ parent() }}
+    {% include 'layout/form/bg-resize.js.twig' %}
 {% endblock %}

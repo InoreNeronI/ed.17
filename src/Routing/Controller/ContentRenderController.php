@@ -78,9 +78,10 @@ class ContentRenderController
     public static function processCanvas(HttpFoundation\Request $request, $page, array $messages)
     {
         if ($request->getMethod() === 'POST') {
-            //dump($request->request->all());
+            $params = $request->request->all();
+            isset($params['lang']) ?: $params['lang'] = isset($params['flengua']) ? $params['flengua'] : $request->getLocale();
 
-            return $request->request->all();
+            return $params;
         } elseif ($request->getMethod() === 'GET') {
             return [];
         }

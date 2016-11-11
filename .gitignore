@@ -6,9 +6,6 @@
 /app/config/parameters.yml
 /bin
 /dbcopy.json
-/public/css
-/public/fonts
-/public/images
-/public/js
+/public
 /node_modules
 /vendor

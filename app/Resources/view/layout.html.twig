@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ lang | default('en') }}">
     <head>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
@@ -8,15 +8,14 @@
         <meta name="viewport" content="width=device-width,initial-scale=1">
 
         <title>{% block title main_title|title %}</title>
-        <link rel="stylesheet" href="/css/tachyons.min.css" type="text/css" />
-        <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" />
-        <style type="text/css">body { overflow: hidden; } section { position: absolute; }</style>
+        <link rel="stylesheet" href="/styles/tachyons.min.css" type="text/css" />
+        <link rel="stylesheet" href="/styles/font-awesome.min.css" type="text/css" />
         {% block styles %}{% endblock %}
     </head>
     <body>
         {% block content %}{% endblock %}
         {% block scripts %}
-            <script type="text/javascript" src="/js/jquery.min.js"></script>
+            <script type="text/javascript" src="/scripts/jquery/jquery.min.js"></script>
             <script type="text/javascript">
                 document.addEventListener('touchmove', function(ev) { ev.preventDefault(); });
                 {#var _gaq = _gaq || [];
@@ -27,6 +26,21 @@
                     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
                     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
                 })();#}
+                {# @url http://gregfranko.com/blog/jquery-best-practices #}
+                // IIFE - Immediately Invoked Function Expression
+                (function(appCode) {
+                    // The global jQuery object is passed as a parameter
+                    appCode(window.jQuery, window, document);
+
+                }(function($, window, document) {
+                        // The $ is now locally scoped
+                        $(function() {
+                            // The DOM is ready!
+                            {% block jq_ready %}{% endblock %}
+                        });
+                        // The rest of your code goes here!
+                    }
+                ));
             </script>
         {% endblock %}
     </body>

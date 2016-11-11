@@ -2,88 +2,88 @@ title:
   dbh:
     eu: 'DBHko ebaluazio probak'
     es: 'Pruebas de evaluación de la ESO'
-    en:
+    en: ''
   lh:
     eu: 'LHko ebaluazio probak'
     es: 'Pruebas de evaluación de EP'
-    en:
+    en: ''
 form_action: '/canvas/0'
 actions:
   # Eusk
   edg051_testuak_dbh_eusa:
     eu: 'Euskara A'
     es: 'Euskara A'
-    en:
+    en: ''
   edg051_testuak_dbh_eusbd:
     eu: 'Euskara BD'
     es: 'Euskara BD'
-    en:
+    en: ''
   edg051_testuak_lh_eusa:
     eu: 'Euskara A'
     es: 'Euskara A'
-    en:
+    en: ''
   edg051_testuak_lh_eusbd:
     eu: 'Euskara BD'
     es: 'Euskara BD'
-    en:
+    en: ''
   # Gazte
   edg051_testuak_dbh_gaz:
     eu: 'Castellano'
     es: 'Castellano'
-    en:
+    en: ''
   edg051_testuak_lh_gaz:
     eu: 'Castellano'
     es: 'Castellano'
-    en:
+    en: ''
   # Inge
   edg051_testuak_dbh_ing:
     eu: 'Ingelesa'
     es: 'Inglés'
-    en:
+    en: ''
   edg051_testuak_lh_ing:
     eu: 'Ingelesa'
     es: 'Inglés'
-    en:
+    en: ''
   # Mate
   edg051_testuak_dbh_mat:
     eu: 'Matematika'
     es: 'Matemáticas'
-    en:
+    en: ''
   edg051_testuak_lh_mat:
     eu: 'Matematika'
     es: 'Matemáticas'
-    en:
+    en: ''
   # Zie
   edg051_testuak_dbh_zie:
     eu: 'Zientziak'
     es: 'Ciencias'
-    en:
+    en: ''
   edg051_testuak_lh_zie:
     eu: 'Zientziak'
     es: 'Ciencias'
-    en:
+    en: ''
   # G. sortak
   edg051_testuak_dbh_gsorta_a:
     eu: 'Galdera sorta A'
     es: 'Cuestionario A'
-    en:
+    en: ''
   edg051_testuak_dbh_gsorta_b:
     eu: 'Galdera sorta B'
     es: 'Cuestionario B'
-    en:
+    en: ''
   edg051_testuak_dbh_gsorta_c:
     eu: 'Galdera sorta C'
     es: 'Cuestionario C'
-    en:
+    en: ''
   edg051_testuak_lh_gsorta_a:
     eu: 'Galdera sorta A'
     es: 'Cuestionario A'
-    en:
+    en: ''
   edg051_testuak_lh_gsorta_b:
     eu: 'Galdera sorta B'
     es: 'Cuestionario B'
-    en:
+    en: ''
   edg051_testuak_lh_gsorta_c:
     eu: 'Galdera sorta C'
     es: 'Cuestionario C'
-    en:
+    en: ''
