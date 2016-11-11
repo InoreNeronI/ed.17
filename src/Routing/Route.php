@@ -79,17 +79,19 @@ class Route
      *
      * @param string $path
      * @param string $routeName
-     * @param array  $messages
+     * @param array  $translations
      * @param array  $defaults
      * @param array  $methods
      * @param array  $requirements ['parameter' => '\d+', 'month' => '[0-9]{4}-[0-9]{2}', 'subdomain' => 'www|m']
      * @param array  $schemes
      */
-    public function addRouteRender($path = '/', $routeName = 'index', $messages = [], $defaults = [], $methods = ['GET', 'POST'], $requirements = [], $schemes = ['http', 'https'])
+    public function addRouteRender($path = '/', $routeName = 'index', $translations = [], $defaults = [], $methods = ['GET', 'POST'], $requirements = [], $schemes = ['http', 'https'])
     {
         $defaultController = ['_controller' => 'App\\Routing\\Controller\\ContentRenderController::renderAction'];
         $defaults = empty($defaults) ? $defaultController : isset($defaults['_controller']) ? $defaults : array_merge($defaults, $defaultController);
-        empty($messages) ?: $defaults['messages'] = empty($defaults['messages']) ? $messages : array_merge($defaults['messages'], $messages);
+        if (!empty($translations)) {
+            $defaults['messages'] = empty($defaults['messages']) ? $translations : array_merge($defaults['messages'], $translations);
+        }
         $options = [];
         $host = ''; // '{subdomain}.example.com';
         $condition = '';

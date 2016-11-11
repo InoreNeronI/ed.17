@@ -56,7 +56,7 @@ final class RouteMap extends Route
             }
 
             // Merge defaults with common messages
-            $defaults['messages'] = empty($defaults['messages']) ? \def::translations() : array_merge($defaults['messages'], \def::translations());
+            $defaults['messages'] = empty($defaults['messages']) ? \def::translations() : array_unique(array_merge(\def::translations(), $defaults['messages']));
 
             // Current route messages
             $translations = \def::translations("page/$routeName");
