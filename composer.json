@@ -77,10 +77,10 @@
     ],
     "bin-update": [
       "@bin-install",
-      "php bin/deployer.phar self-update",
-      "php bin/deptrac.phar selfupdate",
-      "php bin/php-cs.phar selfupdate",
-      "php bin/phpunit.phar --self-update",
+      "php bin/deployer.phar self-update || true",
+      "php bin/deptrac.phar selfupdate || true",
+      "php bin/php-cs.phar selfupdate || true",
+      "php bin/phpunit.phar --self-update || true",
       "printf \"\\n\\tBinaries had been updated succesfully\\n\\n\"",
       "printf \"\\n\\tUpdating Node Packaged Modules\\n\\n\"",
       "node bin/yarn.js upgrade"

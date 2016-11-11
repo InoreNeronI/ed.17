@@ -28,8 +28,6 @@ final class RouteMap extends Route
             $methods = [];
             $requirements = [];
             $schemes = [];
-            // Common messages
-            $messages = \def::translations();
 
             // Feed variables
             if (is_array($route)) {
@@ -58,14 +56,13 @@ final class RouteMap extends Route
             }
 
             // Merge defaults with common messages
-            $defaults = array_merge($messages, $defaults);
+            $defaults['messages'] = empty($defaults['messages']) ? \def::translations() : array_merge($defaults['messages'], \def::translations());
 
-            // Merge defaults with current route messages
+            // Current route messages
             $translations = \def::translations("page/$routeName");
-            empty($translations) ?: $messages = array_merge($messages, $translations);
 
             // Add route to collection
-            $this->addRouteRender($routePath, $routeName, $messages, $defaults, $methods, $requirements, $schemes);
+            $this->addRouteRender($routePath, $routeName, $translations, $defaults, $methods, $requirements, $schemes);
         }
     }
 }

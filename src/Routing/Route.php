@@ -89,7 +89,7 @@ class Route
     {
         $defaultController = ['_controller' => 'App\\Routing\\Controller\\ContentRenderController::renderAction'];
         $defaults = empty($defaults) ? $defaultController : isset($defaults['_controller']) ? $defaults : array_merge($defaults, $defaultController);
-        empty($messages) ?: $defaults['messages'] = $messages;
+        empty($messages) ?: $defaults['messages'] = empty($defaults['messages']) ? $messages : array_merge($defaults['messages'], $messages);
         $options = [];
         $host = ''; // '{subdomain}.example.com';
         $condition = '';
