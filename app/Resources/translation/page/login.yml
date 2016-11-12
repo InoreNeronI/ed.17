@@ -1,5 +1,5 @@
 title: 'Identifikazioa / Identificación'
-form_action: '/board'
+form_action: '/boarding'
 code: 'Ikaslearen kodea / Código del alumno-a'
 bdate: 'Jaiotze data / Fecha nacimiento'
 bday: 'Eguna / Día'

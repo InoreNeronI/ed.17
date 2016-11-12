@@ -90,7 +90,11 @@
     "post-update-cmd": ["@bin-update", "@assets-copy", "@build-parameters"]
   },
   "extra": {
-    "incenteev-parameters": {"file": "app/config/parameters.yml"}
+    "incenteev-parameters": [{
+      "file": "app/config/database.yml",
+      "dist-file": "app/config/database.dist.yml",
+      "parameter-key": "credentials",
+      "env-map": {}}]
   },
   "config": {
     "bin-dir": "bin",

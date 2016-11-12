@@ -1,4 +1,0 @@
-- '/sample'
-- { path: '/', methods: ['GET'] }
-- { path: '/board', methods: ['POST'] }
-- { path: '/canvas/{page}', methods: ['POST'], requirements: { page: '\d+' } }

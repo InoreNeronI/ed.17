@@ -3,11 +3,11 @@
     <head>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-        <meta name="description" content="{{ main_title|title ~ ' - ' ~ course|title ~ ' - ' ~ title|title }}"/>
+        <meta name="description" content="{{ mainTitle|title ~ ' - ' ~ course|title ~ ' - ' ~ title|title }}"/>
         <meta name="author" content="ISEI - IVEI | Irakas Sistema Ebaluatu eta Ikertzeko Erakundea - Instituto Vasco de Evaluación e Investigación Educativa"/>
         <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <title>{% block title main_title|title %}</title>
+        <title>{% block title mainTitle|title %}</title>
         <link rel="stylesheet" href="/styles/tachyons.min.css" type="text/css" />
         <link rel="stylesheet" href="/styles/font-awesome.min.css" type="text/css" />
         {% block styles %}{% endblock %}

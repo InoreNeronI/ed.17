@@ -1,0 +1,85 @@
+
+# Local languages' map
+languages: [eus: eu, cas: es, gaz: es, eng: en, ing: en]
+
+# Base dirs and homepage configuration
+paths:
+    # Cache's path relative to '/app' folder
+    cache_dir: /cache
+    # Data files' path relative to '/app' folder
+    data_dir: /Resources/probak
+    # Public files' path relative to '/app' folder
+    #public_dir: /Resources/public
+    # Template files' path relative to '/app' folder
+    template_dir: /Resources/view
+    # Translation files' path relative to '/app' folder
+    translation_dir: /Resources/translation
+    # Homepage route configuration
+    home_url_path: /
+    home_url_slug: login
+
+# Supported periods
+periods: [dbh, lh]
+
+# Routes configuration
+routes:
+#  - '/sample'
+  - { path: /, methods: [GET] }
+  - { path: /boarding, methods: [POST] }
+  - { path: '/{page}', name: page, controller: 'App\Routing\Controller\ContentRenderController::pageAction', methods: [POST], requirements: { page: \d+ } }
+
+# CSS styles' map
+styles:
+  # @url https://github.com/tachyons-css/tachyons/blob/v4.5.5/css/tachyons.css#L1570-L1575
+  font:
+    x1: f6
+    x2: f5
+    x3: f4
+    x4: f3
+    x5: f2
+    x6: f1
+  # @url https://github.com/tachyons-css/tachyons/blob/v4.5.5/css/tachyons.css#L816-L835
+  height:
+    # String Properties
+    auto: h-auto
+    inherit: h-inherit
+    # Font size multiples
+    x1: h1
+    x2: h2
+    x3: h3
+    x4: h4
+    x5: h5
+    # Height Percentages - Based off of height of parent
+    25: h-25
+    50: h-50
+    75: h-75
+    100: h-100
+    min-100: min-h-100
+  # @url https://github.com/tachyons-css/tachyons/blob/v4.5.5/css/tachyons.css#L964-L985
+  width:
+    # String Properties
+    tercio: w-third
+    dos-tercios: w-two-thirds
+    auto: w-auto
+    # Font size multiples
+    x1: w1
+    x2: w2
+    x3: w3
+    x4: w4
+    x5: w5
+    # Width Percentages - Based off of width of parent
+    0: w0
+    10: w-10
+    20: w-20
+    25: w-25
+    30: w-30
+    33: w-33
+    34: w-34
+    40: w-40
+    50: w-50
+    60: w-60
+    70: w-70
+    75: w-75
+    80: w-80
+    90: w-90
+    100: w-100

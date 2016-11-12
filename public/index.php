@@ -4,7 +4,7 @@ use Symfony\Component\EventDispatcher;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpKernel;
 
-$loader = require __DIR__ . '/../app/loader.php';
+$loader = require dirname(__DIR__) . '/app/loader.php';
 
 // Creates a Request object based on the current PHP global variables
 /** @var HttpFoundation\Request $request */

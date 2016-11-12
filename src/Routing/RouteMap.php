@@ -35,6 +35,9 @@ final class RouteMap extends Route
                 if (isset($route['defaults'])) {
                     $defaults = array_unique($route['defaults']);
                 }
+                if (isset($route['_controller'])) {
+                    $defaults['_controller'] = $route['_controller'];
+                }
                 if (isset($route['methods'])) {
                     $methods = array_unique($route['methods']);
                 }
@@ -48,8 +51,10 @@ final class RouteMap extends Route
             } else {
                 $routePath = $route;
             }
-            if ($routePath === \def::parameters()['home_url_path']) {
-                $routeName = \def::parameters()['home_url_slug'];
+            if ($routePath === \def::paths()['home_url_path']) {
+                $routeName = \def::paths()['home_url_slug'];
+            } elseif (isset($route['name'])) {
+                $routeName = $route['name'];
             } else {
                 // Template name without extension
                 $routeName = str_replace('/', '', $routePath);

@@ -1,0 +1,71 @@
+
+# Database connection configuration
+credentials:
+  database_driver:    pdo_mysql
+  database_host:      127.0.0.1
+  database_port:      3306
+  database_name:      ed17probak
+  database_user:      ed17erab
+  database_password:  ~
+  # You should uncomment this if you want use pdo_sqlite
+  # database_path:      "%kernel.root_dir%/data.db3"
+  # User table
+  user_table:         edg020_ikasleak
+
+# Database access configuration
+security:
+  # Eusk
+  EB2746:
+    a:    edg051_testuak_dbh_eusa
+    bd:   edg051_testuak_dbh_eusbd
+  EL2963:
+    a:    edg051_testuak_lh_eusa
+    bd:   edg051_testuak_lh_eusbd
+  # Gazte
+  CB3736: edg051_testuak_dbh_gaz
+  CL2528: edg051_testuak_lh_gaz
+  # Inge
+  IB3896: edg051_testuak_dbh_ing
+  IL8027: edg051_testuak_lh_ing
+  # Mate
+  MB0406: edg051_testuak_dbh_mat
+  ML4612: edg051_testuak_lh_mat
+  # Zie
+  ZB6432: edg051_testuak_dbh_zie
+  ZL2428: edg051_testuak_lh_zie
+  # G. sortak
+  GB3479:
+    a:    edg051_testuak_dbh_gsorta_a
+    b:    edg051_testuak_dbh_gsorta_b
+    c:    edg051_testuak_dbh_gsorta_c
+  GL0615:
+    a:    edg051_testuak_lh_gsorta_a
+    b:    edg051_testuak_lh_gsorta_b
+    c:    edg051_testuak_lh_gsorta_c
+
+# Database tables' map
+tables:
+  # Eusk
+  edg051_testuak_dbh_eusa:      edg051_erantzunak_dbh_eusa
+  edg051_testuak_dbh_eusbd:     edg051_erantzunak_dbh_eusbd
+  edg051_testuak_lh_eusa:       edg051_erantzunak_lh_eusa
+  edg051_testuak_lh_eusbd:      edg051_erantzunak_lh_eusbd
+  # Gazte
+  edg051_testuak_dbh_gaz:       edg051_erantzunak_dbh_gaz
+  edg051_testuak_lh_gaz:        edg051_erantzunak_lh_gaz
+  # Inge
+  edg051_testuak_dbh_ing:       edg051_erantzunak_dbh_ing
+  edg051_testuak_lh_ing:        edg051_erantzunak_lh_ing
+  # Mate
+  edg051_testuak_dbh_mat:       edg051_erantzunak_dbh_mat
+  edg051_testuak_lh_mat:        edg051_erantzunak_lh_mat
+  # Zie
+  edg051_testuak_dbh_zie:       edg051_erantzunak_dbh_mat
+  edg051_testuak_lh_zie:        edg051_erantzunak_lh_mat
+  # G. sortak
+  edg051_testuak_dbh_gsorta_a:  edg051_erantzunak_dbh_gsorta_a
+  edg051_testuak_dbh_gsorta_b:  edg051_erantzunak_dbh_gsorta_b
+  edg051_testuak_dbh_gsorta_c:  edg051_erantzunak_dbh_gsorta_c
+  edg051_testuak_lh_gsorta_a:   edg051_erantzunak_lh_gsorta_a
+  edg051_testuak_lh_gsorta_b:   edg051_erantzunak_lh_gsorta_b
+  edg051_testuak_lh_gsorta_c:   edg051_erantzunak_lh_gsorta_c

@@ -7,7 +7,7 @@ ini_set('phar.readonly', 0); // Could be done in php.ini
 
 require_once 'bin/php-cs.phar';
 
-$config = Symfony\CS\Config::create()
+$config = Symfony\CS\Config\Config::create()
     // use SYMFONY_LEVEL:
     ->level(Symfony\CS\FixerInterface::SYMFONY_LEVEL)
     // and extra fixers:
@@ -19,22 +19,15 @@ $config = Symfony\CS\Config::create()
         '-empty_return',
         '-phpdoc_var_without_name',
         '-phpdoc_to_comment',
+        '-unalign_double_arrow',
     ]);
 
-if (null === $input->getArgument('path')) {
-    $config->finder(Symfony\CS\Finder\DefaultFinder::create()
-        ->exclude('bin')
-        ->exclude('cache')
-        ->exclude('node_modules')
-        ->exclude('vendor')
-        ->notName('*.html.twig')
-        ->notName('*.phar')
-        ->notName('.php_cs*')
-        ->notName('composer.*')
-        ->notName('LICENSE')
-        ->notName('README.md')
-        ->notName('phpunit.xml*')
-        ->in(__DIR__));
-}
+$path = null === $input->getArgument('path') ? $input->getArgument('path') : __DIR__;
 
-return $config;
+return $config->finder(Symfony\CS\Finder\DefaultFinder::create()
+    ->in($path)
+    ->ignoreDotFiles(true)
+    ->ignoreVCS(true)
+    ->exclude(array('app/cache', 'bin', 'build', 'node_modules', 'vendor'))
+    ->files()
+    ->name('*.php'));

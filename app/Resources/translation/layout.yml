@@ -1,6 +1,6 @@
 # Do not repeat variable names that are in 'common', neither the ones that are other blocks like 'home' and 'login', or just the last one will remain.
 course: '2017'
-main_title:
+mainTitle:
     eu: 'Ebaluazio diagnostikoa'
     es: 'Evaluación diagnóstica'
     en: ''
