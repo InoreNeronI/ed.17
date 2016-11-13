@@ -26,7 +26,7 @@
     "symfony/var-dumper": "@stable"
   },
   "scripts": {
-    "codefix": ["php bin/php-cs.phar fix --config-file=.php_cs || true", "php bin/sf-upgrade.phar fix src || true"],
+    "codefix": ["php bin/sf-upgrade.phar fix src || true", "php bin/php-cs.phar fix --config-file=.php_cs || true"],
     "deploy": "php bin/deployer.phar deploy",
     "deptrac": "php bin/deptrac.phar",
     "optimize": "@composer dump-autoload --optimize",

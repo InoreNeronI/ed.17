@@ -2,6 +2,7 @@
 
 /** @url https://github.com/elcodi/elcodi/blob/master/.php_cs */
 /** @url https://github.com/serbanghita/Mobile-Detect/blob/master/.php_cs */
+/** @url https://github.com/javiereguiluz/EasyAdminBundle/blob/232a193deed4cd490bc30b1584e97f05e3d8441a/.php_cs */
 
 ini_set('phar.readonly', 0); // Could be done in php.ini
 
@@ -17,17 +18,18 @@ $config = Symfony\CS\Config\Config::create()
         'short_array_syntax',
         '-remove_lines_between_uses',
         '-empty_return',
-        '-phpdoc_var_without_name',
         '-phpdoc_to_comment',
+        '-phpdoc_short_description',
+        '-phpdoc_var_without_name',
         '-unalign_double_arrow',
     ]);
 
-$path = null === $input->getArgument('path') ? $input->getArgument('path') : __DIR__;
+$path = is_null($input->getArgument('path')) ? __DIR__ : $input->getArgument('path');
 
 return $config->finder(Symfony\CS\Finder\DefaultFinder::create()
     ->in($path)
     ->ignoreDotFiles(true)
     ->ignoreVCS(true)
-    ->exclude(array('app/cache', 'bin', 'build', 'node_modules', 'vendor'))
+    ->exclude(['app/cache', 'build', 'vendor'])
     ->files()
     ->name('*.php'));

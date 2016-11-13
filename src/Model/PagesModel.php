@@ -30,7 +30,7 @@ final class PagesModel extends CredentialsModel
             ->orderBy('t.edg051_cod_texto')
             ->setParameters(['periodo' => $args['fcurso'], 'text_code' => 'p' . $wildcard . $side . '%']);
 
-        /** @var array $student */
+        /** @var array $texts */
         $texts = $queryBuilder->execute()->fetchAll();
         if (!empty($texts)) {
             static::$pageTexts['id'] = $texts[0]['id'];

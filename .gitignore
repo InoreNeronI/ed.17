@@ -4,7 +4,6 @@
 /.php_cs.cache
 /app/cache
 /app/config/database.yml
-/app/config/parameters.yml
 /bin
 /dbcopy.json
 /public

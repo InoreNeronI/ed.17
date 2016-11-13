@@ -1,6 +1,6 @@
 
 # Local languages' map
-languages: [eus: eu, cas: es, gaz: es, eng: en, ing: en]
+languages: { eus: eu, cas: es, gaz: es, eng: en, ing: en }
 
 # Base dirs and homepage configuration
 paths:
@@ -19,14 +19,14 @@ paths:
     home_url_slug: login
 
 # Supported periods
-periods: [dbh, lh]
+periods: [ dbh, lh ]
 
 # Routes configuration
 routes:
 #  - '/sample'
   - { path: /, methods: [GET] }
   - { path: /boarding, methods: [POST] }
-  - { path: '/{page}', name: page, controller: 'App\Routing\Controller\ContentRenderController::pageAction', methods: [POST], requirements: { page: \d+ } }
+  - { path: '/{page}', controller: 'App\Routing\Controller\ContentRenderController::pageAction', name: onboard, methods: [POST], requirements: { page: \d+ } }
 
 # CSS styles' map
 styles:

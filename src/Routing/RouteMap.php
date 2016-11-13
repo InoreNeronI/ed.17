@@ -35,8 +35,8 @@ final class RouteMap extends Route
                 if (isset($route['defaults'])) {
                     $defaults = array_unique($route['defaults']);
                 }
-                if (isset($route['_controller'])) {
-                    $defaults['_controller'] = $route['_controller'];
+                if (isset($route['controller'])) {
+                    $defaults['_controller'] = $route['controller'];
                 }
                 if (isset($route['methods'])) {
                     $methods = array_unique($route['methods']);

@@ -29,8 +29,8 @@ class CredentialsModel extends Connection\Connection
     }
 
     /**
-     * @param array  $args
-     * @param string $table
+     * @param array       $args
+     * @param string|null $table
      *
      * @return array
      *
@@ -53,15 +53,15 @@ class CredentialsModel extends Connection\Connection
             ]);
         /** @var \Doctrine\DBAL\Driver\Statement $query */
         $query = $queryBuilder->execute();
-        /** @var array $student */
-        $student = $query->fetch();
-        if (!empty($student)) {
+        /** @var array $user */
+        $user = $query->fetch();
+        if (!empty($user)) {
             /** @var array $codes */
             $codes = \def::dbSecurity();
             /** @var string $codPrueba */
             $codPrueba = $args['fcodprueba'];
             if (isset($codes[$codPrueba])) {
-                return static::requesttAccess($student, $codes[$codPrueba]);
+                return static::requesttAccess($user, $codes[$codPrueba]);
             } else {
                 throw new \Exception(sprintf('The code you have entered does not match: \'%s\'', $codPrueba));
             }
@@ -71,71 +71,72 @@ class CredentialsModel extends Connection\Connection
     }
 
     /**
-     * @param array $student
-     * @param array $data
+     * @param array        $user
+     * @param array|string $args
      *
      * @return array
      */
-    private static function requesttAccess(array $student, array $data)
+    private static function requesttAccess(array $user, $args)
     {
+        $data = static::getAccess($user, $args);
         foreach (\def::periods() as $period) {
             if (strpos($data['table'], $period) !== false && empty($data['period'])) {
                 $data['period'] = $period;
             }
         }
 
-        return static::getAccess($student, $data);
+        return $data;
     }
 
     /**
-     * @param array $student
-     * @param array $data
+     * @param array        $user
+     * @param array|string $args
      *
      * @return array
      *
      * @throws \Exception
      */
-    private static function getAccess(array $student, array $data)
+    private static function getAccess(array $user, $args)
     {
-        if (is_array($data)) {
-            foreach ($data as $key => $item) {
+        if (is_array($args)) {
+            foreach ($args as $key => $item) {
                 /* Eusk: */
                 if ((strpos($item, 'eus') !== false &&
-                        (strtolower($key) === strtolower($student['edg020_tipo_eus']) || strpos(strtolower($key), lcfirst($student['edg020_codmodelo'])) !== false) &&
+                        (strtolower($key) === strtolower($user['edg020_tipo_eus']) || strpos(strtolower($key), lcfirst($user['edg020_codmodelo'])) !== false) &&
                         $mod = 'eus') ||
                     /* Gazte: */
-                    (strpos($item, 'cas') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_cas']) && $mod = 'cas') ||
+                    (strpos($item, 'cas') !== false && lcfirst($key) === lcfirst($user['edg020_tipo_cas']) && $mod = 'cas') ||
                     /* G. sortak: */
-                    (strpos($item, 'gsorta') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_gso']) && $mod = 'gso') ||
+                    (strpos($item, 'gsorta') !== false && lcfirst($key) === lcfirst($user['edg020_tipo_gso']) && $mod = 'gso') ||
                     /* Inge: */
-                    (strpos($item, 'ing') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_ing']) && $mod = 'ing') ||
+                    (strpos($item, 'ing') !== false && lcfirst($key) === lcfirst($user['edg020_tipo_ing']) && $mod = 'ing') ||
                     /* Mate: */
-                    (strpos($item, 'mat') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_mat']) && $mod = 'mat') ||
+                    (strpos($item, 'mat') !== false && lcfirst($key) === lcfirst($user['edg020_tipo_mat']) && $mod = 'mat') ||
                     /* Zie: */
-                    (strpos($item, 'zie') !== false && lcfirst($key) === lcfirst($student['edg020_tipo_zie']) && $mod = 'zie')) {
-                    return ['lengua' => $lengua = static::getLanguage($student, $mod), 'lang' => \def::langCodes()[$lengua], 'table' => $item];
+                    (strpos($item, 'zie') !== false && lcfirst($key) === lcfirst($user['edg020_tipo_zie']) && $mod = 'zie')) {
+                    return ['lengua' => $lengua = static::getLanguage($user, $mod), 'lang' => \def::langCodes()[$lengua], 'table' => $item];
                 }
             }
             /* Eusk: */
-        } elseif ((strpos($data, 'eus') !== false && $mod = 'eus') ||
+        } elseif ((strpos($args, 'eus') !== false && $mod = 'eus') ||
             /* Gazte: */
-            ((strpos($data, 'cas') !== false || strpos($data, 'gaz') !== false) && $mod = 'cas') ||
+            ((strpos($args, 'cas') !== false || strpos($args, 'gaz') !== false) && $mod = 'cas') ||
             /* G. sortak: */
-            (strpos($data, 'gsorta') !== false && $mod = 'gso') ||
+            (strpos($args, 'gsorta') !== false && $mod = 'gso') ||
             /* Inge: */
-            (strpos($data, 'ing') !== false && $mod = 'ing') ||
+            (strpos($args, 'ing') !== false && $mod = 'ing') ||
             /* Mate: */
-            (strpos($data, 'mat') !== false && $mod = 'mat') ||
+            (strpos($args, 'mat') !== false && $mod = 'mat') ||
             /* Zie: */
-            (strpos($data, 'zie') !== false && $mod = 'zie')) {
-            return ['lengua' => $lengua = static::getLanguage($student, $mod), 'lang' => \def::langCodes()[$lengua], 'table' => $data];
+            (strpos($args, 'zie') !== false && $mod = 'zie')) {
+            return ['lengua' => $lengua = static::getLanguage($user, $mod), 'lang' => \def::langCodes()[$lengua], 'table' => $args];
         } else {
-            throw new \Exception(sprintf('Access denied for student \'%s\'', $student['edg020_libro_escolaridad']));
+            throw new \Exception(sprintf('Access denied for student \'%s\'', $user['edg020_libro_escolaridad']));
         }
     }
 
     /**
-     * @param array  $student
+     * @param array  $user
      * @param string $default
      * @param array  $asIs
      *
@@ -143,17 +144,17 @@ class CredentialsModel extends Connection\Connection
      *
      * @throws \Exception
      */
-    private static function getLanguage($student, $default, $asIs = ['eus', 'cas'])
+    private static function getLanguage($user, $default, $asIs = ['eus', 'cas'])
     {
-        if ($student['edg020_lengua_tipo'] === 'fam') {
-            return $student['edg020_lengua'];
-        } elseif ($student['edg020_lengua_tipo'] === 'ins' && isset($student['edg020_lengua_' . $default])) {
-            return $student['edg020_lengua_' . $default];
+        if ($user['edg020_lengua_tipo'] === 'fam') {
+            return $user['edg020_lengua'];
+        } elseif ($user['edg020_lengua_tipo'] === 'ins' && isset($user['edg020_lengua_' . $default])) {
+            return $user['edg020_lengua_' . $default];
         }
         if (in_array($default, $asIs)) {
             return $default;
         } else {
-            throw new \Exception(sprintf('No language found for student \'%s\'', $student['edg020_libro_escolaridad']));
+            throw new \Exception(sprintf('No language found for student \'%s\'', $user['edg020_libro_escolaridad']));
         }
     }
 }

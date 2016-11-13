@@ -9,7 +9,7 @@ credentials:
   database_password:  ~
   # You should uncomment this if you want use pdo_sqlite
   # database_path:      "%kernel.root_dir%/data.db3"
-  # User table
+  # Users table
   user_table:         edg020_ikasleak
 
 # Database access configuration

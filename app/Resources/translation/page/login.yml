@@ -1,24 +1,87 @@
-title: 'Identifikazioa / Identificación'
+title:
+  eu: 'Identifikazioa'
+  es: 'Identificación'
+  en: ''
 form_action: '/boarding'
-code: 'Ikaslearen kodea / Código del alumno-a'
-bdate: 'Jaiotze data / Fecha nacimiento'
-bday: 'Eguna / Día'
-bmonth: 'Hilabetea / Mes'
-jan: 'urtarrila / enero'
-feb: 'otsaila / febrero'
-mar: 'martxoa / marzo'
-apr: 'apirila / abril'
-may: 'maiatza / mayo'
-jun: 'ekaina / junio'
-jul: 'uztaila / julio'
-aug: 'abuztua / agosto'
-sep: 'iraila / septiembre'
-oct: 'urria / octubre'
-nov: 'azaroa / noviembre'
-dec: 'abendua / diciembre'
-codpro: 'Probaren kodea / Código de la prueba'
-audio_sample_tip: 'Audio proba / Prueba de audio'
-audio_sample_url:
+code:
+  eu: 'Ikaslearen kodea'
+  es: 'Código del alumno-a'
+  en: ''
+bdate:
+  eu: 'Jaiotze data'
+  es: 'Fecha nacimiento'
+  en: 'Next'
+bday:
+  eu: 'Eguna'
+  es: 'Día'
+  en: ''
+bmonth:
+  eu: 'Hilabetea'
+  es: 'Mes'
+  en: ''
+jan:
+  eu: 'urtarrila'
+  es: 'enero'
+  en: ''
+feb:
+  eu: 'otsaila'
+  es: 'febrero'
+  en: ''
+mar:
+  eu: 'martxoa'
+  es: 'marzo'
+  en: ''
+apr:
+  eu: 'apirila'
+  es: 'abril'
+  en: ''
+may:
+  eu: 'maiatza'
+  es: 'mayo'
+  en: ''
+jun:
+  eu: 'ekaina'
+  es: 'junio'
+  en: ''
+jul:
+  eu: 'uztaila'
+  es: 'julio'
+  en: ''
+aug:
+  eu: 'abuztua'
+  es: 'agosto'
+  en: ''
+sep:
+  eu: 'iraila'
+  es: 'septiembre'
+  en: ''
+oct:
+  eu: 'urria'
+  es: 'octubre'
+  en: ''
+nov:
+  eu: 'azaroa'
+  es: 'noviembre'
+  en: ''
+dec:
+  eu: 'abendua'
+  es: 'diciembre'
+  en: ''
+codpro:
+  eu: 'Probaren kodea'
+  es: 'Código de la prueba'
+  en: ''
+audio_sample_tip:
+  eu: 'Audio proba'
+  es: 'Prueba de audio'
+  en: ''
+audio_sample_file:
+  eu:
     mp3: ''
     ogg: '/media/audio_proba_labur.ogg'
-submit_text: 'Bidali / Enviar'
+  es: ''
+  en: ''
+submit_text:
+  eu: 'Bidali'
+  es: 'Enviar'
+  en: ''

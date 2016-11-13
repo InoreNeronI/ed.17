@@ -83,16 +83,16 @@ class TranslationsModel
 
     /**
      * @param array       $items
-     * @param string      $map
+     * @param string      $filename
      * @param string|null $break_table
      * @param string|null $prefix
      *
      * @return array
      */
-    public static function parseFields(array $items, $map = 'index', $break_table = null, $prefix = null)
+    private static function parseFields(array $items, $filename = 'index', $break_table = null, $prefix = null)
     {
         $fields = [];
-        $config = parseConfig($map);
+        $config = parseConfig(CONFIG_DIR, $filename);
         foreach ($items as $name => $value) {
             if (array_key_exists($name, $config)) {
                 $fields[$name] = static::mapFields($config[$name], $break_table, $prefix);
