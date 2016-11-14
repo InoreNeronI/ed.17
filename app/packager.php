@@ -190,7 +190,7 @@ class packager
                 $choice = self::beautifyAndPromptCandidates($links, 'Which of the following matches\' dependencies do you want to be downloaded? Type a number to continue:');
                 static::$slitaz_arguments[2] = static::beautifyPkgName($links[$choice]);
 
-                static::getTazPkg(static::$slitaz_arguments, static::$slitaz_version);
+                return static::getTazPkg(static::$slitaz_arguments, static::$slitaz_version);
             }
         } elseif (!empty($links) && !empty($package_name) && $dependenciesFlagId = array_search('--dependencies', static::$slitaz_arguments) === false) {
             if (count($links) === 1 && $package_name === self::beautifyPkgName($links[0])) {
@@ -320,10 +320,13 @@ class packager
             echo PHP_EOL . "\t\t[" . ($key + 1) . "]\t" . static::beautifyPkgName($link);
         }
         echo PHP_EOL . PHP_EOL . "\t" . 'Number: ';
+
         $handle = fopen('php://stdin', 'r');
         $line = fgets($handle);
-        $id = intval(trim($line));
+        if (($id = intval(trim($line))) >= 1 && $id <= count($links)) {
+            return --$id;
+        }
 
-        return --$id;
+        return static::beautifyAndPromptCandidates($links, 'Type correct number to continue:');
     }
 }
