@@ -12,14 +12,14 @@ final class PagesModel extends CredentialsModel
 
     /**
      * @param array  $args
-     * @param string $wildcard
-     * @param string $side
+     * @param string $wildcardA
+     * @param string $wildcardB
      *
      * @return array
      *
      * @throws \Exception
      */
-    private function loadData(array $args, $wildcard, $side)
+    private function loadData(array $args, $wildcardA, $wildcardB)
     {
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
@@ -28,15 +28,15 @@ final class PagesModel extends CredentialsModel
             ->where('t.edg051_periodo = :periodo')
             ->andWhere('t.edg051_cod_texto LIKE :text_code')
             ->orderBy('t.edg051_cod_texto')
-            ->setParameters(['periodo' => $args['fcurso'], 'text_code' => 'p' . $wildcard . $side . '%']);
+            ->setParameters(['periodo' => $args['fcurso'], 'text_code' => 'p' . $wildcardA . $wildcardB . '%']);
 
         /** @var array $texts */
         $texts = $queryBuilder->execute()->fetchAll();
         if (!empty($texts)) {
             static::$pageTexts['id'] = $texts[0]['id'];
-            static::$pageTexts['texts'][$side] = [];
+            static::$pageTexts['texts'][$wildcardB] = [];
             foreach ($texts as $text) {
-                static::$pageTexts['texts'][$side][$text['text_code']] = $text['text_string'];
+                static::$pageTexts['texts'][$wildcardB][$text['text_code']] = $text['text_string'];
             }
 
             return static::$pageTexts;
