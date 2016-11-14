@@ -57,11 +57,15 @@ final class PagesModel extends CredentialsModel
     {
         $sideA = $this->loadData($args, $page, 'a');
         $configPath = DATA_DIR . '/' . $sideA['id'];
+        $config = parseConfig($configPath, 'config');
 
+        if (empty($config)) {
+            throw new \Exception(sprintf('The configuration file is missing in the target: %s', $configPath));
+        }
         return array_merge($args, $sideA, $this->loadData($args, $page, 'b'), [
             'id' => $sideA['id'],
             'page' => $page,
-            'totalPages' => parseConfig($configPath, 'config')['pages'],
+            'totalPages' => $config['pages'],
             'config' => ['a' => parseConfig($configPath, 'p' . $page . 'a'), 'b' => parseConfig($configPath, 'p' . $page . 'b')],
             'lang' => $args['lang'],
         ]);

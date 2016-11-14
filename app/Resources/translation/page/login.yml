@@ -75,13 +75,10 @@ audio_sample_tip:
   eu: 'Audio proba'
   es: 'Prueba de audio'
   en: ''
-audio_sample_file:
-  eu:
-    mp3: ''
-    ogg: '/media/audio_proba_labur.ogg'
-  es: ''
-  en: ''
 submit_text:
   eu: 'Bidali'
   es: 'Enviar'
   en: ''
+audio_sample_file:
+  mp3: '/media/audio/0_audio_proba_labur.mp3'
+  ogg: '/media/audio/0_audio_proba_labur.ogg'

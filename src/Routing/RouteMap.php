@@ -51,10 +51,10 @@ final class RouteMap extends Route
             } else {
                 $routePath = $route;
             }
-            if ($routePath === \def::paths()['home_url_path']) {
-                $routeName = \def::paths()['home_url_slug'];
-            } elseif (isset($route['name'])) {
+            if (isset($route['name'])) {
                 $routeName = $route['name'];
+            } elseif ($routePath === \def::paths()['home_url_path']) {
+                $routeName = \def::paths()['home_url_slug'];
             } else {
                 // Template name without extension
                 $routeName = str_replace('/', '', $routePath);

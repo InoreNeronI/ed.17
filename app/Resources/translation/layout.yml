@@ -1,10 +1,10 @@
 # Do not repeat variable names that are in 'common', neither the ones that are other blocks like 'home' and 'login', or just the last one will remain.
 course: '2017'
 mainTitle:
-    eu: 'Ebaluazio diagnostikoa'
-    es: 'Evaluación diagnóstica'
-    en: ''
+  eu: 'Ebaluazio diagnostikoa'
+  es: 'Evaluación diagnóstica'
+  en: ''
 images:
-    bg_url: '/images/ed_ikasleak.jpg'
-    logo_url: '/images/logoed.jpg'
-    logo_url_footer: '/images/logo_hezkuntza.png'
+  bg_url: '/images/ed_ikasleak.jpg'
+  logo_url: '/images/logoed.jpg'
+  logo_url_footer: '/images/logo_hezkuntza.png'
