@@ -24,7 +24,7 @@ class packager
     private static $slitaz_versions = ['backports' => 'b', 'cooking' => 'c', 'stable' => 's', 'tiny' => 't', 'undigest' => 'u', 'first' => '1', 'second' => '2', 'third' => '3'];
 
     /**
-     * @param array $arguments
+     * @param array  $arguments
      * @param string $version
      *
      * @throws Exception
@@ -76,7 +76,6 @@ class packager
         if (($key = array_search('--package', static::$slitaz_arguments)) !== false) {
             /** @url http://stackoverflow.com/a/3766319 */
             list($package_name) = explode(' ', trim(static::$slitaz_arguments[$key + 1]));
-
         } else {
             throw new Exception('Argument --package is missing. Type --help for usage.');
         }
@@ -98,12 +97,12 @@ class packager
     }
 
     /**
-     * @param $url
-     * @param $package_name
-     * @param bool $dependencies
-     * @param bool $no_cache
+     * @param string $url
+     * @param string $package_name
+     * @param bool   $dependencies
+     * @param bool   $no_cache
      *
-     * @return mixed|string
+     * @return string
      *
      * @throws Exception
      */
@@ -139,7 +138,7 @@ class packager
     }
 
     /**
-     * @param string $string
+     * @param string      $string
      * @param string|null $package_name
      *
      * @return array
@@ -163,7 +162,6 @@ class packager
             }
             if (pathinfo($link->nodeValue, PATHINFO_EXTENSION) == 'tazpkg') {
                 if ($standalone !== false) {
-
                     return [$extract[--$standalone]->nodeValue];
                 }
                 $links[] = $link->nodeValue;
@@ -174,7 +172,7 @@ class packager
     }
 
     /**
-     * @param string $string
+     * @param string      $string
      * @param string|null $package_name
      *
      * @return array
@@ -184,17 +182,20 @@ class packager
         $links = static::extractTazPkgsStrings($string, $package_name);
 
         if (empty($links) && empty($package_name) && $dependenciesFlagId = array_search('--dependencies', static::$slitaz_arguments) !== false) {
-            echo PHP_EOL . "\t" . 'Which of the following matches\' dependencies do you want to be downloaded?  Type a number to continue: ' . PHP_EOL;
+            $package_name = static::$slitaz_arguments[2];
+            $src = static::getTazPkgsSource('http://pkgs.slitaz.org/search.sh', $package_name, false, $nocache = array_search('--nocache', static::$slitaz_arguments) !== false);
+            $links = static::extractTazPkgsStrings($src, $package_name);
 
-            $src = static::getTazPkgsSource('http://pkgs.slitaz.org/search.sh', static::$slitaz_arguments[2], false, $nocache = array_search('--nocache', static::$slitaz_arguments) !== false);
-            $links = static::extractTazPkgsStrings($src, static::$slitaz_arguments[2]);
-            $choice = self::beautifyAndPromptCandidates($links);
-            static::$slitaz_arguments[2] = static::beautifyPkgName($links[$choice]);
+            if (!empty($links)) {
+                $choice = self::beautifyAndPromptCandidates($links, 'Which of the following matches\' dependencies do you want to be downloaded? Type a number to continue:');
+                static::$slitaz_arguments[2] = static::beautifyPkgName($links[$choice]);
 
-            return static::getTazPkg(static::$slitaz_arguments, static::$slitaz_version);
-        }
-        elseif (count($links) > 1 && !empty($package_name) && $dependenciesFlagId = array_search('--dependencies', static::$slitaz_arguments) === false) {
-            echo PHP_EOL . "\t" . 'Which of the following matches do you want to be downloaded?  Type a number to continue: ' . PHP_EOL;
+                static::getTazPkg(static::$slitaz_arguments, static::$slitaz_version);
+            }
+        } elseif (!empty($links) && !empty($package_name) && $dependenciesFlagId = array_search('--dependencies', static::$slitaz_arguments) === false) {
+            if (count($links) === 1 && $package_name === self::beautifyPkgName($links[0])) {
+                return [$links[0]];
+            }
 
             return [$links[self::beautifyAndPromptCandidates($links)]];
         }
@@ -207,9 +208,9 @@ class packager
     }
 
     /**
-     * @param $link
-     * @param $target_dir
-     * @param $overwrite
+     * @param string $link
+     * @param string $target_dir
+     * @param bool   $overwrite
      *
      * @return mixed
      *
@@ -280,7 +281,7 @@ class packager
 
     /**
      * @param float $bytes
-     * @param int $precision
+     * @param int   $precision
      *
      * @return string
      */
@@ -296,6 +297,7 @@ class packager
 
     /**
      * @param string $name
+     *
      * @return int
      */
     private static function beautifyPkgName($name)
@@ -306,11 +308,14 @@ class packager
     }
 
     /**
-     * @param array $links
+     * @param array  $links
+     * @param string $message
+     *
      * @return int
      */
-    private static function beautifyAndPromptCandidates($links)
+    private static function beautifyAndPromptCandidates(array $links, $message = 'Which of the following matches do you want to be downloaded?  Type a number to continue:')
     {
+        echo PHP_EOL . "\t" . $message . PHP_EOL;
         foreach ($links as $key => $link) {
             echo PHP_EOL . "\t\t[" . ($key + 1) . "]\t" . static::beautifyPkgName($link);
         }
