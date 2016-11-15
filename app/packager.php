@@ -243,12 +243,12 @@ class packager
         $microtime = microtime(true) * 1000;
         curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, function (
             /** @url http://stackoverflow.com/a/13668885 */
-            $clientp,  // this is an unchanged pointer as set with CURLOPT_PROGRESSDATA
-            $dlnowdltotal, // the total bytes to be downloaded (or 0 if not downloading)
-            $dlnowdlnow,   // the current download bytecount (or 0 if not downloading)
-            $dlnowultotal, // the total bytes to be uploaded (or 0 if not uploading)
-            $dlnowulnow)  // the current upload bytecount (or 0 if not uploading)
-        use ($filename, $microtime) {
+            $clientp,       // this is an unchanged pointer as set with CURLOPT_PROGRESSDATA
+            $dlnowdltotal,  // the total bytes to be downloaded (or 0 if not downloading)
+            $dlnowdlnow,    // the current download bytecount (or 0 if not downloading)
+            $dlnowultotal,  // the total bytes to be uploaded (or 0 if not uploading)
+            $dlnowulnow     // the current upload bytecount (or 0 if not uploading)
+        ) use ($filename, $microtime) {
             static $calls = 0;
             if (++$calls % 4 != 0) {
                 /* The rest of the code will be executed only 1/4 times
