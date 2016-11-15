@@ -1,10 +1,10 @@
 <?php
 
 /** @url https://gist.github.com/azihassan/3093972 */
-define('SLITAZ_PKGR_USAGE', 'Usage: php ' . $argv[0] . ' --package package_name --path ' . __DIR__ . ' [--dependencies] [--overwrite] [--nocache] [--help]');
+define('USAGE', 'Usage: php ' . $argv[0] . ' --package package_name --path ' . __DIR__ . ' [--dependencies] [--overwrite] [--nocache] [--help]');
 
 if ($argc == 1) {
-    \packager::getTazUsage();
+    \packager::getUsage(USAGE);
 }
 \packager::getTazPkg($argv, 'cooking');
 
@@ -14,18 +14,18 @@ if ($argc == 1) {
 class packager
 {
     /** @var array */
-    private static $slitaz_arguments;
+    private static $arguments;
 
     /** @var string */
-    private static $slitaz_version;
+    private static $version;
 
     /** @var array */
-    private static $slitaz_versions = ['backports' => 'b', 'cooking' => 'c', 'stable' => 's', 'tiny' => 't', 'undigest' => 'u', 'first' => '1', 'second' => '2', 'third' => '3'];
+    private static $versions = ['backports' => 'b', 'cooking' => 'c', 'stable' => 's', 'tiny' => 't', 'undigest' => 'u', 'first' => '1', 'second' => '2', 'third' => '3'];
 
     /**
      * @param string $usage
      */
-    public static function getTazUsage($usage = SLITAZ_PKGR_USAGE)
+    public static function getUsage($usage)
     {
         echo PHP_EOL . "\t" . $usage . PHP_EOL;
         exit;
@@ -62,19 +62,19 @@ class packager
      */
     public static function getTazPkg($arguments, $version = 'stable')
     {
-        static::$slitaz_arguments = $arguments;
-        static::$slitaz_version = $version;
+        static::$arguments = $arguments;
+        static::$version = $version;
         try {
-            list($package_name, $target_dir, $dependencies, $help, $overwrite, $no_cache, $with_dependencies) = static::parseSlitazArguments();
-            $dependencies = $dependencies || $with_dependencies;
+            list($package_name, $target_dir, $dependencies, $help, $overwrite, $no_cache, $with_depends) = static::parseTazArguments();
+            $dependencies = $dependencies || $with_depends;
             if ($help === true) {
-                static::getTazUsage();
+                static::getUsage(USAGE);
             }
             echo PHP_EOL . 'Extracting the links...' . PHP_EOL;
             $src = static::getTazPkgsSource('http://pkgs.slitaz.org/search.sh', $package_name, $dependencies, $no_cache);
             $links = static::extractTazPkgsLinks($src, $dependencies ? null : $package_name);
             if (!empty($links)) {
-                if ($with_dependencies) {
+                if ($with_depends) {
                     $src_parent = static::getTazPkgsSource('http://pkgs.slitaz.org/search.sh', $package_name, null, $no_cache);
                     array_unshift($links, static::extractTazPkgsLinks($src_parent));
                 }
@@ -90,34 +90,34 @@ class packager
      *
      * @throws Exception
      */
-    private static function parseSlitazArguments()
+    private static function parseTazArguments()
     {
-        if ($help = in_array('--help', static::$slitaz_arguments)) {
+        if ($help = in_array('--help', static::$arguments)) {
             return [null, null, null, true, null, null];
         }
 
-        if (($key = array_search('--package', static::$slitaz_arguments)) !== false) {
+        if (($key = array_search('--package', static::$arguments)) !== false) {
             /** @url http://stackoverflow.com/a/3766319 */
-            list($package_name) = explode(' ', trim(static::$slitaz_arguments[$key + 1]));
+            list($package_name) = explode(' ', trim(static::$arguments[$key + 1]));
         } else {
-            throw new Exception(sprintf('%s%sERROR: Argument --package is missing. Type --help for usage.', PHP_EOL, "\t"));
+            throw new Exception(sprintf('%s%sERROR: Argument `--package` is mandatory. Type --help for usage.', PHP_EOL, "\t"));
         }
 
-        if (($key = array_search('--path', static::$slitaz_arguments)) !== false) {
-            $target_dir = static::$slitaz_arguments[$key + 1];
+        if (($key = array_search('--path', static::$arguments)) !== false) {
+            $target_dir = static::$arguments[$key + 1];
             if (!is_writable($target_dir) && mkdir($target_dir) === false) {
                 throw new Exception(sprintf('%s%sERROR: `%s` is not writable. Try again with another path or leave it empty for the current path.', PHP_EOL, "\t", $target_dir));
             }
         } else {
-            throw new Exception(sprintf('%s%sERROR: `--path` is mandatory%s%s%s.', PHP_EOL, "\t", PHP_EOL, "\t", SLITAZ_PKGR_USAGE));
+            throw new Exception(sprintf('%s%sERROR: Argument `--path` is mandatory%s%s%s.', PHP_EOL, "\t", PHP_EOL, "\t", USAGE));
         }
 
-        $dependencies = in_array('--dependencies', static::$slitaz_arguments);
-        $overwrite = in_array('--overwrite', static::$slitaz_arguments);
-        $no_cache = in_array('--nocache', static::$slitaz_arguments);
-        $with_deps = in_array('--withdepends', static::$slitaz_arguments);
+        $dependencies = in_array('--dependencies', static::$arguments);
+        $overwrite = in_array('--overwrite', static::$arguments);
+        $no_cache = in_array('--nocache', static::$arguments);
+        $with_depends = in_array('--withdepends', static::$arguments);
 
-        return [$package_name, $target_dir, $dependencies, $help, $overwrite, $no_cache, $with_deps];
+        return [$package_name, $target_dir, $dependencies, $help, $overwrite, $no_cache, $with_depends];
     }
 
     /**
@@ -136,7 +136,7 @@ class packager
         $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $package_name . ($dependencies ? '_dep' : '') . '.tmp';
         $query = $url . '?';
         $query .= $dependencies ? 'depends=' . $package_name : 'package=' . $package_name;
-        $query .= '&version=' . static::$slitaz_versions[static::$slitaz_version];
+        $query .= '&version=' . static::$versions[static::$version];
 
         if (is_readable($tmp) && $no_cache === false) {
             curl_close($ch);
@@ -153,7 +153,7 @@ class packager
         if ($result === false) {
             $err = curl_error($ch);
             curl_close($ch);
-            throw new Exception(sprintf('ERROR: Failed to retrieve the source%s%s', "\t", $err));
+            throw new Exception(sprintf('%s%sERROR: Failed to retrieve the source%s%s', PHP_EOL, "\t", "\t", $err));
         }
         curl_close($ch);
         file_put_contents($tmp, $result);
@@ -206,8 +206,9 @@ class packager
         $links = static::extractTazPkgsStrings($string, $package_name);
 
         if (empty($links) && empty($package_name)) {
-            $package_name = static::$slitaz_arguments[2];
-            $nocache = array_search('--nocache', static::$slitaz_arguments) !== false;
+            $package_arg_key = array_search('--package', static::$arguments) + 1;
+            $package_name = static::$arguments[$package_arg_key];
+            $nocache = array_search('--nocache', static::$arguments) !== false;
             $src = static::getTazPkgsSource('http://pkgs.slitaz.org/search.sh', $package_name, false, $nocache);
             $links = static::extractTazPkgsStrings($src, $package_name);
 
@@ -215,13 +216,13 @@ class packager
                 if (count($links) === 1) {
                     return [$package_name => $links[0]];
                 }
-                $message = array_search('--withdepends', static::$slitaz_arguments) !== false ?
+                $message = array_search('--withdepends', static::$arguments) !== false ?
                     'Which of the following matches and its\' dependencies do you want to be downloaded? Type a number to continue:' :
                     'Which of the following matches\' dependencies do you want to be downloaded? Type a number to continue:';
                 $choice = self::beautifyAndPromptCandidates($links, $message);
-                static::$slitaz_arguments[2] = static::beautifyPkgName($links[$choice]);
+                static::$arguments[$package_arg_key] = static::beautifyPkgName($links[$choice]);
 
-                return static::getTazPkg(static::$slitaz_arguments, static::$slitaz_version);
+                return static::getTazPkg(static::$arguments, static::$version);
             }
         } elseif (!empty($links) && !empty($package_name)) {
             if (count($links) === 1) {
@@ -274,8 +275,8 @@ class packager
             $dlnowdltotal,  // the total bytes to be downloaded (or 0 if not downloading)
             $dlnowdlnow,    // the current download bytecount (or 0 if not downloading)
             $dlnowultotal,  // the total bytes to be uploaded (or 0 if not uploading)
-            $dlnowulnow     // the current upload bytecount (or 0 if not uploading)
-) use ($filename, $microtime) {
+            $dlnowulnow)    // the current upload bytecount (or 0 if not uploading)
+        use ($filename, $microtime) {
             static $calls = 0;
             if (++$calls % 4 != 0) {
                 /* The rest of the code will be executed only 1/4 times

@@ -23,7 +23,7 @@ final class PagesModel extends CredentialsModel
     {
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
-            ->select('t.edg051_codprueba as id', 't.edg051_cod_texto as text_code', 'TRIM(t.edg051_texto_' . $args['flengua'] . ') as text_string')
+            ->select('LOWER(t.edg051_codprueba) as id', 't.edg051_cod_texto as text_code', 'TRIM(t.edg051_texto_' . $args['flengua'] . ') as text_string')
             ->from($args['ftestuak'], 't')
             ->where('t.edg051_periodo = :periodo')
             ->andWhere('t.edg051_cod_texto LIKE :text_code')
@@ -46,13 +46,15 @@ final class PagesModel extends CredentialsModel
     }
 
     /**
-     * @param array $args
+     * @param array  $args
      * @param string $page
-     * @param array $default_widths
+     * @param array  $default_width_percents
+     *
      * @return array
+     *
      * @throws \Exception
      */
-    public function loadPageData(array $args, $page, $default_widths = ['a' => '50', 'b' => '50'])
+    public function loadPageData(array $args, $page, $default_width_percents = ['a' => '50', 'b' => '50'])
     {
         $sideA = $this->loadData($args, $page, 'a');
         $configPath = DATA_DIR . '/' . $sideA['id'];
@@ -61,9 +63,9 @@ final class PagesModel extends CredentialsModel
         if (empty($config)) {
             throw new \Exception(sprintf('The configuration file is missing in the target: %s', $configPath));
         }
-        $pageWidths = empty($config['pageWidths']['p' . $page]) ? $default_widths : $config['pageWidths']['p' . $page];
+        $pageWidths = empty($config['pageWidths']['p' . $page]) ? $default_width_percents : $config['pageWidths']['p' . $page];
+        $widthStyling = \def::styling()['width'];
         foreach ($pageWidths as $sideLetter => $sideWith) {
-            $widthStyling = \def::styling()['width'];
             if (in_array($sideWith, array_keys($widthStyling))) {
                 $config['pageWidth'][$sideLetter] = $widthStyling[$sideWith];
             }
@@ -72,7 +74,7 @@ final class PagesModel extends CredentialsModel
         return array_merge($args, $sideA, $this->loadData($args, $page, 'b'), [
             'id' => $sideA['id'],
             'lang' => $args['lang'],
-            'options' => empty($config['pageOptions']['p' . $page]) ?: $config['pageOptions']['p' . $page],
+            'options' => empty($config['pageOptions']['p' . $page]) ? [] : $config['pageOptions']['p' . $page],
             'page' => $page,
             'sideSkip' => empty($config['pageSkips']['p' . $page]) ? null : $config['pageSkips']['p' . $page],
             'pageWidth' => $config['pageWidth'],
