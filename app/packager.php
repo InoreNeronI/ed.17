@@ -1,7 +1,7 @@
 <?php
 
 /** @url https://gist.github.com/azihassan/3093972 */
-define('USAGE', 'Usage: php ' . $argv[0] . ' --package package_name --path ' . __DIR__ . ' [--dependencies] [--overwrite] [--nocache] [--help]');
+define('USAGE', 'Usage: php ' . $argv[0] . ' --package package_name --path ' . __DIR__ . ' [--dependencies] [--overwrite] [--nocache] [--withdepends] [--help]');
 
 if ($argc == 1) {
     \packager::getUsage(USAGE);
@@ -46,7 +46,7 @@ class packager
             echo PHP_EOL;
             try {
                 static::downloadFile($link, $target_dir, $overwrite);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 echo sprintf('%s%s', "\t", $e->getMessage());
                 continue;
             }
@@ -58,7 +58,7 @@ class packager
      * @param array  $arguments
      * @param string $version
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public static function getTazPkg($arguments, $version = 'stable')
     {
@@ -66,11 +66,11 @@ class packager
         static::$version = $version;
         try {
             list($package_name, $target_dir, $dependencies, $help, $overwrite, $no_cache, $with_depends) = static::parseTazArguments();
-            $dependencies = $dependencies || $with_depends;
             if ($help === true) {
                 static::getUsage(USAGE);
             }
             echo PHP_EOL . 'Extracting the links...' . PHP_EOL;
+            $dependencies = $dependencies || $with_depends;
             $src = static::getTazPkgsSource('http://pkgs.slitaz.org/search.sh', $package_name, $dependencies, $no_cache);
             $links = static::extractTazPkgsLinks($src, $dependencies ? null : $package_name);
             if (!empty($links)) {
@@ -80,7 +80,7 @@ class packager
                 }
                 static::getHttpResource($links, $target_dir, $overwrite);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo $e->getMessage() . PHP_EOL;
         }
     }
@@ -88,7 +88,7 @@ class packager
     /**
      * @return array
      *
-     * @throws Exception
+     * @throws \Exception
      */
     private static function parseTazArguments()
     {
@@ -100,16 +100,16 @@ class packager
             /** @url http://stackoverflow.com/a/3766319 */
             list($package_name) = explode(' ', trim(static::$arguments[$key + 1]));
         } else {
-            throw new Exception(sprintf('%s%sERROR: Argument `--package` is mandatory. Type --help for usage.', PHP_EOL, "\t"));
+            throw new \Exception(sprintf('%s%sERROR: Argument `--package` is mandatory. Type --help for usage.', PHP_EOL, "\t"));
         }
 
         if (($key = array_search('--path', static::$arguments)) !== false) {
             $target_dir = static::$arguments[$key + 1];
             if (!is_writable($target_dir) && mkdir($target_dir) === false) {
-                throw new Exception(sprintf('%s%sERROR: `%s` is not writable. Try again with another path or leave it empty for the current path.', PHP_EOL, "\t", $target_dir));
+                throw new \Exception(sprintf('%s%sERROR: `%s` is not writable. Try again with another path or leave it empty for the current path.', PHP_EOL, "\t", $target_dir));
             }
         } else {
-            throw new Exception(sprintf('%s%sERROR: Argument `--path` is mandatory%s%s%s.', PHP_EOL, "\t", PHP_EOL, "\t", USAGE));
+            throw new \Exception(sprintf('%s%sERROR: Argument `--path` is mandatory%s%s%s.', PHP_EOL, "\t", PHP_EOL, "\t", USAGE));
         }
 
         $dependencies = in_array('--dependencies', static::$arguments);
@@ -128,7 +128,7 @@ class packager
      *
      * @return string
      *
-     * @throws Exception
+     * @throws \Exception
      */
     private static function getTazPkgsSource($url, $package_name, $dependencies = false, $no_cache = false)
     {
@@ -153,7 +153,7 @@ class packager
         if ($result === false) {
             $err = curl_error($ch);
             curl_close($ch);
-            throw new Exception(sprintf('%s%sERROR: Failed to retrieve the source%s%s', PHP_EOL, "\t", "\t", $err));
+            throw new \Exception(sprintf('%s%sERROR: Failed to retrieve the source%s%s', PHP_EOL, "\t", "\t", $err));
         }
         curl_close($ch);
         file_put_contents($tmp, $result);
@@ -200,6 +200,8 @@ class packager
      * @param string|null $package_name
      *
      * @return array
+     *
+     * @throws \Exception
      */
     private static function extractTazPkgsLinks($string, $package_name = null)
     {
@@ -234,7 +236,7 @@ class packager
         }
 
         if (empty($links)) {
-            echo sprintf('%s%sERROR: No links for `%s` were found.', PHP_EOL, "\t", $package_name);
+            throw new \Exception(sprintf('%s%sERROR: No links for `%s` were found.', PHP_EOL, "\t", $package_name));
         }
 
         return $links;
@@ -247,7 +249,7 @@ class packager
      *
      * @return mixed
      *
-     * @throws Exception
+     * @throws \Exception
      */
     private static function downloadFile($link, $target_dir, $overwrite)
     {
@@ -256,11 +258,11 @@ class packager
         $path = $target_dir . DIRECTORY_SEPARATOR . $filename;
 
         if (file_exists($path) && !$overwrite) {
-            throw new Exception(sprintf('NOTICE: Package `%s` already exists.', $filename));
+            throw new \Exception(sprintf('NOTICE: Package `%s` already exists.', $filename));
         }
 
         if (($f = fopen($path, 'wb')) === false) {
-            throw new Exception(sprintf('ERROR: Folder `%s` is not writable.', $path));
+            throw new \Exception(sprintf('ERROR: Folder `%s` is not writable.', $path));
         }
 
         curl_setopt($ch, CURLOPT_URL, $link);
@@ -307,7 +309,7 @@ class packager
             if (is_file($path) && filesize($path) === 0) {
                 unlink($path);
             }
-            throw new Exception(sprintf('ERROR: %s%sWhile trying to download `%s`', $err, "\t", $filename));
+            throw new \Exception(sprintf('ERROR: %s%sWhile trying to download `%s`', $err, "\t", $filename));
         }
 
         return $result;
@@ -332,7 +334,7 @@ class packager
     /**
      * @param string $name
      *
-     * @return int
+     * @return string
      */
     private static function beautifyPkgName($name)
     {
