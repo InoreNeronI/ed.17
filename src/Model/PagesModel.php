@@ -36,7 +36,7 @@ final class PagesModel extends CredentialsModel
             static::$pageTexts['id'] = $texts[0]['id'];
             static::$pageTexts['texts'][$wildcardB] = [];
             foreach ($texts as $text) {
-                static::$pageTexts['texts'][$wildcardB][$text['text_code']] = $text['text_string'];
+                static::$pageTexts['texts'][$wildcardB][$text['text_code']] = trim($text['text_string']);
             }
 
             return static::$pageTexts;
@@ -46,14 +46,13 @@ final class PagesModel extends CredentialsModel
     }
 
     /**
-     * @param array  $args
+     * @param array $args
      * @param string $page
-     *
+     * @param array $default_widths
      * @return array
-     *
      * @throws \Exception
      */
-    public function loadPageData(array $args, $page)
+    public function loadPageData(array $args, $page, $default_widths = ['a' => '50', 'b' => '50'])
     {
         $sideA = $this->loadData($args, $page, 'a');
         $configPath = DATA_DIR . '/' . $sideA['id'];
@@ -62,13 +61,22 @@ final class PagesModel extends CredentialsModel
         if (empty($config)) {
             throw new \Exception(sprintf('The configuration file is missing in the target: %s', $configPath));
         }
+        $pageWidths = empty($config['pageWidths']['p' . $page]) ? $default_widths : $config['pageWidths']['p' . $page];
+        foreach ($pageWidths as $sideLetter => $sideWith) {
+            $widthStyling = \def::styling()['width'];
+            if (in_array($sideWith, array_keys($widthStyling))) {
+                $config['pageWidth'][$sideLetter] = $widthStyling[$sideWith];
+            }
+        }
 
         return array_merge($args, $sideA, $this->loadData($args, $page, 'b'), [
             'id' => $sideA['id'],
-            'page' => $page,
-            'totalPages' => $config['pages'],
-            'config' => ['a' => parseConfig($configPath, 'p' . $page . 'a'), 'b' => parseConfig($configPath, 'p' . $page . 'b')],
             'lang' => $args['lang'],
+            'options' => empty($config['pageOptions']['p' . $page]) ?: $config['pageOptions']['p' . $page],
+            'page' => $page,
+            'sideSkip' => empty($config['pageSkips']['p' . $page]) ? null : $config['pageSkips']['p' . $page],
+            'pageWidth' => $config['pageWidth'],
+            'totalPages' => $config['totalPages'],
         ]);
     }
 }

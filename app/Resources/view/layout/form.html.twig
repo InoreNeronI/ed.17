@@ -1,5 +1,12 @@
 {% extends 'layout.html.twig' %}
 
+{% block styles %}
+    {{ parent() }}
+    <style type="text/css">
+        {% include 'asset/bg-resize.css.twig' with { 'bg_url': images.bg_url } %}
+    </style>
+{% endblock %}
+
 {% block content %}
     <article class="cf ph4 pv2 tc">
         <div class="fl w-100 w-100-m w-50-ns tc">
@@ -10,7 +17,7 @@
             <h3 class="navy f3 mb2"><strong>{{ title }}</strong></h3>
         </div>
     </article>
-    <article id="has-bg-image" class="br3 cf pv2 mh1-ns mh1-m mh3-l" style="background: url('{{ images.bg_url }}') no-repeat; background-size: cover;">
+    <article class="has-bg-image cf pv2 mh1-ns mh1-m mh3-l">
         <form action="{{ form_action|default('') }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
             {% block content_form %}{% endblock %}
         </form>
@@ -30,5 +37,5 @@
 
 {% block jq_ready %}
     {{ parent() }}
-    {% include 'layout/form/bg-resize.js.twig' %}
+    {% include 'asset/bg-resize.js.twig' %}
 {% endblock %}

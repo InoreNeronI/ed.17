@@ -10,7 +10,7 @@ code:
 bdate:
   eu: 'Jaiotze data'
   es: 'Fecha nacimiento'
-  en: 'Next'
+  en: ''
 bday:
   eu: 'Eguna'
   es: 'Día'

@@ -8,3 +8,14 @@
 <input name="ferantzunak" type="hidden" value="{{ ferantzunak }}"/>
 <input name="lang" type="hidden" value="{{ lang }}"/>
 <input name="referrer" type="hidden" value="{{ page }}"/>
+
+{% for key, text in texts %}
+
+    {% set isOption = key in options %}
+    {% set class = isOption ? 'pl4 option' : 'pl1' %}
+
+    <article>
+        <label id="{{ key }}" class="{{ class }}">{{ text|raw }}</label>
+    </article>
+
+{% endfor %}

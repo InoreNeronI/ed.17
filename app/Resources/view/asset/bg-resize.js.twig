@@ -1,11 +1,11 @@
 var _window = $(window),
     bgResize = function(_window) {
-        if (_window.width() < 920)
-            document.getElementById('has-bg-image').style.backgroundSize = '100% 100%';
-        else
-            document.getElementById('has-bg-image').style.backgroundSize = 'cover';
+        if (_window.width() < 920) {
+            $('.has-bg-image').css('background-size', '100% 100%');
+        } else {
+            $('.has-bg-image').css('background-size', 'cover');
+        }
     };
-bgResize(_window);
 _window.on('resize', function() {
     bgResize($(this));
     //console.log( 'Resize event fired:'+ (+new Date()) );
@@ -14,8 +14,8 @@ _window.on('debouncedresize', function() {
     bgResize($(this));
     //console.log( 'Debounce event fired:'+ (+new Date()) );
 });
-/*
-_window.on('throttledresize', function() {
+{#_window.on('throttledresize', function() {
     bgResize($(this));
     //console.log( 'Throttle event fired:'+ (+new Date()) );
-});*/
+});#}
+bgResize(_window);

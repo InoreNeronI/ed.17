@@ -32,6 +32,29 @@ class packager
     }
 
     /**
+     * @param array  $links
+     * @param string $target_dir
+     * @param bool   $overwrite
+     */
+    public static function getHttpResource($links, $target_dir, $overwrite)
+    {
+        echo sprintf('%sFound %s package(s)%s', "\r\t\t\t", count($links), PHP_EOL);
+        foreach ($links as $link) {
+            if (is_array($link)) {
+                $link = implode($link);
+            }
+            echo PHP_EOL;
+            try {
+                static::downloadFile($link, $target_dir, $overwrite);
+            } catch (Exception $e) {
+                echo sprintf('%s%s', "\t", $e->getMessage());
+                continue;
+            }
+        }
+        echo PHP_EOL;
+    }
+
+    /**
      * @param array  $arguments
      * @param string $version
      *
@@ -42,7 +65,8 @@ class packager
         static::$slitaz_arguments = $arguments;
         static::$slitaz_version = $version;
         try {
-            list($package_name, $target_dir, $dependencies, $help, $overwrite, $no_cache) = static::parseSlitazArguments();
+            list($package_name, $target_dir, $dependencies, $help, $overwrite, $no_cache, $with_dependencies) = static::parseSlitazArguments();
+            $dependencies = $dependencies || $with_dependencies;
             if ($help === true) {
                 static::getTazUsage();
             }
@@ -50,21 +74,15 @@ class packager
             $src = static::getTazPkgsSource('http://pkgs.slitaz.org/search.sh', $package_name, $dependencies, $no_cache);
             $links = static::extractTazPkgsLinks($src, $dependencies ? null : $package_name);
             if (!empty($links)) {
-                echo sprintf('%sFound %s package(s)%s', "\r\t\t\t", count($links), PHP_EOL);
-                foreach ($links as $l) {
-                    try {
-                        echo PHP_EOL;
-                        static::downloadFile($l, $target_dir, $overwrite);
-                    } catch (Exception $e) {
-                        echo sprintf('%s%s', "\t", $e->getMessage());
-                        continue;
-                    }
+                if ($with_dependencies) {
+                    $src_parent = static::getTazPkgsSource('http://pkgs.slitaz.org/search.sh', $package_name, null, $no_cache);
+                    array_unshift($links, static::extractTazPkgsLinks($src_parent));
                 }
+                static::getHttpResource($links, $target_dir, $overwrite);
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            echo $e->getMessage() . PHP_EOL;
         }
-        echo PHP_EOL;
     }
 
     /**
@@ -97,8 +115,9 @@ class packager
         $dependencies = in_array('--dependencies', static::$slitaz_arguments);
         $overwrite = in_array('--overwrite', static::$slitaz_arguments);
         $no_cache = in_array('--nocache', static::$slitaz_arguments);
+        $with_deps = in_array('--withdepends', static::$slitaz_arguments);
 
-        return [$package_name, $target_dir, $dependencies, $help, $overwrite, $no_cache];
+        return [$package_name, $target_dir, $dependencies, $help, $overwrite, $no_cache, $with_deps];
     }
 
     /**
@@ -186,23 +205,31 @@ class packager
     {
         $links = static::extractTazPkgsStrings($string, $package_name);
 
-        if (empty($links) && empty($package_name) && $dependenciesFlagId = array_search('--dependencies', static::$slitaz_arguments) !== false) {
+        if (empty($links) && empty($package_name)) {
             $package_name = static::$slitaz_arguments[2];
-            $src = static::getTazPkgsSource('http://pkgs.slitaz.org/search.sh', $package_name, false, $nocache = array_search('--nocache', static::$slitaz_arguments) !== false);
+            $nocache = array_search('--nocache', static::$slitaz_arguments) !== false;
+            $src = static::getTazPkgsSource('http://pkgs.slitaz.org/search.sh', $package_name, false, $nocache);
             $links = static::extractTazPkgsStrings($src, $package_name);
 
             if (!empty($links)) {
-                $choice = self::beautifyAndPromptCandidates($links, 'Which of the following matches\' dependencies do you want to be downloaded? Type a number to continue:');
+                if (count($links) === 1) {
+                    return [$package_name => $links[0]];
+                }
+                $message = array_search('--withdepends', static::$slitaz_arguments) !== false ?
+                    'Which of the following matches and its\' dependencies do you want to be downloaded? Type a number to continue:' :
+                    'Which of the following matches\' dependencies do you want to be downloaded? Type a number to continue:';
+                $choice = self::beautifyAndPromptCandidates($links, $message);
                 static::$slitaz_arguments[2] = static::beautifyPkgName($links[$choice]);
 
                 return static::getTazPkg(static::$slitaz_arguments, static::$slitaz_version);
             }
-        } elseif (!empty($links) && !empty($package_name) && $dependenciesFlagId = array_search('--dependencies', static::$slitaz_arguments) === false) {
-            if (count($links) === 1 && $package_name === self::beautifyPkgName($links[0])) {
-                return [$links[0]];
+        } elseif (!empty($links) && !empty($package_name)) {
+            if (count($links) === 1) {
+                return [$package_name => $links[0]];
             }
+            $choice = self::beautifyAndPromptCandidates($links, 'Which of the following matches do you want to be downloaded? Type a number to continue:');
 
-            return [$links[self::beautifyAndPromptCandidates($links)]];
+            return [$links[$choice]];
         }
 
         if (empty($links)) {
@@ -248,7 +275,7 @@ class packager
             $dlnowdlnow,    // the current download bytecount (or 0 if not downloading)
             $dlnowultotal,  // the total bytes to be uploaded (or 0 if not uploading)
             $dlnowulnow     // the current upload bytecount (or 0 if not uploading)
-        ) use ($filename, $microtime) {
+) use ($filename, $microtime) {
             static $calls = 0;
             if (++$calls % 4 != 0) {
                 /* The rest of the code will be executed only 1/4 times
@@ -319,7 +346,7 @@ class packager
      *
      * @return int
      */
-    private static function beautifyAndPromptCandidates(array $links, $message = 'Which of the following matches do you want to be downloaded?  Type a number to continue:')
+    private static function beautifyAndPromptCandidates(array $links, $message = 'Type a number to continue:')
     {
         echo PHP_EOL . "\t" . $message . PHP_EOL;
         foreach ($links as $key => $link) {

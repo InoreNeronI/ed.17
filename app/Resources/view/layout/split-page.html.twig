@@ -3,24 +3,8 @@
 {% block styles %}
     {{ parent() }}
     <style type="text/css">
-        {% include 'layout/split-page/side-resizable.css.twig' %}
+        {% include 'asset/side-resizable.css.twig' %}
     </style>
-{% endblock %}
-
-{% block content %}{# @url http://tachyons.io/components/layout/two-column-collapse-one/index.html #}
-    <article class="cf side-container">
-        <div class="fl pa1-ns pa2-m pa3-l side-left w-50 bg-light-gray">
-            <form action="{{ page|number_format > 0 ? '/' ~ (page|number_format - 1) : ''  }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
-                {% block content_side_a %}{% endblock %}
-            </form>
-        </div>
-        <div class="side-splitter"></div>
-        <div class="fl pa1-ns pa2-m pa3-l side-right w-50 bg-near-white">
-            <form action="{{ page|number_format < totalPages|number_format ? '/' ~ (page|number_format + 1) : ''  }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
-                {% block content_side_b %}{% endblock %}
-            </form>
-        </div>
-    </article>
 {% endblock %}
 
 {% block scripts %}
@@ -30,5 +14,5 @@
 
 {% block jq_ready %}
     {{ parent() }}
-    {% include 'layout/split-page/side-resizable.js.twig' %}
+    {% include 'asset/side-resizable.js.twig' %}
 {% endblock %}

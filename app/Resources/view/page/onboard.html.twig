@@ -2,18 +2,30 @@
 
 {% block title flabel ~ ' :: ' ~ fititulo ~ ' :: ' ~ fcurso|title ~ ' :: ' ~ fititular|title %}
 
-{% block content_side_a %}
-    {% include 'page/board/hidden-fields.html.twig' %}
-    {% include 'page/board/side-a.html.twig' %}
-    {% if page|number_format > 0 %}
-        <button>{{ leftButton }}</button>
-    {% endif %}
-{% endblock %}
-
-{% block content_side_b %}
-    {% include 'page/board/hidden-fields.html.twig' %}
-    {% include 'page/board/side-b.html.twig' %}
-    {% if page|number_format < totalPages|number_format %}
-        <button>{{ rightButton }}</button>
-    {% endif %}
+{% block content %}{# @url http://tachyons.io/components/layout/two-column-collapse-one/index.html #}
+    <article class="cf side-container">
+        {% if sideSkip is not same as('a') %}
+            <div class="fl pa1-ns pa2-m pa3-l side-left {{ pageWidth['a'] }} bg-light-gray">
+                <form action="{{ page|number_format > 0 ? '/' ~ (page|number_format - 1) : ''  }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
+                    {% if page|number_format > 0 %}
+                        <button>{{ leftButton }}</button>
+                    {% endif %}
+                    {% include 'partial/board-side.html.twig' with { 'texts': texts['a'] } %}
+                </form>
+            </div>
+        {% endif %}
+        {% if sideSkip is null %}
+            <div class="side-splitter"></div>
+        {% endif %}
+        {% if sideSkip is not same as('b') %}
+            <div class="fl pa1-ns pa2-m pa3-l side-right {{ pageWidth['b'] }} bg-near-white">
+                <form action="{{ page|number_format < totalPages|number_format ? '/' ~ (page|number_format + 1) : ''  }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
+                    {% if page|number_format < totalPages|number_format %}
+                        <button>{{ rightButton }}</button>
+                    {% endif %}
+                    {% include 'partial/board-side.html.twig' with { 'texts': texts['b'] } %}
+                </form>
+            </div>
+        {% endif %}
+    </article>
 {% endblock %}

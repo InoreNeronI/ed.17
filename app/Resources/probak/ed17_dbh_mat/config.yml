@@ -1,5 +1,39 @@
-pages: 4
+pageOptions:
+  p00:
+    - p00b_t05
+    - p00b_t06
+    - p00b_t07
+    - p00b_t08
 
-width:
-  a: 50
-  b: 50
+pageSkips:
+  p13: b
+
+pageWidths:
+  p00:
+    a: 10
+    b: 90
+  p01:
+    a: 20
+    b: 80
+  p02:
+    a: tercio
+    b: dos-tercios
+  p03:
+    a: 40
+    b: 60
+  p05:
+    a: 60
+    b: 40
+  p06:
+    a: dos-tercios
+    b: tercio
+  p07:
+    a: 80
+    b: 20
+  p08:
+    a: 90
+    b: 10
+  p13:
+    a: 100
+
+totalPages: 13
