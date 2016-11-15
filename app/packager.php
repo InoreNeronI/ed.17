@@ -1,16 +1,15 @@
 <?php
 
 /** @url https://gist.github.com/azihassan/3093972 */
-define('SLITAZ_PKGR_USAGE', 'Usage: php ' . $argv[0] . ' --package package_name --path ' . __DIR__ . ' [--dependencies] [--overwrite] [--nocache] [--help]' . PHP_EOL);
+define('SLITAZ_PKGR_USAGE', 'Usage: php ' . $argv[0] . ' --package package_name --path ' . __DIR__ . ' [--dependencies] [--overwrite] [--nocache] [--help]');
 
 if ($argc == 1) {
-    echo SLITAZ_PKGR_USAGE;
-    exit;
+    \packager::getTazUsage();
 }
-Packager::getTazPkg($argv, 'cooking');
+\packager::getTazPkg($argv, 'cooking');
 
 /**
- * Class Packager
+ * Class packager
  */
 class packager
 {
@@ -22,6 +21,15 @@ class packager
 
     /** @var array */
     private static $slitaz_versions = ['backports' => 'b', 'cooking' => 'c', 'stable' => 's', 'tiny' => 't', 'undigest' => 'u', 'first' => '1', 'second' => '2', 'third' => '3'];
+
+    /**
+     * @param string $usage
+     */
+    public static function getTazUsage($usage = SLITAZ_PKGR_USAGE)
+    {
+        echo PHP_EOL . "\t" . $usage . PHP_EOL;
+        exit;
+    }
 
     /**
      * @param array  $arguments
@@ -36,27 +44,27 @@ class packager
         try {
             list($package_name, $target_dir, $dependencies, $help, $overwrite, $no_cache) = static::parseSlitazArguments();
             if ($help === true) {
-                echo SLITAZ_PKGR_USAGE;
-
-                return;
+                static::getTazUsage();
             }
             echo PHP_EOL . 'Extracting the links...' . PHP_EOL;
             $src = static::getTazPkgsSource('http://pkgs.slitaz.org/search.sh', $package_name, $dependencies, $no_cache);
             $links = static::extractTazPkgsLinks($src, $dependencies ? null : $package_name);
             if (!empty($links)) {
-                echo sprintf('%sFound %s package(s)%s', "\r\t\t\t", count($links), PHP_EOL . PHP_EOL);
+                echo sprintf('%sFound %s package(s)%s', "\r\t\t\t", count($links), PHP_EOL);
                 foreach ($links as $l) {
                     try {
+                        echo PHP_EOL;
                         static::downloadFile($l, $target_dir, $overwrite);
                     } catch (Exception $e) {
-                        echo sprintf('%s%s%s`%s`', "\t", $e->getMessage(), "\t", basename($l)) . PHP_EOL;
+                        echo sprintf('%s%s', "\t", $e->getMessage());
                         continue;
                     }
                 }
             }
         } catch (Exception $e) {
-            echo $e->getMessage()/* . PHP_EOL*/;
+            echo $e->getMessage();
         }
+        echo PHP_EOL;
     }
 
     /**
@@ -74,16 +82,16 @@ class packager
             /** @url http://stackoverflow.com/a/3766319 */
             list($package_name) = explode(' ', trim(static::$slitaz_arguments[$key + 1]));
         } else {
-            throw new Exception(sprintf('%sERROR: Argument --package is missing. Type --help for usage.', PHP_EOL . "\t"));
+            throw new Exception(sprintf('%s%sERROR: Argument --package is missing. Type --help for usage.', PHP_EOL, "\t"));
         }
 
         if (($key = array_search('--path', static::$slitaz_arguments)) !== false) {
             $target_dir = static::$slitaz_arguments[$key + 1];
             if (!is_writable($target_dir) && mkdir($target_dir) === false) {
-                throw new Exception(sprintf('%sERROR: `%s` is not writable. Try again with another path or leave it empty for the current path.', PHP_EOL . "\t", $target_dir));
+                throw new Exception(sprintf('%s%sERROR: `%s` is not writable. Try again with another path or leave it empty for the current path.', PHP_EOL, "\t", $target_dir));
             }
         } else {
-            throw new Exception(sprintf('%sERROR: `--path` is mandatory%s.', PHP_EOL . "\t", PHP_EOL . "\t" . SLITAZ_PKGR_USAGE));
+            throw new Exception(sprintf('%s%sERROR: `--path` is mandatory%s%s%s.', PHP_EOL, "\t", PHP_EOL, "\t", SLITAZ_PKGR_USAGE));
         }
 
         $dependencies = in_array('--dependencies', static::$slitaz_arguments);
@@ -198,7 +206,7 @@ class packager
         }
 
         if (empty($links)) {
-            echo sprintf('%sERROR: No links for `%s` package were found.%s', PHP_EOL . "\t", $package_name, PHP_EOL);
+            echo sprintf('%s%sERROR: No links for `%s` were found.', PHP_EOL, "\t", $package_name);
         }
 
         return $links;
@@ -216,15 +224,15 @@ class packager
     private static function downloadFile($link, $target_dir, $overwrite)
     {
         $ch = curl_init();
-        $path = $target_dir . DIRECTORY_SEPARATOR . basename($link);
         $filename = basename($link);
+        $path = $target_dir . DIRECTORY_SEPARATOR . $filename;
 
         if (file_exists($path) && !$overwrite) {
-            throw new Exception('ERROR: The file already exists.');
+            throw new Exception(sprintf('NOTICE: Package `%s` already exists.', $filename));
         }
 
         if (($f = fopen($path, 'wb')) === false) {
-            throw new Exception(sprintf('ERROR: `%s` is not writable.', $path));
+            throw new Exception(sprintf('ERROR: Folder `%s` is not writable.', $path));
         }
 
         curl_setopt($ch, CURLOPT_URL, $link);
@@ -256,10 +264,8 @@ class packager
                 $human_speed = static::bytesToSize($speed) . '/s';
 
                 echo sprintf('%sDownloading...%s`%s`%s%s%sof %s%s[ %s ]%s', "\t", "\t", $filename, "\t", $percentage . '%', "\t", $human_size, "\t", $human_speed, "\t");
-                if ($dlnowdlnow < $dlnowdltotal) {
+                if ($dlnowdlnow <= $dlnowdltotal) {
                     echo "\r";
-                } else {
-                    echo PHP_EOL;
                 }
             }
         });
@@ -270,7 +276,10 @@ class packager
         curl_close($ch);
 
         if ($result === false) {
-            throw new Exception(sprintf('ERROR: Failed to download the file `%s`.', $err));
+            if (is_file($path) && filesize($path) === 0) {
+                unlink($path);
+            }
+            throw new Exception(sprintf('ERROR: %s%sWhile trying to download `%s`', $err, "\t", $filename));
         }
 
         return $result;

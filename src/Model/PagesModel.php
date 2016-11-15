@@ -62,6 +62,7 @@ final class PagesModel extends CredentialsModel
         if (empty($config)) {
             throw new \Exception(sprintf('The configuration file is missing in the target: %s', $configPath));
         }
+
         return array_merge($args, $sideA, $this->loadData($args, $page, 'b'), [
             'id' => $sideA['id'],
             'page' => $page,
