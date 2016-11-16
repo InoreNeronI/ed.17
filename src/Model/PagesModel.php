@@ -57,11 +57,11 @@ final class PagesModel extends CredentialsModel
     public function loadPageData(array $args, $page, $default_width_percents = ['a' => '50', 'b' => '50'])
     {
         $sideA = $this->loadData($args, $page, 'a');
-        $configPath = DATA_DIR . '/' . $sideA['id'];
-        $config = parseConfig($configPath, 'config');
+        $configFile = $sideA['id'];
+        $config = parseConfig(DATA_DIR, $configFile);
 
         if (empty($config)) {
-            throw new \Exception(sprintf('The configuration file is missing in the target: %s', $configPath));
+            throw new \Exception(sprintf('The configuration file `%s` is missing in the target: %s', $configFile, DATA_DIR));
         }
         $pageWidths = empty($config['pageWidths']['p' . $page]) ? $default_width_percents : $config['pageWidths']['p' . $page];
         $widthStyling = \def::styling()['width'];
@@ -76,7 +76,7 @@ final class PagesModel extends CredentialsModel
             'lang' => $args['lang'],
             'options' => empty($config['pageOptions']['p' . $page]) ? [] : $config['pageOptions']['p' . $page],
             'page' => $page,
-            'sideSkip' => empty($config['pageSkips']['p' . $page]) ? null : $config['pageSkips']['p' . $page],
+            'sideSkip' => empty($config['pageSideSkips']['p' . $page]) ? null : $config['pageSideSkips']['p' . $page],
             'pageWidth' => $config['pageWidth'],
             'totalPages' => $config['totalPages'],
         ]);

@@ -7,7 +7,7 @@ paths:
     # Cache's path relative to '/app' folder
     cache_dir: /cache
     # Data files' path relative to '/app' folder
-    data_dir: /Resources/probak
+    data_dir: /config/probak
     # Public files' path relative to '/app' folder
     #public_dir: /Resources/public
     # Template files' path relative to '/app' folder

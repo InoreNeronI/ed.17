@@ -1,11 +1,14 @@
 pageOptions:
   p00:
-    - p00b_t05
-    - p00b_t06
-    - p00b_t07
-    - p00b_t08
+    libre:
+      - p00b_t05
+      - p00b_t06
+      - p00b_t07
+      - p00b_t08
+    multiple:
+    simple:
 
-pageSkips:
+pageSideSkips:
   p13: b
 
 pageWidths:
