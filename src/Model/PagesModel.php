@@ -56,7 +56,6 @@ final class PagesModel extends CredentialsModel
      */
     public function loadPageData(array $args, $page, $default_width_percents = ['a' => '50', 'b' => '50'])
     {
-        //dump($args);
         $id = $args['code'];
         $config = parseConfig(DATA_DIR, $id);
 
