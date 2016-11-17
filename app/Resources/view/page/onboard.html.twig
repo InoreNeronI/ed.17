@@ -2,20 +2,15 @@
 
 {% block title flabel ~ ' :: ' ~ title ~ ' :: ' ~ course|title ~ ' :: ' ~ mainTitle|title %}
 
-{% block content %}{# @url http://tachyons.io/components/layout/two-column-collapse-one/index.html #}
+{% block content %}
+    {# @url http://tachyons.io/components/layout/two-column-collapse-one/index.html #}
     <article class="calisto cf side-container">
         {% if sideSkip is not same as('a') %}
             <div class="fl pa1-ns pa2-m pa3-l side-left {{ pageWidth['a'] }} bg-light-gray">
-                <form class="mw7 center pa4 br2-ns ba b--black-10" action="{{ page|number_format > 0 ? '/' ~ (page|number_format - 1) : ''  }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
-                    {% include 'partial/board-side.html.twig' with { 'texts': texts['a'] } %}
-                    {% if page|number_format > 0 %}
-                        <div class="mt4 tc">
-                            <button class="dib tc bn bg-animate bg-blue hover-bg-dark-blue br2 pointer pv2 ph2 white">
-                                <i class="fa fa-step-backward"></i> {{ leftButton }}
-                            </button>
-                        </div>
-                    {% endif %}
-                </form>
+                {% set isFirstPage = (page|number_format is same as 0) %}
+                {% set buttonText = isFirstPage ? startButton ~ ' <i class="fa fa-play"></i>' : '<i class="fa fa-step-backward"></i> ' ~ leftButton %}
+                {% set formAction = isFirstPage ? '' : '/' ~ (page|number_format - 1) %}
+                {% include 'partial/board-side.html.twig' with { 'texts': texts['a'], 'buttonText': buttonText, 'formAction': formAction } %}
             </div>
         {% endif %}
         {% if sideSkip is null %}
@@ -23,18 +18,10 @@
         {% endif %}
         {% if sideSkip is not same as('b') %}
             <div class="fl pa1-ns pa2-m pa3-l side-right {{ pageWidth['b'] }} bg-near-white">
-                <form class="mw7 center pa4 br2-ns ba b--black-10" action="{{ page|number_format < totalPages|number_format ? '/' ~ (page|number_format + 1) : ''  }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
-                    {% include 'partial/board-side.html.twig' with { 'texts': texts['b'] } %}
-                    {% if page|number_format < totalPages|number_format %}
-                        <div class="mt4 tc">
-                            <button class="tc bn bg-animate bg-blue hover-bg-dark-blue br2 pointer pv2 ph2 white">
-                                {{ rightButton }} <i class="fa fa-step-forward"></i>
-                            </button>
-                        </div>
-                    {% else %}
-                        <button>{{ finishButton }}</button>
-                    {% endif %}
-                </form>
+                {% set isLastPage = (page|number_format is same as totalPages|number_format) %}
+                {% set buttonText = isLastPage ? '<i class="fa fa-stop"></i> ' ~ finishButton : rightButton ~ ' <i class="fa fa-step-forward"></i>' %}
+                {% set formAction = isLastPage ? '' : '/' ~ (page|number_format + 1) %}
+                {% include 'partial/board-side.html.twig' with { 'texts': texts['b'], 'buttonText': buttonText, 'formAction': formAction } %}
             </div>
         {% endif %}
     </article>

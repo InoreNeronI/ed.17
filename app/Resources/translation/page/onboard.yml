@@ -6,3 +6,11 @@ rightButton:
     eu: 'Hurrengoa'
     es: 'Siguiente'
     en: 'Next'
+startButton:
+    eu: 'Hasi'
+    es: 'Comenzar'
+    en: 'Start'
+finishButton:
+    eu: 'Amaitu'
+    es: 'Terminar'
+    en: 'Finish'

@@ -1,32 +1,43 @@
 
-{% include 'partial/board-hidden-fields.html.twig' %}
-<input name="flabel" type="hidden" value="{{ flabel }}"/>
-<input name="referrer" type="hidden" value="{{ page }}"/>
+<form class="mw7 center pa4 br2-ns ba b--black-10" action="{{ formAction }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
 
-{% for key, text in texts %}
+    {% include 'partial/board-hidden-fields.html.twig' %}
+    <input name="flabel" type="hidden" value="{{ flabel }}"/>
+    <input name="referrer" type="hidden" value="{{ page }}"/>
 
-    {% set isLibreOption = key in options['libre'] %}
-    {% set isMultipleOption = key in options['multiple'] %}
-    {% set isSimpleOption = key in options['simple'] %}
-    {% set isTableOption = key in options['table'] %}
-    {% set isOption = isSimpleOption or isLibreOption or isMultipleOption or isTableOption %}
-    {% set class = isOption ? 'pl4 option' : 'pl1' %}
+    {% for key, text in texts %}
 
-    <div class="cf {{ class }} pv3">
-        {% if isSimpleOption %}
-            <input class="fl f6 f5-l input-reset pointer bn black-80 bg-white fl mt2 pa3 lh-solid br2-ns br--left-ns" type="radio" name="{{ parent }}" value="{{ text|raw }}" id="{{ parent }}_{{ key }}">
-            <label class="dib pointer pl3 mr1 pa0 f5 f4-ns black-80 w-90" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
-        {% elseif isLibreOption %}
-            <input class="fl f6 f5-l input-reset bn black-80 bg-white fl pa3 lh-solid w-auto br2-ns br--left-ns" type="text" name="{{ parent }}[{{ key }}]" value="" id="{{ parent }}_{{ key }}">
-            <label class="dib relative pl1 mr1 pa0 f5 f4-ns black-80" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
-        {% elseif isMultipleOption %}
-            <input class="fl f6 f5-l input-reset pointer bn black-80 bg-white fl mt2 pa3 lh-solid br2-ns br--left-ns" type="checkbox" name="{{ parent }}[{{ key }}]" value="{{ text|raw }}" id="{{ parent }}_{{ key }}">
-            <label class="dib pointer pl3 mr1 pa0 f5 f4-ns black-80 w-90" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
-        {% elseif isTableOption %}
-        {% else %}
-            <details class="b f1 pa0 f5 f4-ns black-80 pv4 {{ class }}">{{ text|raw }}</details>
-            {% set parent = key %}
-        {% endif %}
+        {% set isLibreOption = key in options['libre'] %}
+        {% set isMultipleOption = key in options['multiple'] %}
+        {% set isSimpleOption = key in options['simple'] %}
+        {% set isTableOption = key in options['table'] %}
+        {% set isOption = isSimpleOption or isLibreOption or isMultipleOption or isTableOption %}
+        {% set class = isOption ? 'pl4 option' : 'pl1' %}
+
+        <div class="cf {{ class }} pv3">
+            {% if isSimpleOption %}
+                <input class="fl f6 f5-l input-reset pointer bn black-80 bg-white fl mt2 pa3 lh-solid br2-ns br--left-ns" type="radio" name="{{ parent }}" value="{{ text|raw }}" id="{{ parent }}_{{ key }}">
+                <label class="dib pointer pl3 mr1 pa0 f5 f4-ns black-80 w-90" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
+            {% elseif isLibreOption %}
+                <input class="fl f6 f5-l input-reset bn black-80 bg-white fl pa3 lh-solid br2-ns br--left-ns" type="text" name="{{ parent }}[{{ key }}]" value="" id="{{ parent }}_{{ key }}">
+                <label class="dib relative pl1 mr1 pa0 f5 f4-ns black-80 w-auto" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
+            {% elseif isMultipleOption %}
+                <input class="fl f6 f5-l input-reset pointer bn black-80 bg-white fl mt2 pa3 lh-solid br2-ns br--left-ns" type="checkbox" name="{{ parent }}[{{ key }}]" value="{{ text|raw }}" id="{{ parent }}_{{ key }}">
+                <label class="dib pointer pl3 mr1 pa0 f5 f4-ns black-80 w-90" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
+            {% elseif isTableOption %}
+
+            {% else %}
+                {% set parent = key %}
+                <details class="b f1 pa0 f5 f4-ns black-80 pv4 {{ class }}">{{ text|raw }}</details>
+            {% endif %}
+        </div>
+
+    {% endfor %}
+
+    <div class="mt4 tc">
+        <button class="dib tc bn bg-animate bg-blue hover-bg-dark-blue br2 pointer pv2 ph2 white">
+            {{ buttonText }}
+        </button>
     </div>
 
-{% endfor %}
+</form>
