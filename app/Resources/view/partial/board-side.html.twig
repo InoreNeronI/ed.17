@@ -11,17 +11,24 @@
     {% set isOption = isLibreOption or isMultipleOption or isSimpleOption %}
     {% set class = isOption ? 'pl4 option' : 'pl1' %}
 
-    <article>
-        <label class="{{ class }}">{{ text|raw }}</label>
-        {% if isLibreOption %}
-            <input id="{{ key }}" name="options[{{ parent }}]" />
-        {% elseif isMultipleOption %}
-            <input id="{{ key }}" name="options[{{ parent }}]" type="checkbox" value="{{ text }}" />
-        {% elseif isSimpleOption %}
-            <input id="{{ key }}" name="{{ parent }}" type="radio" value="{{ text }}" />
-        {% else %}
-            {% set parent = key %}
-        {% endif %}
-    </article>
+    {% if isLibreOption %}
+        <div class="cf {{ class }}">
+            <input class="fl f6 f5-l input-reset bn black-80 bg-white fl pa3 lh-solid w-auto br2-ns br--left-ns" type="text" name="{{ parent }}[{{ key }}]" value="" id="{{ parent }}_{{ key }}">
+            <label class="dib relative pl1 mr1 pa0 f5 f4-ns mb3 black-80" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
+        </div>
+    {% elseif isMultipleOption %}
+        <div class="cf {{ class }}">
+            <input class="fl f6 f5-l input-reset pointer bn black-80 bg-white fl mt2 pa3 lh-solid br2-ns br--left-ns" type="checkbox" name="{{ parent }}[{{ key }}]" value="{{ text|raw }}" id="{{ parent }}_{{ key }}">
+            <label class="dib pointer pl3 mr1 pa0 f5 f4-ns mb3 black-80 w-90" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
+        </div>
+    {% elseif isSimpleOption %}
+        <div class="cf {{ class }}">
+            <input class="fl f6 f5-l input-reset pointer bn black-80 bg-white fl mt2 pa3 lh-solid br2-ns br--left-ns" type="radio" name="{{ parent }}" value="{{ text|raw }}" id="{{ parent }}_{{ key }}">
+            <label class="dib pointer pl3 mr1 pa0 f5 f4-ns mb3 black-80 w-90" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
+        </div>
+    {% else %}
+        <h6 class="pa0 f5 f4-ns mb3 black-80 {{ class }}">{{ text|raw }}</h6>
+        {% set parent = key %}
+    {% endif %}
 
 {% endfor %}

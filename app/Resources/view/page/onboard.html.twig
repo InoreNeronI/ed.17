@@ -3,10 +3,10 @@
 {% block title flabel ~ ' :: ' ~ title ~ ' :: ' ~ course|title ~ ' :: ' ~ mainTitle|title %}
 
 {% block content %}{# @url http://tachyons.io/components/layout/two-column-collapse-one/index.html #}
-    <article class="cf side-container">
+    <article class="calisto cf side-container">
         {% if sideSkip is not same as('a') %}
             <div class="fl pa1-ns pa2-m pa3-l side-left {{ pageWidth['a'] }} bg-light-gray">
-                <form action="{{ page|number_format > 0 ? '/' ~ (page|number_format - 1) : ''  }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
+                <form class="mw7 center pa4 br2-ns ba b--black-10" action="{{ page|number_format > 0 ? '/' ~ (page|number_format - 1) : ''  }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
                     {% if page|number_format > 0 %}
                         <button>{{ leftButton }}</button>
                     {% endif %}
@@ -19,9 +19,11 @@
         {% endif %}
         {% if sideSkip is not same as('b') %}
             <div class="fl pa1-ns pa2-m pa3-l side-right {{ pageWidth['b'] }} bg-near-white">
-                <form action="{{ page|number_format < totalPages|number_format ? '/' ~ (page|number_format + 1) : ''  }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
+                <form class="mw7 center pa4 br2-ns ba b--black-10" action="{{ page|number_format < totalPages|number_format ? '/' ~ (page|number_format + 1) : ''  }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
                     {% if page|number_format < totalPages|number_format %}
                         <button>{{ rightButton }}</button>
+                    {% else %}
+                        <button>{{ finishButton }}</button>
                     {% endif %}
                     {% include 'partial/board-side.html.twig' with { 'texts': texts['b'] } %}
                 </form>

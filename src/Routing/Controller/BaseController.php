@@ -69,9 +69,9 @@ class BaseController
         if ($request->getMethod() === 'POST') {
             $manager = new Model\PagesModel();
             $data = $request->request->all();
-            $args = Model\TranslationsModel::localize($messages, $data, $request->getLocale());
+            $messages = Model\TranslationsModel::localize($messages, $data, $request->getLocale());
 
-            return $manager->loadPageData($args, sprintf('%02d', intval($page)));
+            return $manager->loadPageData($messages, sprintf('%02d', intval($page)));
         }
 
         return [];
