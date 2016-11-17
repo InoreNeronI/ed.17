@@ -46,7 +46,7 @@ class CredentialsModel extends Connection\Connection
             ->andWhere('u.edg020_fec_dia = :naci_dia_alumno')
             ->andWhere('u.edg020_fec_mes = :naci_mes_alumno')
             ->setParameters([
-                'periodo' => $args['fcurso'],
+                'periodo' => $args['course'],
                 'cod_alumno' => $args['fcodalued'],
                 'naci_dia_alumno' => $args['ffnacidia'],
                 'naci_mes_alumno' => $args['ffnacimes'],
@@ -59,7 +59,7 @@ class CredentialsModel extends Connection\Connection
             /** @var array $codes */
             $codes = \def::dbSecurity();
             /** @var string $codPrueba */
-            $codPrueba = $args['fcodprueba'];
+            $codPrueba = $args['code'];
             if (isset($codes[$codPrueba])) {
                 return static::requesttAccess($user, $codes[$codPrueba]);
             } else {

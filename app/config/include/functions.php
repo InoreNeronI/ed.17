@@ -73,6 +73,7 @@ final class def extends defDB
  */
 class defDb
 {
+    protected static $dbCodes;
     protected static $dbCredentials;
     protected static $dbSecurity;
     protected static $dbTables;
@@ -82,11 +83,18 @@ class defDb
     {
         if (!static::$initialized) {
             $database = parseConfig(CONFIG_DIR, 'database');
+            static::$dbCodes = $database['codes'];
             static::$dbCredentials = $database['credentials'];
             static::$dbSecurity = $database['security'];
             static::$dbTables = $database['tables'];
             static::$initialized = true;
         }
+    }
+    public static function dbCodes()
+    {
+        static::loadDbConfig();
+
+        return static::$dbCodes;
     }
     public static function dbCredentials()
     {
@@ -100,7 +108,6 @@ class defDb
 
         return static::$dbSecurity;
     }
-
     public static function dbTables()
     {
         static::loadDbConfig();

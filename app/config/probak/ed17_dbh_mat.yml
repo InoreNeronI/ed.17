@@ -1,42 +1,191 @@
 pageOptions:
   p00:
     libre:
+    multiple:
+    simple:
       - p00b_t05
       - p00b_t06
       - p00b_t07
       - p00b_t08
+  p01:
+    libre:
     multiple:
     simple:
+      - p01b_t03
+      - p01b_t04
+      - p01b_t05
+      - p01b_t06
+      - p01b_t09
+      - p01b_t10
+      - p01b_t11
+      - p01b_t12
+  p02:
+    libre:
+    multiple:
+    simple:
+      - p02b_t02
+      - p02b_t03
+      - p02b_t04
+      - p02b_t05
+  p03:
+    libre:
+    multiple:
+    simple:
+      - p03b_t03
+      - p03b_t04
+      - p03b_t05
+      - p03b_t06
+      - p03b_t09
+      - p03b_t10
+      - p03b_t11
+      - p03b_t12
+      - p03b_t15
+      - p03b_t16
+      - p03b_t17
+      - p03b_t18
+  p04:
+    libre:
+      - p04b_t09
+      - p04b_t11
+      - p04b_t13
+    multiple:
+    simple:
+      - p04b_t03
+      - p04b_t04
+      - p04b_t05
+      - p04b_t06
+  p05:
+    libre:
+    multiple:
+    simple:
+      - p05b_t02
+      - p05b_t03
+      - p05b_t04
+      - p05b_t05
+  p06:
+    libre:
+      - p06b_t09
+      - p06b_t11
+      - p06b_t13
+    multiple:
+    simple:
+      - p06b_t03
+      - p06b_t04
+      - p06b_t05
+      - p06b_t06
+  p07:
+    libre:
+    multiple:
+    simple:
+      - p07b_t02
+      - p07b_t03
+      - p07b_t04
+      - p07b_t05
+  p08:
+    libre:
+    multiple:
+    simple:
+      - p08b_t03
+      - p08b_t04
+      - p08b_t05
+      - p08b_t06
+  p09:
+    libre:
+    multiple:
+    simple:
+      - p09b_t03
+      - p09b_t04
+      - p09b_t05
+      - p09b_t06
+  p10:
+    libre:
+    multiple:
+    simple:
+      - p10b_t02
+      - p10b_t03
+      - p10b_t04
+      - p10b_t05
+  p11:
+    libre:
+    multiple:
+    simple:
+      - p11b_t02
+      - p11b_t03
+      - p11b_t04
+      - p11b_t05
+  p12:
+    libre:
+    multiple:
+    simple:
+      - p12b_t03
+      - p12b_t04
+      - p12b_t05
+      - p12b_t06
+  p13:
+    libre:
+    multiple:
+    simple:
+      - p13b_t02
+      - p13b_t03
+      - p13b_t04
+      - p13b_t05
+  p14:
+    libre:
+    multiple:
+    simple:
+      - p14b_t02
+      - p14b_t03
+      - p14b_t04
+      - p14b_t05
+  p15:
+    libre:
+    multiple:
+    simple:
+      - p15b_t05
+      - p15b_t06
+      - p15b_t08
+      - p15b_t09
+      - p15b_t11
+      - p15b_t12
+      - p15b_t14
+      - p15b_t15
+  p16:
+    libre:
+    multiple:
+    simple:
+      - p16b_t04
+      - p16b_t05
+      - p16b_t06
+      - p16b_t07
+  p17:
+    libre:
+    multiple:
+    simple:
+      - p17b_t03
+      - p17b_t04
+      - p17b_t05
+      - p17b_t06
+      - p17b_t09
+      - p17b_t10
+      - p17b_t11
+      - p17b_t12
+  p18:
+    libre:
+    multiple:
+    simple:
+      - p18b_t02
+      - p18b_t03
+      - p18b_t04
+      - p18b_t05
 
 pageSideSkips:
-  p13: b
+  p00: a
+  p19: a
 
 pageWidths:
   p00:
-    a: 10
-    b: 90
-  p01:
-    a: 20
-    b: 80
-  p02:
-    a: tercio
-    b: dos-tercios
-  p03:
-    a: 40
-    b: 60
-  p05:
-    a: 60
-    b: 40
-  p06:
-    a: dos-tercios
-    b: tercio
-  p07:
-    a: 80
-    b: 20
-  p08:
-    a: 90
-    b: 10
-  p13:
-    a: 100
+    b: 100
+  p19:
+    b: 100
 
-totalPages: 13
+totalPages: 19

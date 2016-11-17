@@ -23,12 +23,12 @@ final class PagesModel extends CredentialsModel
     {
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
-            ->select('LOWER(t.edg051_codprueba) as id', 't.edg051_cod_texto as text_code', 'TRIM(t.edg051_texto_' . $args['flengua'] . ') as text_string')
-            ->from($args['ftestuak'], 't')
+            ->select('LOWER(t.edg051_codprueba) as id', 't.edg051_cod_texto as text_code', 'TRIM(t.edg051_texto_' . $args['lengua'] . ') as text_string')
+            ->from($args['table'], 't')
             ->where('t.edg051_periodo = :periodo')
             ->andWhere('t.edg051_cod_texto LIKE :text_code')
             ->orderBy('t.edg051_cod_texto')
-            ->setParameters(['periodo' => $args['fcurso'], 'text_code' => 'p' . $wildcardA . $wildcardB . '%']);
+            ->setParameters(['periodo' => $args['course'], 'text_code' => 'p' . $wildcardA . $wildcardB . '%']);
 
         /** @var array $texts */
         $texts = $queryBuilder->execute()->fetchAll();
@@ -56,28 +56,31 @@ final class PagesModel extends CredentialsModel
      */
     public function loadPageData(array $args, $page, $default_width_percents = ['a' => '50', 'b' => '50'])
     {
-        $sideA = $this->loadData($args, $page, 'a');
-        $configFile = $sideA['id'];
+        $configFile = $args['code'];
         $config = parseConfig(DATA_DIR, $configFile);
 
         if (empty($config)) {
             throw new \Exception(sprintf('The configuration file `%s` is missing in the target: %s', $configFile, DATA_DIR));
         }
-        $pageWidths = empty($config['pageWidths']['p' . $page]) ? $default_width_percents : $config['pageWidths']['p' . $page];
+        $pageSideSkip = empty($config['pageSideSkips']['p' . $page]) ? null : $config['pageSideSkips']['p' . $page];
+        $sideA = $pageSideSkip !== 'a' ? $this->loadData($args, $page, 'a') : [];
+        $sideB = $pageSideSkip !== 'b' ? $this->loadData($args, $page, 'b') : [];
+
+        $pageWidth = empty($config['pageWidths']['p' . $page]) ? $default_width_percents : $config['pageWidths']['p' . $page];
         $widthStyling = \def::styling()['width'];
-        foreach ($pageWidths as $sideLetter => $sideWith) {
+        foreach ($pageWidth as $sideLetter => $sideWith) {
             if (in_array($sideWith, array_keys($widthStyling))) {
-                $config['pageWidth'][$sideLetter] = $widthStyling[$sideWith];
+                $pageWidth[$sideLetter] = $widthStyling[$sideWith];
             }
         }
 
-        return array_merge($args, $sideA, $this->loadData($args, $page, 'b'), [
-            'id' => $sideA['id'],
+        return array_merge($args, $sideA, $sideB, [
+            'id' => $configFile,
             'lang' => $args['lang'],
             'options' => empty($config['pageOptions']['p' . $page]) ? [] : $config['pageOptions']['p' . $page],
             'page' => $page,
-            'sideSkip' => empty($config['pageSideSkips']['p' . $page]) ? null : $config['pageSideSkips']['p' . $page],
-            'pageWidth' => $config['pageWidth'],
+            'sideSkip' => $pageSideSkip,
+            'pageWidth' => $pageWidth,
             'totalPages' => $config['totalPages'],
         ]);
     }
