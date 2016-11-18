@@ -3,6 +3,7 @@
 namespace App;
 
 use Twig_Environment;
+use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
 
 /**
@@ -14,7 +15,7 @@ class View
     private static $loader;
 
     /** @var \Twig_Environment */
-    private static $environment;
+    private static $twig;
 
     /** @var bool */
     private static $loaded = false;
@@ -44,10 +45,14 @@ class View
 
         is_array($loader_dir) ?: $loader_dir = [$loader_dir];
         static::$loader = new Twig_Loader_Filesystem($loader_dir);
-        static::$environment = new Twig_Environment(static::$loader, [
+        static::$twig = new Twig_Environment(static::$loader, [
+            'autoescape' => false,
             'cache' => is_null($cache_dir) ? $loader_dir[0] . '/cache' : $cache_dir,
             'debug' => $debug,
         ]);
+        if ($debug) {
+            static::$twig->addExtension(new Twig_Extension_Debug());
+        }
         static::$loaded = true;
     }
 
@@ -73,6 +78,6 @@ class View
         /** @var string $renderPath */
         $renderPath = "$path/$slug.$ext";   // path + slug + extension
 
-        return static::$environment->render($renderPath, $variables);
+        return static::$twig->render($renderPath, $variables);
     }
 }

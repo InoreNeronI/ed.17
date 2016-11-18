@@ -5,10 +5,15 @@
 {% block content %}
     {# @url http://tachyons.io/components/layout/two-column-collapse-one/index.html #}
     <article class="calisto cf side-container">
+
         {% if sideSkip is not same as('a') %}
             <div class="fl pa1-ns pa2-m pa3-l side-left {{ pageWidth['a'] }} bg-light-gray">
-                {% set isFirstPage = (page|number_format is same as 0) %}
-                {% set buttonText = isFirstPage ? startButton ~ ' <i class="fa fa-play"></i>' : '<i class="fa fa-step-backward"></i> ' ~ leftButton %}
+                {% set isFirstPage = page|number_format == 0 %}
+                {% if isFirstPage %}
+                    {% set buttonText = startButton ~ ' <i class="fa fa-play"></i>' %}
+                {% else %}
+                    {% set buttonText = '<i class="fa fa-step-backward"></i> ' ~ leftButton %}
+                {% endif %}
                 {% set formAction = isFirstPage ? '' : '/' ~ (page|number_format - 1) %}
                 {% include 'partial/board-side.html.twig' with { 'texts': texts['a'], 'buttonText': buttonText, 'formAction': formAction } %}
             </div>
@@ -18,8 +23,12 @@
         {% endif %}
         {% if sideSkip is not same as('b') %}
             <div class="fl pa1-ns pa2-m pa3-l side-right {{ pageWidth['b'] }} bg-near-white">
-                {% set isLastPage = (page|number_format is same as totalPages|number_format) %}
-                {% set buttonText = isLastPage ? '<i class="fa fa-stop"></i> ' ~ finishButton : rightButton ~ ' <i class="fa fa-step-forward"></i>' %}
+                {% set isLastPage = page|number_format == totalPages|number_format %}
+                {% if isLastPage %}
+                    {% set buttonText = '<i class="fa fa-stop"></i> ' ~ finishButton %}
+                {% else %}
+                    {% set buttonText = rightButton ~ ' <i class="fa fa-step-forward"></i>' %}
+                {% endif %}
                 {% set formAction = isLastPage ? '' : '/' ~ (page|number_format + 1) %}
                 {% include 'partial/board-side.html.twig' with { 'texts': texts['b'], 'buttonText': buttonText, 'formAction': formAction } %}
             </div>

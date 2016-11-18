@@ -45,11 +45,8 @@ pageOptions:
       - p03b_t18
   p04:
     libre:
-    # UPDATE `ed17probak`.`edg051_testuak_dbh_mat` SET `edg051_cod_texto`='p04b_t10' WHERE `edg051_id`='2850' AND `edg051_cod_texto`='p04b_t12';
-    # UPDATE `ed17probak`.`edg051_testuak_dbh_mat` SET `edg051_cod_texto`='p04b_t11' WHERE `edg051_id`='2716' AND `edg051_cod_texto`='p04b_t10';
-    # UPDATE `ed17probak`.`edg051_testuak_dbh_mat` SET `edg051_cod_texto`='p04b_t12' WHERE `edg051_id`='2851' AND `edg051_cod_texto`='p04b_t11';
-      - p04b_t10
-      - p04b_t12
+      - p04b_t09
+      - p04b_t11
       - p04b_t13
     multiple:
     simple:
