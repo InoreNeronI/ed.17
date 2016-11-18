@@ -15,24 +15,24 @@
         {% set class = isOption ? 'pl4 option' : 'pl1' %}
 
         {% if isSimpleOption %}
-            <div class="{{ class }} pv2">
+            <div class="{{ class }} pt2">
                 <input class="fl f6 f5-l pointer bn mt1" type="radio" name="{{ parent }}" value="{{ text|raw }}" id="{{ parent }}_{{ key }}">
                 <label class="dib pointer pl3 mr1 pa0 f5 f4-ns black-80 w-90" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
             </div>
         {% elseif isLibreOption %}
-            <div class="{{ class }} pv2">
+            <div class="{{ class }} pt2">
                 <input class="fl f6 f5-l black-80 bg-white pa1 lh-solid br2-ns br--left-ns" type="text" name="{{ parent }}[{{ key }}]" value="" id="{{ parent }}_{{ key }}">
                 <label class="dib relative pl1 mr1 pa0 f5 f4-ns black-80 w-auto" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
             </div>
         {% elseif isMultipleOption %}
-            <div class="{{ class }} pv2">
+            <div class="{{ class }} pt2">
                 <input class="fl f6 f5-l pointer bn mt1" type="checkbox" name="{{ parent }}[{{ key }}]" value="{{ text|raw }}" id="{{ parent }}_{{ key }}">
                 <label class="dib pointer pl3 mr1 pa0 f5 f4-ns black-80 w-90" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
             </div>
         {% elseif isTableOption %}
 
         {% else %}
-            {% set class = 't01' in key ? class ~ ' pv2' : class ~ ' pt4 pv2' %}
+            {% set class = 't01' in key ? class : class ~ ' pt4' %}
             <div class="{{ class }}">
                 <label class="b f1 pa0 f5 f4-ns black-80 {{ class }}">{{ text|raw }}</label>
             </div>
@@ -41,7 +41,7 @@
 
     {% endfor %}
 
-    <div class="mt4 tc">
+    <div class="pt5 tc">
         <button class="dib tc bn bg-animate bg-blue hover-bg-dark-blue br2 pointer pv2 ph2 white">
             {{ buttonText }}
         </button>
