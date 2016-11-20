@@ -10,7 +10,7 @@
             <select class="f6 no-underline dib v-mid mb0 b pa1 input-reset ba b--black navy w-75 w-40-m w-25-ns tc" name="ffnacidia" id="ffnacidia" required>
                 <option class="black" value="" selected="selected"></option>
                 {% for i in 1..31 %}
-                    <option class="black" value="{{ (1 == loop.index|length ? '0' : '') ~ loop.index|raw }}">{{ loop.index|raw }}</option>
+                    <option class="black" value="{{ (1 == loop.index|length ? '0' : '') ~ loop.index }}">{{ loop.index }}</option>
                 {% endfor %}
             </select>
         </div>

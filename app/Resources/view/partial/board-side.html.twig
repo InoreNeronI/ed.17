@@ -16,25 +16,25 @@
 
         {% if isSimpleOption %}
             <div class="{{ class }} pt2">
-                <input class="fl f6 f5-l pointer bn mt1" type="radio" name="{{ parent }}" value="{{ text|raw }}" id="{{ parent }}_{{ key }}">
-                <label class="dib pointer pl3 mr1 pa0 f5 f4-ns black-80 w-90" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
+                <input class="fl f6 f5-l pointer bn mt1" type="radio" name="{{ parent }}" value="{{ text }}" id="{{ parent }}_{{ key }}">
+                <label class="dib pointer pl3 mr1 pa0 f5 f4-ns black-80 w-90" for="{{ parent }}_{{ key }}">{{ text }}</label>
             </div>
         {% elseif isLibreOption %}
             <div class="{{ class }} pt2">
                 <input class="fl f6 f5-l black-80 bg-white pa1 lh-solid br2-ns br--left-ns" type="text" name="{{ parent }}[{{ key }}]" value="" id="{{ parent }}_{{ key }}">
-                <label class="dib relative pl1 mr1 pa0 f5 f4-ns black-80 w-auto" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
+                <label class="dib pl1 mr1 pa0 f5 f4-ns black-80 w-auto" for="{{ parent }}_{{ key }}">{{ text }}</label>
             </div>
         {% elseif isMultipleOption %}
             <div class="{{ class }} pt2">
-                <input class="fl f6 f5-l pointer bn mt1" type="checkbox" name="{{ parent }}[{{ key }}]" value="{{ text|raw }}" id="{{ parent }}_{{ key }}">
-                <label class="dib pointer pl3 mr1 pa0 f5 f4-ns black-80 w-90" for="{{ parent }}_{{ key }}">{{ text|raw }}</label>
+                <input class="fl f6 f5-l pointer bn mt1" type="checkbox" name="{{ parent }}[{{ key }}]" value="{{ text }}" id="{{ parent }}_{{ key }}">
+                <label class="dib pointer pl3 mr1 pa0 f5 f4-ns black-80 w-90" for="{{ parent }}_{{ key }}">{{ text }}</label>
             </div>
         {% elseif isTableOption %}
 
         {% else %}
             {% set class = 't01' in key ? class : class ~ ' pt4' %}
             <div class="{{ class }}">
-                <label class="b f1 pa0 f5 f4-ns black-80 {{ class }}">{{ text|raw }}</label>
+                <label class="b f1 pa0 f5 f4-ns black-80 {{ class }}">{{ text }}</label>
             </div>
             {% set parent = key %}
         {% endif %}
