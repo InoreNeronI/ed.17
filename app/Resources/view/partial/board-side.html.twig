@@ -7,10 +7,10 @@
 
     {% for key, text in texts %}
 
-        {% set isLibreOption = key in options['libre'] %}
-        {% set isMultipleOption = key in options['multiple'] %}
-        {% set isSimpleOption = key in options['simple'] %}
-        {% set isTableOption = key in options['table'] %}
+        {% set isLibreOption = key in pageOptions['libre'] %}
+        {% set isMultipleOption = key in pageOptions['multiple'] %}
+        {% set isSimpleOption = key in pageOptions['simple'] %}
+        {% set isTableOption = key in pageOptions['table'] %}
         {% set isOption = isSimpleOption or isLibreOption or isMultipleOption or isTableOption %}
         {% set class = isOption ? 'pl4 option' : 'pl1' %}
 

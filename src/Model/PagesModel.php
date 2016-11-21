@@ -48,13 +48,13 @@ final class PagesModel extends CredentialsModel
     /**
      * @param array  $args
      * @param string $page
-     * @param array  $default_width_percents
+     * @param array  $defaultPageSidePercents
      *
      * @return array
      *
      * @throws \Exception
      */
-    public function loadPageData(array $args, $page, $default_width_percents = ['a' => '50', 'b' => '50'])
+    public function loadPageData(array $args, $page, $defaultPageSidePercents = ['a' => '50', 'b' => '50'])
     {
         $data_folder = DATA_DIR . '/' . $args['code'];
         $config = parseConfig($data_folder, 'config');
@@ -62,14 +62,20 @@ final class PagesModel extends CredentialsModel
             throw new \Exception(sprintf('The configuration file `%s` is missing in the target: %s', 'config.yml', $data_folder));
         }
 
-        $pageWidth = empty($config['pageWidths']['p' . $page]) ? $default_width_percents : $config['pageWidths']['p' . $page];
+        $pageWidth = empty($config['pageWidths']['p' . $page]) ? $defaultPageSidePercents : $config['pageWidths']['p' . $page];
         $widthStyling = \def::styling()['width'];
+        $pageSideSkip = null;
+        $pageSides = $defaultPageSidePercents;
         foreach ($pageWidth as $sideLetter => $sideWith) {
             if (in_array($sideWith, array_keys($widthStyling))) {
+                if ($sideWith === 100) {
+                    unset($pageSides[$sideLetter]);
+                    $pageSideSkip = array_keys($pageSides)[0];
+                }
                 $pageWidth[$sideLetter] = $widthStyling[$sideWith];
             }
         }
-        $pageSideSkip = empty($config['pageSideSkips']['p' . $page]) ? null : $config['pageSideSkips']['p' . $page];
+        //$pageSideSkip = empty($config['pageSideSkips']['p' . $page]) ? null : $config['pageSideSkips']['p' . $page];
         $sideA = $pageSideSkip !== 'a' ? $this->loadData($args, $page, 'a') : [];
         $sideB = $pageSideSkip !== 'b' ? $this->loadData($args, $page, 'b') : [];
 
@@ -80,8 +86,8 @@ final class PagesModel extends CredentialsModel
 
         return array_merge($args, $sideA, $sideB, [
             'lang' => $args['lang'],
-            'options' => empty($options['p' . $page]) ? [] : $options['p' . $page],
             'page' => $page,
+            'pageOptions' => empty($options['p' . $page]) ? [] : $options['p' . $page],
             'pageTitles' => empty($config['pageTitles']) ? [] : $config['pageTitles'],
             'pageReplaces' => empty($config['pageReplaces']['p' . $page]) ? [] : $config['pageReplaces']['p' . $page],
             'pageWidth' => $pageWidth,
