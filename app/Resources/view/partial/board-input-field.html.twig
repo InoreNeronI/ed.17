@@ -1,0 +1,10 @@
+{% set class = class is defined ? ' class="' ~ class ~ '"' : ' class="fl f6 f5-l black-80 bg-white pa1 lh-solid br2-ns br--left-ns"' %}
+{% set type = type is defined ? ' type="' ~ type ~ '"' : ' type="text"' %}
+{% set name = name is defined ? ' name="' ~ name ~ '"' : '' %}
+{% set value = value is defined ? ' value="' ~ value ~ '"' : '' %}
+{% set id = id is defined ? ' id="' ~ id ~ '"' : '' %}
+{% set placeholder = placeholder is defined ? ' placeholder="' ~ placeholder ~ '"' : ' placeholder="' ~ textPlaceholder|default('') ~ '"' %}
+{% set disabled = disabled is defined ? ' disabled' : '' %}
+{% set required = required is defined ? ' required' : '' %}
+
+<input{{ class }}{{ type }}{{ name }}{{ value }}{{ id }}{{ placeholder }}{{ disabled }}{{ required }} />

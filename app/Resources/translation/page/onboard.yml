@@ -14,3 +14,7 @@ finishButton:
     eu: 'Amaitu'
     es: 'Terminar'
     en: 'Finish'
+textPlaceholder:
+    eu: 'Idatzi hemen...'
+    es: 'Escribe aquí...'
+    en: 'Write here...'

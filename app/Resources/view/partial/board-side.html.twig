@@ -2,8 +2,8 @@
 <form class="mw7 center pa4 br2-ns ba b--black-10" action="{{ formAction }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
 
     {% include 'partial/board-hidden-fields.html.twig' %}
-    <input name="flabel" type="hidden" value="{{ flabel }}"/>
-    <input name="referrer" type="hidden" value="{{ page }}"/>
+    <input name="flabel" type="hidden" value="{{ flabel }}" />
+    <input name="referrer" type="hidden" value="{{ page }}" />
 
     {% for key, text in texts %}
 
@@ -16,23 +16,27 @@
 
         {% if isSimpleOption %}
             <div class="{{ class }} pt2">
-                <input class="fl f6 f5-l pointer bn mt1" type="radio" name="{{ parent }}" value="{{ text }}" id="{{ parent }}_{{ key }}">
+                {% set current_text_num = key|split('t')[1]|number_format %}
+                {% set parent_text_num = parent|split('t')[1]|number_format %}
+                {% include 'partial/board-input-field.html.twig' with { 'class': 'fl f6 f5-l pointer bn mt1', 'type': 'radio', 'value': current_text_num - parent_text_num, 'name': parent, 'id': parent ~ '_' ~ key } %}
                 <label class="dib pointer pl3 mr1 pa0 f5 f4-ns black-80 w-90" for="{{ parent }}_{{ key }}">{{ text }}</label>
             </div>
         {% elseif isLibreOption %}
             <div class="{{ class }} pt2">
-                <input class="fl f6 f5-l black-80 bg-white pa1 lh-solid br2-ns br--left-ns" type="text" name="{{ parent }}[{{ key }}]" value="" id="{{ parent }}_{{ key }}">
-                <label class="dib pl1 mr1 pa0 f5 f4-ns black-80 w-auto" for="{{ parent }}_{{ key }}">{{ text }}</label>
+                {% include 'partial/board-input-field.html.twig' with { 'name': parent ~ '[' ~ key ~ ']', 'id': parent ~ '_' ~ key } %}
             </div>
         {% elseif isMultipleOption %}
             <div class="{{ class }} pt2">
-                <input class="fl f6 f5-l pointer bn mt1" type="checkbox" name="{{ parent }}[{{ key }}]" value="{{ text }}" id="{{ parent }}_{{ key }}">
+                {% set current_text_num = key|split('t')[1]|number_format %}
+                {% set parent_text_num = parent|split('t')[1]|number_format %}
+                {% include 'partial/board-input-field.html.twig' with { 'class': 'fl f6 f5-l pointer bn mt1', 'type': 'checkbox', 'value': current_text_num - parent_text_num, 'name': parent ~ '[' ~ key ~ ']', 'id': parent ~ '_' ~ key } %}
                 <label class="dib pointer pl3 mr1 pa0 f5 f4-ns black-80 w-90" for="{{ parent }}_{{ key }}">{{ text }}</label>
             </div>
         {% elseif isTableOption %}
 
         {% else %}
             {% set class = 't01' in key ? class : class ~ ' pt4' %}
+            {% set class = key in pageTitles ? class ~ ' tc' : class %}
             <div class="{{ class }}">
                 <label class="b f1 pa0 f5 f4-ns black-80 {{ class }}">{{ text }}</label>
             </div>

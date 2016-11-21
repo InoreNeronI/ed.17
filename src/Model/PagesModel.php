@@ -56,12 +56,12 @@ final class PagesModel extends CredentialsModel
      */
     public function loadPageData(array $args, $page, $default_width_percents = ['a' => '50', 'b' => '50'])
     {
-        $id = $args['code'];
-        $config = parseConfig(DATA_DIR, $id);
-
+        $data_folder = DATA_DIR . '/' . $args['code'];
+        $config = parseConfig($data_folder, 'config');
         if (empty($config)) {
-            throw new \Exception(sprintf('The configuration file `%s` is missing in the target: %s', $id, DATA_DIR));
+            throw new \Exception(sprintf('The configuration file `%s` is missing in the target: %s', 'config.yml', $data_folder));
         }
+
         $pageWidth = empty($config['pageWidths']['p' . $page]) ? $default_width_percents : $config['pageWidths']['p' . $page];
         $widthStyling = \def::styling()['width'];
         foreach ($pageWidth as $sideLetter => $sideWith) {
@@ -73,13 +73,19 @@ final class PagesModel extends CredentialsModel
         $sideA = $pageSideSkip !== 'a' ? $this->loadData($args, $page, 'a') : [];
         $sideB = $pageSideSkip !== 'b' ? $this->loadData($args, $page, 'b') : [];
 
+        $options = parseConfig($data_folder, 'options');
+        if (empty($options)) {
+            throw new \Exception(sprintf('The options file `%s` is missing in the target: %s', 'options.yml', $data_folder));
+        }
+
         return array_merge($args, $sideA, $sideB, [
-            'id' => $id,
             'lang' => $args['lang'],
-            'options' => empty($config['pageOptions']['p' . $page]) ? [] : $config['pageOptions']['p' . $page],
+            'options' => empty($options['p' . $page]) ? [] : $options['p' . $page],
             'page' => $page,
+            'pageTitles' => empty($config['pageTitles']) ? [] : $config['pageTitles'],
+            'pageReplaces' => empty($config['pageReplaces']['p' . $page]) ? [] : $config['pageReplaces']['p' . $page],
             'pageWidth' => $pageWidth,
-            'sideSkip' => $pageSideSkip,
+            'pageSideSkip' => $pageSideSkip,
             'totalPages' => $config['totalPages'],
         ]);
     }

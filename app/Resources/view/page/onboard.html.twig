@@ -6,7 +6,7 @@
     {# @url http://tachyons.io/components/layout/two-column-collapse-one/index.html #}
     <article class="calisto cf side-container">
 
-        {% if sideSkip is not same as('a') %}
+        {% if pageSideSkip is not same as('a') %}
             <div class="fl pa1-ns pa2-m pa3-l side-left {{ pageWidth['a'] }} bg-light-gray">
                 {% set isFirstPage = page|number_format == 0 %}
                 {% if isFirstPage %}
@@ -18,10 +18,10 @@
                 {% include 'partial/board-side.html.twig' with { 'texts': texts['a'], 'buttonText': buttonText, 'formAction': formAction } %}
             </div>
         {% endif %}
-        {% if sideSkip is null %}
+        {% if pageSideSkip is null %}
             <div class="side-splitter"></div>
         {% endif %}
-        {% if sideSkip is not same as('b') %}
+        {% if pageSideSkip is not same as('b') %}
             <div class="fl pa1-ns pa2-m pa3-l side-right {{ pageWidth['b'] }} bg-near-white">
                 {% set isLastPage = page|number_format == totalPages|number_format %}
                 {% if isLastPage %}

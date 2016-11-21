@@ -1,0 +1,42 @@
+
+pageImages:
+
+
+pageReplaces:
+  p00:
+    p00b_t06: 'partial/board-input-field.html.twig'
+
+pageSideSkips:
+  p00: a
+  p19: a
+
+pageTitles:
+  - p00b_t01
+  - p00b_t03
+  - p01a_t01
+  - p02a_t01
+  - p03a_t01
+  - p04a_t01
+  - p05a_t01
+  - p06a_t01
+  - p07a_t01
+  - p08a_t01
+  - p09a_t01
+  - p10a_t01
+  - p11a_t01
+  - p12a_t01
+  - p13a_t01
+  - p14a_t01
+  - p15a_t01
+  - p16a_t01
+  - p17a_t01
+  - p18a_t01
+  - p19b_t01
+
+pageWidths:
+  p00:
+    b: 100
+  p19:
+    b: 100
+
+totalPages: 19
