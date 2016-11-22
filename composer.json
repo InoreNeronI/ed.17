@@ -40,7 +40,7 @@
     "security-check": "php bin/checker.phar security:check composer.lock"
   },
   "scripts-dev": {
-    "assets-copy": [
+    "build": [
       "printf \"\\n\\tCopying Assets\\n\\n\"",
       "[ -d \"public\" ] || mkdir public",
       "[ -d \"public/scripts\" ] || mkdir \"public/scripts\"",
@@ -86,8 +86,8 @@
       "node bin/yarn.js upgrade"
     ],
     "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
-    "post-install-cmd": ["@bin-install", "@assets-copy", "@build-parameters"],
-    "post-update-cmd": ["@bin-update", "@assets-copy", "@build-parameters"]
+    "post-install-cmd": ["@bin-install", "@build", "@build-parameters"],
+    "post-update-cmd": ["@bin-update", "@build", "@build-parameters"]
   },
   "extra": {
     "incenteev-parameters": [{

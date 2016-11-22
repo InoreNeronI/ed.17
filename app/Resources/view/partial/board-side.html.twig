@@ -23,6 +23,12 @@
         {% set class = image is not null and image['alignment'] is not same as('cen') ? ' ' ~ images[key]['offsetWidth'] : '' %}
         {% set class = isOption ? 'pl4 option' ~ class : 'pl1' ~ class %}
 
+        {% if image is not null and image['alignment'] is same as('izq') %}
+            <div class="tl pt2 {{ image['width'] }}">
+                <img class="{{ image['width'] }}" src="{{ image['path'] }}" title="title..." />
+            </div>
+        {% endif %}
+
         {% if isSimpleOption %}
             <div class="{{ class }} pt2">
                 {% set current_text_num = key|split('t')[1]|number_format %}
@@ -57,8 +63,13 @@
         {% endif %}
 
         {% if image is not null and image['alignment'] is same as('cen') %}
-            {% set i = i + 1 %}
-            <div class="tc pt2">
+                <div class="tc pt2">
+                <img class="{{ image['width'] }}" src="{{ image['path'] }}" title="title..." />
+            </div>
+        {% endif %}
+
+        {% if image is not null and image['alignment'] is same as('dch') %}
+            <div class="tr pt2 {{ image['width'] }}">
                 <img class="{{ image['width'] }}" src="{{ image['path'] }}" title="title..." />
             </div>
         {% endif %}
