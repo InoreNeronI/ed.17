@@ -61,11 +61,15 @@ final class PagesModel extends CredentialsModel
         if (empty($config)) {
             throw new \Exception(sprintf('The configuration file `%s` is missing in the target: %s', 'config.yml', $data_folder));
         }
+        $options = parseConfig($data_folder, 'options');
+        if (empty($options)) {
+            throw new \Exception(sprintf('The options file `%s` is missing in the target: %s', 'options.yml', $data_folder));
+        }
 
         $pageWidth = empty($config['pageWidths']['p' . $page]) ? $defaultPageSidePercents : $config['pageWidths']['p' . $page];
         $widthStyling = \def::styling()['width'];
-        $pageSideSkip = null;
         $pageSides = $defaultPageSidePercents;
+        $pageSideSkip = null;
         foreach ($pageWidth as $sideLetter => $sideWith) {
             if (in_array($sideWith, array_keys($widthStyling))) {
                 if ($sideWith === 100) {
@@ -75,18 +79,31 @@ final class PagesModel extends CredentialsModel
                 $pageWidth[$sideLetter] = $widthStyling[$sideWith];
             }
         }
-        //$pageSideSkip = empty($config['pageSideSkips']['p' . $page]) ? null : $config['pageSideSkips']['p' . $page];
         $sideA = $pageSideSkip !== 'a' ? $this->loadData($args, $page, 'a') : [];
         $sideB = $pageSideSkip !== 'b' ? $this->loadData($args, $page, 'b') : [];
 
-        $options = parseConfig($data_folder, 'options');
-        if (empty($options)) {
-            throw new \Exception(sprintf('The options file `%s` is missing in the target: %s', 'options.yml', $data_folder));
+        $images = [];
+        foreach(empty($config['pageImages']['p' . $page]) ? [] : $config['pageImages']['p' . $page] as $image) {
+            $imageData = explode('.', $image);
+            $imageData = explode('_', $imageData[0]);
+            if ($imageData[5] === $args['lengua'] || $imageData[5] === 'img') {
+                $startText = intval(str_replace('t', '', $imageData[2]));
+                $endText = intval(str_replace('t', '', $imageData[3]));
+                $side = str_replace('p' . $page, '', $imageData[0]);
+                for ($i = $startText; $i <= $endText; $i++) {
+                    $images[$side]['p' . $page . $side . '_t' . sprintf('%02d', $i)] = [
+                        'alignment' => $imageData[1],
+                        'width' => $widthStyling[$imageData[4]],
+                        'offsetWidth' => $widthStyling[100 - $imageData[4]],
+                        'path' => '/images/' . $args['code'] . '/' . $image
+                    ];
+                }
+            }
         }
 
         return array_merge($args, $sideA, $sideB, [
-            'lang' => $args['lang'],
             'page' => $page,
+            'pageImages' => $images,
             'pageOptions' => empty($options['p' . $page]) ? [] : $options['p' . $page],
             'pageTitles' => empty($config['pageTitles']) ? [] : $config['pageTitles'],
             'pageReplaces' => empty($config['pageReplaces']['p' . $page]) ? [] : $config['pageReplaces']['p' . $page],

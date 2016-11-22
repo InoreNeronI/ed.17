@@ -68,7 +68,6 @@ styles:
     x4: w4
     x5: w5
     # Width Percentages - Based off of width of parent
-    0: w0
     10: w-10
     20: w-20
     25: w-25

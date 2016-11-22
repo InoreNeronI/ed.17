@@ -6,5 +6,4 @@
 {% set placeholder = placeholder is defined ? ' placeholder="' ~ placeholder ~ '"' : ' placeholder="' ~ textPlaceholder|default('') ~ '"' %}
 {% set disabled = disabled is defined ? ' disabled' : '' %}
 {% set required = required is defined ? ' required' : '' %}
-
 <input{{ class }}{{ type }}{{ name }}{{ value }}{{ id }}{{ placeholder }}{{ disabled }}{{ required }} />

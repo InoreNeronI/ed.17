@@ -1,14 +1,13 @@
 
 pageImages:
   p00:
-    - p00a_cen_t06_t07_20_img.png
-    - p00a_cen_t11_t11_90_img.png
+    - p00b_cen_t10_t10_90_img.png
   p01:
     - p01a_cen_t01_t01_30_img.png
   p02:
-    - p02a_cen_t01_t01_30_img.png
-    - p02a_cen_t01_t01_33_cas.png
-    - p02a_cen_t01_t01_33_eus.png
+    - p02a_cen_t01_t02_30_img.png
+    - p02a_cen_t01_t02_33_cas.png
+    - p02a_cen_t01_t02_33_eus.png
   p03:
     - p03a_cen_t02_t02_33_cas.png
     - p03a_cen_t02_t02_33_eus.png
@@ -61,10 +60,6 @@ pageImages:
 pageReplaces:
   p00:
     p00b_t06: 'partial/board-input-field.html.twig'
-
-#pageSideSkips:
-#  p00: a
-#  p19: a
 
 pageTitles:
   - p00b_t01

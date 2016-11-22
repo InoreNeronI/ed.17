@@ -11,8 +11,17 @@
         {% set isMultipleOption = key in pageOptions['multiple'] %}
         {% set isSimpleOption = key in pageOptions['simple'] %}
         {% set isTableOption = key in pageOptions['table'] %}
-        {% set isOption = isSimpleOption or isLibreOption or isMultipleOption or isTableOption %}
-        {% set class = isOption ? 'pl4 option' : 'pl1' %}
+        {% set isTextOption = key in pageOptions['text'] %}
+        {% set isOption = isSimpleOption or isLibreOption or isMultipleOption or isTableOption or isTextOption %}
+        {% if key in pageReplaces|keys %}
+            {% set wildcard %}
+                {% include pageReplaces[key] %}
+            {% endset %}
+            {% set text = text|format(wildcard) %}
+        {% endif %}
+        {% set image = key in images|keys ? images[key] : null %}
+        {% set class = image is not null and image['alignment'] is not same as('cen') ? ' ' ~ images[key]['offsetWidth'] : '' %}
+        {% set class = isOption ? 'pl4 option' ~ class : 'pl1' ~ class %}
 
         {% if isSimpleOption %}
             <div class="{{ class }} pt2">
@@ -34,21 +43,33 @@
             </div>
         {% elseif isTableOption %}
 
+        {% elseif isTextOption %}
+            <div class="{{ class }} pt2">
+                <label class="pa0 f5 black-80 {{ class }}">{{ text }}</label>
+            </div>
         {% else %}
             {% set class = 't01' in key ? class : class ~ ' pt4' %}
             {% set class = key in pageTitles ? class ~ ' tc' : class %}
             <div class="{{ class }}">
-                <label class="b f1 pa0 f5 f4-ns black-80 {{ class }}">{{ text }}</label>
+                <label class="b pa0 f5 f4-ns black-80 {{ class }}">{{ text }}</label>
             </div>
             {% set parent = key %}
         {% endif %}
 
+        {% if image is not null and image['alignment'] is same as('cen') %}
+            {% set i = i + 1 %}
+            <div class="tc pt2">
+                <img class="{{ image['width'] }}" src="{{ image['path'] }}" title="title..." />
+            </div>
+        {% endif %}
+
     {% endfor %}
 
-    <div class="pt5 tc">
-        <button class="dib tc bn bg-animate bg-blue hover-bg-dark-blue br2 pointer pv2 ph2 white">
-            {{ buttonText }}
-        </button>
-    </div>
-
+    {% if buttonText is not null %}
+        <div class="pt5 tc">
+            <button class="dib tc bn bg-animate bg-blue hover-bg-dark-blue br2 pointer pv2 ph2 white">
+                {{ buttonText }}
+            </button>
+        </div>
+    {% endif %}
 </form>
