@@ -4,7 +4,7 @@
 
 {% block content %}
     {# @url http://tachyons.io/components/layout/two-column-collapse-one/index.html #}
-    <article class="calisto cf side-container">
+    <article class="cf side-container">
         {% set isFirstPage = page|number_format == 0 %}
         {% set isLastPage = page|number_format == totalPages|number_format %}
         {% if pageSideSkip is not same as('a') %}

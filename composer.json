@@ -73,7 +73,7 @@
       "[ -e \"bin/yarn.js\" ] || curl -Lo bin/yarn.js https://github.com/yarnpkg/yarn/releases/download/v0.16.1/yarn-0.16.1.js",
       "printf \"\\n\\tBinaries had been installed succesfully\\n\\n\"",
       "printf \"\\n\\tInstalling Node Packaged Modules\\n\\n\"",
-      "node bin/yarn.js install"
+      "npm install"
     ],
     "bin-update": [
       "@bin-install",
@@ -83,7 +83,7 @@
       "php bin/phpunit.phar --self-update || true",
       "printf \"\\n\\tBinaries had been updated succesfully\\n\\n\"",
       "printf \"\\n\\tUpdating Node Packaged Modules\\n\\n\"",
-      "node bin/yarn.js upgrade"
+      "npm update"
     ],
     "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
     "post-install-cmd": ["@bin-install", "@build", "@build-parameters"],

@@ -1,0 +1,184 @@
+p00:
+  text:
+    - p00b_t02
+    - p00b_t03
+    - p00b_t04
+    - p00b_t05
+    - p00b_t06
+        
+p01:
+  text:
+    - p01a_t03
+  simple:
+    - p01b_t03
+    - p01b_t04
+    - p01b_t05
+    - p01b_t06
+    - p01b_t09
+    - p01b_t10
+    - p01b_t11
+    - p01b_t12
+    
+p02:
+  simple:
+    - p02b_t06
+    - p02b_t07
+    - p02b_t08
+    - p02b_t09
+   
+p03:
+  simple:
+    - p03b_t03
+    - p03b_t04
+    - p03b_t05
+    - p03b_t06
+        
+p04:
+  simple:
+    - p04b_t03
+    - p04b_t04
+    - p04b_t05
+    - p04b_t06
+    - p04b_t09
+    - p04b_t10
+    - p04b_t11
+    - p04b_t12
+    - p04b_t15
+    - p04b_t16
+    - p04b_t17
+    - p04b_t18
+
+p05:
+  simple:
+    - p05b_t03
+    - p05b_t04
+    - p05b_t05
+    - p05b_t06
+  libre:
+    - p05b_t09
+    - p05b_t10
+    
+p06:
+  text:
+    - p06a_t02
+  simple:
+    - p06b_t05a
+    - p06b_t05b
+    - p06b_t05c
+    - p06b_t05d
+    - p06b_t11
+    - p06b_t12
+    - p06b_t13
+    - p06b_t14
+    
+p07:
+  text:
+    - p07a_t02
+  simple:
+    - p07b_t04
+    - p07b_t05
+    - p07b_t06
+    - p07b_t07
+    
+p08:
+  text:
+    - p08a_t02
+  simple:
+    - p08b_t04a
+    - p08b_t04b
+    - p08b_t04c
+    - p08b_t04d
+    
+p09:
+  text:
+    - p09a_t02
+  simple:
+    - p09b_t03a
+    - p09b_t03b
+    - p09b_t03c
+    - p09b_t03d
+   
+p10:
+  text:
+    - p10a_t02
+  simple:
+    - p10b_t03a
+    - p10b_t03b
+    - p10b_t03c
+    - p10b_t03d
+   
+p11:
+  text:
+    - p11a_t02
+  simple:
+    - p11b_t07
+    - p11b_t08
+    - p11b_t09
+    - p11b_t10
+    - p11b_t17
+    - p11b_t18
+    - p11b_t19
+    - p11b_t20
+    
+p12:
+  text:
+    - p12a_t02
+  simple:
+    - p12b_t03
+    - p12b_t04
+    - p12b_t05
+    - p12b_t06
+        
+p13:
+  text:
+    - p13a_t02
+  simple:
+    - p13b_t03
+    - p13b_t04
+    - p13b_t05
+    - p13b_t06
+    
+p14:
+  text:
+    - p14a_t02
+  simple:
+    - p14b_t03
+    - p14b_t04
+    - p14b_t05
+    - p14b_t06
+    
+p15:
+  text:
+    - p15a_t02
+  simple:
+    - p15b_t03
+    - p15b_t04
+    - p15b_t05
+    - p15b_t06
+
+p16:
+  text:
+    - p16a_t02
+  simple:
+    - p16b_t03
+    - p16b_t04
+    - p16b_t05
+    - p16b_t06
+    
+p17:
+  text:
+    - p17a_t02
+  multiple:
+    - p17b_t04
+    - p17b_t05
+    - p17b_t06
+    - p17b_t07
+    
+p18:
+  text:
+    - p18a_t02
+  simple:
+    - p18b_t04
+    - p18b_t05
+    - p18b_t06
+    - p18b_t07
