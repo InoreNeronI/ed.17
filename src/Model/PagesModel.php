@@ -48,27 +48,32 @@ final class PagesModel extends CredentialsModel
     /**
      * @param array  $args
      * @param string $page
-     * @param array  $defaultPageSidePercents
-     *
+     * @param string $dataDir
+     * @param array $defaultPageSidePercents
      * @return array
-     *
      * @throws \Exception
      */
-    public function loadPageData(array $args, $page, $defaultPageSidePercents = ['a' => '50', 'b' => '50'])
+    public function loadPageData(array $args, $page, $dataDir = DATA_DIR, $defaultPageSidePercents = ['a' => '50', 'b' => '50'])
     {
-        $data_folder = DATA_DIR . '/' . $args['code'];
+        /** @var string $data_folder */
+        $data_folder = $dataDir . '/' . $args['code'];
+        /** @var array $config */
         $config = parseConfig($data_folder, 'config');
         if (empty($config)) {
             throw new \Exception(sprintf('The configuration file `%s` is missing in the target: %s', 'config.yml', $data_folder));
         }
+        /** @var array $options */
         $options = parseConfig($data_folder, 'options');
         if (empty($options)) {
             throw new \Exception(sprintf('The options file `%s` is missing in the target: %s', 'options.yml', $data_folder));
         }
-
+        /** @var array $pageWidth */
         $pageWidth = empty($config['pageWidths']['p' . $page]) ? $defaultPageSidePercents : $config['pageWidths']['p' . $page];
+        /** @var array $widthStyling */
         $widthStyling = \def::styling()['width'];
+        /** @var array $pageSides */
         $pageSides = $defaultPageSidePercents;
+        /** @var string|null $pageSideSkip */
         $pageSideSkip = null;
         foreach ($pageWidth as $sideLetter => $sideWith) {
             if (in_array($sideWith, array_keys($widthStyling))) {
@@ -87,17 +92,16 @@ final class PagesModel extends CredentialsModel
             $imageData = explode('.', $image);
             $imageData = explode('_', $imageData[0]);
             if ($imageData[5] === $args['lengua'] || $imageData[5] === 'img') {
-                $startText = intval(str_replace('t', '', $imageData[2]));
-                $endText = intval(str_replace('t', '', $imageData[3]));
                 $side = str_replace('p' . $page, '', $imageData[0]);
-                for ($i = $startText; $i <= $endText; $i++) {
-                    $images[$side]['p' . $page . $side . '_t' . sprintf('%02d', $i)] = [
-                        'alignment' => $imageData[1],
-                        'width' => $widthStyling[$imageData[4]],
-                        'offsetWidth' => $widthStyling[100 - $imageData[4]],
-                        'path' => '/images/' . $args['code'] . '/' . $image
-                    ];
-                }
+                $offset = 100 - $imageData[4];
+                $images[$side][$imageData[0] . '_' . $imageData[2]] = [
+                    'alignment' => $imageData[1],
+                    'offset' => isset($widthStyling[$offset]) ? $widthStyling[$offset] : $widthStyling['auto'],
+                    'path' => '/images/' . $args['code'] . '/' . $image,
+                    'since' => intval(str_replace('t', '', $imageData[2])),
+                    'till' => intval(str_replace('t', '', $imageData[3])),
+                    'width' => isset($widthStyling[$imageData[4]]) ? $widthStyling[$imageData[4]] : $widthStyling['auto']
+                ];
             }
         }
 

@@ -2,7 +2,7 @@ title:
   eu: 'Identifikazioa'
   es: 'Identificación'
   en: ''
-form_action: '/boarding'
+formAction: '/boarding'
 code:
   eu: 'Ikaslearen kodea'
   es: 'Código del alumno-a'

@@ -1,84 +1,103 @@
 
-<form class="mw7 center pa4 br2-ns ba b--black-10" action="{{ formAction }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
+<form class="min-h-100 mb3 mw7 center pa3 br2-ns ba b--black-10 v-mid" action="{{ formAction }}" accept-charset="utf-8" method="{{ formMethod|default('post') }}">
 
     {% include 'partial/board-hidden-fields.html.twig' %}
     <input name="flabel" type="hidden" value="{{ flabel }}" />
     <input name="referrer" type="hidden" value="{{ page }}" />
 
     {% for key, text in texts %}
-
         {% set isLibreOption = key in pageOptions['libre'] %}
         {% set isMultipleOption = key in pageOptions['multiple'] %}
         {% set isSimpleOption = key in pageOptions['simple'] %}
         {% set isTableOption = key in pageOptions['table'] %}
-        {% set isTextOption = key in pageOptions['text'] %}
-        {% set isOption = isSimpleOption or isLibreOption or isMultipleOption or isTableOption or isTextOption %}
+        {% set isOption = isSimpleOption or isLibreOption or isMultipleOption or isTableOption %}
+        {% set isPlainText = key in pageOptions['text'] %}
+        {% set class = isOption or isPlainText ? 'pl1 pl2-ns pl3-m pl4-l' : '' %}
+        {% set class = isOption ? 'option ' ~ class : 'description' ~ class %}
+
         {% if key in pageReplaces|keys %}
             {% set wildcard %}
-                {% include pageReplaces[key] %}
+                {% include pageReplaces[key]['template'] with pageReplaces[key]['parameters'] %}
             {% endset %}
             {% set text = text|format(wildcard) %}
         {% endif %}
-        {% set image = key in images|keys ? images[key] : null %}
-        {% set class = image is not null and image['alignment'] is not same as('cen') ? ' ' ~ images[key]['offsetWidth'] : '' %}
-        {% set class = isOption ? 'pl4 option' ~ class : 'pl1' ~ class %}
+        {% set text_num = key|split('t')[1]|number_format + 0 %}
 
-        {% if image is not null and image['alignment'] is same as('izq') %}
-            <div class="tl pt2 {{ image['width'] }}">
-                <img class="{{ image['width'] }}" src="{{ image['path'] }}" title="title..." />
+        {% set hadImage = false %}
+        {% if key in images|keys or text_num <= image['till'] %}
+            {% if key in images|keys %}
+                {% set image = images[key] %}
+            {% endif %}
+            {% set class = image['alignment'] is not same as('cen') ? class ~ ' ' ~ image['offset'] : class %}
+            {% set class = image['alignment'] is same as('dch') ? 'fl ' ~ class : class %}
+            {% set class = image['alignment'] is same as('izq') ? 'dib ' ~ class : class %}
+        {% elseif image is not empty and text_num > image['till'] or text_num == 1 %}
+            {% if image['alignment'] is same as('izq') %}
+                {% set class = 'cl ' ~ class %}
+            {% endif %}
+            {% if image is not empty and text_num > image['till'] %}
+                {% set hadImage = true %}
+            {% endif %}
+            {% set image = null %}
+        {% endif %}
+
+        {% if image['alignment'] is same as('izq') and image['since'] == text_num %}
+            <div class="fl pr1 {{ image['width'] }}">
+                <img class="w-100" src="{{ image['path'] }}" title="title..." />
             </div>
         {% endif %}
 
         {% if isSimpleOption %}
-            <div class="{{ class }} pt2">
+            <div class="{{ class }} pv1">
                 {% set current_text_num = key|split('t')[1]|number_format %}
                 {% set parent_text_num = parent|split('t')[1]|number_format %}
-                {% include 'partial/board-input-field.html.twig' with { 'class': 'fl f6 f5-l pointer bn mt1', 'type': 'radio', 'value': current_text_num - parent_text_num, 'name': parent, 'id': parent ~ '_' ~ key } %}
-                <label class="dib pointer pl3 mr1 pa0 f5 f4-ns black-80 w-90" for="{{ parent }}_{{ key }}">{{ text }}</label>
+                {% include 'partial/board-input-field.html.twig' with { 'cssClass': 'fl f6 f5-l pointer bn mt1', 'type': 'radio', 'value': current_text_num - parent_text_num, 'name': parent, 'id': parent ~ '_' ~ key } %}
+                <label class="dib pointer pl2 mr1 pa0 f5 f4-ns black-80 mw-95" for="{{ parent }}_{{ key }}">{{ text }}</label>
             </div>
         {% elseif isLibreOption %}
-            <div class="{{ class }} pt2">
+            <div class="{{ class }} pv1">
                 {% include 'partial/board-input-field.html.twig' with { 'name': parent ~ '[' ~ key ~ ']', 'id': parent ~ '_' ~ key } %}
+                <label class="dib pointer pl2 mr1 pa0 f5 f4-ns black-80" for="{{ parent }}_{{ key }}">{{ text }}</label>
             </div>
         {% elseif isMultipleOption %}
-            <div class="{{ class }} pt2">
+            <div class="{{ class }} pv1">
                 {% set current_text_num = key|split('t')[1]|number_format %}
                 {% set parent_text_num = parent|split('t')[1]|number_format %}
-                {% include 'partial/board-input-field.html.twig' with { 'class': 'fl f6 f5-l pointer bn mt1', 'type': 'checkbox', 'value': current_text_num - parent_text_num, 'name': parent ~ '[' ~ key ~ ']', 'id': parent ~ '_' ~ key } %}
-                <label class="dib pointer pl3 mr1 pa0 f5 f4-ns black-80 w-90" for="{{ parent }}_{{ key }}">{{ text }}</label>
+                {% include 'partial/board-input-field.html.twig' with { 'cssClass': 'fl f6 f5-l pointer bn mt1', 'type': 'checkbox', 'value': current_text_num - parent_text_num, 'name': parent ~ '[' ~ key ~ ']', 'id': parent ~ '_' ~ key } %}
+                <label class="dib pointer pl2 mr1 pa0 f5 f4-ns black-80 mw-95" for="{{ parent }}_{{ key }}">{{ text }}</label>
             </div>
         {% elseif isTableOption %}
 
-        {% elseif isTextOption %}
-            <div class="{{ class }} pt2">
-                <label class="pa0 f5 black-80 {{ class }}">{{ text }}</label>
+        {% elseif isPlainText %}
+            <div class="{{ class }} pv1">
+                <label class="pa0 f5 f4-ns black-80">{{ text }}</label>
             </div>
         {% else %}
-            {% set class = 't01' in key ? class : class ~ ' pt4' %}
+            {% set class = ('t01' in key or hadImage) ? class ~ ' pb1' : class ~ ' pt3 pb1' %}
             {% set class = key in pageTitles ? class ~ ' tc' : class %}
             <div class="{{ class }}">
-                <label class="b pa0 f5 f4-ns black-80 {{ class }}">{{ text }}</label>
+                <label class="b pa0 f5 f4-ns black-80">{{ text }}</label>
             </div>
             {% set parent = key %}
         {% endif %}
 
-        {% if image is not null and image['alignment'] is same as('cen') %}
-                <div class="tc pt2">
+        {% if image['alignment'] is same as('cen') and image['since'] == text_num and image['till'] == text_num %}
+            <div class="tc pv1 w-100">
                 <img class="{{ image['width'] }}" src="{{ image['path'] }}" title="title..." />
             </div>
         {% endif %}
 
-        {% if image is not null and image['alignment'] is same as('dch') %}
-            <div class="tr pt2 {{ image['width'] }}">
-                <img class="{{ image['width'] }}" src="{{ image['path'] }}" title="title..." />
+        {% if image['alignment'] is same as('dch') and image['till'] == text_num %}
+            <div class="dib pl1 {{ image['width'] }}">
+                <img class="w-100" src="{{ image['path'] }}" title="title..." />
             </div>
         {% endif %}
 
     {% endfor %}
 
     {% if buttonText is not null %}
-        <div class="pt5 tc">
-            <button class="dib tc bn bg-animate bg-blue hover-bg-dark-blue br2 pointer pv2 ph2 white">
+        <div class="pt4 tc">
+            <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv2 ph2 white">
                 {{ buttonText }}
             </button>
         </div>

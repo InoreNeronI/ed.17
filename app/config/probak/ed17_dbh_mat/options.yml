@@ -4,17 +4,23 @@ p00:
     - p00b_t06
     - p00b_t07
     - p00b_t08
+    - p00b_t09
+    - p00b_t10
 p01:
   simple:
     - p01b_t03
     - p01b_t04
     - p01b_t05
     - p01b_t06
-  multiple:
     - p01b_t09
     - p01b_t10
     - p01b_t11
     - p01b_t12
+  text:
+    - p01a_t03
+    - p01a_t04
+    - p01a_t05
+    - p01a_t06
 p02:
   simple:
     - p02b_t02
@@ -46,6 +52,11 @@ p04:
     - p04b_t05
     - p04b_t06
 p05:
+  text:
+    - p05a_t03
+    - p05a_t04
+    - p05a_t05
+    - p05a_t06
   simple:
     - p05b_t02
     - p05b_t03

@@ -7,7 +7,7 @@ title:
     eu: 'LHko ebaluazio probak'
     es: 'Pruebas de evaluación de EP'
     en: ''
-form_action: '/0'
+formAction: '/0'
 actions:
   # Eusk
   edg051_testuak_dbh_eusa:

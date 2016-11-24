@@ -3,14 +3,14 @@
 {% block styles %}
     {{ parent() }}
     <style type="text/css">
-        {% include 'asset/bg-resize.css.twig' with { 'bg_url': images.bg_url } %}
+        {% include 'asset/bg-resize.css.twig' with { 'bgUrl': images.bgUrl } %}
     </style>
 {% endblock %}
 
 {% block content %}
     <article class="cf ph4 pv2 tc">
         <div class="fl w-100 w-100-m w-50-ns tc">
-            <img src="{{ images.logo_url }}" class="dib" title="{{ block('title') }}"/>
+            <img src="{{ images.logoUrl }}" class="dib" title="{{ block('title') }}"/>
         </div>
         <div class="dn dib-ns dn-m fl w-100 w-100-m w-50-ns tc">
             <h3 class="light-blue ph0 mh0 fw6 w-100">{{ course }}</h3>
@@ -18,13 +18,13 @@
         </div>
     </article>
     <article class="has-bg-image cf pv2 mh1-ns mh1-m mh3-l">
-        <form action="{{ form_action|default('') }}" accept-charset="utf-8" method="{{ form_method|default('post') }}">
+        <form action="{{ formAction|default('') }}" accept-charset="utf-8" method="{{ formMethod|default('post') }}">
             {% block content_form %}{% endblock %}
         </form>
     </article>
     <footer class="pv4 ph3 ph5-m ph6-l mid-gray">
         <div class="fl w-100 tc">
-            <img src="{{ images.logo_url_footer }}" class="dib" title="{{ block('title') }}"/>
+            <img src="{{ images.logoUrlFooter }}" class="dib" title="{{ block('title') }}"/>
         </div>
     </footer>
 {% endblock %}
