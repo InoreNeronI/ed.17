@@ -56,8 +56,7 @@ p05:
     - p05b_t06
   libre:
     - p05b_t09
-    - p05b_t10
-    
+        
 p06:
   text:
     - p06a_t02

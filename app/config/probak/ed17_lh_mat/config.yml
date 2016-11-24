@@ -86,8 +86,14 @@ pageImages:
     
 pageReplaces:
   p00:
-    p00b_t02: 'partial/board-input-field.html.twig'
-    
+    p00b_t02:
+      parameters: {  }
+      template: 'partial/board-input-field.html.twig'
+  p05:
+    p05b_t09:
+      parameters: {  }
+      template: 'partial/board-input-field.html.twig'
+      
 pageTitles:
   - p00b_t01
   - p01a_t01
