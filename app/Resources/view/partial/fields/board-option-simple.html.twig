@@ -1,6 +1,6 @@
 {% set parentTextNum = parent|split('t')[1]|number_format + 0 %}
 
-{#    text: {{ textNum }} |
-    parentTextNum: {{ parentTextNum }} |
-    resta: {{ textNum - parentTextNum }} |#}
+{##}    {#text: {{ textNum }} |
+    parentTextNum: {{ parentTextNum }} |#}
+    resta: {{ textNum - parentTextNum }} |
 {% include 'partial/fields/board-input.html.twig' with { 'inputCss': 'f6 f5-l pointer bn mt1', 'type': 'radio', 'value': value|default(textNum - parentTextNum), 'name': name|default(parent), 'id': id|default(parent ~ '_' ~ key) } %}
