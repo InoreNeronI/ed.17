@@ -22,7 +22,6 @@ class BaseController
      */
     protected static function processRender($slug = 'index', $texts = [], $expiry_minutes = 1)
     {
-        //dump($texts);
         /** @var string $content */
         $content = View::render($slug, $texts);
 

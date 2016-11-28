@@ -1,15 +1,6 @@
 {% set parentTextNum = parent|split('t')[1]|number_format + 0 %}
-    {{ parentTextNum }}
 
-{% if key|split('f')[1]|number_format + 0 == 0 %}
-    {% set parentTextNum = parentTextNum + 1 %}
-{% endif %}
-{% if key|split('f')[1] is not empty %}
-    {% set rowNum = key|split('f')[1]|number_format + 0 %}
-    {% set parent = parent ~ '_f' ~ rowNum %}
-    {% set parentTextNum = parentTextNum + rowNum + 1 %}
-    {{ textNum }}
-    {{ parentTextNum }}
-    {% set value = '' %}
-{% endif %}
+{#    text: {{ textNum }} |
+    parentTextNum: {{ parentTextNum }} |
+    resta: {{ textNum - parentTextNum }} |#}
 {% include 'partial/fields/board-input.html.twig' with { 'inputCss': 'f6 f5-l pointer bn mt1', 'type': 'radio', 'value': value|default(textNum - parentTextNum), 'name': name|default(parent), 'id': id|default(parent ~ '_' ~ key) } %}
