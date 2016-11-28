@@ -100,7 +100,7 @@ class CredentialsModel extends Connection\Connection
     {
         if (is_array($args)) {
             foreach ($args as $key => $item) {
-                /* Eusk: */
+                    /* Eusk: */
                 if ((strpos($item, 'eus') !== false &&
                         (strtolower($key) === strtolower($user['edg020_tipo_eus']) || strpos(strtolower($key), lcfirst($user['edg020_codmodelo'])) !== false) &&
                         $mod = 'eus') ||
@@ -148,13 +148,13 @@ class CredentialsModel extends Connection\Connection
     {
         if ($user['edg020_lengua_tipo'] === 'fam') {
             return $user['edg020_lengua'];
-        } elseif ($user['edg020_lengua_tipo'] === 'ins' && isset($user['edg020_lengua_' . $default])) {
+        }
+        if ($user['edg020_lengua_tipo'] === 'ins' && isset($user['edg020_lengua_' . $default])) {
             return $user['edg020_lengua_' . $default];
         }
         if (in_array($default, $asIs)) {
             return $default;
-        } else {
-            throw new \Exception(sprintf('No language found for student \'%s\'', $user['edg020_libro_escolaridad']));
         }
+        throw new \Exception(sprintf('No language found for student \'%s\'', $user['edg020_libro_escolaridad']));
     }
 }

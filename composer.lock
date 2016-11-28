@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2dcff0faa8123b715f8a6931f5520b81",
-    "content-hash": "b0948a6cfbe98dcfb60ffaa2ac1e8201",
+    "hash": "688fd658e784c207c203724b8f5dadc9",
+    "content-hash": "060d6eaff2b22c2aa78a0dca8447aece",
     "packages": [
         {
             "name": "acelaya/doctrine-enum-type",

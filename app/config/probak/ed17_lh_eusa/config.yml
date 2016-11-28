@@ -43,7 +43,7 @@ pageImages:
   p13:
     - p13a_dch_t04_t08_20_img.png
 
-pageReplaces:
+pageTextReplaces:
   
 pageTitles:
   - p00a_t01
@@ -61,7 +61,7 @@ pageTitles:
   - p13a_t01
   
 
-pageWidths:
+pageAreaWidths:
   
 
 totalPages: 14

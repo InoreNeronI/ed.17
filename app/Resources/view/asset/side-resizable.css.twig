@@ -10,11 +10,11 @@ body {
     overflow-x: hidden;
 }
 
-.mw-95 { max-width: 95%; }
+.mw-95 { max-width: 95%; }{#
 
 .option {
     background-color: aliceblue;
-}
+}#}
 
 .side-container {
     display: -webkit-box;
@@ -52,4 +52,53 @@ body {
 
 .side-right {
     flex: 1 1 auto;
+}
+
+{# @url https://codepen.io/lukepeters/pen/bfFur #}
+
+.table {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    display: table;
+    width: 100%;
+}
+@media screen and (max-width: 580px) {
+    .table {
+        display: block;
+    }
+}
+
+.row {
+    display: table-row;
+    background: #f6f6f6;
+}
+.row:nth-of-type(odd) {
+    background: #e9e9e9;
+}
+.row.header {
+    font-weight: 900;
+    color: #ffffff;
+    background: #ea6153;
+}
+.row.green {
+    background: #27ae60;
+}
+.row.blue {
+    background: #2980b9;
+}
+@media screen and (max-width: 580px) {
+    .row {
+        padding: 8px 0;
+        display: block;
+    }
+}
+
+.cell {
+    padding: 6px 12px;
+    display: table-cell;
+}
+@media screen and (max-width: 580px) {
+    .cell {
+        padding: 2px 12px;
+        display: block;
+    }
 }

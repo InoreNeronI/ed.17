@@ -80,7 +80,7 @@ pageImages:
     - p18b_cen_t02_t02_70_cas.png
     - p18b_cen_t02_t02_70_eus.png
     
-#pageReplaces:
+#pageTextReplaces:
   #p00:
   #  p00b_t02: 'partial/board-input-field.html.twig'
   #p05:
@@ -110,7 +110,7 @@ pageTitles:
   - p17a_t01
   - p18a_t01
  
-pageZenbakiak:
+pageItemNumbers:
   1: p01b_t01
   2: p01b_t07
   3: p02b_t02
@@ -136,7 +136,7 @@ pageZenbakiak:
   23: p17b_t01
   24: p18b_t01
 
-pageWidths:
+pageAreaWidths:
   p00:
     b: 100
   p07:

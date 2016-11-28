@@ -49,11 +49,13 @@ final class PagesModel extends CredentialsModel
      * @param array  $args
      * @param string $page
      * @param string $dataDir
-     * @param array $defaultPageSidePercents
+     * @param array  $defaultPageAreaPercents
+     *
      * @return array
+     *
      * @throws \Exception
      */
-    public function loadPageData(array $args, $page, $dataDir = DATA_DIR, $defaultPageSidePercents = ['a' => '50', 'b' => '50'])
+    public function loadPageData(array $args, $page, $dataDir = DATA_DIR, $defaultPageAreaPercents = ['a' => '50', 'b' => '50'])
     {
         /** @var string $data_folder */
         $data_folder = $dataDir . '/' . $args['code'];
@@ -68,25 +70,32 @@ final class PagesModel extends CredentialsModel
             throw new \Exception(sprintf('The options file `%s` is missing in the target: %s', 'options.yml', $data_folder));
         }
         /** @var array $pageWidth */
-        $pageWidth = empty($config['pageWidths']['p' . $page]) ? $defaultPageSidePercents : $config['pageWidths']['p' . $page];
+        $pageWidth = empty($config['pageAreaWidths']['p' . $page]) ? $defaultPageAreaPercents : $config['pageAreaWidths']['p' . $page];
         /** @var array $widthStyling */
         $widthStyling = \def::styling()['width'];
-        /** @var array $pageSides */
-        $pageSides = $defaultPageSidePercents;
-        /** @var string|null $pageSideSkip */
-        $pageSideSkip = null;
+        /** @var array $pageAreas */
+        $pageAreas = $defaultPageAreaPercents;
+        /** @var string|null $pageAreaSkip */
+        $pageAreaSkip = null;
+        /** @var array $pageTextReplaces */
+        $pageTextReplaces = empty($config['pageTextReplaces']['p' . $page]) ? [] : $config['pageTextReplaces']['p' . $page];
+
+        // Sides' widths
         foreach ($pageWidth as $sideLetter => $sideWith) {
             if (in_array($sideWith, array_keys($widthStyling))) {
                 if ($sideWith === 100) {
-                    unset($pageSides[$sideLetter]);
-                    $pageSideSkip = array_keys($pageSides)[0];
+                    unset($pageAreas[$sideLetter]);
+                    $pageAreaSkip = array_keys($pageAreas)[0];
                 }
                 $pageWidth[$sideLetter] = $widthStyling[$sideWith];
             }
         }
-        $sideA = $pageSideSkip !== 'a' ? $this->loadData($args, $page, 'a') : [];
-        $sideB = $pageSideSkip !== 'b' ? $this->loadData($args, $page, 'b') : [];
 
+        // Load texts
+        $pageAreaSkip !== 'a' ? $this->loadData($args, $page, 'a') : null;
+        $pageAreaSkip !== 'b' ? $this->loadData($args, $page, 'b') : null;
+
+        // Images
         $images = [];
         foreach(empty($config['pageImages']['p' . $page]) ? [] : $config['pageImages']['p' . $page] as $image) {
             $imageData = explode('.', $image);
@@ -96,23 +105,28 @@ final class PagesModel extends CredentialsModel
                 $offset = 100 - $imageData[4];
                 $images[$side][$imageData[0] . '_' . $imageData[2]] = [
                     'alignment' => $imageData[1],
-                    'offset' => isset($widthStyling[$offset]) ? $widthStyling[$offset] : $widthStyling['auto'],
+                    'offset' => $widthStyling[isset($widthStyling[$offset]) ? $offset : 'auto'],
                     'path' => '/images/' . $args['code'] . '/' . $image,
                     'since' => intval(str_replace('t', '', $imageData[2])),
                     'till' => intval(str_replace('t', '', $imageData[3])),
-                    'width' => isset($widthStyling[$imageData[4]]) ? $widthStyling[$imageData[4]] : $widthStyling['auto']
+                    'width' => $widthStyling[isset($widthStyling[$imageData[4]]) ? $imageData[4] : 'auto']
                 ];
             }
         }
 
-        return array_merge($args, $sideA, $sideB, [
+        // Replaces width
+        foreach ($pageTextReplaces as $code => $replace) {
+            $pageTextReplaces[$code]['parameters']['width'] = $widthStyling[isset($pageTextReplaces[$code]['parameters']['width']) ? $pageTextReplaces[$code]['parameters']['width'] : 'auto'];
+        }
+
+        return array_merge($args, static::$pageTexts, [
             'page' => $page,
             'pageImages' => $images,
             'pageOptions' => empty($options['p' . $page]) ? [] : $options['p' . $page],
             'pageTitles' => empty($config['pageTitles']) ? [] : $config['pageTitles'],
-            'pageReplaces' => empty($config['pageReplaces']['p' . $page]) ? [] : $config['pageReplaces']['p' . $page],
+            'pageTextReplaces' => $pageTextReplaces,
             'pageWidth' => $pageWidth,
-            'pageSideSkip' => $pageSideSkip,
+            'pageAreaSkip' => $pageAreaSkip,
             'totalPages' => $config['totalPages'],
         ]);
     }

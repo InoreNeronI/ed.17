@@ -43,7 +43,7 @@ pageImages:
   p13:
     - p13a_dch_t04_t08_20_img.png
 
-pageReplaces:
+pageTextReplaces:
   p00:
     p00b_t06: 'partial/board-input-field.html.twig'
 
@@ -63,7 +63,7 @@ pageTitles:
   - p13a_t00
   
 
-pageWidths:
+pageAreaWidths:
   p00:
     b: 100
   p14:

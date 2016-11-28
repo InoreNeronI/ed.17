@@ -1,0 +1,5 @@
+{% set inputCss = inputCss is defined ? inputCss : type is same as('text') or type is empty ? 'f6 f5-l black-80 bg-white pa1 pl2 br2-ns br--left-ns' %}
+{% set inputCss = width is defined ? inputCss ~ ' ' ~ width : inputCss %}
+{% set inputCss = inputCss ~ ' v-top' %}
+{% set placeholder = type is same as('text') or type is empty ? ' placeholder="' ~ placeholder|default(textPlaceholder|default('')) ~ '"' : '' %}
+<input class="{{ inputCss }}" type="{{ type|default('text') }}" name="{{ name|default('') }}" value="{{ value|default('') }}" id="{{ id|default('') }}" {{ disabled|default('') }} {{ required|default('') }} {{ placeholder }} />

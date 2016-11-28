@@ -178,10 +178,10 @@ pageOptions:
       - p14b_t09
       - p14b_t10
 
-pageSideSkips:
+pageAreaSkips:
   p14: b
 
-pageWidths:
+pageAreaWidths:
   p14:
     a: 100
 

@@ -84,7 +84,7 @@ pageImages:
   p19:
     - p19b_cen_t01_t01_60_img.jpg
     
-pageReplaces:
+pageTextReplaces:
   p00:
     p00b_t02:
       parameters: {  }
@@ -142,7 +142,7 @@ pageZenbakiak:
   23: p17b_t01
   24: p18b_t01
 
-pageWidths:
+pageAreaWidths:
   p00:
     b: 100
   p07:

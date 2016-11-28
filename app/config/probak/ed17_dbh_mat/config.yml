@@ -15,35 +15,57 @@ pageImages:
     - p04a_cen_t02_t02_75_cas.png
     - p04a_cen_t02_t02_75_eus.png
   p05:
-    - p05a_cen_t01_t01_40_img.png
+    - p05a_cen_t01_t01_30_img.png
   p06:
     - p06a_cen_t02_t02_75_cas.png
     - p06a_cen_t02_t02_75_eus.png
   p07:
-    - p07a_cen_t01_t01_90_img.png
-    #- p07a_cen_t01_t01_90_cas.png
-    #- p07a_cen_t01_t01_90_eus.png
-    #- p07b_cen_t01_t02_80_eus.png
-    #- p07b_cen_t01_t02_90_cas.png
-    #- p07b_cen_t02_t03_90_cas.png
-    #- p07b_cen_t02_t03_90_eus.png
-    #- p07b_cen_t03_t04_90_cas.png
-    #- p07b_cen_t03_t04_90_eus.png
-    #- p07b_cen_t04_t05_90_cas.png
-    #- p07b_cen_t04_t05_90_eus.png
+    - p07a_cen_t01_t01_30_img.png
+    - p07a_cen_t02_t02_80_cas.png
+    - p07a_cen_t02_t02_80_eus.png
+    # Options' images:
+    - p07b_cen_t02_t02_100_cas_A.png
+    - p07b_cen_t02_t02_100_eus_A.png
+    - p07b_cen_t03_t03_100_cas_B.png
+    - p07b_cen_t03_t03_100_eus_B.png
+    - p07b_cen_t04_t04_100_cas_C.png
+    - p07b_cen_t04_t04_100_eus_C.png
+    - p07b_cen_t05_t05_100_cas_D.png
+    - p07b_cen_t05_t05_100_eus_D.png
   p08:
     - p08a_cen_t01_t01_25_img.png
   p09:
     - p09a_dch_t01_t02_25_img.png
+    - p09b_cen_t01_t01_100_img.png
   p10:
     - p10a_dch_t01_t01_25_img.png
     - p10a_cen_t02_t02_25_img.png
-    - p10b_dch_t02_t03_20_img.png
-    - p10b_dch_t03_t04_20_img.png
-    - p10b_dch_t04_t05_20_img.png
-    - p10b_dch_t05_t05_20_img.png
+    # Options' images:
+    - p10b_dch_t02_t02_100_img_A.png
+    - p10b_dch_t03_t03_100_img_B.png
+    - p10b_dch_t04_t04_100_img_C.png
+    - p10b_dch_t05_t05_100_img_D.png
   p11:
     - p11a_cen_t01_t01_25_img.png
+    - p11a_cen_t02_t02_90_img.png
+  p12:
+    - p12a_cen_t01_t01_20_cas.png
+    - p12a_cen_t01_t01_20_eus.png
+  p13:
+    - p13a_cen_t03_t03_20_img.png
+    # Options' images:
+    - p13b_dch_t02_t02_100_img_A.png
+    - p13b_dch_t03_t03_100_img_B.png
+    - p13b_dch_t04_t04_100_img_C.png
+    - p13b_dch_t05_t05_100_img_D.png
+  p14:
+    - p14a_cen_t01_t01_20_cas.png
+    - p14a_cen_t01_t01_20_eus.png
+  p15:
+    - p15a_cen_t01_t01_20_cas.png
+    - p15a_cen_t01_t01_20_eus.png
+    - p15a_cen_t02_t02_75_cas.png
+    - p15a_cen_t02_t02_75_eus.png
   p18:
     - p18b_dch_t02_t03_50_cas.png
     - p18b_dch_t02_t03_50_eus.png
@@ -54,11 +76,8 @@ pageImages:
     - p18b_izq_t03_t04_50_cas.png
     - p18b_izq_t03_t04_50_eus.png
 
-pageReplaces:
-  p00:  # Page where any replace's being done
-    p00b_t06: # Items' code with "%s" in its texts
-      parameters: { disabled: true }  # Parameter(s) for the replacing template
-      template:   'partial/board-input-field.html.twig' # Templates' location path (TEMPLATE_FILES_DIR relative)
+pageItemNumbers:
+
 
 pageTitles: # All centered texts' codes
   - p00b_t01
@@ -83,7 +102,13 @@ pageTitles: # All centered texts' codes
   - p18a_t01
   - p19b_t01
 
-pageWidths:
+pageTextReplaces:
+  p00:  # Page where any replace's being done
+    p00b_t06: # Items' code with "%s" in its texts
+      parameters: { disabled: true, width: 20 }  # Parameter(s) for the replacing template
+      template:   'partial/board-input-field.html.twig' # Templates' location path (TEMPLATE_FILES_DIR relative)
+
+pageAreaWidths:
   p00:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage
   p19:
