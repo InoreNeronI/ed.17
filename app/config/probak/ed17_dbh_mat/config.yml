@@ -136,7 +136,7 @@ pageTitles: # All centered texts' codes
 pageTextReplaces:
   p00:  # Page where any replace's being done
     p00b_t06: # Items' code with "%s" in its texts
-      parameters: { disabled: true, width: 20 }  # Parameter(s) for the replacing template
+      parameters: { disabled: disabled, required: required, width: 20 }  # Parameter(s) for the replacing template
       template:   'partial/fields/board-input.html.twig' # Templates' location path (TEMPLATE_FILES_DIR relative)
 
 pageAreaWidths:

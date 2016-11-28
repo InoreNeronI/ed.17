@@ -1,7 +1,7 @@
 
 pageImages:
   p00:
-    - p00a_izq_t06_t06_30_img.png
+    - p00a_izq_t03_t04_30_img.png
   p01:
     - p01a_cen_t07_t07_50_img.png
     - p01a_cen_t11_t11_20_img.png
@@ -13,7 +13,7 @@ pageImages:
     - p02a2_cen_t02_t02_30_img.png
     - p02a2_cen_t11_t11_20_img.png
   p03:
-    - p03b_cen_t01_t01_60_img.png
+    - p03a_cen_t02_t02_60_img.png
   p04:
     - p04a_cen_t01_t01_80_img.png
   p05:
@@ -65,7 +65,7 @@ pageTitles:
   - p13a_t02
   - p15b_t01
 
-pageZenbakiak:
+pageItemNumbers:
   1: p01b_t01
   2: p01b_t06
   3: p01b_t11
@@ -98,15 +98,15 @@ pageZenbakiak:
   30: p11b_t06
   31: p12b_t01
   32: p12b_t06
-  33: p13b_t01
+  33: p13b_t14
   34: p13b_t06
   35: p13b_t11
   36: p14b_t01
   37: p14b_t06
 
-pageWidths:
+pageAreaWidths:
 p03:
-    a: 100  
+    a: 100
 p15:
     a: 100
   

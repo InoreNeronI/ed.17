@@ -53,9 +53,11 @@ pageImages:
 pageTextReplaces:
   
 pageTitles:
-  - p00a_t01
+  - p00a_t00
+  - p00a_t02
   - p00b_t01
   - p01a_t01
+  - p01a_t04
   - p02a_t01
   - p02a_t04
   - p03a_t01
