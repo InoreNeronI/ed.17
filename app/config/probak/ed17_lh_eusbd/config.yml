@@ -45,20 +45,20 @@ pageImages:
 
 pageTextReplaces:
   p00:
-    p00b_t06: 'partial/board-input-field.html.twig'
+    p00b_t06: 'partial/fields/board-input.html.twig'
   p10:
     p10b_t02:
       parameters: {  }
-      template: 'partial/board-input-field.html.twig'
+      template: 'partial/fields/board-input.html.twig'
     p10b_t03:
       parameters: {  }
-      template: 'partial/board-input-field.html.twig'
+      template: 'partial/fields/board-input.html.twig'
     p10b_t04:
       parameters: {  }
-      template: 'partial/board-input-field.html.twig'
+      template: 'partial/fields/board-input.html.twig'
     p10b_t05:
       parameters: {  }
-      template: 'partial/board-input-field.html.twig'
+      template: 'partial/fields/board-input.html.twig'
 
 pageTitles:
   - p00a_t01

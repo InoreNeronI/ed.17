@@ -1,6 +1,6 @@
 {% set parentTextNum = parent|split('t')[1]|number_format + 0 %}
     {{ parentTextNum }}
-{{ dump(key|split('f')[1]) }}
+
 {% if key|split('f')[1]|number_format + 0 == 0 %}
     {% set parentTextNum = parentTextNum + 1 %}
 {% endif %}
