@@ -66,15 +66,15 @@ pageTitles:
   - p15b_t01
 
 pageItemNumbers:
-  1: p01b_t01
-  2: p01b_t06
-  3: p01b_t11
-  4: p01b_t16
-  5: p01b_t21
-  6: p01b_t26
-  7: p01b_t31
-  8: p02b_t01
-  9: p02b_t06
+  01: p01b_t01
+  02: p01b_t06
+  03: p01b_t11
+  04: p01b_t16
+  05: p01b_t21
+  06: p01b_t26
+  07: p01b_t31
+  08: p02b_t01
+  09: p02b_t06
   10: p02b_t11
   11: p02b_t16
   12: p02b_t21

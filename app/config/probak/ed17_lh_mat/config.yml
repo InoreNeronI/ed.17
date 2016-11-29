@@ -117,15 +117,15 @@ pageTitles:
   - p18a_t01
  
 pageItemNumbers:
-  1: p01b_t01
-  2: p01b_t07
-  3: p02b_t02
-  4: p03b_t01
-  5: p04b_t01
-  6: p04b_t07
-  7: p04b_t13
-  8: p05b_t01
-  9: p05b_t07
+  01: p01b_t01
+  02: p01b_t07
+  03: p02b_t02
+  04: p03b_t01
+  05: p04b_t01
+  06: p04b_t07
+  07: p04b_t13
+  08: p05b_t01
+  09: p05b_t07
   10: p06b_t01
   11: p06b_t06
   12: p07b_t01
