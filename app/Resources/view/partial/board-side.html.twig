@@ -74,8 +74,10 @@
                 {% include 'partial/fields/board-option-multiple.html.twig' %}
             {% elseif isPlainText %}
                 {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'pa0 f5 f4-ns ' ~ color } %}
+                {% set parent = key %}
             {% else %}
                 {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'b pa0 f5 f4-ns ' ~ color } %}
+                {% set parent = key %}
             {% endif %}
 
             {% set parentRowNum = tableRowNum %}
@@ -99,6 +101,7 @@
                     {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'dib pointer pl2 mr1 pa0 f5 f4-ns black-80 mw-95', 'for': parent ~ '_' ~ key } %}
                 {% elseif isPlainText %}
                     {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'pa0 f5 f4-ns black-80' } %}
+                    {% set parent = key %}
                 {% else %}
                     {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'b pa0 f5 f4-ns black-80' } %}
                     {% set parent = key %}
