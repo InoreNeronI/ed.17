@@ -136,7 +136,7 @@ p11:
     - p11b_t02
     - p11b_t03
     - p11b_t04
-    - p11b_t15
+    - p11b_t05
         
 p12:
   simple:
@@ -189,8 +189,7 @@ p17:
     - p17a_t02
     - p17a_t03
     - p17a_t04
-  multiple:
+  egiazkoa:
     - p17b_t02
     - p17b_t03
-    - p17b_t04
-        
+    - p17b_t04        

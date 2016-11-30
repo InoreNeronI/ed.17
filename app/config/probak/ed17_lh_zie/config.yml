@@ -20,7 +20,8 @@ pageImages:
     - p07a_cen_t02_t02_60_cas.png
     - p07a_cen_t02_t02_60_eus.png
   p08:
-    - p08a_cen_t01_t01_25_img.png
+    - p08a_cen_t03_t03_60_cas.png
+    - p08a_cen_t03_t03_60_eus.png
   p09:
     - p09a_cen_t03_t03_90_img.png
   p10:
@@ -40,6 +41,8 @@ pageImages:
     - p16a_cen_t02_t02_80_eus.png
   p17:
     - p17a_cen_t02_t02_80_img.png
+  p18:
+    - p18b_cen_t01_t01_60_img.jpg
     
 pageItemNumbers:
 
@@ -67,7 +70,7 @@ pageTitles: # All centered texts' codes
   - p15a_t01
   - p16a_t01
   - p17a_t01
-  - p18a_t01
+  - p18b_t01
 
 pageItemNumbers:
   01: p01b_t01

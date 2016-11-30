@@ -13,7 +13,7 @@ pageImages:
     - p02a2_cen_t02_t02_30_img.png
     - p02a2_cen_t11_t11_20_img.png
   p03:
-    - p03a_cen_t02_t02_60_img.png
+    - p03b_cen_t02_t02_60_img.png
   p04:
     - p04a_cen_t01_t01_80_img.png
   p05:
@@ -39,6 +39,8 @@ pageImages:
     - p13a_cen_t06_t06_30_img.png
   p14:
     - p14a_cen_t06_t06_30_img.png
+  p15:
+    - p15b_cen_t01_t01_60_img.jpg
 
 pageReplaces:
   
@@ -50,20 +52,35 @@ pageTitles:
   - p01a_t11
   - p02a_t01
   - p02a_t06
-  - p03a_t01
+  - p03b_t01
   - p04a_t01
   - p04a_t02
+  - p05a_t01
+  - p05a_t02
+  - p06a_t01
+  - p06a_t02
   - p07a_t01
   - p07a_t02
   - p08a_t01
+  - p08a_t02
   - p09a_t01
   - p10a_t01
   - p10a_t02
   - p10a_t03
   - p10a_t04
+  - p11a_t01
+  - p11a_t02
+  - p11a_t03
+  - p11a_t04
+  - p12a_t01
+  - p12a_t02
+  - p12a_t03
+  - p12a_t04
   - p13a_t01
   - p13a_t02
-  - p15b_t01
+  - p14a_t01
+  - p14a_t02
+  - p15a_t01
 
 pageItemNumbers:
   01: p01b_t01
@@ -98,16 +115,16 @@ pageItemNumbers:
   30: p11b_t06
   31: p12b_t01
   32: p12b_t06
-  33: p13b_t14
+  31: p13b_t01
   34: p13b_t06
   35: p13b_t11
   36: p14b_t01
   37: p14b_t06
 
 pageAreaWidths:
-p03:
-    a: 100
-p15:
-    a: 100
+  p03:  # Page affected with any custom side-width
+    b: 100  # side-letter: window-relative-width-percentage
+  p15:
+    b: 100
   
 totalPages: 15
