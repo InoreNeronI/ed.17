@@ -17,7 +17,7 @@
                     {% set buttonText = '<i class="fa fa-step-backward"></i> ' ~ leftButton %}
                 {% endif %}
                 {% set formAction = isFirstPage ? '' : '/' ~ (page|number_format - 1) %}
-                {% include 'partial/board-side.html.twig' with { 'texts': texts['a'], 'images': pageImages['a'], 'buttonText': buttonText, 'formAction': formAction } %}
+                {% include 'partial/board-side.html.twig' with { 'numbers': numbers['a'], 'texts': texts['a'], 'images': pageImages['a'], 'buttonText': buttonText, 'formAction': formAction } %}
             </div>
         {% endif %}
         {% if pageAreaSkip is null %}
@@ -33,7 +33,7 @@
                     {% set buttonText = rightButton ~ ' <i class="fa fa-step-forward"></i>' %}
                 {% endif %}
                 {% set formAction = isLastPage ? '/' : '/' ~ (page|number_format + 1) %}
-                {% include 'partial/board-side.html.twig' with { 'texts': texts['b'], 'images': pageImages['b'], 'buttonText': buttonText, 'formAction': formAction } %}
+                {% include 'partial/board-side.html.twig' with { 'numbers': numbers['b'], 'texts': texts['b'], 'images': pageImages['b'], 'buttonText': buttonText, 'formAction': formAction } %}
             </div>
         {% endif %}
     </article>

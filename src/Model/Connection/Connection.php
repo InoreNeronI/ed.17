@@ -18,10 +18,12 @@ class Connection implements ConnectionInterface
      * @var array An array of connection parameters
      */
     private $connectionParams;
+
     /**
      * @var BaseConnection A database connection
      */
     private $connection;
+
     /**
      * Constructor to collect required database credentials.
      *
@@ -43,6 +45,7 @@ class Connection implements ConnectionInterface
             'driverOptions' => $options,
         ];
     }
+
     /**
      * Returns a Doctrine query builder object.
      *
@@ -54,6 +57,7 @@ class Connection implements ConnectionInterface
 
         return $connection->createQueryBuilder();
     }
+
     /**
      * Returns the connection object.
      *
@@ -68,6 +72,7 @@ class Connection implements ConnectionInterface
 
         return $this->connection;
     }
+
     /**
      * Sets a timezone.
      *
@@ -81,7 +86,7 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * How long we should wait before restart locked transaction.
+     * How long we should wait before restart locked transaction in seconds.
      *
      * @var int
      */

@@ -8,7 +8,7 @@ namespace App\Model;
 final class PagesModel extends CredentialsModel
 {
     /** @var array */
-    private static $pageTexts = ['code' => '', 'texts' => []];
+    private static $pageTexts = ['code' => '', 'numbers' => [], 'texts' => []];
 
     /**
      * @param array  $args
@@ -23,7 +23,7 @@ final class PagesModel extends CredentialsModel
     {
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
-            ->select('LOWER(t.edg051_codprueba) as code', 't.edg051_cod_texto as text_code', 'TRIM(t.edg051_texto_' . $args['lengua'] . ') as text_string')
+            ->select('LOWER(t.edg051_codprueba) as code', 't.edg051_cod_texto as text_code', 'TRIM(t.edg051_item_num) as item_num', 'TRIM(t.edg051_texto_' . $args['lengua'] . ') as text_string')
             ->from($args['table'], 't')
             ->where('t.edg051_periodo = :periodo')
             ->andWhere('t.edg051_cod_texto LIKE :text_code')
@@ -34,8 +34,12 @@ final class PagesModel extends CredentialsModel
         $texts = $queryBuilder->execute()->fetchAll();
         if (!empty($texts)) {
             static::$pageTexts['code'] = $texts[0]['code'];
+            static::$pageTexts['numbers'][$wildcardB] = [];
             static::$pageTexts['texts'][$wildcardB] = [];
             foreach ($texts as $text) {
+                if (!empty($text['item_num'])) {
+                    static::$pageTexts['numbers'][$wildcardB][$text['text_code']] = trim($text['item_num']);
+                }
                 static::$pageTexts['texts'][$wildcardB][$text['text_code']] = trim($text['text_string']);
             }
 

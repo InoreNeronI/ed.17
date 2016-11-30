@@ -84,34 +84,9 @@ pageImages:
     - p18b_dch_t05_t05_100_cas.png
     - p18b_dch_t05_t05_100_eus.png
 
-pageItemNumbers:
-  01: p01b_t01
-  02: p01b_t07
-  03: p02b_t01
-  04: p03b_t01
-  05: p03b_t07
-  06: p03b_t13
-  07: p04b_t01
-  08: p04b_t07
-  09: p05b_t01
-  10: p06b_t01
-  11: p06b_t07
-  12: p07b_t01
-  13: p08b_t01
-  14: p09b_t01
-  15: p10b_t01
-  16: p11b_t01
-  17: p12b_t01
-  18: p13b_t01
-  19: p14b_t01
-  20: p15b_t01
-  21: p16b_t01
-  22: p17b_t01
-  23: p17b_t07
-  24: p18b_t01
-
 pageTitles: # All centered texts' codes
   - p00b_t01
+  - p00b_t02
   - p00b_t03
   - p01a_t01
   - p02a_t01
@@ -136,7 +111,7 @@ pageTitles: # All centered texts' codes
 pageTextReplaces:
   p00:  # Page where any replace's being done
     p00b_t06: # Items' code with "%s" in its texts
-      parameters: { disabled: disabled, required: required, width: 20 }  # Parameter(s) for the replacing template
+      parameters: { disabled: disabled, width: 20 }  # Parameter(s) for the replacing template
       template:   'partial/fields/board-input.html.twig' # Templates' location path (TEMPLATE_FILES_DIR relative)
 
 pageAreaWidths:
