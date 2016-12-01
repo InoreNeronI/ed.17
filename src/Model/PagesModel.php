@@ -23,7 +23,7 @@ final class PagesModel extends CredentialsModel
     {
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
-            ->select('LOWER(t.edg051_codprueba) as code', 't.edg051_cod_texto as text_code', 'TRIM(t.edg051_item_num) as item_num', 'TRIM(t.edg051_texto_' . $args['lengua'] . ') as text_string')
+            ->select('LOWER(t.edg051_codprueba) as code', 'LOWER(t.edg051_cod_texto) as text_code', 'TRIM(t.edg051_item_num) as item_num', 'TRIM(t.edg051_texto_' . $args['lengua'] . ') as text_string')
             ->from($args['table'], 't')
             ->where('t.edg051_periodo = :periodo')
             ->andWhere('t.edg051_cod_texto LIKE :text_code')
