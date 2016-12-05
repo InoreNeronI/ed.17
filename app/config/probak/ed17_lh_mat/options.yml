@@ -5,7 +5,6 @@ p00:
     - p00b_t04
     - p00b_t05
     - p00b_t06
-        
 p01:
   text:
     - p01a_t03
@@ -18,21 +17,18 @@ p01:
     - p01b_t10
     - p01b_t11
     - p01b_t12
-    
 p02:
   simple:
     - p02b_t06
     - p02b_t07
     - p02b_t08
     - p02b_t09
-   
 p03:
   simple:
     - p03b_t03
     - p03b_t04
     - p03b_t05
     - p03b_t06
-        
 p04:
   simple:
     - p04b_t03
@@ -47,7 +43,6 @@ p04:
     - p04b_t16
     - p04b_t17
     - p04b_t18
-
 p05:
   simple:
     - p05b_t03
@@ -56,20 +51,18 @@ p05:
     - p05b_t06
   libre:
     - p05b_t09
-        
 p06:
   text:
     - p06a_t02
   simple:
-    - p06b_t05a
-    - p06b_t05b
-    - p06b_t05c
-    - p06b_t05d
-    - p06b_t11
-    - p06b_t12
-    - p06b_t13
-    - p06b_t14
-    
+    - p06b_t06
+    - p06b_t07
+    - p06b_t08
+    - p06b_t09
+    - p06b_t15
+    - p06b_t16
+    - p06b_t17
+    - p06b_t18
 p07:
   text:
     - p07a_t02
@@ -78,16 +71,14 @@ p07:
     - p07b_t05
     - p07b_t06
     - p07b_t07
-    
 p08:
   text:
     - p08a_t02
   simple:
-    - p08b_t04a
-    - p08b_t04b
-    - p08b_t04c
-    - p08b_t04d
-    
+    - p08b_t04
+    - p08b_t05
+    - p08b_t06
+    - p08b_t07
 p09:
   text:
     - p09a_t02
@@ -96,7 +87,6 @@ p09:
     - p09b_t03b
     - p09b_t03c
     - p09b_t03d
-   
 p10:
   text:
     - p10a_t02
@@ -105,7 +95,6 @@ p10:
     - p10b_t03b
     - p10b_t03c
     - p10b_t03d
-   
 p11:
   text:
     - p11a_t02
@@ -118,7 +107,6 @@ p11:
     - p11b_t18
     - p11b_t19
     - p11b_t20
-    
 p12:
   text:
     - p12a_t02
@@ -127,7 +115,6 @@ p12:
     - p12b_t04
     - p12b_t05
     - p12b_t06
-        
 p13:
   text:
     - p13a_t02
@@ -136,7 +123,6 @@ p13:
     - p13b_t04
     - p13b_t05
     - p13b_t06
-    
 p14:
   text:
     - p14a_t02
@@ -145,7 +131,6 @@ p14:
     - p14b_t04
     - p14b_t05
     - p14b_t06
-    
 p15:
   text:
     - p15a_t02
@@ -154,7 +139,6 @@ p15:
     - p15b_t04
     - p15b_t05
     - p15b_t06
-
 p16:
   text:
     - p16a_t02
@@ -163,7 +147,6 @@ p16:
     - p16b_t04
     - p16b_t05
     - p16b_t06
-    
 p17:
   text:
     - p17a_t02
@@ -172,7 +155,6 @@ p17:
     - p17b_t05
     - p17b_t06
     - p17b_t07
-    
 p18:
   text:
     - p18a_t02

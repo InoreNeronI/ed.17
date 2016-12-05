@@ -117,6 +117,8 @@ pageTextReplaces:
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage
+  p13:
+    b: 60
   p19:
     b: 100
 

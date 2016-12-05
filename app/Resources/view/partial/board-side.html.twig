@@ -32,6 +32,19 @@
         {% endif %}
 
         {% if image is not empty %}
+            {% if textNum <= image['till'] or isOption and image['since'] == image['till'] %}
+                {% set class = image['alignment'] is not same as('cen') ? class ~ ' ' ~ image['offset'] : class %}
+                {% set class = image['alignment'] is same as('dch') ? class ~ ' fl' : class %}
+                {% set class = image['alignment'] is same as('izq') ? class ~ ' dib' : class %}
+            {% elseif image['alignment'] is same as('dch') or image['alignment'] is same as('izq') and textNum > image['till'] or textNum == 1 %}
+                {% set class = class ~ ' cl' %}
+            {% endif %}
+            {% if textNum > image['till'] %}
+                {% set hadImage = true %}
+                {% set image = null %}
+            {% else %}
+                {% set hadImage = false %}
+            {% endif %}
             {% if text is empty %}
                 {% set text %}
                     {% include 'partial/fields/board-img.html.twig' with { 'cssClassContainer': 'fl pr1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
@@ -40,19 +53,6 @@
             {% endif %}
             {% if image['alignment'] is same as('izq') and image['since'] == textNum %}
                 {% include 'partial/fields/board-img.html.twig' with { 'cssClassContainer': 'fl pr1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
-            {% endif %}
-            {% if image['alignment'] is same as('dch') or image['alignment'] is same as('izq') and textNum > image['till'] or textNum == 1 %}
-                {% set class = class ~ ' cl' %}
-            {% endif %}
-            {% if textNum > image['till'] %}
-                {% set hadImage = true %}
-                {% set image = null %}
-            {% elseif textNum <= image['till'] %}
-                {% set class = image['alignment'] is not same as('cen') ? class ~ ' ' ~ image['offset'] : class %}
-                {% set class = image['alignment'] is same as('dch') ? class ~ ' fl' : class %}
-                {% set class = image['alignment'] is same as('izq') ? class ~ ' dib' : class %}
-            {% else %}
-                {% set hadImage = false %}
             {% endif %}
         {% endif %}
 
