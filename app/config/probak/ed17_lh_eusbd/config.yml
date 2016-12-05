@@ -28,24 +28,24 @@ pageImages:
     - p07a_dch_t03_t03_25_img.png
     - p07a_izq_t10_t18_25_img.png
   p08:
-    - p08a_dch_t06_t07_25_img.png
+    - p08a_dch_t07_t07_25_img.png
     - p08a_izq_t03_t05_25_img.png
   p09:
-    - p08a_dch_t06_t07_25_img.png
-    - p08a_izq_t03_t05_25_img.png
+    - p09a_dch_t07_t07_25_img.png
+    - p09a_izq_t03_t05_25_img.png
   p10:
-    - p08a_dch_t06_t07_25_img.png
-    - p08a_izq_t03_t05_25_img.png
+    - p10a_dch_t07_t07_25_img.png
+    - p10a_izq_t03_t05_25_img.png
   p11:
-    - p11a_dch_t04_t08_20_img.png
+    - p11a_dch_t04_t11_30_img.png
   p12:
-    - p12a_dch_t04_t08_20_img.png
+    - p12a_dch_t04_t11_30_img.png
   p13:
-    - p13a_dch_t04_t08_20_img.png
+    - p13a_dch_t04_t11_30_img.png
+  p14:
+    - p14b_cen_t01_t01_60_img.jpg
 
 pageTextReplaces:
-  p00:
-    p00b_t06: 'partial/fields/board-input.html.twig'
   p10:
     p10b_t02:
       parameters: {  }
@@ -64,64 +64,27 @@ pageTitles:
   - p00a_t01
   - p00a_t02
   - p00b_t01
-  - p01b_t01
-  - p01b_t06
+  - p01a_t01
+  - p01a_t06
   - p02a_t01
   - p02a_t04
   - p03a_t01
   - p03a_t04
-  - p04a_t01
-  - p05a_t01
-  - p06a_t00
-  - p07a_t00
+  - p04a_t04
+  - p05a_t00
+  - p05a_t02
+  - p06a_t02
+  - p07a_t02
   - p08a_t00
-  - p09a_t00
-  - p10a_t00
+  - p08a_t02
+  - p09a_t02
+  - p10a_t02
   - p11a_t01
   - p11a_t03
-  - p12a_t00
-  - p13a_t00
-  - p13b_t06
+  - p12a_t03
+  - p13a_t03
+  - p14a_t01
 
-pageItemNumbers:
-  01: p01b_t01
-  02: p01b_t06
-  03: p01b_t11
-  04: p01b_t16
-  05: p01b_t21
-  06: p01b_t26
-  07: p01b_t31
-  08: p02b_t01
-  09: p02b_t06
-  10: p02b_t11
-  11: p02b_t16
-  12: p02b_t21
-  13: p02b_t26
-  14: p02b_t31
-  15: p03b_t01
-  16: p03b_t06
-  17: p04b_t01
-  18: p04b_t06
-  19: p04b_t11
-  20: p05b_t01
-  21: p05b_t06
-  22: p06b_t01
-  23: p06b_t06
-  24: p07b_t01
-  25: p07b_t06
-  26: p07b_t11
-  27: p08b_t01
-  28: p08b_t06
-  29: p09b_t01
-  30: p09b_t06
-  31: p10b_t01
-  32: p10b_t06
-  33: p11b_t01
-  34: p11b_t06
-  35: p12b_t01
-  36: p12b_t06
-  37: p13b_t01
-  
 pageAreaWidths:
   p14:
     b: 100

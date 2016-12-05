@@ -8,27 +8,27 @@ pageImages:
     - p01a_cen_t05_t05_20_img.png
     - p01a2_cen_t01_t01_90_img.png
     - p01a2_cen_t05_t05_20_img.png
-    - p01b_cen_04_t01_t01_20_img_A.png
-    - p01b_cen_04_t01_t01_20_img_B.png
-    - p01b_cen_04_t01_t01_20_img_C.png
-    - p01b_cen_04_t01_t01_20_img_D.png
-    - p01b_cen_06_t01_t01_90_img_A.png
-    - p01b_cen_06_t01_t01_90_img_B.png
-    - p01b_cen_06_t01_t01_90_img_C.png
-    - p01b_cen_06_t01_t01_90_img_D.png
+    - p01b_cen_t16_t16_20_img_A.png
+    - p01b_cen_t16_t16_20_img_B.png
+    - p01b_cen_t16_t16_20_img_C.png
+    - p01b_cen_t16_t16_20_img_D.png
+    - p01b_cen_t22_t22_90_img_A.png
+    - p01b_cen_t22_t22_90_img_B.png
+    - p01b_cen_t22_t22_90_img_C.png
+    - p01b_cen_t22_t22_90_img_D.png
   p02:
     - p02a_cen_t01_t01_60_img.png
     - p02a_cen_t05_t05_20_img.png
     - p02a2_cen_t01_t01_60_img.png
     - p02a2_cen_t05_t05_20_img.png
-    - p02b_cen_08_t01_t01_40_img_A.png
-    - p02b_cen_08_t01_t01_40_img_B.png
-    - p02b_cen_08_t01_t01_40_img_C.png
-    - p02b_cen_08_t01_t01_40_img_D.png
-    - p02b_cen_11_t01_t01_25_img_A.png
-    - p02b_cen_11_t01_t01_25_img_B.png
-    - p02b_cen_11_t01_t01_25_img_C.png
-    - p02b_cen_11_t01_t01_25_img_D.png
+    - p02b_cen_t06_t06_40_img_A.png
+    - p02b_cen_t06_t06_40_img_B.png
+    - p02b_cen_t06_t06_40_img_C.png
+    - p02b_cen_t06_t06_40_img_D.png
+    - p02b_cen_t18_t18_25_img_A.png
+    - p02b_cen_t18_t18_25_img_B.png
+    - p02b_cen_t18_t18_25_img_C.png
+    - p02b_cen_t18_t18_25_img_D.png
   p03:
     - p03a_cen_t05_t05_20_img.png
     - p03a_cen_t05_t05_60_img_A.png
@@ -49,30 +49,30 @@ pageImages:
     - p04a_cen_t04_t04_20_img.png
     - p04a2_cen_t01_t01_80_img.png
     - p04a2_cen_t04_t04_20_img.png
-    - p04b_cen_21_t01_t01_40_img_A.png
-    - p04b_cen_21_t01_t01_40_img_B.png
-    - p04b_cen_21_t01_t01_40_img_C.png
-    - p04b_cen_21_t01_t01_40_img_D.png
-    - p04b_cen_22_t01_t01_40_img_A.png
-    - p04b_cen_22_t01_t01_40_img_B.png
-    - p04b_cen_22_t01_t01_40_img_C.png
-    - p04b_cen_22_t01_t01_40_img_D.png    
+    - p04b_cen_t06_t06_40_img_A.png
+    - p04b_cen_t06_t06_40_img_B.png
+    - p04b_cen_t06_t06_40_img_C.png
+    - p04b_cen_t06_t06_40_img_D.png
+    - p04b_cen_t07_t07_40_img_A.png
+    - p04b_cen_t07_t07_40_img_B.png
+    - p04b_cen_t07_t07_40_img_C.png
+    - p04b_cen_t07_t07_40_img_D.png    
   p05:
     - p05b_cen_t01_t01_50_img.png
   p06:
     - p06a_cen_t03_t03_80_img.png
-    - p06b_cen_25_t01_t01_40_img_A.png
-    - p06b_cen_25_t01_t01_40_img_B.png
-    - p06b_cen_25_t01_t01_40_img_C.png
-    - p06b_cen_25_t01_t01_40_img_D.png
-    - p06b_cen_27_t01_t01_40_img_A.png
-    - p06b_cen_27_t01_t01_40_img_B.png
-    - p06b_cen_27_t01_t01_40_img_C.png
-    - p06b_cen_27_t01_t01_40_img_D.png
-    - p06b_cen_28_t01_t01_40_img_A.png
-    - p06b_cen_28_t01_t01_40_img_B.png
-    - p06b_cen_28_t01_t01_40_img_C.png
-    - p06b_cen_28_t01_t01_40_img_D.png 
+    - p06b_cen_t01_t01_40_img_A.png
+    - p06b_cen_t01_t01_40_img_B.png
+    - p06b_cen_t01_t01_40_img_C.png
+    - p06b_cen_t01_t01_40_img_D.png
+    - p06b_cen_t07_t07_40_img_A.png
+    - p06b_cen_t07_t07_40_img_B.png
+    - p06b_cen_t07_t07_40_img_C.png
+    - p06b_cen_t07_t07_40_img_D.png
+    - p06b_cen_t12_t12_40_img_A.png
+    - p06b_cen_t12_t12_40_img_B.png
+    - p06b_cen_t12_t12_40_img_C.png
+    - p06b_cen_t12_t12_40_img_D.png 
   p07:
     - p07a_cen_t03_t03_40_img_B.png
     - p07a_cen_t03_t03_60_img_A.png
@@ -86,58 +86,6 @@ pageImages:
   p10:
     - p10a_cen_t03_t03_90_img.png
 
-pageItemNumbers:
-  01: p01b_01_t01
-  02: p01b_02_t01
-  03: p01b_03_t01
-  04: p01b_04_t01
-  05: p01b_05_t01
-  06: p01b_06_t01
-  07: p02b_07_t01
-  08: p02b_08_t01
-  09: p02b_09_t01
-  10: p02b_10_t01
-  11: p02b_11_t01
-  12: p03b_12_t01
-  13: p03b_13_t01
-  14: p03b_14_t01
-  15: p03b_15_t01
-  18: p03b_18_t01
-  19: p03b_19_t01
-  20: p04b_20_t01
-  21: p04b_21_t01
-  22: p04b_22_t01
-  23: p04b_23_t01
-  24: p04b_24_t01
-  25: p06b_25_t01
-  26: p06b_26_t01
-  27: p06b_27_t01
-  28: p06b_28_t01
-  29: p07b_29_t01
-  30: p07b_30_t01
-  31: p07b_31_t01
-  32: p07b_32_t01
-  33: p07b_33_t01
-  34: p07b_34_t01
-  35: p08b_35_t01
-  36: p08b_36_t01
-  37: p08b_37_t01
-  38: p08b_38_t01
-  39: p08b_39_t01
-  40: p08b_40_t01
-  41: p09b_41_t01
-  42: p09b_42_t01
-  43: p09b_43_t01
-  44: p09b_44_t01
-  45: p09b_45_t01
-  46: p10b_46_t01
-  47: p10b_47_t01
-  48: p10b_48_t01
-  49: p10b_49_t01
-  50: p10b_50_t01
-  51: p10b_51_t01
-  52: p10b_52_t01
-  
 pageTitles: # All centered texts' codes
   - p00b_t01
   - p00a_t02

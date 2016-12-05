@@ -82,45 +82,6 @@ pageTitles:
   - p14a_t02
   - p15a_t01
 
-pageItemNumbers:
-  01: p01b_t01
-  02: p01b_t06
-  03: p01b_t11
-  04: p01b_t16
-  05: p01b_t21
-  06: p01b_t26
-  07: p01b_t31
-  08: p02b_t01
-  09: p02b_t06
-  10: p02b_t11
-  11: p02b_t16
-  12: p02b_t21
-  13: p02b_t26
-  14: p02b_t31
-  15: p04b_t01
-  16: p04b_t06
-  17: p05b_t01
-  18: p05b_t06
-  19: p06b_t01
-  20: p06b_t06
-  21: p06b_t11
-  22: p07b_t01
-  23: p07b_t06
-  24: p08b_t01
-  25: p08b_t06
-  26: p09b_t01
-  27: p10b_t01
-  28: p10b_t06
-  29: p11b_t01
-  30: p11b_t06
-  31: p12b_t01
-  32: p12b_t06
-  31: p13b_t01
-  34: p13b_t06
-  35: p13b_t11
-  36: p14b_t01
-  37: p14b_t06
-
 pageAreaWidths:
   p03:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage

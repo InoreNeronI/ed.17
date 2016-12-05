@@ -110,6 +110,13 @@ p03:
     - p03b_t09
     - p03b_t10
 p04:
+  text:
+    - p04a_t02
+    - p04a_t03
+    - p04a_t04
+    - p04a_t05
+    - p04a_t06
+    - p04a_t07
   simple:
     - p04b_t02
     - p04b_t03
@@ -124,6 +131,13 @@ p04:
     - p04b_t14
     - p04b_t15
 p05:
+  text:
+    - p05a_t02
+    - p05a_t03
+    - p05a_t04
+    - p05a_t05
+    - p05a_t06
+    - p05a_t07
   simple:
     - p05b_t02
     - p05b_t03
@@ -134,6 +148,13 @@ p05:
     - p05b_t09
     - p05b_t10
 p06:
+  text:
+    - p06a_t02
+    - p06a_t03
+    - p06a_t04
+    - p06a_t05
+    - p06a_t06
+    - p06a_t07
   simple:
     - p06b_t02
     - p06b_t03
@@ -144,6 +165,13 @@ p06:
     - p06b_t09
     - p06b_t10
 p07:
+  text:
+    - p07a_t02
+    - p07a_t03
+    - p07a_t04
+    - p07a_t05
+    - p07a_t06
+    - p07a_t07
   simple:
     - p07b_t02
     - p07b_t03
@@ -198,19 +226,3 @@ p11:
     - p11b_t08
     - p11b_t09
     - p11b_t10
-p12:
-  simple:
-    - p12b_t02
-    - p12b_t03
-    - p12b_t04
-    - p12b_t05
-    - p12b_t07
-    - p12b_t08
-    - p12b_t09
-    - p12b_t10
-p13:
-  simple:
-    - p13b_t02
-    - p13b_t03
-    - p13b_t04
-    - p13b_t05

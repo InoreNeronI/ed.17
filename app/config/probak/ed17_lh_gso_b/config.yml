@@ -1,0 +1,80 @@
+
+pageImages:
+    
+pageTextReplaces:
+  p00:
+    p00b_t02:
+      parameters: {  }
+      template: 'partial/fields/board-input.html.twig'
+  p05:
+    p05b_t09:
+      parameters: {  }
+      template: 'partial/fields/board-input.html.twig'
+      
+pageTitles:
+  - p00b_t01
+  - p01a_t01
+  - p01a_t02
+  - p02a_t01
+  - p03a_t01
+  - p04a_t01
+  - p05a_t01
+  - p06a_t01
+  - p07a_t01
+  - p08a_t01
+  - p09a_t01
+  - p10a_t01
+  - p11a_t01
+  - p12a_t01
+  - p13a_t01
+  - p14a_t01
+  - p15a_t01
+  - p16a_t01
+  - p17a_t01
+  - p18a_t01
+
+pageAreaWidths:
+  p00:
+    b: 100
+  p03:
+    a: 40
+  p04:
+    a: 40
+  p07:
+    a: 40
+  p08:
+    a: 34
+  p09:
+    a: 30
+    b: 70
+  p10:
+    a: 30
+    b: 70
+  p11:
+    a: 40
+    b: 60
+  p12:
+    a: 40
+    b: 60
+  p13:
+    a: 30
+    b: 70
+  p14:
+    a: 30
+    b: 70
+  p15:
+    a: 40
+    b: 60
+  p16:
+    a: 30
+    b: 70
+  p17:
+    a: 40
+    b: 60
+  p18:
+    a: 40
+    b: 60
+  p19:
+    b: 100
+
+totalPages: 19

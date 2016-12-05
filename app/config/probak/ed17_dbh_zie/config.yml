@@ -63,39 +63,6 @@ pageImages:
   p28:
     - p28a_cen_t02_t02_75_img.png
 
-pageItemNumbers:
-  01: p01b_t01
-  02: p01b_t06
-  03: p02b_t01
-  04: p03b_t01
-  05: p04b_t01
-  06: p05b_t01
-  07: p06b_t01
-  08: p06b_t06
-  09: p07b_t01
-  10: p08b_t01
-  11: p09b_t01
-  12: p10b_t01
-  13: p11b_t01
-  14: p12b_t01
-  15: p13b_t01
-  16: p14b_t01
-  17: p15b_t01
-  18: p15b_t06
-  19: p16b_t01
-  20: p17b_t01
-  21: p18b_t01
-  22: p19b_t01
-  23: p20b_t01
-  24: p21b_t01
-  25: p22b_t01
-  26: p23b_t01
-  27: p24b_t01
-  28: p24b_t06
-  29: p25b_t01
-  30: p26b_t01
-  31: p27b_t01
-  32: p28b_t01      
 pageTitles: # All centered texts' codes
   - p00a_t01
   - p01a_t01
