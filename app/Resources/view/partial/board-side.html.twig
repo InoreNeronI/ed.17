@@ -6,6 +6,7 @@
     <input name="referrer" type="hidden" value="{{ page }}" />
 
     {% set isTable = false %}
+    {% set colum = 0 %}
     {% set hadImage = false %}
     {% for key, text in texts %}
         {% set isItemText = key in numbers|keys %}
@@ -62,10 +63,15 @@
         {% if tableRowNum is not null %}
             {% set isTable = true %}
             {% set class = tableRowNum == 0 or isOption ? class ~ ' tc v-mid' : class ~ ' v-mid' %}
+            {% set colum = colum + 1 %}
+            {% if tableColNum is not null %}
+                {% set key = parent ~ '-' ~ colum %}
+            {% endif %}
 
             {% if parentRowNum is null %}
                 <div class="mt2 table"><div class="row header"><div class="{{ class }} cell">
             {% elseif tableRowNum > parentRowNum %}
+                {% set colum = 1 %}
                 </div><div class="row"><div class="{{ class }} cell">
             {% elseif tableRowNum is same as(0) or tableRowNum == parentRowNum %}
                 <div class="{{ class }} cell">
@@ -79,10 +85,14 @@
                 {% include 'partial/fields/board-option-multiple.html.twig' %}
             {% elseif isItemText %}
                 {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'b pa0 f6 f5-ns ' ~ color } %}
-                {% set parent = key %}
+                {% if tableColNum is null %}
+                    {% set parent = key %}
+                {% endif %}
             {% else %}
                 {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'pa0 f6 f5-ns ' ~ color } %}
-                {% set parent = key %}
+                {% if tableColNum is null %}
+                    {% set parent = key %}
+                {% endif %}
             {% endif %}
 
             {% set parentRowNum = tableRowNum %}
