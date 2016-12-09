@@ -61,7 +61,7 @@
         {% endif %}
         {% if tableRowNum is not null %}
             {% set isTable = true %}
-            {% set class = tableRowNum == 0 or isOption ? class ~ ' tc' : class %}
+            {% set class = tableRowNum == 0 or isOption ? class ~ ' tc v-mid' : class ~ ' v-mid' %}
 
             {% if parentRowNum is null %}
                 <div class="mt2 table"><div class="row header"><div class="{{ class }} cell">
@@ -96,7 +96,7 @@
                 {% set class = 't01' in key or hadImage ? class ~ ' pb1' : class ~ ' pv1' %}
             {% endif %}
             {% if isTable %}
-                {% set isTable = false %}
+                {% set parentRowNum = null %}
                 </div></div>
             {% endif %}
             <div class="{{ class }}">
