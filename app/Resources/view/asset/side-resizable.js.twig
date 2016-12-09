@@ -3,15 +3,13 @@
 $('.side-left').resizable({ handleSelector: '.side-splitter', resizeHeight: false });
 
 {# http://jsfiddle.net/dan74/6KYVP #}
-$('input[type="radio"]').click(function() {
+$('input:radio').on('click', function() {
     var previousValue = $(this).attr('previousValue');
-    var name = $(this).prop('name');
-
-    if (previousValue == 'checked' || (typeof previousValue === 'undefined' && $(this).prop('checked'))) {
+    if (previousValue === 'checked' || (typeof previousValue === 'undefined' && $(this).prop('checked') === false)) {
         $(this).prop('checked', false);
         $(this).attr('previousValue', false);
     } else {
-        console.log($(this).prop('checked'));
+        var name = $(this).prop('name');
         $('input[name="'+name+'"]:radio').attr('previousValue', false);
         $(this).attr('previousValue', 'checked');
     }

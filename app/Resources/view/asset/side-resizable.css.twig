@@ -1,7 +1,7 @@
 {# @url https://codepen.io/rstrahl/pen/eJZQej #}
 {# @url http://caniuse.com/#search=flexbox #}
 
-* {
+*, *:before, *:after {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
@@ -38,7 +38,7 @@ body {
 
 .side-left, .side-right {
     overflow: auto;
-    {#height: auto;#}
+    height: auto;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: none;
 }
