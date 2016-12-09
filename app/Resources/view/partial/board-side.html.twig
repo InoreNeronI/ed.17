@@ -64,9 +64,6 @@
             {% set isTable = true %}
             {% set class = tableRowNum == 0 or isOption ? class ~ ' tc v-mid' : class ~ ' v-mid' %}
             {% set colum = colum + 1 %}
-            {% if tableColNum is not null %}
-                {% set key = parent ~ '-' ~ colum %}
-            {% endif %}
 
             {% if parentRowNum is null %}
                 <div class="mt2 table"><div class="row header"><div class="{{ class }} cell">
@@ -78,6 +75,9 @@
             {% endif %}
 
             {% if isSimpleOption %}
+                {% if tableColNum is not null %}
+                    {% set key = parent ~ '-' ~ colum %}
+                {% endif %}
                 {% include 'partial/fields/board-option-simple.html.twig' %}
             {% elseif isLibreOption %}
                 {% include 'partial/fields/board-option-libre.html.twig' %}
