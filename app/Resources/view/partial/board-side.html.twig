@@ -8,134 +8,137 @@
     {% set isTable = false %}
     {% set hadImage = false %}
     {% for key, text in texts %}
-    {% set isItemText = key in numbers|keys %}
-    {% set isPlainText = key in pageOptions['text'] %}
-    {% set isTitleText = key in pageTitles %}
-    {% set isLibreOption = key in pageOptions['libre'] %}
-    {% set isMultipleOption = key in pageOptions['multiple'] %}
-    {% set isSimpleOption = key in pageOptions['simple'] %}
-    {% set isOption = isSimpleOption or isLibreOption or isMultipleOption %}
-    {% set class = isOption ? 'option' : isPlainText ? 'text' : 'description' %}
-    {% set textNum = (key|split('t')[1]|number_format + 0) %}
-    {% set tableColNum = key|split('c')[1] is empty ? null : (key|split('c')[1]|number_format + 0) %}
-    {% set tableRowNum = key|split('f')[1] is empty ? null : (key|split('f')[1]|number_format + 0) %}
-    {% set color = tableColNum is same as(0) or tableRowNum is same as(0) ? 'white-80' : 'black-80' %}
+        {% set isItemText = key in numbers|keys %}
+        {% set isPlainText = key in pageOptions['text'] %}
+        {% set isTitleText = key in pageTitles %}
+        {% set isLibreOption = key in pageOptions['libre'] %}
+        {% set isMultipleOption = key in pageOptions['multiple'] %}
+        {% set isSimpleOption = key in pageOptions['simple'] %}
+        {% set isOption = isSimpleOption or isLibreOption or isMultipleOption %}
+        {% set class = isOption ? 'option' : isPlainText ? 'text' : 'description' %}
+        {% set textNum = (key|split('t')[1]|number_format + 0) %}
+        {% set tableColNum = key|split('c')[1] is empty ? null : (key|split('c')[1]|number_format + 0) %}
+        {% set tableRowNum = key|split('f')[1] is empty ? null : (key|split('f')[1]|number_format + 0) %}
+        {% set color = tableColNum is same as(0) or tableRowNum is same as(0) ? 'white-80' : 'black-80' %}
 
-    {% if key in pageTextReplaces|keys %}
-        {% set wildcard %}
-            {% include pageTextReplaces[key]['template'] with pageTextReplaces[key]['parameters'] %}
-        {% endset %}
-        {% set text = text|format(wildcard) %}
-    {% endif %}
-    {% if key in images|keys %}
-        {% set image = images[key] %}
-    {% endif %}
-
-    {% if image is not empty %}
-        {% if textNum <= image['till'] or isOption and image['since'] == image['till'] %}
-            {% set class = image['alignment'] is not same as('cen') ? class ~ ' ' ~ image['offset'] : class %}
-            {% set class = image['alignment'] is same as('dch') ? class ~ ' fl' : class %}
-            {% set class = image['alignment'] is same as('izq') ? class ~ ' dib' : class %}
-        {% elseif image['alignment'] is same as('dch') or image['alignment'] is same as('izq') and textNum > image['till'] or textNum == 1 %}
-            {% set class = class ~ ' cl' %}
-        {% endif %}
-        {% if textNum > image['till'] %}
-            {% set hadImage = true %}
-            {% set image = null %}
-        {% else %}
-            {% set hadImage = false %}
-        {% endif %}
-        {% if text is empty %}
-            {% set text %}
-                {% include 'partial/fields/board-img.html.twig' with { 'cssClassContainer': 'fl pr1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
+        {% if key in pageTextReplaces|keys %}
+            {% set wildcard %}
+                {% include pageTextReplaces[key]['template'] with pageTextReplaces[key]['parameters'] %}
             {% endset %}
-            {% set image = null %}
+            {% set text = text|format(wildcard) %}
         {% endif %}
-        {% if image['alignment'] is same as('izq') and image['since'] == textNum %}
-            {% include 'partial/fields/board-img.html.twig' with { 'cssClassContainer': 'fl pr1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
+        {% if key in images|keys %}
+            {% set image = images[key] %}
         {% endif %}
+
+        {% if image is not empty %}
+            {% if textNum <= image['till'] or isOption and image['since'] == image['till'] %}
+                {% set class = image['alignment'] is not same as('cen') ? class ~ ' ' ~ image['offset'] : class %}
+                {% set class = image['alignment'] is same as('dch') ? class ~ ' fl' : class %}
+                {% set class = image['alignment'] is same as('izq') ? class ~ ' dib' : class %}
+            {% elseif image['alignment'] is same as('dch') or image['alignment'] is same as('izq') and textNum > image['till'] or textNum == 1 %}
+                {% set class = class ~ ' cl' %}
+            {% endif %}
+            {% if textNum > image['till'] %}
+                {% set hadImage = true %}
+                {% set image = null %}
+            {% else %}
+                {% set hadImage = false %}
+            {% endif %}
+            {% if text is empty %}
+                {% set text %}
+                    {% include 'partial/fields/board-img.html.twig' with { 'cssClassContainer': 'fl pr1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
+                {% endset %}
+                {% set image = null %}
+            {% endif %}
+            {% if image['alignment'] is same as('izq') and image['since'] == textNum %}
+                {% include 'partial/fields/board-img.html.twig' with { 'cssClassContainer': 'fl pr1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
+            {% endif %}
+        {% endif %}
+
+        {% if tableColNum is not null %}
+            {% set tableRowNum = tableColNum %}
+        {% endif %}
+        {% if tableRowNum is not null %}
+            {% set isTable = true %}
+            {% set class = tableRowNum == 0 or isOption ? class ~ ' tc' : class %}
+
+            {% if parentRowNum is null %}
+                <div class="mt2 table"><div class="row header"><div class="{{ class }} cell">
+            {% elseif tableRowNum > parentRowNum %}
+                </div><div class="row"><div class="{{ class }} cell">
+            {% elseif tableRowNum is same as(0) or tableRowNum == parentRowNum %}
+                <div class="{{ class }} cell">
+            {% endif %}
+
+            {% if isSimpleOption %}
+                {% include 'partial/fields/board-option-simple.html.twig' %}
+            {% elseif isLibreOption %}
+                {% include 'partial/fields/board-option-libre.html.twig' %}
+            {% elseif isMultipleOption %}
+                {% include 'partial/fields/board-option-multiple.html.twig' %}
+            {% elseif isItemText %}
+                {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'b pa0 f6 f5-ns ' ~ color } %}
+                {% set parent = key %}
+            {% else %}
+                {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'pa0 f6 f5-ns ' ~ color } %}
+                {% set parent = key %}
+            {% endif %}
+
+            {% set parentRowNum = tableRowNum %}
+        {% else %}
+            {% set class = isOption or isPlainText ? class ~ ' pl1 pl2-ns pl3-m pl4-l' : class %}
+            {% set class = isTitleText ? class ~ ' tc' : class %}
+            {% if isItemText %}
+                {% set class = 't01' in key or hadImage ? class ~ ' pb1' : class ~ ' pt3 pb1' %}
+                {% set text = '<span class="white-80 bg-black-80 f5 f4-ns ph1 br2">' ~ numbers[key] ~ '</span> ' ~ text %}
+            {% else %}
+                {% set class = 't01' in key or hadImage ? class ~ ' pb1' : class ~ ' pv1' %}
+            {% endif %}
+            {% if isTable %}
+                {% set isTable = false %}
+                </div></div>
+            {% endif %}
+            <div class="{{ class }}">
+            {% if isSimpleOption %}
+                {% include 'partial/fields/board-option-simple.html.twig' %}
+                {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'dib pointer pl2 mr1 pa0 f6 f5-ns ' ~ color, 'for': parent ~ '-' ~ key } %}
+            {% elseif isLibreOption %}
+                {% include 'partial/fields/board-option-libre.html.twig' %}
+                {% include 'partial/fields/board-label.html.twig' with { 'for': parent ~ '-' ~ key } %}
+            {% elseif isMultipleOption %}
+                {% include 'partial/fields/board-option-multiple.html.twig' %}
+                {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'dib pointer pl2 mr1 pa0 f6 f5-ns ' ~ color, 'for': parent ~ '-' ~ key } %}
+            {% elseif isTitleText %}
+                {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'b pa0 f5 f4-ns ' ~ color } %}
+                {% set parent = key %}
+            {% elseif isItemText %}
+                {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'b pa0 f6 f5-ns ' ~ color } %}
+                {% set parent = key %}
+            {% else %}
+                {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'pa0 f6 f5-ns ' ~ color } %}
+                {% set parent = key %}
+            {% endif %}
+        {% endif %}
+        </div>
+        {% if image is not empty %}
+            {% if image['alignment'] is same as('cen') and image['since'] == textNum and image['till'] == textNum %}
+                {% include 'partial/fields/board-img.html.twig' with { 'cssClassContent': image['width'], 'src': image['path'] } %}
+            {% endif %}
+            {% if image['alignment'] is same as('dch') and image['till'] == textNum %}
+                {% include 'partial/fields/board-img.html.twig' with { 'cssClassContainer': 'dib pl1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
+            {% endif %}
+        {% endif %}
+
+    {% endfor %}
+
+    {% if isTable %}</div></div>{% endif %}
+
+    {% if buttonText is not empty %}
+        <div class="cl pt3 tc">
+            <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv2 ph2 white">
+                {{ buttonText }}
+            </button>
+        </div>
     {% endif %}
-
-    {% if tableRowNum is not null %}
-    {% set isTable = true %}
-    {% set class = tableRowNum == 0 or isOption ? class ~ ' tc' : class %}
-
-    {% if parentRowNum is not defined %}
-    <div class="mt2 table"><div class="row header"><div class="{{ class }} cell">
-        {% elseif tableRowNum > parentRowNum %}
-            </div><div class="row"><div class="{{ class }} cell">
-                    {% elseif tableRowNum is same as(0) or tableRowNum == parentRowNum %}
-                    <div class="{{ class }} cell">
-                        {% endif %}
-
-                        {% if isSimpleOption %}
-                            {% include 'partial/fields/board-option-simple.html.twig' %}
-                        {% elseif isLibreOption %}
-                            {% include 'partial/fields/board-option-libre.html.twig' %}
-                        {% elseif isMultipleOption %}
-                            {% include 'partial/fields/board-option-multiple.html.twig' %}
-                        {% elseif isItemText %}
-                            {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'b pa0 f6 f5-ns ' ~ color } %}
-                            {% set parent = key %}
-                        {% else %}
-                            {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'pa0 f6 f5-ns ' ~ color } %}
-                            {% set parent = key %}
-                        {% endif %}
-
-                        {% set parentRowNum = tableRowNum %}
-                        {% else %}
-                        {% set class = isOption or isPlainText ? class ~ ' pl1 pl2-ns pl3-m pl4-l' : class %}
-                        {% set class = isTitleText ? class ~ ' tc' : class %}
-                        {% if isItemText %}
-                            {% set class = 't01' in key or hadImage ? class ~ ' pb1' : class ~ ' pt3 pb1' %}
-                            {% set text = '<span class="white-80 bg-black-80 f5 f4-ns ph1 br2">' ~ numbers[key] ~ '</span> ' ~ text %}
-                        {% else %}
-                            {% set class = 't01' in key or hadImage ? class ~ ' pb1' : class ~ ' pv1' %}
-                        {% endif %}
-                        {% if isTable %}
-                        {% set isTable = false %}
-                    </div></div>
-                {% endif %}
-                <div class="{{ class }}">
-                    {% if isSimpleOption %}
-                        {% include 'partial/fields/board-option-simple.html.twig' %}
-                        {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'dib pointer pl2 mr1 pa0 f6 f5-ns ' ~ color, 'for': parent ~ '-' ~ key } %}
-                    {% elseif isLibreOption %}
-                        {% include 'partial/fields/board-option-libre.html.twig' %}
-                        {% include 'partial/fields/board-label.html.twig' with { 'for': parent ~ '-' ~ key } %}
-                    {% elseif isMultipleOption %}
-                        {% include 'partial/fields/board-option-multiple.html.twig' %}
-                        {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'dib pointer pl2 mr1 pa0 f6 f5-ns ' ~ color, 'for': parent ~ '-' ~ key } %}
-                    {% elseif isTitleText %}
-                        {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'b pa0 f5 f4-ns ' ~ color } %}
-                        {% set parent = key %}
-                    {% elseif isItemText %}
-                        {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'b pa0 f6 f5-ns ' ~ color } %}
-                        {% set parent = key %}
-                    {% else %}
-                        {% include 'partial/fields/board-label.html.twig' with { 'labelCss': 'pa0 f6 f5-ns ' ~ color } %}
-                        {% set parent = key %}
-                    {% endif %}
-                    {% endif %}
-                </div>
-                {% if image is not empty %}
-                    {% if image['alignment'] is same as('cen') and image['since'] == textNum and image['till'] == textNum %}
-                        {% include 'partial/fields/board-img.html.twig' with { 'cssClassContent': image['width'], 'src': image['path'] } %}
-                    {% endif %}
-                    {% if image['alignment'] is same as('dch') and image['till'] == textNum %}
-                        {% include 'partial/fields/board-img.html.twig' with { 'cssClassContainer': 'dib pl1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
-                    {% endif %}
-                {% endif %}
-
-                {% endfor %}
-
-                {% if isTable %}</div></div>{% endif %}
-
-        {% if buttonText is not empty %}
-            <div class="cl pt3 tc">
-                <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv2 ph2 white">
-                    {{ buttonText }}
-                </button>
-            </div>
-        {% endif %}
 </form>
