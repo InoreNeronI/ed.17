@@ -8,7 +8,7 @@
         {% set isFirstPage = page|number_format == 0 %}
         {% set isLastPage = page|number_format == totalPages|number_format %}
         {% if pageAreaSkip is not same as('a') %}
-            <div class="fl pa1-ns pa2-m pa3-l side-left {{ pageWidth['a'] }} bg-light-gray">
+            <div class="fl pa1-ns pa2-m pa3-l side-left bg-light-gray {{ pageWidth['a']|default }}">
                 {% if isFirstPage %}
                     {% set buttonText = startButton ~ ' <i class="fa fa-play"></i>' %}
                 {% elseif isLastPage %}
@@ -24,7 +24,7 @@
             <div class="side-splitter"></div>
         {% endif %}
         {% if pageAreaSkip is not same as('b') %}
-            <div class="fl pa1-ns pa2-m pa3-l side-right {{ pageWidth['b'] }} bg-near-white">
+            <div class="fl pa1-ns pa2-m pa3-l side-right bg-near-white {{ pageWidth['b']|default }}">
                 {% if isFirstPage %}
                     {% set buttonText = startButton ~ ' <i class="fa fa-play"></i>' %}
                 {% elseif isLastPage %}

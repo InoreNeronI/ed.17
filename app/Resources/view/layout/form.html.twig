@@ -18,7 +18,7 @@
         </div>
     </article>
     <article class="has-bg-image cf pv2 mh1-ns mh1-m mh3-l">
-        <form action="{{ formAction|default('') }}" accept-charset="utf-8" method="{{ formMethod|default('post') }}">
+        <form action="{{ formAction|default }}" accept-charset="utf-8" method="{{ formMethod|default('post') }}">
             {% block content_form %}{% endblock %}
         </form>
     </article>
