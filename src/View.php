@@ -49,6 +49,7 @@ class View
             'autoescape' => false,
             'cache' => is_null($cache_dir) ? $loader_dir[0] . '/cache' : $cache_dir,
             'debug' => $debug,
+            'strict_variables' => true,
         ]);
         if ($debug) {
             static::$twig->addExtension(new Twig_Extension_Debug());
