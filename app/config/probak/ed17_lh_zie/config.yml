@@ -73,19 +73,19 @@ pageTextReplaces:
   p09:
     p09b_t03:
       parameters: {  }
-      template: 'partial/fields/board-input.html.twig'
+      template: 'partial/fields/input.html.twig'
     p09b_t04:
       parameters: {  }
-      template: 'partial/fields/board-input.html.twig'
+      template: 'partial/fields/input.html.twig'
     p09b_t05:
       parameters: {  }
-      template: 'partial/fields/board-input.html.twig'
+      template: 'partial/fields/input.html.twig'
     p09b_t06:
       parameters: {  }
-      template: 'partial/fields/board-input.html.twig'
+      template: 'partial/fields/input.html.twig'
     p09b_t07:
       parameters: {  }
-      template: 'partial/fields/board-input.html.twig'
+      template: 'partial/fields/input.html.twig'
       
 pageAreaWidths:
   p18:

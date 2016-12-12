@@ -14,19 +14,9 @@ pageImages:
   p05:
     - p05a_izq_t03_t04_30_img.png
   p06:
-    - p06a_dch_t02_t02_20_img.png
+    - p06a_cen_t02_t02_50_img.png
   p07:
-    - p07a_cen_t01_t01_100_img.png
-  p08:
-    - p08a_cen_t01_t01_100_img.png
-  p09:
-    - p09a_izq_t17_t17_30_img.png
-  p10:
-    - p10a_izq_t17_t17_30_img.png
-  p11:
-    - p11a_cen_t02_t02_50_img.jpg
-  p12:
-    - p12a_cen_t02_t02_50_img.jpg
+    - p07a_cen_t02_t02_50_img.png
 
 pageReplaces:
  
@@ -51,14 +41,5 @@ pageTitles:
   - p06a_t01
   - p06a_t02
   - p07a_t01
-  - p08a_t01
-  - p09a_t01
-  - p09a_t02
-  - p10a_t01
-  - p10a_t02
-  - p11a_t01
-  - p11a_t02
-  - p12a_t01
-  - p12a_t02
  
-totalPages: 13
+totalPages: 8

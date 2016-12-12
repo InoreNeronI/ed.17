@@ -10,4 +10,4 @@ define('TEMPLATE_EXTENSION', 'html.twig');
 define('TEMPLATE_FILES_DIR', LOADER_DIR.\def::paths()['template_dir']);
 define('TRANSLATIONS_DIR', LOADER_DIR.\def::paths()['translation_dir']);
 define('USER_TABLE', \def::dbCredentials()['user_table']);
-define('DEBUG', in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'/*, '123.456.789.0'*/]) ? true : false);
+define('DEBUG', in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1', '10.212.11.207']) ? true : false);

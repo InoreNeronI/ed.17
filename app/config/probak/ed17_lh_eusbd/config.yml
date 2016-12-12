@@ -49,16 +49,16 @@ pageTextReplaces:
   p10:
     p10b_t02:
       parameters: {  }
-      template: 'partial/fields/board-input.html.twig'
+      template: 'partial/fields/input.html.twig'
     p10b_t03:
       parameters: {  }
-      template: 'partial/fields/board-input.html.twig'
+      template: 'partial/fields/input.html.twig'
     p10b_t04:
       parameters: {  }
-      template: 'partial/fields/board-input.html.twig'
+      template: 'partial/fields/input.html.twig'
     p10b_t05:
       parameters: {  }
-      template: 'partial/fields/board-input.html.twig'
+      template: 'partial/fields/input.html.twig'
 
 pageTitles:
   - p00a_t01

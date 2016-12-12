@@ -88,11 +88,11 @@ pageTextReplaces:
   p00:
     p00b_t02:
       parameters: {  }
-      template: 'partial/fields/board-input.html.twig'
+      template: 'partial/fields/input.html.twig'
   p05:
     p05b_t09:
       parameters: {  }
-      template: 'partial/fields/board-input.html.twig'
+      template: 'partial/fields/input.html.twig'
       
 pageTitles:
   - p00b_t01

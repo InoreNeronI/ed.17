@@ -112,7 +112,7 @@ pageTextReplaces:
   p00:  # Page where any replace's being done
     p00b_t06: # Items' code with "%s" in its texts
       parameters: { disabled: disabled, width: 20 }  # Parameter(s) for the replacing template
-      template:   'partial/fields/board-input.html.twig' # Templates' location path (TEMPLATE_FILES_DIR relative)
+      template:   'partial/fields/input.html.twig' # Templates' location path (TEMPLATE_FILES_DIR relative)
 
 pageAreaWidths:
   p00:  # Page affected with any custom side-width

@@ -5,6 +5,7 @@ pageTitles: # All centered texts' codes
   - p00b_t01
   - p01b_t01
   - p06b_t01
+  - p12b_t46
 
 pageTextReplaces:
 
@@ -31,7 +32,11 @@ pageAreaWidths:
     b: 100
   p10:  
     b: 100
+  p11:  
+    b: 100
+  p12:
+    b: 100
     
 
 # TODO: being dynamic
-totalPages: 10  # The final total pages
+totalPages: 12  # The final total pages

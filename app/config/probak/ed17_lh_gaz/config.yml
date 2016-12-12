@@ -4,22 +4,22 @@ pageImages:
     - p00a_izq_t03_t04_30_img.png
   p01:
     - p01a_cen_t07_t07_50_img.png
-    - p01a_cen_t11_t11_20_img.png
+    - p01a_cen_t11_t11_10_img.png
     - p01a2_cen_t07_t07_50_img.png
-    - p01a2_cen_t11_t11_20_img.png
+    - p01a2_cen_t11_t11_10_img.png
   p02:
-    - p02a_cen_t02_t02_30_img.png
-    - p02a_cen_t11_t11_20_img.png
-    - p02a2_cen_t02_t02_30_img.png
-    - p02a2_cen_t11_t11_20_img.png
+    - p02a_cen_t02_t02_50_img.png
+    - p02a_cen_t06_t06_10_img.png
+    - p02a2_cen_t02_t02_50_img.png
+    - p02a2_cen_t06_t06_10_img.png
   p03:
     - p03b_cen_t02_t02_60_img.png
   p04:
-    - p04a_cen_t01_t01_80_img.png
+    - p04a_cen_t01_t01_100_img.png
   p05:
-    - p05a_cen_t01_t01_80_img.png
+    - p05a_cen_t02_t02_100_img.png
   p06:
-    - p06a_cen_t01_t01_80_img.png
+    - p06a_cen_t02_t02_100_img.png
   p07:
     - p07a_cen_t09_t09_25_img.png
     - p07a_izq_t03_t04_40_img.png
@@ -36,9 +36,9 @@ pageImages:
   p12:
     - p12a_dch_t05_t06_40_img.png
   p13:
-    - p13a_cen_t06_t06_30_img.png
+    - p13a_cen_t06_t06_80_img.png
   p14:
-    - p14a_cen_t06_t06_30_img.png
+    - p14a_cen_t06_t06_80_img.png
   p15:
     - p15b_cen_t01_t01_60_img.jpg
 
@@ -55,32 +55,26 @@ pageTitles:
   - p03b_t01
   - p04a_t01
   - p04a_t02
-  - p05a_t01
   - p05a_t02
-  - p06a_t01
   - p06a_t02
   - p07a_t01
   - p07a_t02
-  - p08a_t01
   - p08a_t02
-  - p09a_t01
+  - p09a_t02
   - p10a_t01
   - p10a_t02
   - p10a_t03
   - p10a_t04
-  - p11a_t01
   - p11a_t02
   - p11a_t03
   - p11a_t04
-  - p12a_t01
   - p12a_t02
   - p12a_t03
   - p12a_t04
   - p13a_t01
   - p13a_t02
-  - p14a_t01
   - p14a_t02
-  - p15a_t01
+  - p15b_t01
 
 pageAreaWidths:
   p03:  # Page affected with any custom side-width
