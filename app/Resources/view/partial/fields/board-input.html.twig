@@ -1,4 +1,4 @@
-{% set inputClass = inputClass|default('f6 f5-l black-80 bg-white pa1 pl2 br2-ns br--left-ns') ~ ' v-top' %}
+{% set inputClass = inputClass|default('f6 f5-l black-80 bg-white pl1 br2-ns br--left-ns') ~ ' v-top' %}
 {% set inputClass = width is defined ? inputClass ~ ' ' ~ width : inputClass %}
 {% set placeholder = type|default('text') is same as('text') ? ' placeholder="' ~ placeholder|default(textPlaceholder|default) ~ '"' : '' %}
 <input class="{{ inputClass }}" type="{{ type|default('text') }}" name="{{ name|default }}" value="{{ value|default }}" id="{{ id|default }}" {{ disabled|default }} {{ required|default }} {{ placeholder }} />

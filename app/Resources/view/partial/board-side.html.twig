@@ -108,17 +108,17 @@
                     {% set name = parent ~ '[' ~ columsArray['c' ~  column] ~ ']' ~ '[' ~ key ~ ']' %}
                     {% set type = 'text' %}
                     {% set value = '' %}
-                    {% set inpuClass = 'f6 f5-l black-80 bg-white pa1 pl2 br2-ns br--left-ns w-40' %}
+                    {% set inpuClass = 'f6 f5-l black-80 bg-white pl1 br2-ns br--left-ns w-40' %}
                 {% elseif isLibreOptionLarge %}
                     {% set name = parent ~ '[' ~ columsArray['c' ~  column] ~ ']' ~ '[' ~ key ~ ']' %}
                     {% set type = 'text' %}
                     {% set value = '' %}
-                    {% set inpuClass = 'f6 f5-l black-80 bg-white pa1 pl2 br2-ns br--left-ns w-75' %}
+                    {% set inpuClass = 'f6 f5-l black-80 bg-white pl1 br2-ns br--left-ns w-75' %}
                 {% elseif isLibreOptionSmall %}
                     {% set name = parent ~ '[' ~ columsArray['c' ~  column] ~ ']' ~ '[' ~ key ~ ']' %}
                     {% set type = 'text' %}
                     {% set value = '' %}
-                    {% set inpuClass = 'f6 f5-l black-80 bg-white pa1 pl2 br2-ns br--left-ns w-20' %}
+                    {% set inpuClass = 'f6 f5-l black-80 bg-white pl1 br2-ns br--left-ns w-20' %}
                 {% endif %}
                 {{ value }}
                 {% include 'partial/fields/board-input.html.twig' with { 'inputClass': inpuClass|default, 'type': type|default, 'value': value|default, 'name': name|default, 'id': id|default } %}
@@ -166,17 +166,17 @@
                     {% set name = parent ~ '[' ~ key ~ ']' %}
                     {% set type = 'text' %}
                     {% set value = '' %}
-                    {% set inpuClass = 'f6 f5-l black-80 bg-white pa1 pl2 br2-ns br--left-ns w-40' %}
+                    {% set inpuClass = 'f6 f5-l black-80 bg-white pl1 br2-ns br--left-ns w-40' %}
                 {% elseif isLibreOptionLarge %}
                     {% set name = parent ~ '[' ~ key ~ ']' %}
                     {% set type = 'text' %}
                     {% set value = '' %}
-                    {% set inpuClass = 'f6 f5-l black-80 bg-white pa1 pl2 br2-ns br--left-ns w-75' %}
+                    {% set inpuClass = 'f6 f5-l black-80 bg-white pl1 br2-ns br--left-ns w-75' %}
                 {% elseif isLibreOptionSmall %}
                     {% set name = parent ~ '[' ~ key ~ ']' %}
                     {% set type = 'text' %}
                     {% set value = '' %}
-                    {% set inpuClass = 'f6 f5-l black-80 bg-white pa1 pl2 br2-ns br--left-ns w-20' %}
+                    {% set inpuClass = 'f6 f5-l black-80 bg-white pl1 br2-ns br--left-ns w-20' %}
                 {% endif %}
                 {{ value }}
                 {% include 'partial/fields/board-input.html.twig' with { 'inputClass': inpuClass, 'type': type, 'value': value, 'name': name, 'id': id } %}
