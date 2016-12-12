@@ -29,12 +29,14 @@ interface ConnectionInterface
         $driver = 'pdo_mysql',
         array $options = []
     );
+
     /**
      * Returns a Doctrine query builder object.
      *
      * @return QueryBuilder
      */
     public function getQueryBuilder();
+
     /**
      * Sets a timezone.
      *

@@ -32,7 +32,7 @@ set('var_dir', 'app');
  */
 task('deploy:create_cache_dir', function () {
     // Set cache dir
-    env('cache_dir', '{{release_path}}/' . trim(get('var_dir'), '/') . '/cache');
+    env('cache_dir', '{{release_path}}/'.trim(get('var_dir'), '/').'/cache');
 
     // Remove cache dir if it exist
     run('if [ -d "{{cache_dir}}" ]; then rm -rf {{cache_dir}}; fi');
@@ -49,7 +49,7 @@ task('deploy:create_cache_dir', function () {
  */
 task('deploy:create_logs_dir', function () {
     // Set cache dir
-    env('logs_dir', '{{release_path}}/' . trim(get('var_dir'), '/') . '/logs');
+    env('logs_dir', '{{release_path}}/'.trim(get('var_dir'), '/').'/logs');
     // Remove cache dir if it exist
     run('if [ -d "{{logs_dir}}" ]; then rm -rf {{logs_dir}}; fi');
     // Create cache dir

@@ -26,7 +26,7 @@
     "symfony/var-dumper": "@stable"
   },
   "scripts": {
-    "codefix": ["php bin/sf-upgrade.phar fix src || true", "php bin/php-cs.phar fix --config-file=.php_cs || true"],
+    "codefix": ["php bin/sf-upgrade.phar fix src || true", "php bin/php-cs.phar fix --config=.php_cs || true"],
     "deploy": "php bin/deployer.phar deploy",
     "deptrac": "php bin/deptrac.phar",
     "optimize": "@composer dump-autoload --optimize",
@@ -67,10 +67,8 @@
       "[ -e \"bin/checker.phar\" ] || curl -Lo bin/checker.phar http://get.sensiolabs.org/security-checker.phar",
       "[ -e \"bin/deployer.phar\" ] || curl -Lo bin/deployer.phar https://deployer.org/deployer.phar",
       "[ -e \"bin/deptrac.phar\" ] || curl -Lo bin/deptrac.phar http://get.sensiolabs.de/deptrac.phar",
-      "[ -e \"bin/php-cs.phar\" ] || curl -Lo bin/php-cs.phar https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v1.13.1/php-cs-fixer.phar",
+      "[ -e \"bin/php-cs.phar\" ] || curl -Lo bin/php-cs.phar https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.0.0/php-cs-fixer.phar",
       "[ -e \"bin/phpunit.phar\" ] || curl -Lo bin/phpunit.phar https://phar.phpunit.de/phpunit-old.phar",
-      "[ -e \"bin/sf-upgrade.phar\" ] || curl -Lo bin/sf-upgrade.phar https://github.com/umpirsky/Symfony-Upgrade-Fixer/releases/download/v0.1.5/symfony-upgrade-fixer.phar",
-      "[ -e \"bin/yarn.js\" ] || curl -Lo bin/yarn.js https://github.com/yarnpkg/yarn/releases/download/v0.18.0/yarn-0.18.0.js",
       "printf \"\\n\\tBinaries had been installed succesfully\\n\\n\"",
       "printf \"\\n\\tInstalling Node Packaged Modules\\n\\n\"",
       "npm install"

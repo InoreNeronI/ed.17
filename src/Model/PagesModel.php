@@ -23,12 +23,12 @@ final class PagesModel extends CredentialsModel
     {
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
-            ->select('LOWER(t.edg051_codprueba) as code', 'LOWER(t.edg051_cod_texto) as text_code', 'TRIM(t.edg051_item_num) as item_num', 'TRIM(t.edg051_texto_' . $args['lengua'] . ') as text_string')
+            ->select('LOWER(t.edg051_codprueba) as code', 'LOWER(t.edg051_cod_texto) as text_code', 'TRIM(t.edg051_item_num) as item_num', 'TRIM(t.edg051_texto_'.$args['lengua'].') as text_string')
             ->from($args['table'], 't')
             ->where('t.edg051_periodo = :periodo')
             ->andWhere('t.edg051_cod_texto LIKE :text_code')
             ->orderBy('t.edg051_cod_texto')
-            ->setParameters(['periodo' => $args['course'], 'text_code' => 'p' . $wildcardA . $wildcardB . '%']);
+            ->setParameters(['periodo' => $args['course'], 'text_code' => 'p'.$wildcardA.$wildcardB.'%']);
 
         /** @var array $texts */
         $texts = $queryBuilder->execute()->fetchAll();
@@ -44,9 +44,8 @@ final class PagesModel extends CredentialsModel
             }
 
             return static::$pageTexts;
-        } else {
-            throw new \Exception(sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())));
         }
+        throw new \Exception(sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())));
     }
 
     /**
@@ -62,7 +61,7 @@ final class PagesModel extends CredentialsModel
     public function loadPageData(array $args, $page, $dataDir = DATA_DIR, $defaultPageAreaPercents = ['a' => '50', 'b' => '50'])
     {
         /** @var string $data_folder */
-        $data_folder = $dataDir . '/' . $args['code'];
+        $data_folder = $dataDir.'/'.$args['code'];
         /** @var array $config */
         $config = parseConfig($data_folder, 'config');
         if (empty($config)) {
@@ -74,7 +73,7 @@ final class PagesModel extends CredentialsModel
             throw new \Exception(sprintf('The options file `%s` is missing in the target: %s', 'options.yml', $data_folder));
         }
         /** @var array $pageWidth */
-        $pageWidth = empty($config['pageAreaWidths']['p' . $page]) ? $defaultPageAreaPercents : $config['pageAreaWidths']['p' . $page];
+        $pageWidth = empty($config['pageAreaWidths']['p'.$page]) ? $defaultPageAreaPercents : $config['pageAreaWidths']['p'.$page];
         /** @var array $widthStyling */
         $widthStyling = \def::styling()['width'];
         /** @var array $pageAreas */
@@ -82,7 +81,7 @@ final class PagesModel extends CredentialsModel
         /** @var string|null $pageAreaSkip */
         $pageAreaSkip = null;
         /** @var array $pageTextReplaces */
-        $pageTextReplaces = empty($config['pageTextReplaces']['p' . $page]) ? [] : $config['pageTextReplaces']['p' . $page];
+        $pageTextReplaces = empty($config['pageTextReplaces']['p'.$page]) ? [] : $config['pageTextReplaces']['p'.$page];
 
         // Sides' widths
         foreach ($pageWidth as $sideLetter => $sideWith) {
@@ -101,19 +100,19 @@ final class PagesModel extends CredentialsModel
 
         // Images
         $images = [];
-        foreach(empty($config['pageImages']['p' . $page]) ? [] : $config['pageImages']['p' . $page] as $image) {
+        foreach (empty($config['pageImages']['p'.$page]) ? [] : $config['pageImages']['p'.$page] as $image) {
             $imageData = explode('.', $image);
             $imageData = explode('_', $imageData[0]);
             if ($imageData[5] === $args['lengua'] || $imageData[5] === 'img') {
-                $side = str_replace('p' . $page, '', $imageData[0]);
+                $side = str_replace('p'.$page, '', $imageData[0]);
                 $offset = 100 - $imageData[4];
-                $images[$side][$imageData[0] . '_' . $imageData[2]] = [
+                $images[$side][$imageData[0].'_'.$imageData[2]] = [
                     'alignment' => $imageData[1],
                     'offset' => $widthStyling[isset($widthStyling[$offset]) ? $offset : 'auto'],
-                    'path' => '/images/' . $args['code'] . '/' . $image,
+                    'path' => '/images/'.$args['code'].'/'.$image,
                     'since' => intval(str_replace('t', '', $imageData[2])),
                     'till' => intval(str_replace('t', '', $imageData[3])),
-                    'width' => $widthStyling[isset($widthStyling[$imageData[4]]) ? $imageData[4] : 'auto']
+                    'width' => $widthStyling[isset($widthStyling[$imageData[4]]) ? $imageData[4] : 'auto'],
                 ];
             }
         }
@@ -126,7 +125,7 @@ final class PagesModel extends CredentialsModel
         return array_merge($args, static::$pageTexts, [
             'page' => $page,
             'pageImages' => $images,
-            'pageOptions' => empty($options['p' . $page]) ? [] : $options['p' . $page],
+            'pageOptions' => empty($options['p'.$page]) ? [] : $options['p'.$page],
             'pageTitles' => empty($config['pageTitles']) ? [] : $config['pageTitles'],
             'pageTextReplaces' => $pageTextReplaces,
             'pageWidth' => $pageWidth,

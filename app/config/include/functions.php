@@ -26,42 +26,49 @@ final class def extends defDB
             static::$configLoaded = true;
         }
     }
+
     public static function langCodes()
     {
         static::loadConfig();
 
         return static::$langCodes;
     }
+
     public static function langISOCodes()
     {
         static::loadConfig();
 
         return static::$langISOCodes;
     }
+
     public static function paths()
     {
         static::loadConfig();
 
         return static::$paths;
     }
+
     public static function periods()
     {
         static::loadConfig();
 
         return static::$periods;
     }
+
     public static function routing()
     {
         static::loadConfig();
 
         return static::$routing;
     }
+
     public static function styling()
     {
         static::loadConfig();
 
         return static::$styling;
     }
+
     public static function translations($view = 'layout')
     {
         return parseConfig(TRANSLATIONS_DIR, $view);
@@ -90,24 +97,28 @@ class defDb
             static::$initialized = true;
         }
     }
+
     public static function dbCodes()
     {
         static::loadDbConfig();
 
         return static::$dbCodes;
     }
+
     public static function dbCredentials()
     {
         static::loadDbConfig();
 
         return static::$dbCredentials;
     }
+
     public static function dbSecurity()
     {
         static::loadDbConfig();
 
         return static::$dbSecurity;
     }
+
     public static function dbTables()
     {
         static::loadDbConfig();

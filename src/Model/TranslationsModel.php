@@ -113,7 +113,7 @@ class TranslationsModel
     {
         $fields = [];
         foreach ($tables as $table_name => $table_field) {
-            $name = $prefix . $table_name;
+            $name = $prefix.$table_name;
             if (is_array($table_field)) {
                 $fields = array_merge($fields, static::mapFields($table_field, $break_table, $name));
             } else {

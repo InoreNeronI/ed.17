@@ -62,12 +62,10 @@ class CredentialsModel extends Connection\Connection
             $codPrueba = $args['code'];
             if (isset($codes[$codPrueba])) {
                 return static::requesttAccess($user, $codes[$codPrueba]);
-            } else {
-                throw new \Exception(sprintf('The code you have entered does not match: \'%s\'', $codPrueba));
             }
-        } else {
-            throw new \Exception(sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())));
+            throw new \Exception(sprintf('The code you have entered does not match: \'%s\'', $codPrueba));
         }
+        throw new \Exception(sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())));
     }
 
     /**
@@ -100,7 +98,7 @@ class CredentialsModel extends Connection\Connection
     {
         if (is_array($args)) {
             foreach ($args as $key => $item) {
-                    /* Eusk: */
+                /* Eusk: */
                 if ((strpos($item, 'eus') !== false &&
                         (strtolower($key) === strtolower($user['edg020_tipo_eus']) || strpos(strtolower($key), lcfirst($user['edg020_codmodelo'])) !== false) &&
                         $mod = 'eus') ||
@@ -149,8 +147,8 @@ class CredentialsModel extends Connection\Connection
         if ($user['edg020_lengua_tipo'] === 'fam') {
             return $user['edg020_lengua'];
         }
-        if ($user['edg020_lengua_tipo'] === 'ins' && isset($user['edg020_lengua_' . $default])) {
-            return $user['edg020_lengua_' . $default];
+        if ($user['edg020_lengua_tipo'] === 'ins' && isset($user['edg020_lengua_'.$default])) {
+            return $user['edg020_lengua_'.$default];
         }
         if (in_array($default, $asIs)) {
             return $default;

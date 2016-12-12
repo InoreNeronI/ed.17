@@ -24,6 +24,7 @@ class Kernel implements HttpKernel\HttpKernelInterface
 
     // Injecting in our Url Matcher and Controller Resolver. Again this injected from my DI container. If you aren't using a DI container,
     // just pass the interface objects as arguments when you instantiate your App Kernel from inside your front controller.
+
     /**
      * Kernel constructor.
      *
@@ -39,6 +40,7 @@ class Kernel implements HttpKernel\HttpKernelInterface
     }
 
     // Our handle method takes an HTTP Request object, the Symfony Http Kernel so we have access to the master request, and a catch flag (we'll see why below)
+
     /**
      * Handles a request.
      *

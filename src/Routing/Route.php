@@ -74,6 +74,7 @@ class Route
     // Next we instantiate a Route object with our route. Our route is /docs/{ID} Our associative array contains the controller that we
     // want to resolve with this route, DocumentController and the method on that controller that this particular route invokes viewDocumentAction.
     // separated by the :: token. We can also pass in arguments that contain a default value if needed, and they will be available in our method's parameters.
+
     /**
      * Adds a route to collection.
      *

@@ -1,9 +1,9 @@
 <?php
 
 /** @url https://gist.github.com/azihassan/3093972 */
-define('USAGE', 'Usage: php ' . $argv[0] . ' --package package_name --path ' . __DIR__ . ' [--dependencies] [--overwrite] [--nocache] [--withdepends] [--help]');
+define('USAGE', 'Usage: php '.$argv[0].' --package package_name --path '.__DIR__.' [--dependencies] [--overwrite] [--nocache] [--withdepends] [--help]');
 
-if ($argc == 1) {
+if ($argc === 1) {
     \packager::getUsage(USAGE);
 }
 \packager::getTazPkg($argv, 'cooking');
@@ -27,7 +27,7 @@ class packager
      */
     public static function getUsage($usage)
     {
-        echo PHP_EOL . "\t" . $usage . PHP_EOL;
+        echo PHP_EOL."\t".$usage.PHP_EOL;
         exit;
     }
 
@@ -69,7 +69,7 @@ class packager
             if ($help === true) {
                 static::getUsage(USAGE);
             }
-            echo PHP_EOL . 'Extracting the links...' . PHP_EOL;
+            echo PHP_EOL.'Extracting the links...'.PHP_EOL;
             $dependencies = $dependencies || $with_depends;
             $src = static::getTazPkgsSource('http://pkgs.slitaz.org/search.sh', $package_name, $dependencies, $no_cache);
             $links = static::extractTazPkgsLinks($src, $dependencies ? null : $package_name);
@@ -81,7 +81,7 @@ class packager
                 static::getHttpResource($links, $target_dir, $overwrite);
             }
         } catch (\Exception $e) {
-            echo $e->getMessage() . PHP_EOL;
+            echo $e->getMessage().PHP_EOL;
         }
     }
 
@@ -97,7 +97,7 @@ class packager
         }
 
         if (($key = array_search('--package', static::$arguments)) !== false) {
-            /** @url http://stackoverflow.com/a/3766319 */
+            /* @url http://stackoverflow.com/a/3766319 */
             list($package_name) = explode(' ', trim(static::$arguments[$key + 1]));
         } else {
             throw new \Exception(sprintf('%s%sERROR: Argument `--package` is mandatory. Type --help for usage.', PHP_EOL, "\t"));
@@ -133,10 +133,10 @@ class packager
     private static function getTazPkgsSource($url, $package_name, $dependencies = false, $no_cache = false)
     {
         $ch = curl_init();
-        $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $package_name . ($dependencies ? '_dep' : '') . '.tmp';
-        $query = $url . '?';
-        $query .= $dependencies ? 'depends=' . $package_name : 'package=' . $package_name;
-        $query .= '&version=' . static::$versions[static::$version];
+        $tmp = sys_get_temp_dir().DIRECTORY_SEPARATOR.$package_name.($dependencies ? '_dep' : '').'.tmp';
+        $query = $url.'?';
+        $query .= $dependencies ? 'depends='.$package_name : 'package='.$package_name;
+        $query .= '&version='.static::$versions[static::$version];
 
         if (is_readable($tmp) && $no_cache === false) {
             curl_close($ch);
@@ -184,7 +184,7 @@ class packager
             if (!empty($package_name) && strpos($link->nodeValue, '?receipt=') === 0 && str_replace('?receipt=', '', $link->nodeValue) === $package_name) {
                 $standalone = $key;
             }
-            if (pathinfo($link->nodeValue, PATHINFO_EXTENSION) == 'tazpkg') {
+            if (pathinfo($link->nodeValue, PATHINFO_EXTENSION) === 'tazpkg') {
                 if ($standalone !== false) {
                     return [$extract[--$standalone]->nodeValue];
                 }
@@ -255,7 +255,7 @@ class packager
     {
         $ch = curl_init();
         $filename = basename($link);
-        $path = $target_dir . DIRECTORY_SEPARATOR . $filename;
+        $path = $target_dir.DIRECTORY_SEPARATOR.$filename;
 
         if (file_exists($path) && !$overwrite) {
             throw new \Exception(sprintf('NOTICE: Package `%s` already exists.', $filename));
@@ -272,7 +272,7 @@ class packager
         /** @var float $microtime */
         $microtime = microtime(true) * 1000;
         curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, function (
-            /** @url http://stackoverflow.com/a/13668885 */
+            /* @url http://stackoverflow.com/a/13668885 */
             $clientp,       // this is an unchanged pointer as set with CURLOPT_PROGRESSDATA
             $dlnowdltotal,  // the total bytes to be downloaded (or 0 if not downloading)
             $dlnowdlnow,    // the current download bytecount (or 0 if not downloading)
@@ -280,20 +280,20 @@ class packager
             $dlnowulnow)    // the current upload bytecount (or 0 if not uploading)
         use ($filename, $microtime) {
             static $calls = 0;
-            if (++$calls % 4 != 0) {
+            if (++$calls % 4 !== 0) {
                 /* The rest of the code will be executed only 1/4 times
                  * This fixes a bug where the progress was displayed three times
                  * when it goes near 100% */
                 return;
             }
-            if ($dlnowdltotal != 0) {
+            if ($dlnowdltotal !== 0) {
                 $percentage = round($dlnowdlnow / $dlnowdltotal, 2) * 100;
                 $human_size = static::bytesToSize($dlnowdltotal);
                 $milisecs_offset = microtime(true) * 1000 - $microtime;
                 $speed = $dlnowdlnow / $milisecs_offset * 1000;
-                $human_speed = static::bytesToSize($speed) . '/s';
+                $human_speed = static::bytesToSize($speed).'/s';
 
-                echo sprintf('%sDownloading...%s`%s`%s%s%sof %s%s[ %s ]%s', "\t", "\t", $filename, "\t", $percentage . '%', "\t", $human_size, "\t", $human_speed, "\t");
+                echo sprintf('%sDownloading...%s`%s`%s%s%sof %s%s[ %s ]%s', "\t", "\t", $filename, "\t", $percentage.'%', "\t", $human_size, "\t", $human_speed, "\t");
                 if ($dlnowdlnow <= $dlnowdltotal) {
                     echo "\r";
                 }
@@ -328,7 +328,7 @@ class packager
 
         return @round(
                 $bytes / pow(1024, ($i = floor(log($bytes, 1024)))), $precision
-            ) . ' ' . $unit[$i];
+            ).' '.$unit[$i];
     }
 
     /**
@@ -351,11 +351,11 @@ class packager
      */
     private static function beautifyAndPromptCandidates(array $links, $message = 'Type a number to continue:')
     {
-        echo PHP_EOL . "\t" . $message . PHP_EOL;
+        echo PHP_EOL."\t".$message.PHP_EOL;
         foreach ($links as $key => $link) {
-            echo PHP_EOL . "\t\t[" . ($key + 1) . "]\t" . static::beautifyPkgName($link);
+            echo PHP_EOL."\t\t[".($key + 1)."]\t".static::beautifyPkgName($link);
         }
-        echo PHP_EOL . PHP_EOL . "\t" . 'Number: ';
+        echo PHP_EOL.PHP_EOL."\t".'Number: ';
 
         $handle = fopen('php://stdin', 'r');
         $line = fgets($handle);
