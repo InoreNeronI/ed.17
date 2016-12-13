@@ -10,6 +10,8 @@
     {% set column = 0 %}
     {% set columsArray = {} %}
     {% for key, text in texts %}
+        {% set key = key|trim %}
+        {% set text = text|trim %}
         {% set isItemText = key in numbers|keys %}
         {% set isPlainText = pageOptions['text'] is defined ? key in pageOptions['text'] : null %}
         {% set isTitleText = key in pageTitles %}
@@ -50,7 +52,7 @@
             {% else %}
                 {% set hadImage = false %}
             {% endif %}
-            {% if text is empty %}
+            {% if text is null and image is not null %}
                 {% set text %}
                     {% include 'partial/fields/image.html.twig' with { 'cssClassContainer': 'fl pr1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
                 {% endset %}
@@ -120,9 +122,23 @@
                     {% set value = '' %}
                     {% set inpuClass = 'f6 f5-l black-80 bg-white pl1 br2-ns br--left-ns w-20' %}
                 {% endif %}
-                {{ value }}
-                {% include 'partial/fields/input.html.twig' with { 'inputClass': inpuClass|default, 'type': type|default, 'value': value|default, 'name': name|default, 'id': id|default } %}
-
+                {% if text is not null %}
+                    {% set text %}
+                        {{ value }}
+                        {% include 'partial/fields/input.html.twig' with { 'inputClass': inpuClass, 'type': type, 'value': value, 'name': name, 'id': id } %}
+                        {{ text }}
+                    {% endset %}
+                    {% if isSimpleOption %}
+                        {% include 'partial/fields/label.html.twig' with { 'labelClass': 'dib pointer pl2 mr1 pa0 f6 f5-ns ' ~ color } %}
+                    {% elseif isLibreOption %}
+                        {% include 'partial/fields/label.html.twig' %}
+                    {% elseif isMultipleOption %}
+                        {% include 'partial/fields/label.html.twig' with { 'labelClass': 'dib pointer pl2 mr1 pa0 f6 f5-ns ' ~ color } %}
+                    {% endif %}
+                {% else %}
+                    {{ value }}
+                    {% include 'partial/fields/input.html.twig' with { 'inputClass': inpuClass, 'type': type, 'value': value, 'name': name, 'id': id } %}
+                {% endif %}
             {% elseif isItemText %}
                 {% include 'partial/fields/label.html.twig' with { 'labelClass': 'b pa0 f6 f5-ns ' ~ color } %}
                 {% if tableColNum is null %}

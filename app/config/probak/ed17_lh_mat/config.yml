@@ -44,25 +44,25 @@ pageImages:
     - p08b_izq_t07_t07_100_img.png
   p09:
     - p09a_cen_t01_t01_50_img.png
-    - p09b_cen_t02_t02_25_img_A.png
-    - p09b_cen_t02_t02_25_img_B.png
-    - p09b_cen_t02_t02_25_img_C.png
-    - p09b_dch_t02_t02_25_img_D.png    
+    - p09b_cen_t03_t03_50_img.png
+    - p09b_cen_t04_t04_50_img.png
+    - p09b_cen_t05_t05_50_img.png
+    - p09b_cen_t06_t06_50_img.png  
   p10:
     - p10a_cen_t01_t01_50_img.png
     - p10b_cen_t01_t01_30_img.png
-    - p10b_cen_t02_t02_25_img_A.png
-    - p10b_cen_t02_t02_25_img_B.png
-    - p10b_cen_t02_t02_25_img_C.png
-    - p10b_cen_t02_t02_25_img_D.png
+    - p10b_cen_t03_t03_60_img.png
+    - p10b_cen_t04_t04_60_img.png
+    - p10b_cen_t05_t05_60_img.png
+    - p10b_cen_t06_t06_60_img.png
   p11:
     - p11a_cen_t02_t02_100_img.png
   p12:
-    - p12a_cen_t02_t02_90_img.png
+    - p12a_cen_t02_t02_100_img.png
   p13:
     - p13a_cen_t02_t02_100_img.png
-    - p13b_cen_t01_t01_80_cas.png
-    - p13b_cen_t01_t01_80_eus.png
+    - p13b_cen_t01_t01_70_cas.png
+    - p13b_cen_t01_t01_70_eus.png
   p14:
     - p14a_cen_t02_t02_100_img.png
     - p14b_cen_t01_t01_90_cas.png
@@ -74,16 +74,15 @@ pageImages:
     - p16b_cen_t01_t01_90_cas.png
     - p16b_cen_t01_t01_90_eus.png
   p17:
-    - p17a_cen_t02_t02_60_img.png
+    - p17a_cen_t02_t02_100_img.png
     - p17b_cen_t02_t02_80_cas.png
     - p17b_cen_t02_t02_80_eus.png
   p18:
-    - p18a_cen_t02_t02_60_img.png
+    - p18a_cen_t02_t02_100_img.png
     - p18b_cen_t02_t02_70_cas.png
     - p18b_cen_t02_t02_70_eus.png
   p19:
     - p19b_cen_t01_t01_60_img.jpg
-    
 pageTextReplaces:
   p00:
     p00b_t02:
@@ -115,6 +114,7 @@ pageTitles:
   - p16a_t01
   - p17a_t01
   - p18a_t01
+  - p19b_t01
 
 pageAreaWidths:
   p00:
@@ -129,34 +129,24 @@ pageAreaWidths:
     a: 34
   p09:
     a: 30
-    b: 70
   p10:
     a: 30
-    b: 70
   p11:
     a: 40
-    b: 60
   p12:
     a: 40
-    b: 60
   p13:
     a: 30
-    b: 70
   p14:
     a: 30
-    b: 70
   p15:
     a: 40
-    b: 60
   p16:
     a: 30
-    b: 70
   p17:
     a: 40
-    b: 60
   p18:
     a: 40
-    b: 60
   p19:
     b: 100
 

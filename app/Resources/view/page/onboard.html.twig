@@ -9,15 +9,13 @@
         {% set isLastPage = page|number_format == totalPages|number_format %}
         {% if pageAreaSkip is not same as('a') %}
             <div class="fl pa1-ns pa2-m pa3-l side-left bg-light-gray {{ pageWidth['a']|default }}">
-                {% if isFirstPage %}
-                    {% set buttonText = startButton ~ ' <i class="fa fa-play"></i>' %}
-                {% elseif isLastPage %}
+                {% if isLastPage %}
                     {% set buttonText = '<i class="fa fa-stop"></i> ' ~ finishButton %}
-                {% else %}{#{% elseif page|number_format > 1 %}#}
+                {% elseif not isFirstPage %}
                     {% set buttonText = '<i class="fa fa-step-backward"></i> ' ~ leftButton %}
                 {% endif %}
                 {% set formAction = isFirstPage ? '' : '/' ~ (page|number_format - 1) %}
-                {% include 'partial/page-side.html.twig' with { 'numbers': 'a' in numbers|keys ? numbers['a'] : null, 'texts': 'a' in texts|keys ? texts['a'] : null, 'images': 'a' in pageImages|keys ? pageImages['a'] : null, 'buttonText': buttonText, 'formAction': formAction } %}
+                {% include 'partial/page-side.html.twig' with { 'numbers': 'a' in numbers|keys ? numbers['a'] : null, 'texts': 'a' in texts|keys ? texts['a'] : null, 'images': 'a' in pageImages|keys ? pageImages['a'] : null, 'buttonText': buttonText|default, 'formAction': formAction } %}
             </div>
         {% endif %}
         {% if pageAreaSkip is null %}

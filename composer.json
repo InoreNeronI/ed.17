@@ -27,7 +27,6 @@
   },
   "scripts": {
     "codefix": ["php bin/sf-upgrade.phar fix src || true", "php bin/php-cs.phar fix --config=.php_cs || true"],
-    "deploy": "php bin/deployer.phar deploy",
     "deptrac": "php bin/deptrac.phar",
     "optimize": "@composer dump-autoload --optimize",
     "phpunit": "php bin/phpunit.phar",
@@ -37,7 +36,8 @@
     "pre-update-cmd": "printf \"\\n\\tUpdating dependencies\\n\\n\"",
     "production-install": "@composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader",
     "production-update": "@composer update --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader",
-    "security-check": "php bin/checker.phar security:check composer.lock"
+    "security-check": "php bin/checker.phar security:check composer.lock",
+    "test": "php bin/phpunit.phar"
   },
   "scripts-dev": {
     "build": [
@@ -65,7 +65,6 @@
     "bin-install": [
       "[ -d \"bin\" ] || mkdir bin",
       "[ -e \"bin/checker.phar\" ] || curl -Lo bin/checker.phar http://get.sensiolabs.org/security-checker.phar",
-      "[ -e \"bin/deployer.phar\" ] || curl -Lo bin/deployer.phar https://deployer.org/deployer.phar",
       "[ -e \"bin/deptrac.phar\" ] || curl -Lo bin/deptrac.phar http://get.sensiolabs.de/deptrac.phar",
       "[ -e \"bin/php-cs.phar\" ] || curl -Lo bin/php-cs.phar https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.0.0/php-cs-fixer.phar",
       "[ -e \"bin/phpunit.phar\" ] || curl -Lo bin/phpunit.phar https://phar.phpunit.de/phpunit-old.phar",
@@ -75,7 +74,6 @@
     ],
     "bin-update": [
       "@bin-install",
-      "php bin/deployer.phar self-update || true",
       "php bin/deptrac.phar selfupdate || true",
       "php bin/php-cs.phar selfupdate || true",
       "php bin/phpunit.phar --self-update || true",
