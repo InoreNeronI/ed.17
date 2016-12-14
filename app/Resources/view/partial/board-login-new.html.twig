@@ -1,0 +1,40 @@
+<div class="dtc mt3 fl w-100 tc">
+    <label class="db f4 fw3 lh-copy dib v-mid mv0 w-100 w-50-m w-50-ns" for="fcodalued">{{ code }}</label>
+    <input class="b pv2 input-reset ba b--black navy v-mid w-75 w-30-m w-30-ns tc" type="text" name="fcodalued" id="fcodalued" required/>
+</div>
+<div class="dtc mt3 fr w-100">
+    <label class="db f4 fw3 lh-copy dib v-mid mv0 w-100 w-50-m w-50-ns tc tr-m tr-ns" for="ffnacidia">{{ bdate }}</label>
+    <div class="dib v-mid w-100 w-40-m w-40-ns tc tr-m">
+        <div class="db f5 fw4 mv0 w-100 tc pb1">
+            <label for="ffnacidia" class="dib v-mid w-100 w-40-m w-40-ns">{{ bday }}</label>
+            <select class="f6 no-underline dib v-mid mb0 b pa1 input-reset ba b--black navy w-75 w-50-m w-50-ns tc" name="ffnacidia" id="ffnacidia" required>
+                <option class="black" value="" selected="selected"></option>
+                {% for i in 1..31 %}
+                    <option class="black" value="{{ (1 == loop.index|length ? '0' : '') ~ loop.index }}">{{ loop.index }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="db f5 fw4 mv0 w-100 tc">
+            <label for="ffnacimes" class="dib v-mid w-100 w-40-m w-40-ns">{{ bmonth }}</label>
+            <select class="f6 no-underline dib v-mid mb0 b pa1 input-reset ba b--black navy w-75 w-50-m w-50-ns tc" name="ffnacimes" id="ffnacimes" required>
+                <option class="black" value="" selected="selected"></option>
+                <option class="black" value="01">{{ jan }}</option>
+                <option class="black" value="02">{{ feb }}</option>
+                <option class="black" value="03">{{ mar }}</option>
+                <option class="black" value="04">{{ apr }}</option>
+                <option class="black" value="05">{{ may }}</option>
+                <option class="black" value="06">{{ jun }}</option>
+                <option class="black" value="07">{{ jul }}</option>
+                <option class="black" value="08">{{ aug }}</option>
+                <option class="black" value="09">{{ sep }}</option>
+                <option class="black" value="10">{{ oct }}</option>
+                <option class="black" value="11">{{ nov }}</option>
+                <option class="black" value="12">{{ dec }}</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="dtc mt3 fl w-100 tc">
+    <label class="db f4 fw3 lh-copy dib v-mid mv0 w-100 w-50-m w-60-ns" for="code">{{ codpro }}</label>
+    <input class="b pv2 input-reset ba b--black navy v-mid w-75 w-30-m w-20-ns tc" type="text" name="code" id="code" required/>
+</div>

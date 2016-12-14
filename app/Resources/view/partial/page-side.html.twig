@@ -76,12 +76,12 @@
             {% endif %}
 
             {% if parentRowNum is not defined or parentRowNum is null %}
-                <div class="mt2 table"><div class="row header"><div class="{{ class }} cell">
+                <div class="{{ class }} mt2 pv1 table"><div class="row header"><div class="cell">
             {% elseif parentRowNum is defined and tableRowNum > parentRowNum %}
                 {% set column = 1 %}
-                </div><div class="row"><div class="{{ class }} cell">
+                </div><div class="row"><div class="cell">
             {% elseif tableRowNum is same as('0') or tableRowNum is same as(parentRowNum) %}
-                <div class="{{ class }} cell">
+                <div class="cell">
             {% endif %}
 
             {% if isOption %}
