@@ -17,10 +17,12 @@ p00:
     - p00b_t06
     - p00b_t07
     - p00b_t08
-  egiazkoa:  
-    - p00b_t13
-    - p00b_t14
-    - p00b_t15
+    - p00b_t15_f1
+    - p00b_t16_f1
+    - p00b_t18_f2
+    - p00b_t19_f2
+    - p00b_t21_f3
+    - p00b_t22_f3
 p01:
   text:
     - p01a_t00

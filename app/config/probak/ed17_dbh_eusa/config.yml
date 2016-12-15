@@ -1,4 +1,10 @@
-
+pageAudios:
+  p01:
+    - p01a_cen_t08_t08_x3_eus.ogg
+  p02:  
+    - p02a_cen_t03_t03_x3_eus.ogg
+  p03:  
+    - p03a_cen_t03_t03_x3_eus.ogg
 pageImages:
   p01:
     - p01a_cen_t07_t07_90_img.png
@@ -50,7 +56,6 @@ pageTitles:
   - p09a_t02
   - p10a_t01
   - p10a_t02
-  - p10a_t04
   - p11a_t01
   - p11a_t02
   - p12a_t01

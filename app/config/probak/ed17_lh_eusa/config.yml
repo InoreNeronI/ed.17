@@ -4,20 +4,14 @@ pageImages:
     - p00a_izq_t04_t05_30_img.png
   p01:
     - p01a_cen_t03_t03_40_img.png
-    - p01a_cen_t06_t06_20_img.png
-    - p01a2_cen_t03_t03_40_img.png
-    - p01a2_cen_t06_t06_20_img.png
   p02:
     - p02a_cen_t02_t02_30_img.png
-    - p02a_cen_t06_t06_20_img.png
-    - p02a2_cen_t02_t02_30_img.png
-    - p02a2_cen_t06_t06_20_img.png
   p03:
-    - p03a_cen_t03_t03_30_img_A.png
-    - p03a_cen_t03_t03_30_img_B.png
+    - p03a_izq_t03_t03_30_img.png
+    - p03a_dch_t03_t03_30_img.png
   p04:
-    - p04a_cen_t03_t03_30_img_A.png
-    - p04a_cen_t03_t03_30_img_B.png
+    - p04a_izq_t03_t03_30_img.png
+    - p04a_dch_t03_t03_30_img.png
     - p04b_cen_t01_t01_40_img_A.png
     - p04b_cen_t02_t02_40_img_B.png
     - p04b_cen_t03_t03_40_img_A.png
@@ -32,21 +26,21 @@ pageImages:
     - p07a_dch_t03_t03_25_img.png
     - p07a_izq_t10_t18_25_img.png
   p08:
-    - p08a_cen_t02_t02_70_img_A.png
-    - p08a_cen_t02_t02_70_img_B.png
-    - p08a_cen_t02_t02_70_img_C.png
-    - p08a_cen_t02_t02_70_img_D.png
+    - p08a_cen_t02_t02_100_img.png
+    - p08a_cen_t03_t03_80_img.png
+    - p08a_cen_t04_t04_100_img.png
+    - p08a_cen_t05_t05_100_img.png
   p09:
-    - p09a_cen_t02_t02_70_img_A.png
-    - p09a_cen_t02_t02_70_img_B.png
-    - p09a_cen_t02_t02_70_img_C.png
-    - p09a_cen_t02_t02_70_img_D.png
+    - p09a_cen_t02_t02_100_img.png
+    - p09a_cen_t03_t03_80_img.png
+    - p09a_cen_t04_t04_100_img.png
+    - p09a_cen_t05_t05_100_img.png
   p10:
-    - p10a_cen_t03_t03_70_img_A.png
-    - p10a_cen_t03_t03_70_img_B.png
+    - p10a_cen_t03_t03_100_img.png
+    - p10a_cen_t04_t04_100_img.png
   p11:
-    - p11a_cen_t03_t03_70_img_A.png
-    - p11a_cen_t03_t03_70_img_B.png
+    - p11a_cen_t03_t03_100_img.png
+    - p11a_cen_t04_t04_100_img.png
   p12:
     - p12b_cen_t01_t01_60_img.jpg
  
@@ -63,11 +57,17 @@ pageTitles:
   - p03a_t01
   - p04a_t01
   - p05a_t00
+  - p05a_t02
+  - p06a_t02
+  - p07a_t02
+  - p08a_t00
   - p08a_t01
-  - p09a_t01
+  - p08a_t02
+  - p09a_t02
   - p10a_t01
-  - p11a_t01
-  - p12a_t01
+  - p10a_t03
+  - p11a_t03
+  - p12b_t01
 
 pageAreaWidths:
   p12:

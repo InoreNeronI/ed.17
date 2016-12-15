@@ -19,10 +19,12 @@ p00:
     - p00b_t06
     - p00b_t07
     - p00b_t08
-  egiazkoa: 
-    - p00b_t13
-    - p00b_t14
-    - p00b_t15
+    - p00b_t15_f1
+    - p00b_t16_f1
+    - p00b_t18_f2
+    - p00b_t19_f2
+    - p00b_t21_f3
+    - p00b_t22_f3
 p01:
   text:
     - p01a_t02
@@ -132,7 +134,6 @@ p04:
     - p04b_t15
 p05:
   text:
-    - p05a_t02
     - p05a_t03
     - p05a_t04
     - p05a_t05
@@ -149,7 +150,6 @@ p05:
     - p05b_t10
 p06:
   text:
-    - p06a_t02
     - p06a_t03
     - p06a_t04
     - p06a_t05
@@ -166,7 +166,6 @@ p06:
     - p06b_t10
 p07:
   text:
-    - p07a_t02
     - p07a_t03
     - p07a_t04
     - p07a_t05
@@ -206,12 +205,11 @@ p09:
     - p09b_t09
     - p09b_t10
 p10:
-  multiple:
+  simple:
     - p10b_t02
     - p10b_t03
     - p10b_t04
     - p10b_t05
-  simple:
     - p10b_t07
     - p10b_t08
     - p10b_t09
