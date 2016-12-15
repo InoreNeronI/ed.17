@@ -3,7 +3,7 @@
 {% block title title ~ ' :: ' ~ course|title ~ ' :: ' ~ mainTitle|title %}
 
 {% block content_form %}
-    <article class="center mw5 mw6-ns br4 hidden ba b--black-10 mv4 dt w-100 w-75-m w-75-ns">
+    <article class="center mw6 mw7-m mw7-ns br4 hidden ba b--black-10 fr mv4 dt w-100 w-75-m w-75-ns">
         <div class="pa2 tc">
             {% for key, value in actions %}
                 <button class="link br3 ph3 pv2 mb2 dib{{ (key is same as(table)) ? ' b bg-light-blue dim pointer black' }} f6 f5-ns lh-copy measure mh1 mv2 pv2 w-30-ns w-40-m" name="{{ key }}"{{ (key is not same as(table)) ? ' disabled="disabled"' }}>
