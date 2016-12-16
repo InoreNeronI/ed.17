@@ -30,6 +30,9 @@
                 {% else %}
                     {% set buttonText = rightButton ~ ' <i class="fa fa-step-forward"></i>' %}
                 {% endif %}
+                {% if pageAreaSkip is not null and not isFirstPage %}
+                    {% set prependButtonText = '<i class="fa fa-step-backward"></i> ' ~ leftButton %}
+                {% endif %}
                 {% set formAction = isLastPage ? '/' : '/' ~ (page|number_format + 1) %}
                 {% include 'partial/page-side.html.twig' with { 'numbers': 'b' in numbers|keys ? numbers['b'] : null, 'texts': 'b' in texts|keys ? texts['b'] : null, 'images': 'b' in pageImages|keys ? pageImages['b'] : null, 'buttonText': buttonText, 'formAction': formAction } %}
             </div>

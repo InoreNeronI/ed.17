@@ -231,7 +231,16 @@
 
     {% if isTable %}</div></div>{% endif %}
 
-    {% if buttonText is not empty %}
+    {% if buttonText is defined and prependButtonText is defined %}
+        <div class="cl pt3 tc">
+            <div class="fl w-100 w-50-ns tc">
+                <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv2 ph2 white">{{ prependButtonText }}</button>
+            </div>
+            <div class="fl w-100 w-50-ns tc">
+                <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv2 ph2 white">{{ buttonText }}</button>
+            </div>
+        </div>
+    {% elseif buttonText is defined %}
         <div class="cl pt3 tc">
             <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv2 ph2 white">{{ buttonText }}</button>
         </div>
