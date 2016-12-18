@@ -131,6 +131,7 @@ final class PagesModel extends CredentialsModel
             'pageWidth' => $pageWidth,
             'pageAreaSkip' => $pageAreaSkip,
             'totalPages' => $config['totalPages'],
+            'sizeLevels' => \def::sizeLevels(),
         ]);
     }
 }

@@ -11,6 +11,7 @@ final class def extends defDB
     private static $paths;
     private static $periods;
     private static $routing;
+    private static $sizeLevels;
     private static $styling;
 
     private static function loadConfig()
@@ -22,6 +23,7 @@ final class def extends defDB
             static::$paths = $config['paths'];
             static::$periods = $config['periods'];
             static::$routing = $config['routes'];
+            static::$sizeLevels = $config['sizeLevels'];
             static::$styling = $config['styles'];
             static::$configLoaded = true;
         }
@@ -60,6 +62,13 @@ final class def extends defDB
         static::loadConfig();
 
         return static::$routing;
+    }
+
+    public static function sizeLevels()
+    {
+        static::loadConfig();
+
+        return static::$sizeLevels;
     }
 
     public static function styling()

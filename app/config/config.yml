@@ -28,6 +28,12 @@ routes:
   - { path: /boarding, methods: [POST] }
   - { path: '/{page}', controller: 'App\Routing\Controller\ContentRenderController::pageAction', name: onboard, methods: [POST], requirements: { page: \d+ } }
 
+# Size levels by percentage
+sizeLevels:
+  s: 20
+  m: 40
+  l: 75
+
 # CSS styles' map
 styles:
   # @url https://github.com/tachyons-css/tachyons/blob/v4.5.5/css/tachyons.css#L1570-L1575

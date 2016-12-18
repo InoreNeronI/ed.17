@@ -1,0 +1,62 @@
+
+{% set fontClass = 'san-serif f5 f4-l black-80 bg-white' %}
+{% set id = parent ~ '-' ~ key %}
+{% set name = parent %}
+
+{% if isSimpleOption and tableRowNum is null %}
+    {% set inputClass = fontClass ~ ' pointer bn mt1' %}
+    {% set name = parent %}
+    {% set type = 'radio' %}
+    {% set value = (textNum|number_format - parent|split('t')[1]|number_format) %}
+
+{% elseif isMultipleOption and tableRowNum is null %}
+    {% set inputClass = fontClass ~ ' pointer bn mt1' %}
+    {% set name = parent ~ '[' ~ key ~ ']' %}
+    {% set type = 'checkbox' %}
+    {% set value = (textNum|number_format - parent|split('t')[1]|number_format) %}
+
+{% elseif (isLibreOptionLarge or isLibreOptionSmall or isLibreOption) and tableRowNum is null %}
+    {% set inputClass = fontClass ~ ' pl1 br2-ns br--left-ns' %}
+    {% set name = parent ~ '[' ~ key ~ ']' %}
+    {% set type = 'text' %}
+    {% set value = '' %}
+
+{% elseif isSimpleOption %}
+    {% set inputClass = fontClass ~ ' pointer bn mt1' %}
+    {% set name = tableColNum is null ? name : name ~ '[' ~ columsArray['c' ~  column] ~ ']' ~ '[' ~ column ~ ']' %}
+    {% set type = 'radio' %}
+    {% set value = tableColNum is null ? (textNum|number_format - parent|split('t')[1]|number_format) : tableColNum %}
+
+{% elseif isMultipleOption %}
+    {% set inputClass = fontClass ~ ' pointer bn mt1' %}
+    {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ columsArray['c' ~  column] ~ ']' ~ '[' ~ key ~ ']' %}
+    {% set type = 'checkbox' %}
+    {% set value = tableColNum is null ? (textNum|number_format - parent|split('t')[1]|number_format) : tableColNum %}
+
+{% elseif isLibreOptionLarge or isLibreOptionSmall or isLibreOption %}
+    {% set inputClass = fontClass ~ ' pl1 br2-ns br--left-ns' %}
+    {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ columsArray['c' ~  column] ~ ']' ~ '[' ~ key ~ ']' %}
+    {% set type = 'text' %}
+    {% set value = '' %}
+{% endif %}
+
+{% set text %}
+    {{ value }}
+    {% if image is null and text is empty %}
+        {% include 'partial/fields/input.html.twig' %}
+    {% elseif text is not empty %}
+        {% include 'partial/fields/input.html.twig' %}
+        {{ text }}
+    {% elseif image is not null and image['alignment'] is same as('cen') and image['since'] == textNum and image['till'] == textNum %}
+        {% include 'partial/fields/input.html.twig' %}
+        {% include 'partial/fields/image.html.twig' with { 'cssClassContent': image['width'], 'src': image['path'] } %}
+    {% endif %}
+{% endset %}
+
+{% if isSimpleOption %}
+    {% include 'partial/fields/label.html.twig' with { 'labelClass': 'dib pointer pl2 mr1 pa0 f5 f4-l ' ~ color } %}
+{% elseif isLibreOptionLarge or isLibreOptionSmall or isLibreOption %}
+    {% include 'partial/fields/label.html.twig' %}
+{% elseif isMultipleOption %}
+    {% include 'partial/fields/label.html.twig' with { 'labelClass': 'dib pointer pl2 mr1 pa0 f5 f4-l ' ~ color } %}
+{% endif %}

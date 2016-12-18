@@ -6,21 +6,26 @@
     <input name="referrer" type="hidden" value="{{ page }}" />
 
     {% set hadImage = false %}
+    {% set isOption = false %}
     {% set isTable = false %}
-    {% set column = 0 %}
-    {% set columsArray = {} %}
+    {% set image = null %}
     {% for key, text in texts %}
+        {% set column = 0 %}
+        {% set columsArray = {} %}
         {% set key = key|trim %}
         {% set text = text|trim %}
+        {% if key in images|keys %}
+            {% set image = images[key] %}
+        {% endif %}
         {% set isItemText = key in numbers|keys %}
-        {% set isPlainText = pageOptions['text'] is defined ? key in pageOptions['text'] : null %}
+        {% set isPlainText = pageOptions['text'] is defined ? key in pageOptions['text'] : false %}
         {% set isTitleText = key in pageTitles %}
-        {% set isSimpleOption = pageOptions['simple'] is defined ? key in pageOptions['simple'] : null %}
-        {% set isLibreOption = pageOptions['libre'] is defined ? key in pageOptions['libre'] : null %}
+        {% set isSimpleOption = pageOptions['simple'] is defined ? key in pageOptions['simple'] : false %}
+        {% set isLibreOption = pageOptions['libre'] is defined ? key in pageOptions['libre'] : false %}
         {% set isLibreOption = pageOptions['libre-m'] is defined ? key in pageOptions['libre-m'] : isLibreOption %}
-        {% set isLibreOptionLarge = pageOptions['libre-l'] is defined ? key in pageOptions['libre-l'] : null %}
-        {% set isLibreOptionSmall = pageOptions['libre-s'] is defined ? key in pageOptions['libre-s'] : null %}
-        {% set isMultipleOption = pageOptions['multiple'] is defined ? key in pageOptions['multiple'] : null %}
+        {% set isLibreOptionLarge = pageOptions['libre-l'] is defined ? key in pageOptions['libre-l'] : false %}
+        {% set isLibreOptionSmall = pageOptions['libre-s'] is defined ? key in pageOptions['libre-s'] : false %}
+        {% set isMultipleOption = pageOptions['multiple'] is defined ? key in pageOptions['multiple'] : false %}
         {% set isOption = isSimpleOption or isLibreOption or isLibreOptionLarge or isLibreOptionSmall or isMultipleOption %}
         {% set class = isOption ? 'option' : isPlainText ? 'text' : 'description' %}
         {% set textNum = key|split('t')[1]|number_format %}
@@ -34,31 +39,25 @@
             {% endset %}
             {% set text = text|format(wildcard) %}
         {% endif %}
-        {% if key in images|keys %}
-            {% set image = images[key] %}
-        {% endif %}
 
-        {% if image is defined and image is not null %}
-            {% if textNum <= image['till'] or isOption and image['since'] == image['till'] %}
-                {% set class = image['alignment'] is not same as('cen') ? class ~ ' ' ~ image['offset'] : class %}
+        {% if hadImage %}
+            {% set class = class ~ ' cl' %}
+            {% set hadImage = false %}
+        {% endif %}
+        {% if not isOption and image is not null %}
+            {% if textNum <= image['till']|number_format and (image['alignment'] is same as('dch') or image['alignment'] is same as('izq')) %}
+                {% set class = class ~ ' ' ~ image['offset'] %}
                 {% set class = image['alignment'] is same as('dch') ? class ~ ' fl' : class %}
                 {% set class = image['alignment'] is same as('izq') ? class ~ ' dib' : class %}
-            {% elseif image['alignment'] is same as('dch') or image['alignment'] is same as('izq') and textNum > image['till'] or textNum == 1 %}
-                {% set class = class ~ ' cl' %}
             {% endif %}
-            {% if textNum > image['till'] %}
+            {% if textNum == image['till']|number_format %}
                 {% set hadImage = true %}
-                {% set image = null %}
-            {% else %}
-                {% set hadImage = false %}
             {% endif %}
             {% if text is null and image is not null %}
                 {% set text %}
                     {% include 'partial/fields/image.html.twig' with { 'cssClassContainer': 'fl pr1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
                 {% endset %}
-                {% set image = null %}
-            {% endif %}
-            {% if image is not null and image['alignment'] is same as('izq') and image['since'] == textNum %}
+            {% elseif image['alignment'] is same as('izq') and image['since']|number_format == textNum %}
                 {% include 'partial/fields/image.html.twig' with { 'cssClassContainer': 'fl pr1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
             {% endif %}
         {% endif %}
@@ -68,98 +67,41 @@
         {% endif %}
         {% if tableRowNum is not null %}
             {% set isTable = true %}
-            {% set class = tableRowNum is same as('0') or isOption ? class ~ ' tc v-mid' : class ~ ' v-mid' %}
             {% set column = column + 1 %}
-
             {% if tableRowNum is same as('0') %}
                 {% set columsArray = columsArray|merge({('c' ~ column): key}) %}
             {% endif %}
 
-            {% if parentRowNum is not defined or parentRowNum is null %}
-                <div class="{{ class }} mt2 pv1 table"><div class="row header"><div class="cell">
-            {% elseif parentRowNum is defined and tableRowNum > parentRowNum %}
+            {% if parentRowNum is not defined %}
+                <div class="{{ class }} mv1 mv2-l table"><div class="row header"><div class="tc v-mid cell">
+            {% elseif tableRowNum > parentRowNum %}
                 {% set column = 1 %}
-                </div><div class="row"><div class="cell">
+                </div><div class="row"><div class="{{ isOption ? 'tc v-mid ' : '' }}cell">
             {% elseif tableRowNum is same as('0') or tableRowNum is same as(parentRowNum) %}
-                <div class="cell">
+                <div class="{{ isOption ? 'tc v-mid ' : '' }}cell">
             {% endif %}
 
             {% if isOption %}
-                {% set id = parent ~ '-' ~ key %}
-                {% if isSimpleOption and tableColNum is not null %}
-                    {% set name = parent ~ '[' ~ columsArray['c' ~  column] ~ ']' ~ '[' ~ column ~ ']' %}
-                    {% set type = 'radio' %}
-                    {% set value = tableColNum %}
-                    {% set inpuClass = 'f6 f5-l pointer bn mt1' %}
-                {% elseif isSimpleOption %}
-                    {% set name = parent %}
-                    {% set type = 'radio' %}
-                    {% set value = (textNum|number_format - parent|split('t')[1]|number_format) %}
-                    {% set inpuClass = 'f6 f5-l pointer bn mt1' %}
-                {% elseif isMultipleOption and tableColNum is not null %}
-                    {% set name = parent ~ '[' ~ columsArray['c' ~  column] ~ ']' ~ '[' ~ key ~ ']' %}
-                    {% set type = 'checkbox' %}
-                    {% set value = tableColNum %}
-                    {% set inpuClass = 'f6 f5-l pointer bn mt1' %}
-                {% elseif isMultipleOption %}
-                    {% set name = parent ~ '[' ~ columsArray['c' ~  column] ~ ']' ~ '[' ~ key ~ ']' %}
-                    {% set type = 'checkbox' %}
-                    {% set value = (textNum|number_format - parent|split('t')[1]|number_format) %}
-                    {% set inpuClass = 'f6 f5-l pointer bn mt1' %}
-                {% elseif isLibreOption %}
-                    {% set name = parent ~ '[' ~ columsArray['c' ~  column] ~ ']' ~ '[' ~ key ~ ']' %}
-                    {% set type = 'text' %}
-                    {% set value = '' %}
-                    {% set inpuClass = 'f6 f5-l black-80 bg-white pl1 br2-ns br--left-ns w-40' %}
-                {% elseif isLibreOptionLarge %}
-                    {% set name = parent ~ '[' ~ columsArray['c' ~  column] ~ ']' ~ '[' ~ key ~ ']' %}
-                    {% set type = 'text' %}
-                    {% set value = '' %}
-                    {% set inpuClass = 'f6 f5-l black-80 bg-white pl1 br2-ns br--left-ns w-75' %}
-                {% elseif isLibreOptionSmall %}
-                    {% set name = parent ~ '[' ~ columsArray['c' ~  column] ~ ']' ~ '[' ~ key ~ ']' %}
-                    {% set type = 'text' %}
-                    {% set value = '' %}
-                    {% set inpuClass = 'f6 f5-l black-80 bg-white pl1 br2-ns br--left-ns w-20' %}
-                {% endif %}
-                {% if text is not null %}
-                    {% set text %}
-                        {{ value }}
-                        {% include 'partial/fields/input.html.twig' with { 'inputClass': inpuClass, 'type': type, 'value': value, 'name': name, 'id': id } %}
-                        {{ text }}
-                    {% endset %}
-                    {% if isSimpleOption %}
-                        {% include 'partial/fields/label.html.twig' with { 'labelClass': 'dib pointer pl2 mr1 pa0 f6 f5-ns ' ~ color } %}
-                    {% elseif isLibreOption %}
-                        {% include 'partial/fields/label.html.twig' %}
-                    {% elseif isMultipleOption %}
-                        {% include 'partial/fields/label.html.twig' with { 'labelClass': 'dib pointer pl2 mr1 pa0 f6 f5-ns ' ~ color } %}
-                    {% endif %}
-                {% else %}
-                    {{ value }}
-                    {% include 'partial/fields/input.html.twig' with { 'inputClass': inpuClass, 'type': type, 'value': value, 'name': name, 'id': id } %}
-                {% endif %}
-            {% elseif isItemText %}
-                {% include 'partial/fields/label.html.twig' with { 'labelClass': 'b pa0 f6 f5-ns ' ~ color } %}
-                {% if tableColNum is null %}
-                    {% set parent = key %}
-                {% endif %}
+                {% include 'partial/page-option.html.twig' %}
             {% else %}
-                {% include 'partial/fields/label.html.twig' with { 'labelClass': 'pa0 f6 f5-ns ' ~ color } %}
+                {% include 'partial/fields/label.html.twig' with {
+                    'labelClass': (isItemText ? 'b ' : '') ~ 'pa0 f5 f4-l ' ~ color
+                } %}
                 {% if tableColNum is null %}
                     {% set parent = key %}
                 {% endif %}
             {% endif %}
 
             {% set parentRowNum = tableRowNum %}
+
         {% else %}
             {% set class = isOption or isPlainText ? class ~ ' pl1 pl2-ns pl3-m pl4-l' : class %}
             {% set class = isTitleText ? class ~ ' tc' : class %}
             {% if isItemText %}
-                {% set class = 't01' in key or hadImage ? class ~ ' pb1' : class ~ ' pt3 pb1' %}
-                {% set text = '<span class="white-80 bg-black-80 f5 f4-ns ph1 br2">' ~ numbers[key] ~ '</span> ' ~ text %}
+                {% set class = textNum is same as('1') ? class ~ ' pb1' : class ~ ' pt3 pb1' %}
+                {% set text = '<span class="white-80 bg-black-80 f4 f3-l ph1 br2">' ~ numbers[key] ~ '</span> ' ~ text %}
             {% else %}
-                {% set class = 't01' in key or hadImage ? class ~ ' pb1' : class ~ ' pv1' %}
+                {% set class = textNum is same as('1') ? class ~ ' pb1' : class ~ ' pv1' %}
             {% endif %}
             {% if isTable %}
                 {% set isTable = false %}
@@ -168,81 +110,40 @@
             {% endif %}
             <div class="{{ class }}">
             {% if isOption %}
-                {% set id = parent ~ '-' ~ key %}
-                {% if isSimpleOption %}
-                    {% set name = parent %}
-                    {% set type = 'radio' %}
-                    {% set value = (textNum|number_format - parent|split('t')[1]|number_format) %}
-                    {% set inpuClass = 'f6 f5-l pointer bn mt1' %}
-                {% elseif isMultipleOption %}
-                    {% set name = parent ~ '[' ~ key ~ ']' %}
-                    {% set type = 'checkbox' %}
-                    {% set value = (textNum|number_format - parent|split('t')[1]|number_format) %}
-                    {% set inpuClass = 'f6 f5-l pointer bn mt1' %}
-                {% elseif isLibreOption %}
-                    {% set name = parent ~ '[' ~ key ~ ']' %}
-                    {% set type = 'text' %}
-                    {% set value = '' %}
-                    {% set inpuClass = 'f6 f5-l black-80 bg-white pl1 br2-ns br--left-ns w-40' %}
-                {% elseif isLibreOptionLarge %}
-                    {% set name = parent ~ '[' ~ key ~ ']' %}
-                    {% set type = 'text' %}
-                    {% set value = '' %}
-                    {% set inpuClass = 'f6 f5-l black-80 bg-white pl1 br2-ns br--left-ns w-75' %}
-                {% elseif isLibreOptionSmall %}
-                    {% set name = parent ~ '[' ~ key ~ ']' %}
-                    {% set type = 'text' %}
-                    {% set value = '' %}
-                    {% set inpuClass = 'f6 f5-l black-80 bg-white pl1 br2-ns br--left-ns w-20' %}
-                {% endif %}
-                {% set text %}
-                    {{ value }}
-                    {% include 'partial/fields/input.html.twig' with { 'inputClass': inpuClass, 'type': type, 'value': value, 'name': name, 'id': id } %}
-                    {{ text }}
-                {% endset %}
-            {% endif %}
-            {% if isSimpleOption %}
-                {% include 'partial/fields/label.html.twig' with { 'labelClass': 'dib pointer pl2 mr1 pa0 f6 f5-ns ' ~ color } %}
-            {% elseif isLibreOption %}
-                {% include 'partial/fields/label.html.twig' %}
-            {% elseif isMultipleOption %}
-                {% include 'partial/fields/label.html.twig' with { 'labelClass': 'dib pointer pl2 mr1 pa0 f6 f5-ns ' ~ color } %}
+                {% include 'partial/page-option.html.twig' %}
             {% elseif isTitleText %}
-                {% include 'partial/fields/label.html.twig' with { 'labelClass': 'b pa0 f5 f4-ns ' ~ color } %}
+                {% include 'partial/fields/label.html.twig' with { 'labelClass': 'b pa0 f4 f3-l ' ~ color } %}
                 {% set parent = key %}
             {% elseif isItemText %}
-                {% include 'partial/fields/label.html.twig' with { 'labelClass': 'b pa0 f6 f5-ns ' ~ color } %}
+                {% include 'partial/fields/label.html.twig' with { 'labelClass': 'b pa0 f5 f4-l ' ~ color } %}
                 {% set parent = key %}
             {% else %}
-                {% include 'partial/fields/label.html.twig' with { 'labelClass': 'pa0 f6 f5-ns ' ~ color } %}
+                {% include 'partial/fields/label.html.twig' with { 'labelClass': 'pa0 f5 f4-l ' ~ color } %}
                 {% set parent = key %}
             {% endif %}
         {% endif %}
         </div>
-        {% if image is defined and image is not null %}
-            {% if image['alignment'] is same as('cen') and image['since'] == textNum and image['till'] == textNum %}
+        {% if not isOption and image is not null %}
+            {% if image['alignment'] is same as('cen') and image['since'] == textNum and image['till']|number_format == textNum %}
                 {% include 'partial/fields/image.html.twig' with { 'cssClassContent': image['width'], 'src': image['path'] } %}
-            {% elseif image['alignment'] is same as('dch') and image['till'] == textNum %}
+            {% elseif image['alignment'] is same as('dch') and image['till']|number_format == textNum %}
                 {% include 'partial/fields/image.html.twig' with { 'cssClassContainer': 'dib pl1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
             {% endif %}
         {% endif %}
-
     {% endfor %}
 
     {% if isTable %}</div></div>{% endif %}
 
-    {% if buttonText is defined and prependButtonText is defined %}
-        <div class="cl pt3 tc">
+    <div class="cl tc{% if hadImage %} pt1{% elseif isOption and not isTable %} pt3{% else %} pt2{% endif %}">
+        {% if rightButtonText is defined and leftButtonText is defined %}
             <div class="fl w-100 w-50-ns tc">
-                <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv2 ph2 white">{{ prependButtonText }}</button>
+                <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv1 pv2-l ph2 white">{{ leftButtonText }}</button>
             </div>
-            <div class="fl w-100 w-50-ns tc">
-                <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv2 ph2 white">{{ buttonText }}</button>
+            <div class="dib w-100 w-50-ns tc">
+                <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv1 pv2-l ph2 white right-button">{{ rightButtonText }}</button>
             </div>
-        </div>
-    {% elseif buttonText is defined %}
-        <div class="cl pt3 tc">
-            <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv2 ph2 white">{{ buttonText }}</button>
-        </div>
-    {% endif %}
+        {% elseif rightButtonText is defined %}
+            <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv1 pv2-l ph2 white">{{ rightButtonText }}</button>
+        {% endif %}
+    </div>
 </form>
