@@ -1,8 +1,16 @@
-<a href="" class="playAudioSample" target="_self" title="{{ audio_sample_tip }}">
-    <i class="fa fa-play fa-inverse fa-5x">
-        <audio id="audioSample" preload>
-            <source src="{{ audio_sample_file.mp3 }}" type="audio/mpeg">
-            <source src="{{ audio_sample_file.ogg }}" type="audio/ogg">
-        </audio>
-    </i>
-</a>
+<div class="{{ cssClassContainer|default('dib tc w-100') }}">
+    <a href="" class="playAudioSample" target="_self" title="{{ audio_file_tip|default(mediaItem.tip|default('Play me!')) }}">
+        {% set audio_file_size = audio_file_size is defined ? sizes.levels[audio_file_size]|default('5x') : mediaItem.size %}
+        <i class="fa fa-play fa-{{ audio_file_size }} {{ cssClassContent|default('black-80') }}">
+            {% set audio_file_path = audio_file_path is defined ? audio_file_path : mediaItem.path %}
+            <audio class="audioSample" preload>
+                {% if audio_file_path.mp3 is not empty %}
+                <source src="{{ audio_file_path.mp3 }}" type="audio/mpeg">
+                {% endif %}
+                {% if audio_file_path.ogg is not empty %}
+                <source src="{{ audio_file_path.ogg }}" type="audio/ogg">
+                {% endif %}
+            </audio>
+        </i>
+    </a>
+</div>

@@ -71,7 +71,11 @@ codpro:
   eu: 'Probaren kodea'
   es: 'Código de la prueba'
   en: ''
-audio_sample_tip:
+audio_file_path:
+  mp3: '/media/audio/audio_proba_labur.mp3'
+  ogg: '/media/audio/audio_proba_labur.ogg'
+audio_file_size: 'x3'
+audio_file_tip:
   eu: 'Audio proba'
   es: 'Prueba de audio'
   en: ''
@@ -79,6 +83,3 @@ submit_text:
   eu: 'Bidali'
   es: 'Enviar'
   en: ''
-audio_sample_file:
-  mp3: '/media/audio/0_audio_proba_labur.mp3'
-  ogg: '/media/audio/0_audio_proba_labur.ogg'

@@ -50,7 +50,9 @@ class BaseController
         if ($request->getMethod() === 'POST') {
             $manager = new Model\CredentialsModel();
             $data = $manager->checkCredentials($request->request->all());
-            $messages = array_merge($messages, ['code' => \def::dbCodes()[$data['table']]], ['target' => \def::dbTables()[$data['table']]]);
+            $messages = array_merge($messages, [
+                'code' => \def::dbCodes()[$data['table']],
+                'target' => \def::dbTargets()[$data['table']], ]);
         }
 
         return Model\TranslationsModel::localize($messages, $data, $request->getLocale());

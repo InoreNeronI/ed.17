@@ -17,6 +17,9 @@
 
 {% elseif (isLibreOptionLarge or isLibreOptionSmall or isLibreOption) and tableRowNum is null %}
     {% set inputClass = fontClass ~ ' pl1 br2-ns br--left-ns' %}
+    {% set inputClass = isLibreOptionLarge ? inputClass ~ ' w-' ~ sizes.percentages['l'] : inputClass %}
+    {% set inputClass = isLibreOptionSmall ? inputClass ~ ' w-' ~ sizes.percentages['s'] : inputClass %}
+    {% set inputClass = isLibreOption ? inputClass ~ ' w-' ~ sizes.percentages['m'] : inputClass %}
     {% set name = parent ~ '[' ~ key ~ ']' %}
     {% set type = 'text' %}
     {% set value = '' %}
@@ -35,6 +38,9 @@
 
 {% elseif isLibreOptionLarge or isLibreOptionSmall or isLibreOption %}
     {% set inputClass = fontClass ~ ' pl1 br2-ns br--left-ns' %}
+    {% set inputClass = isLibreOptionLarge ? inputClass ~ ' w-' ~ sizes.percentages['l'] : inputClass %}
+    {% set inputClass = isLibreOptionSmall ? inputClass ~ ' w-' ~ sizes.percentages['s'] : inputClass %}
+    {% set inputClass = isLibreOption ? inputClass ~ ' w-' ~ sizes.percentages['m'] : inputClass %}
     {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ columsArray['c' ~  column] ~ ']' ~ '[' ~ key ~ ']' %}
     {% set type = 'text' %}
     {% set value = '' %}
@@ -42,14 +48,14 @@
 
 {% set text %}
     {{ value }}
-    {% if image is null and text is empty %}
+    {% if mediaItem is null and text is empty %}
         {% include 'partial/fields/input.html.twig' %}
     {% elseif text is not empty %}
         {% include 'partial/fields/input.html.twig' %}
         {{ text }}
-    {% elseif image is not null and image['alignment'] is same as('cen') and image['since'] == textNum and image['till'] == textNum %}
+    {% elseif mediaItem is not null and mediaItem['alignment'] is same as('cen') and mediaItem['since'] == textNum and mediaItem['till'] == textNum %}
         {% include 'partial/fields/input.html.twig' %}
-        {% include 'partial/fields/image.html.twig' with { 'cssClassContent': image['width'], 'src': image['path'] } %}
+        {% include 'partial/sample/' ~ mediaName|default('image') ~ '-sample.html.twig' with { 'cssClassContent': mediaItem['width'], 'src': mediaItem['path'] } %}
     {% endif %}
 {% endset %}
 

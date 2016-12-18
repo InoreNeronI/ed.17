@@ -28,11 +28,23 @@ routes:
   - { path: /boarding, methods: [POST] }
   - { path: '/{page}', controller: 'App\Routing\Controller\ContentRenderController::pageAction', name: onboard, methods: [POST], requirements: { page: \d+ } }
 
-# Size levels by percentage
-sizeLevels:
-  s: 20
-  m: 40
-  l: 75
+# Sizes, levels and percentages
+sizes:
+  x1: s
+  x2: m
+  x3: l
+  levels:
+    s: 1x
+    m: 3x
+    l: 5x
+    percentages:
+      s: 10
+      m: 20
+      l: 25
+  percentages:
+    s: 20
+    m: 40
+    l: 75
 
 # CSS styles' map
 styles:

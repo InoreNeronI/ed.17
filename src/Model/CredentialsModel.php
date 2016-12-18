@@ -61,7 +61,7 @@ class CredentialsModel extends Connection\Connection
             /** @var string $codPrueba */
             $codPrueba = $args['code'];
             if (isset($codes[$codPrueba])) {
-                return static::requesttAccess($user, $codes[$codPrueba]);
+                return static::requestAccess($user, $codes[$codPrueba]);
             }
             throw new \Exception(sprintf('The code you have entered does not match: \'%s\'', $codPrueba));
         }
@@ -74,7 +74,7 @@ class CredentialsModel extends Connection\Connection
      *
      * @return array
      */
-    private static function requesttAccess(array $user, $args)
+    private static function requestAccess(array $user, $args)
     {
         $data = static::getAccess($user, $args);
         foreach (\def::periods() as $period) {

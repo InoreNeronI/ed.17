@@ -4,21 +4,19 @@
 
 {% block content_form %}
     <div class="pb3 dt fr w-100 w-75-m w-75-ns white">
-        {% include random(['partial/board-login.html.twig', 'partial/board-login-new.html.twig']) %}
+        {% include 'partial/board-login.html.twig' %}
     </div>
     <div class="mt3 fl w-100 tc">
         <div class="dib w-100 w-25-m w-25-ns"></div>
         <div class="dib w-100 w-25-m w-25-ns pt3-ns pt0 tc">
             <input name="course" type="hidden" value="{{ course }}"/>
-            <button class="f5 link dim br2 ph3 pv2 mb2 dib white b bg-navy">{{ submit_text }}</button>
+            <button class="f6 f5-l link dim br2 ph3 pv1 pv2-l mb2 dib white b bg-navy">{{ submit_text }}</button>
         </div>
-        <div class="dib w-100 w-25-m w-25-ns tc tr-m tc-ns">
-            {% include 'partial/sample/audio-sample.html.twig' %}
-        </div>
+        {% include 'partial/sample/audio-sample.html.twig' with { 'cssClassContainer': 'dib w-100 w-25-m w-25-ns tc tr-m tc-ns', 'cssClassContent': 'fa-inverse' } %}
     </div>
 {% endblock %}
 
 {% block jq_ready %}
     {{ parent() }}
-    {% include 'partial/sample/audio-sample.js.twig' %}
+    {% include 'asset/audio-click.js.twig' %}
 {% endblock %}

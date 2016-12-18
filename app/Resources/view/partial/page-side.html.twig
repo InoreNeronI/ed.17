@@ -5,17 +5,22 @@
     <input name="flabel" type="hidden" value="{{ flabel }}" />
     <input name="referrer" type="hidden" value="{{ page }}" />
 
-    {% set hadImage = false %}
+    {% set hadMedia = false %}
     {% set isOption = false %}
     {% set isTable = false %}
-    {% set image = null %}
+    {% set mediaItem = null %}
     {% for key, text in texts %}
         {% set column = 0 %}
         {% set columsArray = {} %}
         {% set key = key|trim %}
         {% set text = text|trim %}
+        {% if key in audios|keys %}
+            {% set mediaItem = audios[key] %}
+            {% set mediaName = 'audio' %}
+        {% endif %}
         {% if key in images|keys %}
-            {% set image = images[key] %}
+            {% set mediaItem = images[key] %}
+            {% set mediaName = 'image' %}
         {% endif %}
         {% set isItemText = key in numbers|keys %}
         {% set isPlainText = pageOptions['text'] is defined ? key in pageOptions['text'] : false %}
@@ -40,25 +45,20 @@
             {% set text = text|format(wildcard) %}
         {% endif %}
 
-        {% if hadImage %}
-            {% set class = class ~ ' cl' %}
-            {% set hadImage = false %}
-        {% endif %}
-        {% if not isOption and image is not null %}
-            {% if textNum <= image['till']|number_format and (image['alignment'] is same as('dch') or image['alignment'] is same as('izq')) %}
-                {% set class = class ~ ' ' ~ image['offset'] %}
-                {% set class = image['alignment'] is same as('dch') ? class ~ ' fl' : class %}
-                {% set class = image['alignment'] is same as('izq') ? class ~ ' dib' : class %}
+        {% if mediaItem is not null %}
+
+            {% include 'partial/page-align-left.html.twig' %}
+            {% if hadMedia %}
+                {% set class = class ~ ' cl' %}
+                {% set hadMedia = false %}
             {% endif %}
-            {% if textNum == image['till']|number_format %}
-                {% set hadImage = true %}
+            {% if textNum <= mediaItem['till']|number_format and (mediaItem['alignment'] is same as('dch') or mediaItem['alignment'] is same as('izq')) %}
+                {% set class = class ~ ' ' ~ mediaItem['offset'] %}
+                {% set class = mediaItem['alignment'] is same as('dch') ? class ~ ' fl' : class %}
+                {% set class = mediaItem['alignment'] is same as('izq') ? class ~ ' dib' : class %}
             {% endif %}
-            {% if text is null and image is not null %}
-                {% set text %}
-                    {% include 'partial/fields/image.html.twig' with { 'cssClassContainer': 'fl pr1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
-                {% endset %}
-            {% elseif image['alignment'] is same as('izq') and image['since']|number_format == textNum %}
-                {% include 'partial/fields/image.html.twig' with { 'cssClassContainer': 'fl pr1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
+            {% if textNum == mediaItem['till']|number_format %}
+                {% set hadMedia = true %}
             {% endif %}
         {% endif %}
 
@@ -99,7 +99,7 @@
             {% set class = isTitleText ? class ~ ' tc' : class %}
             {% if isItemText %}
                 {% set class = textNum is same as('1') ? class ~ ' pb1' : class ~ ' pt3 pb1' %}
-                {% set text = '<span class="white-80 bg-black-80 f4 f3-l ph1 br2">' ~ numbers[key] ~ '</span> ' ~ text %}
+                {% set text = '<span class="white-80 bg-black-80 ph1 br2">' ~ numbers[key] ~ '</span> ' ~ text %}
             {% else %}
                 {% set class = textNum is same as('1') ? class ~ ' pb1' : class ~ ' pv1' %}
             {% endif %}
@@ -123,27 +123,24 @@
             {% endif %}
         {% endif %}
         </div>
-        {% if not isOption and image is not null %}
-            {% if image['alignment'] is same as('cen') and image['since'] == textNum and image['till']|number_format == textNum %}
-                {% include 'partial/fields/image.html.twig' with { 'cssClassContent': image['width'], 'src': image['path'] } %}
-            {% elseif image['alignment'] is same as('dch') and image['till']|number_format == textNum %}
-                {% include 'partial/fields/image.html.twig' with { 'cssClassContainer': 'dib pl1 ' ~ image['width'], 'cssClassContent': 'w-100', 'src': image['path'] } %}
-            {% endif %}
+
+        {% if mediaItem is not null %}
+            {% include 'partial/page-align-right.html.twig' %}
         {% endif %}
     {% endfor %}
 
     {% if isTable %}</div></div>{% endif %}
 
-    <div class="cl tc{% if hadImage %} pt1{% elseif isOption and not isTable %} pt3{% else %} pt2{% endif %}">
+    <div class="cl tc{% if isOption and not isTable %} pt3{% elseif hadMedia %} pt1{% else %} pt2{% endif %}">
         {% if rightButtonText is defined and leftButtonText is defined %}
             <div class="fl w-100 w-50-ns tc">
-                <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv1 pv2-l ph2 white">{{ leftButtonText }}</button>
+                <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black b--black bg-near-white br2 br3-l pointer pv1 ph2 left-button">{{ leftButtonText }}</button>
             </div>
             <div class="dib w-100 w-50-ns tc">
-                <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv1 pv2-l ph2 white right-button">{{ rightButtonText }}</button>
+                <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black b--black bg-near-white br2 br3-l pointer pv1 ph2 right-button">{{ rightButtonText }}</button>
             </div>
         {% elseif rightButtonText is defined %}
-            <button class="dib tc bn bg-animate bg-green hover-bg-dark-green br2 pointer pv1 pv2-l ph2 white">{{ rightButtonText }}</button>
+            <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black b--black bg-near-white br2 br3-l pointer pv1 ph2 right-button">{{ rightButtonText }}</button>
         {% endif %}
     </div>
 </form>

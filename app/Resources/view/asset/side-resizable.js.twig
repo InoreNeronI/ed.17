@@ -1,8 +1,7 @@
 {# @url https://codepen.io/rstrahl/pen/eJZQej #}
-
 $('.side-left').resizable({ handleSelector: '.side-splitter', resizeHeight: false });
 
-{# http://jsfiddle.net/dan74/6KYVP #}
+{# @url http://jsfiddle.net/dan74/6KYVP #}
 $('input:radio').on('click', function() {
     var previousValue = $(this).attr('previousValue');
     if (previousValue === 'checked' || (typeof previousValue === 'undefined' && $(this).prop('checked') === false)) {
@@ -13,4 +12,20 @@ $('input:radio').on('click', function() {
         $('input[name="'+name+'"]:radio').attr('previousValue', false);
         $(this).attr('previousValue', 'checked');
     }
+});
+
+{# @url http://stackoverflow.com/a/16966460 #}
+var forms = $('form');
+forms.each(function() {
+    var form = $(this);
+    form.find('button.left-button').on('click', function(e) {
+        e.preventDefault();
+        form.attr('action', parseInt({{ page|number_format }})-1).submit();
+    });
+{% if page|number_format == totalPages|number_format %}
+    form.find('button.right-button').on('click', function(e) {
+        e.preventDefault();
+        form.attr('method', 'get').submit();
+    });
+{% endif %}
 });

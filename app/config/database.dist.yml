@@ -71,7 +71,7 @@ codes:
   edg051_testuak_lh_gsorta_c:   ed17_lh_gso_c
 
 # Database tables' map
-tables:
+targets:
   # Eusk
   edg051_testuak_dbh_eusa:      edg051_erantzunak_dbh_eusa
   edg051_testuak_dbh_eusbd:     edg051_erantzunak_dbh_eusbd

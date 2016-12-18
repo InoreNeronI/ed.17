@@ -15,7 +15,7 @@
                     {% set rightButtonText = '<i class="fa fa-step-backward"></i> ' ~ leftButton %}
                 {% endif %}
                 {% set formAction = isFirstPage ? '' : '/' ~ (page|number_format - 1) %}
-                {% include 'partial/page-side.html.twig' with { 'numbers': 'a' in numbers|keys ? numbers['a'] : null, 'texts': 'a' in texts|keys ? texts['a'] : null, 'images': 'a' in pageImages|keys ? pageImages['a'] : null, 'rightButtonText': rightButtonText|default, 'formAction': formAction } %}
+                {% include 'partial/page-side.html.twig' with { 'numbers': 'a' in numbers|keys ? numbers['a'] : null, 'texts': 'a' in texts|keys ? texts['a'] : null, 'audios': 'a' in pageAudios|keys ? pageAudios['a'] : null, 'images': 'a' in pageImages|keys ? pageImages['a'] : null, 'rightButtonText': rightButtonText|default, 'formAction': formAction } %}
             </div>
         {% endif %}
         {% if pageAreaSkip is null %}
@@ -34,7 +34,7 @@
                     {% set leftButtonText = '<i class="fa fa-step-backward"></i> ' ~ leftButton %}
                 {% endif %}
                 {% set formAction = isLastPage ? '/' : '/' ~ (page|number_format + 1) %}
-                {% include 'partial/page-side.html.twig' with { 'numbers': 'b' in numbers|keys ? numbers['b'] : null, 'texts': 'b' in texts|keys ? texts['b'] : null, 'images': 'b' in pageImages|keys ? pageImages['b'] : null, 'rightButtonText': rightButtonText, 'formAction': formAction } %}
+                {% include 'partial/page-side.html.twig' with { 'numbers': 'b' in numbers|keys ? numbers['b'] : null, 'texts': 'b' in texts|keys ? texts['b'] : null, 'audios': 'b' in pageAudios|keys ? pageAudios['b'] : null, 'images': 'b' in pageImages|keys ? pageImages['b'] : null, 'rightButtonText': rightButtonText, 'formAction': formAction } %}
             </div>
         {% endif %}
     </article>

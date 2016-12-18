@@ -98,6 +98,30 @@ final class PagesModel extends CredentialsModel
         $pageAreaSkip !== 'a' ? $this->loadData($args, $page, 'a') : null;
         $pageAreaSkip !== 'b' ? $this->loadData($args, $page, 'b') : null;
 
+        // Audios
+        $audios = [];
+        foreach (empty($config['pageAudios']['p'.$page]) ? [] : $config['pageAudios']['p'.$page] as $audio) {
+            $audioData = explode('.', $audio);
+            $audioData = explode('_', $audioData[0]);
+            $pathMp3 = stripos($audio, 'mp3') ? '/media/'.$args['code'].'/'.$audio : '';
+            $pathOgg = stripos($audio, 'ogg') ? '/media/'.$args['code'].'/'.$audio : '';
+            if ($audioData[5] === $args['lengua'] || $audioData[5] === 'audio') {
+                $side = str_replace('p'.$page, '', $audioData[0]);
+                $size = $args['sizes'][$audioData[4]];
+                $width = $args['sizes']['levels']['percentages'][$size];
+                $offset = 100 - $width;
+                $audios[$side][$audioData[0].'_'.$audioData[2]] = [
+                    'alignment' => $audioData[1],
+                    'offset' => $widthStyling[isset($widthStyling[$offset]) ? $offset : 'auto'],
+                    'path' => ['mp3' => $pathMp3, 'ogg' => $pathOgg],
+                    'since' => intval(str_replace('t', '', $audioData[2])),
+                    'till' => intval(str_replace('t', '', $audioData[3])),
+                    'width' => $widthStyling[isset($widthStyling[$width]) ? $width : 'auto'],
+                    'size' => $args['sizes']['levels'][$size],
+                ];
+            }
+        }
+
         // Images
         $images = [];
         foreach (empty($config['pageImages']['p'.$page]) ? [] : $config['pageImages']['p'.$page] as $image) {
@@ -124,6 +148,7 @@ final class PagesModel extends CredentialsModel
 
         return array_merge($args, static::$pageTexts, [
             'page' => $page,
+            'pageAudios' => $audios,
             'pageImages' => $images,
             'pageOptions' => empty($options['p'.$page]) ? [] : $options['p'.$page],
             'pageTitles' => empty($config['pageTitles']) ? [] : $config['pageTitles'],
@@ -131,7 +156,6 @@ final class PagesModel extends CredentialsModel
             'pageWidth' => $pageWidth,
             'pageAreaSkip' => $pageAreaSkip,
             'totalPages' => $config['totalPages'],
-            'sizeLevels' => \def::sizeLevels(),
         ]);
     }
 }

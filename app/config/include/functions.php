@@ -11,7 +11,7 @@ final class def extends defDB
     private static $paths;
     private static $periods;
     private static $routing;
-    private static $sizeLevels;
+    private static $sizes;
     private static $styling;
 
     private static function loadConfig()
@@ -23,7 +23,7 @@ final class def extends defDB
             static::$paths = $config['paths'];
             static::$periods = $config['periods'];
             static::$routing = $config['routes'];
-            static::$sizeLevels = $config['sizeLevels'];
+            static::$sizes = $config['sizes'];
             static::$styling = $config['styles'];
             static::$configLoaded = true;
         }
@@ -64,11 +64,11 @@ final class def extends defDB
         return static::$routing;
     }
 
-    public static function sizeLevels()
+    public static function sizes()
     {
         static::loadConfig();
 
-        return static::$sizeLevels;
+        return static::$sizes;
     }
 
     public static function styling()
@@ -92,7 +92,7 @@ class defDb
     protected static $dbCodes;
     protected static $dbCredentials;
     protected static $dbSecurity;
-    protected static $dbTables;
+    protected static $dbTargets;
     protected static $initialized = false;
 
     private static function loadDbConfig()
@@ -102,7 +102,7 @@ class defDb
             static::$dbCodes = $database['codes'];
             static::$dbCredentials = $database['credentials'];
             static::$dbSecurity = $database['security'];
-            static::$dbTables = $database['tables'];
+            static::$dbTargets = $database['targets'];
             static::$initialized = true;
         }
     }
@@ -128,11 +128,11 @@ class defDb
         return static::$dbSecurity;
     }
 
-    public static function dbTables()
+    public static function dbTargets()
     {
         static::loadDbConfig();
 
-        return static::$dbTables;
+        return static::$dbTargets;
     }
 }
 

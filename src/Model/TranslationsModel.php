@@ -22,7 +22,7 @@ class TranslationsModel
         $messages = static::localizeMessages(array_merge($messages, $data));
         isset($messages['lang']) ?: $messages['lang'] = $defaultLang;
 
-        return $messages;
+        return array_merge($messages, ['sizes' => \def::sizes()]);
     }
 
     /**
@@ -61,10 +61,10 @@ class TranslationsModel
     }
 
     /**
-     * @param string      $msg_key
-     * @param string      $msg_value
-     * @param string|null $lang
-     * @param string|null $period
+     * @param string       $msg_key
+     * @param array|string $msg_value
+     * @param string|null  $lang
+     * @param string|null  $period
      *
      * @return array|false
      */
@@ -72,7 +72,7 @@ class TranslationsModel
     {
         if ($msg_key === $lang/* && !empty($msg_value)*/) {
             return $msg_value;
-        } elseif ($msg_key === $period) {
+        } elseif ($msg_key === $period && is_array($msg_value)) {
             return static::localizeMessages($msg_value, $lang);
         } elseif (is_null($lang) && in_array($msg_key, \def::langISOCodes()) && !empty($msg_value)) {
             static::$localizedMsg[] = $msg_value;

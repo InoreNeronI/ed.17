@@ -1,0 +1,7 @@
+$('.playAudioSample').on('click', function(ev) {
+    return $(this).find('.audioSample').each(function() {
+        this.play();
+        ev.preventDefault();
+        return false;
+    });
+});
