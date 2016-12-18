@@ -46,7 +46,6 @@
         {% endif %}
 
         {% if mediaItem is not null %}
-
             {% include 'partial/page-align-left.html.twig' %}
             {% if hadMedia %}
                 {% set class = class ~ ' cl' %}
@@ -134,13 +133,13 @@
     <div class="cl tc{% if isOption and not isTable %} pt3{% elseif hadMedia %} pt1{% else %} pt2{% endif %}">
         {% if rightButtonText is defined and leftButtonText is defined %}
             <div class="fl w-100 w-50-ns tc">
-                <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black b--black bg-near-white br2 br3-l pointer pv1 ph2 left-button">{{ leftButtonText }}</button>
+                <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-80 b--black-80 bg-near-white br2 br3-l pointer pv1 ph2 left-button">{{ leftButtonText }}</button>
             </div>
             <div class="dib w-100 w-50-ns tc">
-                <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black b--black bg-near-white br2 br3-l pointer pv1 ph2 right-button">{{ rightButtonText }}</button>
+                <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-80 b--black-80 bg-near-white br2 br3-l pointer pv1 ph2 right-button">{{ rightButtonText }}</button>
             </div>
         {% elseif rightButtonText is defined %}
-            <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black b--black bg-near-white br2 br3-l pointer pv1 ph2 right-button">{{ rightButtonText }}</button>
+            <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-80 b--black-80 bg-near-white br2 br3-l pointer pv1 ph2 right-button">{{ rightButtonText }}</button>
         {% endif %}
     </div>
 </form>

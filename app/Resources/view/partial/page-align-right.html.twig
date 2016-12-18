@@ -1,7 +1,7 @@
 {% if not isOption and mediaItem is not null %}
     {% if mediaItem['alignment'] is same as('cen') and mediaItem['since'] == textNum and mediaItem['till']|number_format == textNum %}
-        {% include 'partial/sample/' ~ mediaName ~ '-sample.html.twig' with { 'cssClassContent': color|default('black') ~ ' ' ~ mediaItem['width'] } %}
+        {% include 'partial/sample/' ~ mediaName ~ '-sample.html.twig' with { 'cssClassContent': color|default('black-80') ~ ' ' ~ mediaItem['width'] } %}
     {% elseif mediaItem['alignment'] is same as('dch') and mediaItem['till']|number_format == textNum %}
-        {% include 'partial/sample/' ~ mediaName ~ '-sample.html.twig' with { 'cssClassContainer': color|default('black') ~ ' dib pl1 ' ~ mediaItem['width'], 'cssClassContent': 'w-100' } %}
+        {% include 'partial/sample/' ~ mediaName ~ '-sample.html.twig' with { 'cssClassContainer': 'dib pl1 tc ' ~ mediaItem['width'], 'cssClassContent': color|default('black-80') ~ ' w-100' } %}
     {% endif %}
 {% endif %}
