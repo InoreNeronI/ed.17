@@ -5,20 +5,19 @@
     <input name="flabel" type="hidden" value="{{ flabel }}" />
     <input name="referrer" type="hidden" value="{{ page }}" />
 
+    {% set column = 0 %}
+    {% set columsArray = {} %}
     {% set hadMedia = false %}
+    {% set mediaItem = null %}
     {% set isOption = false %}
     {% set isTable = false %}
-    {% set mediaItem = null %}
     {% for key, text in texts %}
-        {% set column = 0 %}
-        {% set columsArray = {} %}
         {% set key = key|trim %}
         {% set text = text|trim %}
         {% if key in audios|keys %}
             {% set mediaItem = audios[key] %}
             {% set mediaName = 'audio' %}
-        {% endif %}
-        {% if key in images|keys %}
+        {% elseif key in images|keys %}
             {% set mediaItem = images[key] %}
             {% set mediaName = 'image' %}
         {% endif %}
@@ -84,7 +83,7 @@
                 {% include 'partial/page-option.html.twig' %}
             {% else %}
                 {% include 'partial/fields/label.html.twig' with {
-                    'labelClass': (isItemText ? 'b ' : '') ~ 'pa0 f5 f4-l ' ~ color
+                    'labelClass': (isItemText ? 'b f5 f4-l ' : isTitleText ? 'b f4 f3-l ' : 'f5 f4-l ') ~ 'pa0 ' ~ color
                 } %}
                 {% if tableColNum is null %}
                     {% set parent = key %}
@@ -98,7 +97,7 @@
             {% set class = isTitleText ? class ~ ' tc' : class %}
             {% if isItemText %}
                 {% set class = textNum is same as('1') ? class ~ ' pb1' : class ~ ' pt3 pb1' %}
-                {% set text = '<span class="white-80 bg-black-80 ph1 br2">' ~ numbers[key] ~ '</span> ' ~ text %}
+                {% set text = '<span class="white bg-black-80 ph1 br2">' ~ numbers[key] ~ '</span> ' ~ text %}
             {% else %}
                 {% set class = textNum is same as('1') ? class ~ ' pb1' : class ~ ' pv1' %}
             {% endif %}
@@ -110,14 +109,10 @@
             <div class="{{ class }}">
             {% if isOption %}
                 {% include 'partial/page-option.html.twig' %}
-            {% elseif isTitleText %}
-                {% include 'partial/fields/label.html.twig' with { 'labelClass': 'b pa0 f4 f3-l ' ~ color } %}
-                {% set parent = key %}
-            {% elseif isItemText %}
-                {% include 'partial/fields/label.html.twig' with { 'labelClass': 'b pa0 f5 f4-l ' ~ color } %}
-                {% set parent = key %}
             {% else %}
-                {% include 'partial/fields/label.html.twig' with { 'labelClass': 'pa0 f5 f4-l ' ~ color } %}
+                {% include 'partial/fields/label.html.twig' with {
+                    'labelClass': (isItemText ? 'b f5 f4-l ' : isTitleText ? 'b f4 f3-l ' : 'f5 f4-l ') ~ 'pa0 ' ~ color
+                } %}
                 {% set parent = key %}
             {% endif %}
         {% endif %}
@@ -130,16 +125,18 @@
 
     {% if isTable %}</div></div>{% endif %}
 
-    <div class="cl tc{% if isOption and not isTable %} pt3{% elseif hadMedia %} pt1{% else %} pt2{% endif %}">
-        {% if rightButtonText is defined and leftButtonText is defined %}
+    {% if rightButtonText is defined and rightButtonText is not empty and leftButtonText is defined and leftButtonText is not empty %}
+        <div class="cl tc{% if isOption and not isTable %} pt3{% elseif hadMedia %} pt1{% else %} pt2{% endif %}">
             <div class="fl w-100 w-50-ns tc">
                 <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-80 b--black-80 bg-near-white br2 br3-l pointer pv1 ph2 left-button">{{ leftButtonText }}</button>
             </div>
             <div class="dib w-100 w-50-ns tc">
                 <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-80 b--black-80 bg-near-white br2 br3-l pointer pv1 ph2 right-button">{{ rightButtonText }}</button>
             </div>
-        {% elseif rightButtonText is defined %}
+        </div>
+    {% elseif rightButtonText is defined and rightButtonText is not empty %}
+        <div class="cl tc{% if isOption and not isTable %} pt3{% elseif hadMedia %} pt1{% else %} pt2{% endif %}">
             <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-80 b--black-80 bg-near-white br2 br3-l pointer pv1 ph2 right-button">{{ rightButtonText }}</button>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 </form>

@@ -23,10 +23,7 @@ p00:
     - p00b_t22_f3
 p01:
   text:
-    - p01a_t02
-    - p01a_t03
-    - p01a_t04
-    - p01a_t05
+   
     - p01a_t08
 
   simple:
@@ -187,15 +184,9 @@ p07:
     - p07b_t09
     - p07b_t10
   
-�p08:
+p08:
   text:
-    - p08a_t03
-    - p08a_t04
-    - p08a_t05
-    - p08a_t06
-    - p08a_t07
-    - p08a_t08
-    - p08a_t09
+    
   simple:
     - p08b_t02
     - p08b_t03

@@ -64,7 +64,7 @@ pageImages:
     - p28a_cen_t02_t02_75_img.png
 
 pageTitles: # All centered texts' codes
-  - p00a_t01
+  - p00b_t01
   - p01a_t01
   - p02a_t01
   - p03a_t01

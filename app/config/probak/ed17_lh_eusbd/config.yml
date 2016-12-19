@@ -5,13 +5,13 @@ pageImages:
   p01:
     - p01a_cen_t01_t01_50_img.png
   p02:
-    - p02a_cen_t05_t05_30_img.png
+    - p02a_cen_t03_t03_30_img.png
   p03:
-    - p03a_cen_t04_t04_80_img_A.png
-    - p03a_cen_t04_t04_80_img_B.png
+    - p03a_cen_t04_t04_80_img.png
+    - p03a_cen_t05_t05_80_img.png
   p04:
-    - p04a_cen_t04_t04_80_img_A.png
-    - p04a_cen_t04_t04_80_img_B.png
+    - p04a_cen_t04_t04_80_img.png
+    - p04a_cen_t05_t05_80_img.png
   p05:
     - p05a_dch_t03_t03_25_img.png
     - p05a_izq_t10_t18_25_img.png
@@ -54,6 +54,12 @@ pageTextReplaces:
       parameters: {  }
       template: 'partial/fields/input.html.twig'
 
+pageAudios:
+  p01:
+    - p01a_cen_t06_t06_x3_eus.mp3
+  p02:
+    - p02a_cen_t05_t05_x3_eus.mp3
+  
 pageTitles:
   - p00a_t01
   - p00a_t02
@@ -61,7 +67,8 @@ pageTitles:
   - p01a_t01
   - p01a_t06
   - p02a_t01
-  - p02a_t04
+  - p02a_t02
+  - p02a_t05
   - p03a_t01
   - p03a_t04
   - p04a_t04
@@ -77,7 +84,7 @@ pageTitles:
   - p11a_t03
   - p12a_t03
   - p13a_t03
-  - p14a_t01
+  - p14b_t01
 
 pageAreaWidths:
   p14:

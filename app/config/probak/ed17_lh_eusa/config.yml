@@ -45,7 +45,13 @@ pageImages:
     - p12b_cen_t01_t01_60_img.jpg
  
 pageTextReplaces:
-  
+
+pageAudios:
+  p01:
+    - p01a_cen_t07_t07_x3_eus.mp3
+  p02:
+    - p02a_cen_t05_t05_x3_eus.mp3
+    
 pageTitles:
   - p00a_t00
   - p00a_t02
@@ -54,7 +60,8 @@ pageTitles:
   - p01a_t04
   - p02a_t01
   - p02a_t04
-  - p03a_t01
+  - p03a_t00
+  - p03a_t03
   - p04a_t01
   - p05a_t00
   - p05a_t02

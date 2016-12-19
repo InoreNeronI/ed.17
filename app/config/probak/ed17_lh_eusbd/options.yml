@@ -61,9 +61,9 @@ p01:
     - p01b_t35
 p02:
   text:
-    - p02a_t02
     - p02a_t03
-    - p02a_t05
+    - p02a_t04
+    - p02a_t06
   simple:
     - p02b_t02
     - p02b_t03

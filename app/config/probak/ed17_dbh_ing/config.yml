@@ -29,6 +29,19 @@ pageImages:
     - p06a_cen_t02_t02_100_img.png
   p07:
     - p07a_cen_t02_t02_30_img.png
+    - p07a_dch_t06_t10_50_img.png
+    - p07a_dch_t11_t16_50_img.png
+  p08:
+    - p08a_cen_t01_t01_100_img.png
+    - p08a_cen_t16_t16_33_img.png
+    - p08a_cen_t08_t08_33_img.png
+    
+  p09:
+    - p09a_cen_t02_t02_100_img.png
+  p10:
+    - p10a_izq_t03_t05_20_img.png
+    - p10a_cen_t07_t07_100_img.png
+  
 
 pageReplaces:
  
@@ -37,7 +50,6 @@ pageTitles:
   - p00a_t02
   - p00b_t01
   - p01a_t01
-  - p01a_t03
   - p01a_t07
   - p01a_t08
   - p02a_t00
@@ -51,8 +63,11 @@ pageTitles:
   - p07a_t01
   - p07a_t02
   - p08a_t01
+  - p08a_t02
   - p09a_t01
+  - p09a_t02
   - p10a_t01
+  - p10a_t02
  
 pageAreaWidths:
   p05:  # Page affected with any custom side-width

@@ -1,11 +1,6 @@
 p00:
   text:
-    - p00b_t05
-    - p00b_t06
-    - p00b_t07
-    - p00b_t08
-    - p00b_t09
-    - p00b_t10
+ 
 p01:
   simple:
     - p01b_t02 
