@@ -48,13 +48,10 @@
 
 {% set text %}
     {{ value }}
-    {% if mediaItem is null and text is empty %}
-        {% include 'partial/fields/input.html.twig' %}
-    {% elseif text is not empty %}
-        {% include 'partial/fields/input.html.twig' %}
+    {% include 'partial/fields/input.html.twig' %}
+    {% if mediaItem is not null and text is not empty %}
         {{ text }}
     {% elseif mediaItem is not null and mediaItem['alignment'] is same as('cen') and mediaItem['since'] == textNum and mediaItem['till'] == textNum %}
-        {% include 'partial/fields/input.html.twig' %}
         {% include 'partial/sample/' ~ mediaName|default('image') ~ '-sample.html.twig' with { 'cssClassContent': mediaItem['width'], 'src': mediaItem['path'] } %}
     {% endif %}
 {% endset %}

@@ -153,10 +153,10 @@ p15:
     - p15b_t11
 p16:
   text:
-    - p11a_t03
-    - p11a_t04
-    - p11a_t05
-    - p11a_t06
+    - p16a_t03
+    - p16a_t04
+    - p16a_t05
+    - p16a_t06
   simple:
     - p16b_t08_f01
     - p16b_t09_f01
@@ -187,6 +187,9 @@ p18:
     - p18b_t04
     - p18b_t05
 p19:
+  text:
+    - p19a_t04
+    - p19a_t05
   simple:
     - p19b_t02
     - p19b_t03

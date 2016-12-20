@@ -12,24 +12,24 @@ pageImages:
     - p03a_cen_t01_t01_70_img.png
     - p03b_cen_t01_t01_100_cas.png
     - p03b_cen_t01_t01_100_eus.png
-    - p03b_izq_t03_t03_100_cas.png
-    - p03b_izq_t04_t04_100_cas.png
-    - p03b_izq_t05_t05_100_cas.png
-    - p03b_izq_t06_t06_100_cas.png
-    - p03b_izq_t03_t03_100_eus.png
-    - p03b_izq_t04_t04_100_eus.png
-    - p03b_izq_t05_t05_100_eus.png
-    - p03b_izq_t06_t06_100_eus.png
+    - p03b_cen_t03_t03_100_cas.png
+    - p03b_cen_t04_t04_100_cas.png
+    - p03b_cen_t05_t05_100_cas.png
+    - p03b_cen_t06_t06_100_cas.png
+    - p03b_cen_t03_t03_100_eus.png
+    - p03b_cen_t04_t04_100_eus.png
+    - p03b_cen_t05_t05_100_eus.png
+    - p03b_cen_t06_t06_100_eus.png
   p04:
     - p04a_cen_t01_t01_70_img.png
   p05:
     - p05a_cen_t01_t01_70_img.png
   p06:
     - p06a_cen_t01_t01_50_img.png
-    - p06b_izq_t06_t06_100_img.png
-    - p06b_izq_t07_t07_100_img.png
-    - p06b_izq_t08_t08_100_img.png
-    - p06b_izq_t09_t09_100_img.png
+    - p06b_cen_t06_t06_100_img.png
+    - p06b_cen_t07_t07_100_img.png
+    - p06b_cen_t08_t08_100_img.png
+    - p06b_cen_t09_t09_100_img.png
   p07:
     - p07a_cen_t01_t01_60_img.png
     - p07b_cen_t01_t01_90_cas.png
@@ -38,10 +38,10 @@ pageImages:
     - p08a_cen_t01_t01_60_img.png
     - p08b_cen_t02_t02_80_cas.png
     - p08b_cen_t02_t02_80_eus.png
-    - p08b_izq_t04_t04_100_img.png
-    - p08b_izq_t05_t05_100_img.png
-    - p08b_izq_t06_t06_100_img.png
-    - p08b_izq_t07_t07_100_img.png
+    - p08b_cen_t04_t04_100_img.png
+    - p08b_cen_t05_t05_100_img.png
+    - p08b_cen_t06_t06_100_img.png
+    - p08b_cen_t07_t07_100_img.png
   p09:
     - p09a_cen_t01_t01_50_img.png
     - p09b_cen_t03_t03_50_img.png

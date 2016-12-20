@@ -184,6 +184,8 @@ p07:
     - p07b_t14
     - p07b_t15
 p08:
+  text:
+    - p08a_t01
   simple:
     - p08b_t02
     - p08b_t03

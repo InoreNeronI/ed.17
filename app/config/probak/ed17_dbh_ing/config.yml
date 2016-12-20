@@ -29,12 +29,12 @@ pageImages:
     - p06a_cen_t02_t02_100_img.png
   p07:
     - p07a_cen_t02_t02_30_img.png
-    - p07a_dch_t06_t10_50_img.png
-    - p07a_dch_t11_t16_50_img.png
+    - p07a_dch_t07_t08_50_img.png
+    - p07a_dch_t12_t14_50_img.png
   p08:
     - p08a_cen_t01_t01_100_img.png
-    - p08a_cen_t16_t16_33_img.png
-    - p08a_cen_t08_t08_33_img.png
+    - p08a_dch_t07a_t09a_33_img.png
+    - p08a_dch_t06b_t08b_33_img.png
     
   p09:
     - p09a_cen_t02_t02_100_img.png
@@ -72,4 +72,7 @@ pageTitles:
 pageAreaWidths:
   p05:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage
-totalPages: 11
+  p11:  
+    b: 100   
+# TODO: being dynamic    
+totalPages: 11  # The final total pages

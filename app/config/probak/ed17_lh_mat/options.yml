@@ -91,10 +91,10 @@ p10:
   text:
     - p10a_t02
   simple:
-    - p10b_t03a
-    - p10b_t03b
-    - p10b_t03c
-    - p10b_t03d
+    - p10b_t03
+    - p10b_t04
+    - p10b_t05
+    - p10b_t06
 p11:
   text:
     - p11a_t02
