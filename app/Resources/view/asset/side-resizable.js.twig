@@ -15,8 +15,7 @@ $('input:radio').on('click', function() {
 });
 
 {# @url http://stackoverflow.com/a/16966460 #}
-var forms = $('form');
-forms.each(function() {
+$('form').each(function() {
     var form = $(this);
     form.find('button.left-button').on('click', function(e) {
         e.preventDefault();

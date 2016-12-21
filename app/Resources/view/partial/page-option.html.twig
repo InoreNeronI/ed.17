@@ -1,5 +1,5 @@
 
-{% set fontClass = 'san-serif f5 f4-l black-80 bg-white' %}
+{% set fontClass = 'f5 f4-l ' ~ color %}
 {% set id = parent ~ '-' ~ key %}
 {% set name = parent %}
 
@@ -49,10 +49,9 @@
 {% set text %}
     {{ value }}
     {% include 'partial/fields/input.html.twig' %}
-    {% if mediaItem is not null and text is not empty %}
-        {{ text }}
-    {% elseif mediaItem is not null and mediaItem['alignment'] is same as('cen') and mediaItem['since'] == textNum and mediaItem['till'] == textNum %}
-        {% include 'partial/sample/' ~ mediaName|default('image') ~ '-sample.html.twig' with { 'cssClassContent': mediaItem['width'], 'src': mediaItem['path'] } %}
+    {% if text is not empty %}{{ text }}{% endif %}
+    {% if mediaItem is not null and mediaItem['alignment'] is same as('cen') and mediaItem['since'] == textNum and mediaItem['till'] == textNum %}
+        {% include 'partial/sample/' ~ mediaName ~ '-sample.html.twig' with { 'cssClassContent': mediaItem['width'], 'src': mediaItem['path'] } %}
     {% endif %}
 {% endset %}
 

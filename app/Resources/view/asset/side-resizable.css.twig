@@ -64,19 +64,17 @@ body {
 
 .table {
     {#box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);#}
-    border: 1px solid #000;
     display: table;
     width: 100%;
 }
-@media screen and (max-width: 580px) {
+{#@media screen and (max-width: 580px) {
     .table {
         display: block;
     }
-}
+}#}
 
 .row {
     {#background: #f6f6f6;#}
-    background: #fff;
     display: table-row;
 }
 {#.row:nth-of-type(odd) {
@@ -86,21 +84,22 @@ body {
     background: rgba(0,0,0,.8);
     color: #fff;
     font-weight: 900;
-}#}
+}
 @media screen and (max-width: 580px) {
     .row {
         display: block;
         padding: 8px 0;
     }
-}
-
+}#}
 .cell {
+    {#border-right: 2px solid #000;
+    border-bottom: 2px solid #000;#}
     display: table-cell;
-    padding: 6px 12px;
+    padding: .25rem .5rem;
 }
-@media screen and (max-width: 580px) {
+{#@media screen and (max-width: 580px) {
     .cell {
         display: block;
         padding: 2px 12px;
     }
-}
+}#}

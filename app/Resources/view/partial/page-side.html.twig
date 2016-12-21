@@ -46,22 +46,19 @@
         {% endif %}
 
         {% if mediaItem is not null %}
-            {% include 'partial/page-align-left.html.twig' %}
             {% if hadMedia %}
                 {% set class = class ~ ' cl' %}
                 {% set hadMedia = false %}
             {% endif %}
-            {#{% if isOption %}
-                {% set class = class ~ ' dib' %}
-            {% endif %}#}
-            {% if not isOption %}
-                {% if textNum <= mediaItem['till']|number_format and (mediaItem['alignment'] is same as('dch') or mediaItem['alignment'] is same as('izq')) %}
-                    {% set class = class ~ ' dib ' ~ mediaItem['offset'] %}
+            {% if textNum <= mediaItem['till']|number_format and (isOption or mediaItem['alignment'] is same as('dch') or mediaItem['alignment'] is same as('izq')) %}
+                {% set class = class ~ ' dib ' ~ mediaItem['offset'] %}
+                {% if textNum == mediaItem['till']|number_format %}
+                    {% set hadMedia = true %}
                 {% endif %}
+            {% elseif textNum > mediaItem['till']|number_format %}
+                {% set mediaItem = null %}
             {% endif %}
-            {% if textNum == mediaItem['till']|number_format %}
-                {% set hadMedia = true %}
-            {% endif %}
+            {% include 'partial/page-align-left.html.twig' %}
         {% endif %}
 
         {% if tableColNum is not null %}
@@ -69,18 +66,27 @@
         {% endif %}
         {% if tableRowNum is not null %}
             {% set isTable = true %}
+            {% set cellClass = 'cell' ~ (isOption or parentRowNum is not defined ? ' tc v-mid' : '') %}
             {% set column = column + 1 %}
             {% if tableRowNum is same as('0') %}
                 {% set columsArray = columsArray|merge({('c' ~ column): key}) %}
+                {% if text is not empty or isOption %}
+                    {% set cellClass = cellClass ~ ' bb br bt bw1' %}
+                {% elseif text is empty %}
+                    {% set cellClass = cellClass ~ ' bb br bw1' %}
+                {% endif %}
+            {% elseif text is not empty or isOption %}
+                {% set cellClass = tableRowNum > parentRowNum ? cellClass ~ ' bl' : cellClass %}
+                {% set cellClass = cellClass ~ ' bb br bw1' %}
             {% endif %}
 
             {% if parentRowNum is not defined %}
-                <div class="{{ class }} mv1 mv2-l table"><div class="row header"><div class="tc v-mid cell">
+                <div class="{{ class }} mv1 mv2-l table"><div class="row header"><div class="{{ cellClass }}">
             {% elseif tableRowNum > parentRowNum %}
                 {% set column = 1 %}
-                </div><div class="row"><div class="{{ isOption ? 'tc v-mid ' : '' }}cell">
+                </div><div class="row"><div class="{{ cellClass }}">
             {% elseif tableRowNum is same as('0') or tableRowNum is same as(parentRowNum) %}
-                <div class="{{ isOption ? 'tc v-mid ' : '' }}cell">
+                <div class="{{ cellClass }}">
             {% endif %}
 
             {% if isOption %}

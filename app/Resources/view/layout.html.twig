@@ -33,14 +33,13 @@
                     appCode(window.jQuery, window, document);
 
                 }(function($, window, document) {
-                        // The $ is now locally scoped
-                        $(function() {
-                            // The DOM is ready!
-                            {% block jq_ready %}{% endblock %}
-                        });
-                        // The rest of your code goes here!
-                    }
-                ));
+                    // The $ is now locally scoped
+                    $(function() {
+                        // The DOM is ready!
+                        {% block jq_ready %}{% endblock %}
+                    });
+                    // The rest of your code goes here!
+                }));
             </script>
         {% endblock %}
     </body>
