@@ -1,4 +1,5 @@
 {% set inputClass = inputClass|default('f5 f4-l black-80 bg-white pl1 br2-ns br--left-ns') ~ ' v-top' %}
 {% set inputClass = width is defined ? inputClass ~ ' ' ~ width : inputClass %}
 {% set placeholder = type|default('text') is same as('text') ? ' placeholder="' ~ placeholder|default(textPlaceholder|default) ~ '"' : '' %}
-<input class="{{ inputClass }}" type="{{ type|default('text') }}" name="{{ name|default }}" value="{{ value|default }}" id="{{ id|default }}" {{ disabled|default }} {{ required|default }} {{ placeholder }} />
+{% set inputPattern = maxLength|default is not empty or minLegth|default is not empty ? ' pattern=".{' ~ minLegth|default(0) ~ ',}" maxlegth="' ~ maxLegth|default(10) ~ '" title="' ~ minLegth|default(0) ~ ' to ' ~ maxLegth|default(10) ~ ' chars"' : '' %}
+<input class="{{ inputClass }}" type="{{ type|default('text') }}" name="{{ name|default }}" value="{{ value|default }}" id="{{ id|default }}" {{ disabled|default }} {{ required|default }} {{ inputPattern }} {{ placeholder }} />

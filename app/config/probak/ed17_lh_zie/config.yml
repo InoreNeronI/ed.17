@@ -72,22 +72,26 @@ pageTitles: # All centered texts' codes
 pageTextReplaces:
   p09:
     p09b_t03:
-      parameters: {  }
+      parameters: {maxLength: 10, minLength: 0}
       template: 'partial/fields/input.html.twig'
     p09b_t04:
-      parameters: {  }
+      parameters: {maxLength: 10, minLength: 0}
       template: 'partial/fields/input.html.twig'
     p09b_t05:
-      parameters: {  }
+      parameters: {maxLength: 10, minLength: 0}
       template: 'partial/fields/input.html.twig'
     p09b_t06:
-      parameters: {  }
+      parameters: {maxLength: 10, minLength: 0}
       template: 'partial/fields/input.html.twig'
     p09b_t07:
-      parameters: {  }
+      parameters: {maxLength: 10, minLength: 0}
       template: 'partial/fields/input.html.twig'
       
 pageAreaWidths:
+  p00:
+    a: 40
+  p04:
+    a: 40
   p18:
     b: 100
 
