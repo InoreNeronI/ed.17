@@ -41,6 +41,8 @@ pageImages:
   p10:
     - p10a_izq_t03_t05_20_img.png
     - p10a_cen_t07_t07_100_img.png
+  p11:
+    - p11b_cen_t01_t01_60_img.jpg
   
 
 pageReplaces:
@@ -58,16 +60,12 @@ pageTitles:
   - p03a_t01
   - p04a_t01
   - p05b_t01
-  - p06a_t01
   - p06a_t02
-  - p07a_t01
   - p07a_t02
-  - p08a_t01
   - p08a_t02
-  - p09a_t01
   - p09a_t02
-  - p10a_t01
   - p10a_t02
+  - p11b_t03
  
 pageAreaWidths:
   p05:  # Page affected with any custom side-width

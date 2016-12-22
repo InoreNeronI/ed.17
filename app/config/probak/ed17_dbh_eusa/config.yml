@@ -7,14 +7,13 @@ pageAudios:
     - p03a_cen_t03_t03_x3_eus.ogg
 pageImages:
   p01:
-    - p01a_cen_t07_t07_90_img.png
+    - p01a_cen_t07_t07_70_img.png
     - p01a_cen_t08_t08_30_img.jpg
   p02:
     - p02a_cen_t02_t02_50_img.png
     - p02a_cen_t03_t03_30_img.jpg
   p03:
-    - p03a_cen_t02_t02_50_img.png
-    - p03a_cen_t03_t03_30_img.jpg
+    - p03a_cen_t02_t02_50_img.jpg
   p04:
     - p04a_dch_t06_t06_20_img.png
   p05:
@@ -33,6 +32,9 @@ pageImages:
     - p11a_cen_t02_t02_100_img.png
   p12:
     - p12a_cen_t02_t02_100_img.png
+  p13:
+    - p13b_cen_t01_t01_60_img.jpg
+  
 
 pageReplaces:
  
@@ -46,19 +48,22 @@ pageTitles:
   - p03a_t01
   - p04a_t01
   - p04a_t06
-  - p05a_t01
   - p05a_t02
-  - p06a_t01
+  - p06a_t00
   - p07a_t00
-  - p07a_t01
-  - p08a_t01
-  - p09a_t01
+  - p08a_t00
+  - p09a_t00
   - p09a_t02
-  - p10a_t01
+  - p10a_t00
   - p10a_t02
-  - p11a_t01
+  - p11a_t00
   - p11a_t02
-  - p12a_t01
+  - p12a_t00
   - p12a_t02
- 
+  - p13b_t01
+pageAreaWidths:
+  p13:
+    b: 100
+     
+# TODO: being dynamic    
 totalPages: 13

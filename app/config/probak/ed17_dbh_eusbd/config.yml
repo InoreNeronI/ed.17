@@ -33,6 +33,8 @@ pageImages:
     - p11a_cen_t02_t02_50_img.jpg
   p12:
     - p12a_cen_t02_t02_50_img.jpg
+  p13:
+    - p13b_cen_t01_t01_60_img.jpg
 
 pageReplaces:
  
@@ -47,19 +49,24 @@ pageTitles:
   - p03a_t00
   - p03a_t01
   - p04a_t01
-  - p05a_t01
+  - p05a_t00
   - p05a_t02
-  - p06a_t01
+  - p06a_t00
   - p06a_t02
-  - p07a_t01
-  - p08a_t01
-  - p09a_t01
+  - p07a_t00
+  - p08a_t00
+  - p09a_t00
   - p09a_t02
-  - p10a_t01
+  - p10a_t00
   - p10a_t02
-  - p11a_t01
+  - p11a_t00
   - p11a_t02
-  - p12a_t01
+  - p12a_t00
   - p12a_t02
- 
-totalPages: 13
+  - p13b_t03
+pageAreaWidths:
+  p13:
+    b: 100
+     
+# TODO: being dynamic  
+totalPages: 13  # The final total pages

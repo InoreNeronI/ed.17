@@ -62,6 +62,8 @@ pageImages:
     - p27a_cen_t07_t07_100_eus.png
   p28:
     - p28a_cen_t02_t02_75_img.png
+  p29:
+    - p29b_cen_t01_t01_60_img.jpg
 
 pageTitles: # All centered texts' codes
   - p00b_t01
@@ -95,6 +97,7 @@ pageTitles: # All centered texts' codes
   - p26a_t01
   - p27a_t01
   - p28a_t01
+  - p29b_t02
  
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
