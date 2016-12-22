@@ -111,7 +111,7 @@ final class PagesModel extends CredentialsModel
                 $width = $args['sizes']['levels']['percentages'][$size];
                 $offset = 100 - $width;
                 $audios[$side][$audioData[0].'_'.$audioData[2]] = [
-                    'alignment' => $audioData[1],
+                    'align' => $audioData[1],
                     'offset' => $widthStyling[isset($widthStyling[$offset]) ? $offset : 'auto'],
                     'path' => ['mp3' => $pathMp3, 'ogg' => $pathOgg],
                     'since' => intval(str_replace('t', '', $audioData[2])),
@@ -131,7 +131,7 @@ final class PagesModel extends CredentialsModel
                 $side = str_replace('p'.$page, '', $imageData[0]);
                 $offset = 100 - $imageData[4];
                 $images[$side][$imageData[0].'_'.$imageData[2]] = [
-                    'alignment' => $imageData[1],
+                    'align' => $imageData[1],
                     'offset' => $widthStyling[isset($widthStyling[$offset]) ? $offset : 'auto'],
                     'path' => '/images/'.$args['code'].'/'.$image,
                     'since' => intval(str_replace('t', '', $imageData[2])),

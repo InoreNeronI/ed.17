@@ -1,11 +1,11 @@
 {% if not isOption and mediaItem is not null %}
     {% if text is null %}
         {% set text %}
-            {% include 'partial/sample/' ~ mediaName ~ '-sample.html.twig' with { 'cssClassContainer': 'fl pr1 tc ' ~ mediaItem['width'], 'cssClassContent': color|default('black-80') ~ ' w-100' } %}
+            {% include 'partial/sample/' ~ mediaName ~ '-sample.html.twig' with { 'cssClassContainer': 'fl pr1 tc ' ~ mediaItem['width'], 'cssClassContent': color|default('black-90') ~ ' w-100' } %}
         {% endset %}
-    {% elseif mediaItem['alignment'] is same as('izq') and mediaItem['since']|number_format == textNum %}
-        {% include 'partial/sample/' ~ mediaName ~ '-sample.html.twig' with { 'cssClassContainer': 'fl pr1 tc ' ~ mediaItem['width'], 'cssClassContent': color|default('black-80') ~ ' w-100' } %}
-    {% elseif mediaItem['alignment'] is same as('dch') and mediaItem['since']|number_format == textNum %}
-        {% include 'partial/sample/' ~ mediaName ~ '-sample.html.twig' with { 'cssClassContainer': 'fr pl1 tc ' ~ mediaItem['width'], 'cssClassContent': color|default('black-80') ~ ' w-100' } %}
+    {% elseif mediaItem['align'] is same as('izq') and mediaItem['since']|number_format == textNum %}
+        {% include 'partial/sample/' ~ mediaName ~ '-sample.html.twig' with { 'cssClassContainer': 'fl pr1 tc ' ~ mediaItem['width'], 'cssClassContent': color|default('black-90') ~ ' w-100' } %}
+    {% elseif mediaItem['align'] is same as('dch') and mediaItem['since']|number_format == textNum %}
+        {% include 'partial/sample/' ~ mediaName ~ '-sample.html.twig' with { 'cssClassContainer': 'fr pl1 tc ' ~ mediaItem['width'], 'cssClassContent': color|default('black-90') ~ ' w-100' } %}
     {% endif %}
 {% endif %}

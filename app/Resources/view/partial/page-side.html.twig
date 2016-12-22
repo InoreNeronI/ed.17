@@ -35,8 +35,7 @@
         {% set textNum = key|split('t')[1]|number_format %}
         {% set tableColNum = key|split('c')|length is same as(2) ? key|split('c')[1]|number_format : null %}
         {% set tableRowNum = key|split('f')|length is same as(2) ? key|split('f')[1]|number_format : null %}
-        {#{% set color = tableColNum is same as('0') or tableRowNum is same as('0') ? 'white-80' : 'black-80' %}#}
-        {% set color = 'black-80' %}
+        {% set color = 'black-90' %}
 
         {% if key in pageTextReplaces|keys %}
             {% set wildcard %}
@@ -50,7 +49,7 @@
                 {% set class = class ~ ' cl' %}
                 {% set hadMedia = false %}
             {% endif %}
-            {% if textNum <= mediaItem['till']|number_format and (isOption or mediaItem['alignment'] is same as('dch') or mediaItem['alignment'] is same as('izq')) %}
+            {% if textNum <= mediaItem['till']|number_format and (isOption or mediaItem['align'] is same as('dch') or mediaItem['align'] is same as('izq')) %}
                 {% set class = class ~ ' dib ' ~ mediaItem['offset'] %}
                 {% if textNum == mediaItem['till']|number_format %}
                     {% set hadMedia = true %}
@@ -66,29 +65,8 @@
         {% endif %}
         {% if tableRowNum is not null %}
             {% set isTable = true %}
-            {% set cellClass = 'cell' ~ (isOption or parentRowNum is not defined ? ' tc v-mid' : '') %}
             {% set column = column + 1 %}
-            {% if tableRowNum is same as('0') %}
-                {% set columsArray = columsArray|merge({('c' ~ column): key}) %}
-                {% if text is not empty or isOption %}
-                    {% set cellClass = cellClass ~ ' bb br bt bw1' %}
-                {% elseif text is empty %}
-                    {% set cellClass = cellClass ~ ' bb br bw1' %}
-                {% endif %}
-            {% elseif text is not empty or isOption %}
-                {% set cellClass = tableRowNum > parentRowNum ? cellClass ~ ' bl' : cellClass %}
-                {% set cellClass = cellClass ~ ' bb br bw1' %}
-            {% endif %}
-
-            {% if parentRowNum is not defined %}
-                <div class="{{ class }} mv1 mv2-l table"><div class="row header"><div class="{{ cellClass }}">
-            {% elseif tableRowNum > parentRowNum %}
-                {% set column = 1 %}
-                </div><div class="row"><div class="{{ cellClass }}">
-            {% elseif tableRowNum is same as('0') or tableRowNum is same as(parentRowNum) %}
-                <div class="{{ cellClass }}">
-            {% endif %}
-
+            {% include 'partial/page-table-cell.html.twig' %}
             {% if isOption %}
                 {% include 'partial/page-option.html.twig' %}
             {% else %}
@@ -99,7 +77,6 @@
                     {% set parent = key %}
                 {% endif %}
             {% endif %}
-
             {% set parentRowNum = tableRowNum %}
 
         {% else %}
@@ -107,7 +84,7 @@
             {% set class = isTitleText ? class ~ ' tc' : class %}
             {% if isItemText %}
                 {% set class = textNum is same as('1') ? class ~ ' pb1' : class ~ ' pt3 pb1' %}
-                {% set text = '<span class="white bg-black-80 ph1 br2">' ~ numbers[key] ~ '</span> ' ~ text %}
+                {% set text = '<span class="white bg-black-90 ph1 br2">' ~ numbers[key] ~ '</span> ' ~ text %}
             {% else %}
                 {% set class = textNum is same as('1') ? class ~ ' pb1' : class ~ ' pv1' %}
             {% endif %}
@@ -138,15 +115,15 @@
     {% if rightButtonText is defined and rightButtonText is not empty and leftButtonText is defined and leftButtonText is not empty %}
         <div class="cb tc{% if isOption and not isTable %} pt3{% elseif hadMedia %} pt1{% else %} pt2{% endif %}">
             <div class="fl w-100 w-50-ns tc">
-                <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-80 b--black-80 bg-white br2 br3-l pointer pv1 ph2 left-button">{{ leftButtonText }}</button>
+                <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-90 b--black-90 bg-white br2 br3-l pointer pv1 ph2 left-button">{{ leftButtonText }}</button>
             </div>
             <div class="dib w-100 w-50-ns tc">
-                <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-80 b--black-80 bg-white br2 br3-l pointer pv1 ph2 right-button">{{ rightButtonText }}</button>
+                <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-90 b--black-90 bg-white br2 br3-l pointer pv1 ph2 right-button">{{ rightButtonText }}</button>
             </div>
         </div>
     {% elseif rightButtonText is defined and rightButtonText is not empty %}
         <div class="cb tc{% if isOption and not isTable %} pt3{% elseif hadMedia %} pt1{% else %} pt2{% endif %}">
-            <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-80 b--black-80 bg-white br2 br3-l pointer pv1 ph2 right-button">{{ rightButtonText }}</button>
+            <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-90 b--black-90 bg-white br2 br3-l pointer pv1 ph2 right-button">{{ rightButtonText }}</button>
         </div>
     {% endif %}
 </form>

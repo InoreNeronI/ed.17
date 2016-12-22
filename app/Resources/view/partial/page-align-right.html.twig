@@ -1,5 +1,5 @@
 {% if not isOption and mediaItem is not null %}
-    {% if mediaItem['alignment'] is same as('cen') and mediaItem['since'] == textNum and mediaItem['till']|number_format == textNum %}
-        {% include 'partial/sample/' ~ mediaName ~ '-sample.html.twig' with { 'cssClassContent': color|default('black-80') ~ ' ' ~ mediaItem['width'] } %}
+    {% if mediaItem['align'] is same as('cen') and mediaItem['since'] == textNum and mediaItem['till']|number_format == textNum %}
+        {% include 'partial/sample/' ~ mediaName ~ '-sample.html.twig' with { 'cssClassContent': color|default('black-90') ~ ' ' ~ mediaItem['width'] } %}
     {% endif %}
 {% endif %}
