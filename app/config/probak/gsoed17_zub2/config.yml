@@ -1,0 +1,40 @@
+
+pageImages:
+
+pageTitles: # All centered texts' codes
+  - p00b_t01
+  - p01b_t01
+  - p03b_t001
+  - p06b_t01
+  - p09b_t01
+  - p10b_t01
+  - p10b_t24
+
+pageTextReplaces:
+
+pageAreaWidths:
+  p00:  # Page affected with any custom side-width
+    b: 100  # side-letter: window-relative-width-percentage
+  p01:
+    b: 100
+  p02:
+    b: 100
+  p03:
+    b: 100
+  p04:  
+    b: 100
+  p05:  
+    b: 100
+  p06:  
+    b: 100
+  p07:  
+    b: 100
+  p08:  
+    b: 100
+  p09:  
+    b: 100
+  p10:  
+    b: 100
+
+# TODO: being dynamic
+totalPages: 10  # The final total pages
