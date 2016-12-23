@@ -1,7 +1,7 @@
 
 pageImages:
   p00:  # Page where any image's being show
-    - p00b_cen_t10_t10_50_img.png
+    - p00b_cen_t10_t10_30_img.png
   p01:
     - p01a_izq_t01_t02_25_img.png
   p02:
