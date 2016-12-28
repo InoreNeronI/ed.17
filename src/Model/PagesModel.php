@@ -8,7 +8,13 @@ namespace App\Model;
 final class PagesModel extends CredentialsModel
 {
     /** @var array */
+    private static $mediaLibrary = ['audio' => ['ext' => ['mp3', 'ogg']], 'img' => ['ext' => ['jpg', 'png']], 'video' => ['ext' => ['3gp', 'mp4']]];
+    /** @var array */
+    private static $pageAreaPercents = ['a' => '50', 'b' => '50'];
+    /** @var array */
     private static $pageTexts = ['code' => '', 'numbers' => [], 'texts' => []];
+    /** @var array */
+    private static $widthStyle = [];
 
     /**
      * @param array  $args
@@ -52,45 +58,43 @@ final class PagesModel extends CredentialsModel
      * @param array  $args
      * @param string $page
      * @param string $dataDir
-     * @param array  $defaultPageAreaPercents
      *
      * @return array
      *
      * @throws \Exception
      */
-    public function loadPageData(array $args, $page, $dataDir = DATA_DIR, $defaultPageAreaPercents = ['a' => '50', 'b' => '50'])
+    public function loadPageData(array $args, $page, $dataDir = DATA_DIR)
     {
+        /** @var array static::$widthStyle */
+        static::$widthStyle = \def::styling()['width'];
+
         /** @var string $data_folder */
         $data_folder = $dataDir.'/'.$args['code'];
+
         /** @var array $config */
         $config = parseConfig($data_folder, 'config');
         if (empty($config)) {
             throw new \Exception(sprintf('The configuration file `%s` is missing in the target: %s', 'config.yml', $data_folder));
         }
+
         /** @var array $options */
         $options = parseConfig($data_folder, 'options');
         if (empty($options)) {
             throw new \Exception(sprintf('The options file `%s` is missing in the target: %s', 'options.yml', $data_folder));
         }
+
+        // Sides' width
         /** @var array $pageWidth */
-        $pageWidth = empty($config['pageAreaWidths']['p'.$page]) ? $defaultPageAreaPercents : $config['pageAreaWidths']['p'.$page];
-        /** @var array $widthStyling */
-        $widthStyling = \def::styling()['width'];
-        /** @var array $pageAreas */
-        $pageAreas = $defaultPageAreaPercents;
+        $pageWidth = empty($config['pageAreaWidths']['p'.$page]) ? static::$pageAreaPercents : $config['pageAreaWidths']['p'.$page];
         /** @var string|null $pageAreaSkip */
         $pageAreaSkip = null;
-        /** @var array $pageTextReplaces */
-        $pageTextReplaces = empty($config['pageTextReplaces']['p'.$page]) ? [] : $config['pageTextReplaces']['p'.$page];
-
-        // Sides' widths
-        foreach ($pageWidth as $sideLetter => $sideWith) {
-            if (in_array($sideWith, array_keys($widthStyling))) {
+         foreach ($pageWidth as $sideLetter => $sideWith) {
+            if (in_array($sideWith, array_keys(static::$widthStyle))) {
                 if ($sideWith === 100) {
-                    unset($pageAreas[$sideLetter]);
-                    $pageAreaSkip = array_keys($pageAreas)[0];
+                    unset(static::$pageAreaPercents[$sideLetter]);
+                    $pageAreaSkip = array_keys(static::$pageAreaPercents)[0];
                 }
-                $pageWidth[$sideLetter] = $widthStyling[$sideWith];
+                $pageWidth[$sideLetter] = static::$widthStyle[$sideWith];
             }
         }
 
@@ -98,58 +102,28 @@ final class PagesModel extends CredentialsModel
         $pageAreaSkip !== 'a' ? $this->loadData($args, $page, 'a') : null;
         $pageAreaSkip !== 'b' ? $this->loadData($args, $page, 'b') : null;
 
-        // Audios
-        $audios = [];
-        foreach (empty($config['pageAudios']['p'.$page]) ? [] : $config['pageAudios']['p'.$page] as $audio) {
-            $audioData = explode('.', $audio);
-            $audioData = explode('_', $audioData[0]);
-            $pathMp3 = stripos($audio, 'mp3') ? '/media/'.$args['code'].'/'.$audio : '';
-            $pathOgg = stripos($audio, 'ogg') ? '/media/'.$args['code'].'/'.$audio : '';
-            if ($audioData[5] === $args['lengua'] || $audioData[5] === 'audio') {
-                $side = str_replace('p'.$page, '', $audioData[0]);
-                $size = $args['sizes'][$audioData[4]];
-                $width = $args['sizes']['levels']['percentages'][$size];
-                $offset = 100 - $width;
-                $audios[$side][$audioData[0].'_'.$audioData[2]] = [
-                    'align' => $audioData[1],
-                    'offset' => $widthStyling[isset($widthStyling[$offset]) ? $offset : 'auto'],
-                    'path' => ['mp3' => $pathMp3, 'ogg' => $pathOgg],
-                    'since' => intval(str_replace('t', '', $audioData[2])),
-                    'till' => intval(str_replace('t', '', $audioData[3])),
-                    'width' => $widthStyling[isset($widthStyling[$width]) ? $width : 'auto'],
-                    'size' => $args['sizes']['levels'][$size],
-                ];
-            }
+        // Parse media
+        $mediaLibrary = [];
+        foreach (empty($config['pageAudios']['p'.$page]) ? [] : $config['pageAudios']['p'.$page] as $media) {
+            $mediaLibrary = self::parseMedia($args, $page, 'audio', $media, $mediaLibrary);
         }
-
-        // Images
-        $images = [];
-        foreach (empty($config['pageImages']['p'.$page]) ? [] : $config['pageImages']['p'.$page] as $image) {
-            $imageData = explode('.', $image);
-            $imageData = explode('_', $imageData[0]);
-            if ($imageData[5] === $args['lengua'] || $imageData[5] === 'img') {
-                $side = str_replace('p'.$page, '', $imageData[0]);
-                $offset = 100 - $imageData[4];
-                $images[$side][$imageData[0].'_'.$imageData[2]] = [
-                    'align' => $imageData[1],
-                    'offset' => $widthStyling[isset($widthStyling[$offset]) ? $offset : 'auto'],
-                    'path' => '/images/'.$args['code'].'/'.$image,
-                    'since' => intval(str_replace('t', '', $imageData[2])),
-                    'till' => intval(str_replace('t', '', $imageData[3])),
-                    'width' => $widthStyling[isset($widthStyling[$imageData[4]]) ? $imageData[4] : 'auto'],
-                ];
-            }
+        foreach (empty($config['pageImages']['p'.$page]) ? [] : $config['pageImages']['p'.$page] as $media) {
+            $mediaLibrary = self::parseMedia($args, $page, 'img', $media, $mediaLibrary);
+        }
+        foreach (empty($config['pageVideos']['p'.$page]) ? [] : $config['pageVideos']['p'.$page] as $media) {
+            $mediaLibrary = self::parseMedia($args, $page, 'video', $media, $mediaLibrary);
         }
 
         // Replaces width
+        /** @var array $pageTextReplaces */
+        $pageTextReplaces = empty($config['pageTextReplaces']['p'.$page]) ? [] : $config['pageTextReplaces']['p'.$page];
         foreach ($pageTextReplaces as $code => $replace) {
-            $pageTextReplaces[$code]['parameters']['width'] = $widthStyling[isset($pageTextReplaces[$code]['parameters']['width']) ? $pageTextReplaces[$code]['parameters']['width'] : 'auto'];
+            $pageTextReplaces[$code]['parameters']['width'] = static::$widthStyle[isset($pageTextReplaces[$code]['parameters']['width']) ? $pageTextReplaces[$code]['parameters']['width'] : 'auto'];
         }
 
         return array_merge($args, static::$pageTexts, [
             'page' => $page,
-            'pageAudios' => $audios,
-            'pageImages' => $images,
+            'pageMedia' => empty($mediaLibrary) ? [] : $mediaLibrary,
             'pageOptions' => empty($options['p'.$page]) ? [] : $options['p'.$page],
             'pageTitles' => empty($config['pageTitles']) ? [] : $config['pageTitles'],
             'pageTextReplaces' => $pageTextReplaces,
@@ -157,5 +131,48 @@ final class PagesModel extends CredentialsModel
             'pageAreaSkip' => $pageAreaSkip,
             'totalPages' => $config['totalPages'],
         ]);
+    }
+
+    /**
+     * @param array $args
+     * @param string $page
+     * @param string $tag
+     * @param string $media
+     * @param array $mediaLibrary
+     * @return array
+     */
+    private static function parseMedia(array $args, $page, $tag, $media, array $mediaLibrary)
+    {
+        $mediaData = explode('.', $media);
+        $mediaExt = strtolower($mediaData[1]);
+        $mediaData = explode('_', $mediaData[0]);
+        if (in_array($mediaExt, static::$mediaLibrary[$tag]['ext']) && ($mediaData[5] === $args['lengua'] || $mediaData[5] === $tag)) {
+            $baseDir = $tag === 'img' ? '/images/' : '/media/';
+            $offset = 100 - $mediaData[4];
+            $side = str_replace('p' . $page, '', $mediaData[0]);
+            if ($tag === 'audio') {
+                $path = [];
+                foreach (static::$mediaLibrary['audio']['ext'] as $ext) {
+                    $path[$ext] = $mediaExt === $ext ? $baseDir.$args['code'].'/'.$media : '';
+                }
+                $size = $args['sizes']['levels'][$args['sizes'][$mediaData[4]]];
+                $width = $args['sizes']['percentages'][$args['sizes'][$mediaData[4]]];
+            } else/*if ($tag === 'img' || $tag === 'video')*/ {
+                $path = $baseDir.$args['code'].'/'.$media;
+                $size = null;
+                $width = $mediaData[4];
+            }
+            $mediaLibrary[$side][$tag][$mediaData[0] . '_' . $mediaData[2]] = [
+                'align' => $mediaData[1],
+                'offset' => static::$widthStyle[isset(static::$widthStyle[$offset]) ? $offset : 'auto'],
+                'path' => $path,
+                'since' => intval(str_replace('t', '', $mediaData[2])),
+                'size' => $size,
+                'tag' => $tag,
+                'till' => intval(str_replace('t', '', $mediaData[3])),
+                'width' => static::$widthStyle[isset(static::$widthStyle[$width]) ? $width : 'auto'],
+            ];
+        }
+        return $mediaLibrary;
     }
 }

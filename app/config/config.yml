@@ -9,7 +9,7 @@ paths:
     # Data files' path relative to '/app' folder
     data_dir: /config/probak
     # Public files' path relative to '/app' folder
-    #public_dir: /Resources/public
+    public_dir: /public
     # Template files' path relative to '/app' folder
     template_dir: /Resources/view
     # Translation files' path relative to '/app' folder

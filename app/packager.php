@@ -20,7 +20,7 @@ class packager
     private static $version;
 
     /** @var array */
-    private static $versions = ['backports' => 'b', 'cooking' => 'c', 'stable' => 's', 'tiny' => 't', 'undigest' => 'u', 'first' => '1', 'second' => '2', 'third' => '3'];
+    private static $branches = ['backports' => 'b', 'cooking' => 'c', 'stable' => 's', 'tiny' => 't', 'undigest' => 'u', 'first' => '1', 'second' => '2', 'third' => '3'];
 
     /**
      * @param string $usage
@@ -136,7 +136,7 @@ class packager
         $tmp = sys_get_temp_dir().DIRECTORY_SEPARATOR.$package_name.($dependencies ? '_dep' : '').'.tmp';
         $query = $url.'?';
         $query .= $dependencies ? 'depends='.$package_name : 'package='.$package_name;
-        $query .= '&version='.static::$versions[static::$version];
+        $query .= '&version='.static::$branches[static::$version];
 
         if (is_readable($tmp) && $no_cache === false) {
             curl_close($ch);

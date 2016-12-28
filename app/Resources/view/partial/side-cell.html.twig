@@ -1,7 +1,11 @@
 
-{% set cellClass = 'dtc v-mid ' ~ (isOption or parentRowNum is not defined ? 'pv1 tc' : 'ph2 pv1') %}
+{% set cellClass = 'dtc ph2 pv1 v-mid' %}
+
+{% if tableRowNum is same as('0') or (isOption and text is empty) %}
+    {% set cellClass = cellClass ~ ' tc' %}
+{% endif %}
+
 {% if tableRowNum is same as('0') %}
-    {% set columsArray = columsArray|merge({('c' ~ column): key}) %}
     {% if text is not empty or isOption %}
         {% if column == 1 %}
             {% set cellClass = cellClass ~ ' bl' %}
@@ -15,11 +19,10 @@
     {% set cellClass = cellClass ~ ' bb br bw1' %}
 {% endif %}
 
-{% if parentRowNum is not defined %}
+{% if parentRowNum is not defined or parentRowNum is null %}
     <div class="dt {{ class }} mv1 mv2-l w-100"><div class="dt-row"><div class="{{ cellClass }}">
-    {% elseif tableRowNum > parentRowNum %}
-        {% set column = 1 %}
-        </div><div class="dt-row"><div class="{{ cellClass }}">
-    {% elseif tableRowNum is same as('0') or tableRowNum is same as(parentRowNum) %}
+{% elseif tableRowNum > parentRowNum %}
+    </div><div class="dt-row"><div class="{{ cellClass }}">
+{% elseif tableRowNum is same as('0') or tableRowNum is same as(parentRowNum) %}
     <div class="{{ cellClass }}">
 {% endif %}

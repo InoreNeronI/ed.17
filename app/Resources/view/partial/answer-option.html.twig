@@ -26,13 +26,13 @@
 
 {% elseif isSimpleOption %}
     {% set inputClass = fontClass ~ ' pointer bn mt1' %}
-    {% set name = tableColNum is null ? name : name ~ '[' ~ columsArray['c' ~ column] ~ ']' ~ '[' ~ column ~ ']' %}
+    {% set name = tableColNum is null ? name : name ~ '[' ~ column ~ ']' %}
     {% set type = 'radio' %}
     {% set value = tableColNum is null ? (textNum|number_format - parent|split('t')[1]|number_format) : tableColNum %}
 
 {% elseif isMultipleOption %}
     {% set inputClass = fontClass ~ ' pointer bn mt1' %}
-    {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ columsArray['c' ~ column] ~ ']' ~ '[' ~ key ~ ']' %}
+    {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ column ~ ']' ~ '[' ~ key ~ ']' %}
     {% set type = 'checkbox' %}
     {% set value = tableColNum is null ? (textNum|number_format - parent|split('t')[1]|number_format) : tableColNum %}
 
@@ -41,7 +41,7 @@
     {% set inputClass = isLibreOptionLarge ? inputClass ~ ' w-' ~ sizes.percentages['l'] : inputClass %}
     {% set inputClass = isLibreOptionSmall ? inputClass ~ ' w-' ~ sizes.percentages['s'] : inputClass %}
     {% set inputClass = isLibreOption ? inputClass ~ ' w-' ~ sizes.percentages['m'] : inputClass %}
-    {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ columsArray['c' ~ column] ~ ']' ~ '[' ~ key ~ ']' %}
+    {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ column ~ ']' ~ '[' ~ key ~ ']' %}
     {% set type = 'text' %}
     {% set value = '' %}
 {% endif %}
@@ -50,8 +50,8 @@
     {{ value }}
     {% include 'partial/fields/input.html.twig' %}
     {% if text is not empty %}{{ text }}{% endif %}
-    {% if mediaItem is not null and mediaItem['align'] is same as('cen') and mediaItem['since'] == textNum and mediaItem['till'] == textNum %}
-        {% include 'partial/sample/' ~ mediaName ~ '-sample.html.twig' with { 'cssClassContent': mediaItem['width'], 'src': mediaItem['path'] } %}
+    {% if media is not null and media['align'] is same as('cen') and media['since'] == textNum and media['till'] == textNum %}
+        {% include 'partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContent': media['width'], 'src': media['path'] } %}
     {% endif %}
 {% endset %}
 

@@ -5,23 +5,21 @@
     <input name="flabel" type="hidden" value="{{ flabel }}" />
     <input name="referrer" type="hidden" value="{{ page }}" />
 
-    {% set column = 0 %}
-    {% set columsArray = {} %}
-    {% set hadMedia = false %}
-    {% set mediaItem = null %}
+    {% set isMedia = false %}
     {% set isOption = false %}
     {% set isTable = false %}
-    {% for key, text in texts %}
+    {% set media = null %}
+    {% for key, text in texts[side] %}
         {% set key = key|trim %}
         {% set text = text|trim %}
-        {% if key in audios|keys %}
-            {% set mediaItem = audios[key] %}
-            {% set mediaName = 'audio' %}
-        {% elseif key in images|keys %}
-            {% set mediaItem = images[key] %}
-            {% set mediaName = 'image' %}
+        {% if pageMedia[side]['audio'] is defined and key in pageMedia[side]['audio']|keys %}
+            {% set media = pageMedia[side]['audio'][key] %}
+        {% elseif pageMedia[side]['img'] is defined and key in pageMedia[side]['img']|keys %}
+            {% set media = pageMedia[side]['img'][key] %}
+        {% elseif pageMedia[side]['video'] is defined and key in pageMedia[side]['video']|keys %}
+            {% set media = pageMedia[side]['video'][key] %}
         {% endif %}
-        {% set isItemText = key in numbers|keys %}
+        {% set isItemText = key in numbers[side]|keys %}
         {% set isPlainText = pageOptions['text'] is defined ? key in pageOptions['text'] : false %}
         {% set isTitleText = key in pageTitles %}
         {% set isSimpleOption = pageOptions['simple'] is defined ? key in pageOptions['simple'] : false %}
@@ -44,28 +42,31 @@
             {% set text = text|format(wildcard) %}
         {% endif %}
 
-        {% if mediaItem is not null %}
-            {% if hadMedia %}
+        {% if media is not null %}
+            {% if isMedia %}
                 {% set class = class ~ ' cl' %}
-                {% set hadMedia = false %}
+                {% set isMedia = false %}
             {% endif %}
-            {% if textNum <= mediaItem['till']|number_format and (isOption or mediaItem['align'] is same as('dch') or mediaItem['align'] is same as('izq')) %}
-                {% set class = class ~ ' dib ' ~ mediaItem['offset'] %}
-                {% if textNum == mediaItem['till']|number_format %}
-                    {% set hadMedia = true %}
+            {% if textNum <= media['till']|number_format and (isOption or media['align'] is same as('dch') or media['align'] is same as('izq')) %}
+                {% set class = class ~ ' dib ' ~ media['offset'] %}
+                {% if textNum == media['till']|number_format %}
+                    {% set isMedia = true %}
                 {% endif %}
-            {% elseif textNum > mediaItem['till']|number_format %}
-                {% set mediaItem = null %}
+            {% elseif textNum > media['till']|number_format %}
+                {% set media = null %}
             {% endif %}
-            {% include 'partial/page-align-left.html.twig' %}
+            {% include 'partial/media-align-horiz.html.twig' %}
         {% endif %}
 
         {% if tableColNum is not null %}
             {% set tableRowNum = tableColNum %}
         {% endif %}
         {% if tableRowNum is not null %}
-            {% set isTable = true %}
-            {% set column = column + 1 %}
+            {% if parentRowNum is not defined or parentRowNum is defined and parentRowNum is not null and tableRowNum > parentRowNum %}
+                {% set column = 1 %}
+            {% else %}
+                {% set column = column + 1 %}
+            {% endif %}
             {% include 'partial/page-table-cell.html.twig' %}
             {% if isOption %}
                 {% include 'partial/page-option.html.twig' %}
@@ -77,6 +78,7 @@
                     {% set parent = key %}
                 {% endif %}
             {% endif %}
+            {% set isTable = true %}
             {% set parentRowNum = tableRowNum %}
 
         {% else %}
@@ -84,7 +86,7 @@
             {% set class = isTitleText ? class ~ ' tc' : class %}
             {% if isItemText %}
                 {% set class = textNum is same as('1') ? class ~ ' pb1' : class ~ ' pt3 pb1' %}
-                {% set text = '<span class="white bg-black-90 ph1 br2">' ~ numbers[key] ~ '</span> ' ~ text %}
+                {% set text = '<span class="white bg-black-90 ph1 br2">' ~ numbers[side][key] ~ '</span> ' ~ text %}
             {% else %}
                 {% set class = textNum is same as('1') ? class ~ ' pb1' : class ~ ' pv1' %}
             {% endif %}
@@ -105,25 +107,26 @@
         {% endif %}
         </div>
 
-        {% if mediaItem is not null %}
-            {% include 'partial/page-align-right.html.twig' %}
+        {% if media is not null %}
+            {% include 'partial/media-align-cen.html.twig' %}
         {% endif %}
     {% endfor %}
 
     {% if isTable %}</div></div>{% endif %}
+    {% set buttonClass = buttonClass|default('f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-90 b--black-90 bg-white br2 br3-l pointer pv1 ph2') %}
 
     {% if rightButtonText is defined and rightButtonText is not empty and leftButtonText is defined and leftButtonText is not empty %}
-        <div class="cb tc{% if isOption and not isTable %} pt3{% elseif hadMedia %} pt1{% else %} pt2{% endif %}">
+        <div class="cb tc{% if isOption and not isTable %} pt3{% elseif isMedia %} pt1{% else %} pt2{% endif %}">
             <div class="fl w-100 w-50-ns tc">
-                <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-90 b--black-90 bg-white br2 br3-l pointer pv1 ph2 left-button">{{ leftButtonText }}</button>
+                <button class="{{ buttonClass }} left-button">{{ leftButtonText }}</button>
             </div>
             <div class="dib w-100 w-50-ns tc">
-                <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-90 b--black-90 bg-white br2 br3-l pointer pv1 ph2 right-button">{{ rightButtonText }}</button>
+                <button class="{{ buttonClass }} right-button">{{ rightButtonText }}</button>
             </div>
         </div>
     {% elseif rightButtonText is defined and rightButtonText is not empty %}
-        <div class="cb tc{% if isOption and not isTable %} pt3{% elseif hadMedia %} pt1{% else %} pt2{% endif %}">
-            <button class="f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-90 b--black-90 bg-white br2 br3-l pointer pv1 ph2 right-button">{{ rightButtonText }}</button>
+        <div class="cb tc{% if isOption and not isTable %} pt3{% elseif isMedia %} pt1{% else %} pt2{% endif %}">
+            <button class="{{ buttonClass }} right-button">{{ rightButtonText }}</button>
         </div>
     {% endif %}
 </form>
