@@ -3,19 +3,19 @@
 {% set name = parent %}
 
 {% if isSimpleOption and tableRowNum is null %}
-    {% set inputClass = 'pointer bn mt1' %}
+    {% set inputClass = 'bn mt1 pointer' %}
     {% set name = parent %}
     {% set type = 'radio' %}
     {% set value = (textNum|number_format - parent|split('t')[1]|number_format) %}
 
 {% elseif isMultipleOption and tableRowNum is null %}
-    {% set inputClass = 'pointer bn mt1' %}
+    {% set inputClass = 'bn mt1 pointer' %}
     {% set name = parent ~ '[' ~ key ~ ']' %}
     {% set type = 'checkbox' %}
     {% set value = (textNum|number_format - parent|split('t')[1]|number_format) %}
 
 {% elseif (isLibreOptionLarge or isLibreOptionSmall or isLibreOption) and tableRowNum is null %}
-    {% set inputClass = 'pl1 br2-ns br--left-ns' %}
+    {% set inputClass = 'br2-ns br--left-ns pl1' %}
     {% set inputClass = isLibreOptionLarge ? inputClass ~ ' w-' ~ sizes.percentages['l'] : inputClass %}
     {% set inputClass = isLibreOptionSmall ? inputClass ~ ' w-' ~ sizes.percentages['s'] : inputClass %}
     {% set inputClass = isLibreOption ? inputClass ~ ' w-' ~ sizes.percentages['m'] : inputClass %}
@@ -24,19 +24,19 @@
     {% set value = '' %}
 
 {% elseif isSimpleOption %}
-    {% set inputClass = 'pointer bn mt1' %}
+    {% set inputClass = 'bn mt1 pointer' %}
     {% set name = tableColNum is null ? name : name ~ '[' ~ column ~ ']' %}
     {% set type = 'radio' %}
     {% set value = tableColNum is null ? (textNum|number_format - parent|split('t')[1]|number_format) : tableColNum %}
 
 {% elseif isMultipleOption %}
-    {% set inputClass = 'pointer bn mt1' %}
+    {% set inputClass = 'bn mt1 pointer' %}
     {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ column ~ ']' ~ '[' ~ key ~ ']' %}
     {% set type = 'checkbox' %}
     {% set value = tableColNum is null ? (textNum|number_format - parent|split('t')[1]|number_format) : tableColNum %}
 
 {% elseif isLibreOptionLarge or isLibreOptionSmall or isLibreOption %}
-    {% set inputClass = 'pl1 br2-ns br--left-ns' %}
+    {% set inputClass = 'br2-ns br--left-ns pl1' %}
     {% set inputClass = isLibreOptionLarge ? inputClass ~ ' w-' ~ sizes.percentages['l'] : inputClass %}
     {% set inputClass = isLibreOptionSmall ? inputClass ~ ' w-' ~ sizes.percentages['s'] : inputClass %}
     {% set inputClass = isLibreOption ? inputClass ~ ' w-' ~ sizes.percentages['m'] : inputClass %}

@@ -1,5 +1,5 @@
 
-<form class="min-h-100 mw7 center pa3 br2-ns ba b--black-10" action="{{ formAction }}" accept-charset="utf-8" method="{{ formMethod|default('post') }}">
+<form class="b--black-10 ba br2-ns center min-h-100 mw7 pa1 pa2-m pa3-l" action="{{ formAction }}" accept-charset="utf-8" method="{{ formMethod|default('post') }}">
 
     {% include 'partial/fields/hidden.html.twig' %}
     <input name="flabel" type="hidden" value="{{ flabel }}" />
@@ -105,10 +105,10 @@
 
     {% if rightButtonText is defined and rightButtonText is not empty and leftButtonText is defined and leftButtonText is not empty %}
         <div class="cb{% if isOption and not isTable %} pt3{% elseif isMedia %} pt1{% else %} pt2{% endif %} tc">
-            <div class="fl w-100 w-50-ns tc">
+            <div class="fl tc w-100 w-50-ns">
                 <button class="{{ buttonClass }} left-button">{{ leftButtonText }}</button>
             </div>
-            <div class="dib w-100 w-50-ns tc">
+            <div class="dib tc w-100 w-50-ns">
                 <button class="{{ buttonClass }} right-button">{{ rightButtonText }}</button>
             </div>
         </div>
