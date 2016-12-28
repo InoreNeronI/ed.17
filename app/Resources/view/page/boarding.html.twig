@@ -1,12 +1,12 @@
 {% extends 'layout/form.html.twig' %}
 
-{% block title title ~ ' :: ' ~ course|title ~ ' :: ' ~ mainTitle|title %}
+{% block title title ~ ' :: ' ~ course ~ ' :: ' ~ mainTitle|title %}
 
 {% block content_form %}
     <article class="mw6 mw7-m mw7-ns br4 hidden ba b--black-10 fr ma4 dt w-100 w-75-m w-75-ns">
         <div class="pa2 tc">
             {% for key, value in actions %}
-                <button class="link br3 ph3 pv2 mb2 dib{{ (key is same as(table)) ? ' b bg-light-blue dim pointer black' : ' bg-transparent white-80 ba' }} f5 f4-l lh-copy measure mh1 mv2 pv2 w-30-ns w-40-m" name="{{ key }}"{{ (key is not same as(table)) ? ' disabled="disabled"' }}>
+                <button class="{{ fontClass ~ (key is same as(table) ? ' b bg-navy b--dark-blue dim pointer ' : ' arrow ba bg-transparent ') ~ colorInverse }} br1 br2-l lh-copy measure mh1 mv2 ph3 pv2 w-30-ns w-40-m" name="{{ key }}"{{ (key is not same as(table)) ? ' disabled="disabled"' }}>
                     {{ value }}
                 </button>
                 {% if (key is same as(table)) %}

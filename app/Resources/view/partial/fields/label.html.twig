@@ -1,2 +1,1 @@
-{% set for = for is defined ? ' for="' ~ for ~ '"' : '' %}
-<label class="{{ labelClass|default('dib pointer pl2 mr1 pa0 f5 f4-l black-90') }}"{{ for }}>{{ text }}</label>
+<label class="{{ fontClass ~ labelClass|default('dib pointer mr1') }}"{{ for is defined ? ' for="' ~ for ~ '"' : '' }}>{{ text }}</label>

@@ -11,7 +11,10 @@
     {% set media = null %}
     {% for key, text in texts[side] %}
         {% set key = key|trim %}
-        {% set text = text|trim %}
+        {% set isItemText = key in numbers[side]|keys %}
+        {% set isPlainText = pageOptions['text'] is defined ? key in pageOptions['text'] : false %}
+        {% set isTitleText = key in pageTitles %}
+        {% set fontClass = isTitleText ? fontClassTitle : fontClassDefault %}
         {% if pageMedia[side]['audio'] is defined and key in pageMedia[side]['audio']|keys %}
             {% set media = pageMedia[side]['audio'][key] %}
         {% elseif pageMedia[side]['img'] is defined and key in pageMedia[side]['img']|keys %}
@@ -19,9 +22,6 @@
         {% elseif pageMedia[side]['video'] is defined and key in pageMedia[side]['video']|keys %}
             {% set media = pageMedia[side]['video'][key] %}
         {% endif %}
-        {% set isItemText = key in numbers[side]|keys %}
-        {% set isPlainText = pageOptions['text'] is defined ? key in pageOptions['text'] : false %}
-        {% set isTitleText = key in pageTitles %}
         {% set isSimpleOption = pageOptions['simple'] is defined ? key in pageOptions['simple'] : false %}
         {% set isLibreOption = pageOptions['libre'] is defined ? key in pageOptions['libre'] : false %}
         {% set isLibreOption = pageOptions['libre-m'] is defined ? key in pageOptions['libre-m'] : isLibreOption %}
@@ -33,8 +33,8 @@
         {% set textNum = key|split('t')[1]|number_format %}
         {% set tableColNum = key|split('c')|length is same as(2) ? key|split('c')[1]|number_format : null %}
         {% set tableRowNum = key|split('f')|length is same as(2) ? key|split('f')[1]|number_format : null %}
-        {% set color = 'black-90' %}
 
+        {% set text = text|trim %}
         {% if key in pageTextReplaces|keys %}
             {% set wildcard %}
                 {% include pageTextReplaces[key]['template'] with pageTextReplaces[key]['parameters'] %}
@@ -55,7 +55,7 @@
             {% elseif textNum > media['till']|number_format %}
                 {% set media = null %}
             {% endif %}
-            {% include 'partial/media-align-horiz.html.twig' %}
+            {% include 'partial/media-horizontal.html.twig' %}
         {% endif %}
 
         {% if tableColNum is not null %}
@@ -67,12 +67,12 @@
             {% else %}
                 {% set column = column + 1 %}
             {% endif %}
-            {% include 'partial/page-table-cell.html.twig' %}
+            {% include 'partial/sideform-tablecell.html.twig' %}
             {% if isOption %}
-                {% include 'partial/page-option.html.twig' %}
+                {% include 'partial/answer-option.html.twig' %}
             {% else %}
                 {% include 'partial/fields/label.html.twig' with {
-                    'labelClass': (isItemText ? 'b f5 f4-l ' : isTitleText ? 'b f4 f3-l ' : 'f5 f4-l ') ~ 'pa0 ' ~ color
+                    'labelClass': (isItemText or isTitleText ? 'b ' : '') ~ 'pa0 ' ~ color
                 } %}
                 {% if tableColNum is null %}
                     {% set parent = key %}
@@ -97,10 +97,10 @@
             {% endif %}
             <div class="{{ class }}">
             {% if isOption %}
-                {% include 'partial/page-option.html.twig' %}
+                {% include 'partial/answer-option.html.twig' %}
             {% else %}
                 {% include 'partial/fields/label.html.twig' with {
-                    'labelClass': (isItemText ? 'b f5 f4-l ' : isTitleText ? 'b f4 f3-l ' : 'f5 f4-l ') ~ 'pa0 ' ~ color
+                    'labelClass': (isItemText or isTitleText ? 'b ' : '') ~ 'pa0 ' ~ color
                 } %}
                 {% set parent = key %}
             {% endif %}
@@ -108,12 +108,11 @@
         </div>
 
         {% if media is not null %}
-            {% include 'partial/media-align-cen.html.twig' %}
+            {% include 'partial/media-centered.html.twig' %}
         {% endif %}
     {% endfor %}
 
     {% if isTable %}</div></div>{% endif %}
-    {% set buttonClass = buttonClass|default('f5 f4-l fw6-l link dim tc ba bw1 bw2-l dib black-90 b--black-90 bg-white br2 br3-l pointer pv1 ph2') %}
 
     {% if rightButtonText is defined and rightButtonText is not empty and leftButtonText is defined and leftButtonText is not empty %}
         <div class="cb tc{% if isOption and not isTable %} pt3{% elseif isMedia %} pt1{% else %} pt2{% endif %}">

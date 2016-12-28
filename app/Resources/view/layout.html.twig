@@ -13,7 +13,14 @@
         {% block styles %}{% endblock %}
     </head>
     <body>
-        {% block content %}{% endblock %}
+    {% set color = 'black-90 ' %}
+    {% set colorInverse = 'white-90 ' %}
+    {% set fontClass = 'f6-s f5-m f4-l ' %}
+    {% set fontClassX2 = 'f5-s f4-m f3-l ' %}
+    {% set fontClassDefault = fontClass ~ color %}
+    {% set fontClassTitle = fontClassX2 ~ color %}
+    {% set buttonClass = fontClassDefault ~ buttonClass|default(color ~ ' bg-' ~ colorInverse ~ ' ba br2 br3-l bw1 bw2-l dib dim fw6-l link ph2 pointer pv1 tc ') %}
+    {% block content %}{% endblock %}
         {% block scripts %}
             <script type="text/javascript" src="/scripts/jquery/jquery.min.js"></script>
             <script type="text/javascript">

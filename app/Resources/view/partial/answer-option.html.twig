@@ -1,22 +1,21 @@
 
-{% set fontClass = 'f5 f4-l ' ~ color %}
 {% set id = parent ~ '-' ~ key %}
 {% set name = parent %}
 
 {% if isSimpleOption and tableRowNum is null %}
-    {% set inputClass = fontClass ~ ' pointer bn mt1' %}
+    {% set inputClass = 'pointer bn mt1' %}
     {% set name = parent %}
     {% set type = 'radio' %}
     {% set value = (textNum|number_format - parent|split('t')[1]|number_format) %}
 
 {% elseif isMultipleOption and tableRowNum is null %}
-    {% set inputClass = fontClass ~ ' pointer bn mt1' %}
+    {% set inputClass = 'pointer bn mt1' %}
     {% set name = parent ~ '[' ~ key ~ ']' %}
     {% set type = 'checkbox' %}
     {% set value = (textNum|number_format - parent|split('t')[1]|number_format) %}
 
 {% elseif (isLibreOptionLarge or isLibreOptionSmall or isLibreOption) and tableRowNum is null %}
-    {% set inputClass = fontClass ~ ' pl1 br2-ns br--left-ns' %}
+    {% set inputClass = 'pl1 br2-ns br--left-ns' %}
     {% set inputClass = isLibreOptionLarge ? inputClass ~ ' w-' ~ sizes.percentages['l'] : inputClass %}
     {% set inputClass = isLibreOptionSmall ? inputClass ~ ' w-' ~ sizes.percentages['s'] : inputClass %}
     {% set inputClass = isLibreOption ? inputClass ~ ' w-' ~ sizes.percentages['m'] : inputClass %}
@@ -25,19 +24,19 @@
     {% set value = '' %}
 
 {% elseif isSimpleOption %}
-    {% set inputClass = fontClass ~ ' pointer bn mt1' %}
+    {% set inputClass = 'pointer bn mt1' %}
     {% set name = tableColNum is null ? name : name ~ '[' ~ column ~ ']' %}
     {% set type = 'radio' %}
     {% set value = tableColNum is null ? (textNum|number_format - parent|split('t')[1]|number_format) : tableColNum %}
 
 {% elseif isMultipleOption %}
-    {% set inputClass = fontClass ~ ' pointer bn mt1' %}
+    {% set inputClass = 'pointer bn mt1' %}
     {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ column ~ ']' ~ '[' ~ key ~ ']' %}
     {% set type = 'checkbox' %}
     {% set value = tableColNum is null ? (textNum|number_format - parent|split('t')[1]|number_format) : tableColNum %}
 
 {% elseif isLibreOptionLarge or isLibreOptionSmall or isLibreOption %}
-    {% set inputClass = fontClass ~ ' pl1 br2-ns br--left-ns' %}
+    {% set inputClass = 'pl1 br2-ns br--left-ns' %}
     {% set inputClass = isLibreOptionLarge ? inputClass ~ ' w-' ~ sizes.percentages['l'] : inputClass %}
     {% set inputClass = isLibreOptionSmall ? inputClass ~ ' w-' ~ sizes.percentages['s'] : inputClass %}
     {% set inputClass = isLibreOption ? inputClass ~ ' w-' ~ sizes.percentages['m'] : inputClass %}
@@ -56,9 +55,9 @@
 {% endset %}
 
 {% if isSimpleOption %}
-    {% include 'partial/fields/label.html.twig' with { 'labelClass': 'dib pointer pl2 mr1 pa0 f5 f4-l ' ~ color } %}
+    {% include 'partial/fields/label.html.twig' with { 'labelClass': 'dib pointer mr1' } %}
 {% elseif isLibreOptionLarge or isLibreOptionSmall or isLibreOption %}
     {% include 'partial/fields/label.html.twig' %}
 {% elseif isMultipleOption %}
-    {% include 'partial/fields/label.html.twig' with { 'labelClass': 'dib pointer pl2 mr1 pa0 f5 f4-l ' ~ color } %}
+    {% include 'partial/fields/label.html.twig' with { 'labelClass': 'dib pointer mr1' } %}
 {% endif %}
