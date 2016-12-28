@@ -20,7 +20,7 @@
     {% set fontClassDefault = fontClass ~ color %}
     {% set fontClassTitle = fontClassX2 ~ color %}
     {% set buttonClass = fontClassDefault ~ buttonClass|default(color ~ ' bg-' ~ colorInverse ~ ' ba br2 br3-l bw1 bw2-l dib dim fw6-l link ph2 pointer pv1 tc ') %}
-    {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
         {% block scripts %}
             <script type="text/javascript" src="/scripts/jquery/jquery.min.js"></script>
             <script type="text/javascript">

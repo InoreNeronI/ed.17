@@ -68,16 +68,6 @@
                 {% set column = column + 1 %}
             {% endif %}
             {% include 'partial/sideform-tablecell.html.twig' %}
-            {% if isOption %}
-                {% include 'partial/answer-option.html.twig' %}
-            {% else %}
-                {% include 'partial/fields/label.html.twig' with {
-                    'labelClass': (isItemText or isTitleText ? 'b ' : '') ~ 'pa0 ' ~ color
-                } %}
-                {% if tableColNum is null %}
-                    {% set parent = key %}
-                {% endif %}
-            {% endif %}
             {% set isTable = true %}
             {% set parentRowNum = tableRowNum %}
 
@@ -96,14 +86,13 @@
                 </div></div>
             {% endif %}
             <div class="{{ class }}">
-            {% if isOption %}
-                {% include 'partial/answer-option.html.twig' %}
-            {% else %}
-                {% include 'partial/fields/label.html.twig' with {
-                    'labelClass': (isItemText or isTitleText ? 'b ' : '') ~ 'pa0 ' ~ color
-                } %}
-                {% set parent = key %}
-            {% endif %}
+        {% endif %}
+
+        {% if isOption %}
+            {% include 'partial/answer-option.html.twig' %}
+        {% else %}
+            {% include 'partial/fields/label.html.twig' with {'labelClass': (isItemText or isTitleText ? 'b ' : '') ~ 'pa0 ' ~ color} %}
+            {% if tableColNum is null or tableRowNum is null %}{% set parent = key %}{% endif %}
         {% endif %}
         </div>
 
@@ -115,7 +104,7 @@
     {% if isTable %}</div></div>{% endif %}
 
     {% if rightButtonText is defined and rightButtonText is not empty and leftButtonText is defined and leftButtonText is not empty %}
-        <div class="cb tc{% if isOption and not isTable %} pt3{% elseif isMedia %} pt1{% else %} pt2{% endif %}">
+        <div class="cb{% if isOption and not isTable %} pt3{% elseif isMedia %} pt1{% else %} pt2{% endif %} tc">
             <div class="fl w-100 w-50-ns tc">
                 <button class="{{ buttonClass }} left-button">{{ leftButtonText }}</button>
             </div>
@@ -124,7 +113,7 @@
             </div>
         </div>
     {% elseif rightButtonText is defined and rightButtonText is not empty %}
-        <div class="cb tc{% if isOption and not isTable %} pt3{% elseif isMedia %} pt1{% else %} pt2{% endif %}">
+        <div class="cb{% if isOption and not isTable %} pt3{% elseif isMedia %} pt1{% else %} pt2{% endif %} tc">
             <button class="{{ buttonClass }} right-button">{{ rightButtonText }}</button>
         </div>
     {% endif %}

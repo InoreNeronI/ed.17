@@ -89,7 +89,7 @@ pageTextReplaces:
       
 pageAreaWidths:
   p00:
-    a: 40
+    b: 40
   p04:
     a: 40
   p18:
