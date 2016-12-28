@@ -1,18 +1,26 @@
 <?php
 
-namespace App;
+namespace App\Kernel;
 
 use App\Event\ResponseEvent;
+use App\Routing\RouteMap;
+use Symfony\Bundle\FrameworkBundle;
+use Symfony\Component\Config;
+use Symfony\Component\DependencyInjection;
 use Symfony\Component\EventDispatcher;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpKernel;
 use Symfony\Component\Routing as BaseRouting;
 
+
 /**
- * Class Kernel.
+ * Class Kernel\Micro.
  */
-class Kernel implements HttpKernel\HttpKernelInterface
+class Micro extends HttpKernel\Kernel
 {
+    /** @var RouteMap */
+    private $routesMap;
+
     /** @var BaseRouting\Matcher\UrlMatcherInterface */
     private $matcher;
 
@@ -22,27 +30,38 @@ class Kernel implements HttpKernel\HttpKernelInterface
     /** @var EventDispatcher\EventDispatcher */
     private $dispatcher;
 
-    // Injecting in our Url Matcher and Controller Resolver. Again this injected from my DI container. If you aren't using a DI container,
-    // just pass the interface objects as arguments when you instantiate your App Kernel from inside your front controller.
+    use FrameworkBundle\Kernel\MicroKernelTrait;
 
-    /**
-     * Kernel constructor.
-     *
-     * @param BaseRouting\Matcher\UrlMatcherInterface           $matcher
-     * @param HttpKernel\Controller\ControllerResolverInterface $resolver
-     * @param EventDispatcher\EventDispatcher                   $dispatcher
-     */
-    public function __construct(BaseRouting\Matcher\UrlMatcherInterface $matcher, HttpKernel\Controller\ControllerResolverInterface $resolver, EventDispatcher\EventDispatcher $dispatcher)
+    public function registerBundles()
     {
-        $this->matcher = $matcher;
-        $this->resolver = $resolver;
-        $this->dispatcher = $dispatcher;
+        return array(new FrameworkBundle\FrameworkBundle());
     }
 
-    // Our handle method takes an HTTP Request object, the Symfony Http Kernel so we have access to the master request, and a catch flag (we'll see why below)
+    protected function configureRoutes(BaseRouting\RouteCollectionBuilder $routes)
+    {
+        $routes->import($this->routesMap);
+    }
+
+    protected function configureContainer(DependencyInjection\ContainerBuilder $c, Config\Loader\LoaderInterface $loader)
+    {
+        // framework.secret est le seul paramètre obligatoire pour le framework
+        $c->loadFromExtension('framework', ['secret' => '12345']);
+    }
+
+    /**
+     * MicroKernel constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct(DEBUG ? 'dev' : 'prod', DEBUG);
+
+        /** @var RouteMap $routesMap */
+        $this->routesMap = new RouteMap();
+    }
 
     /**
      * Handles a request.
+     * Our handle method takes an HTTP Request object, the Symfony Http Kernel so we have access to the master request, and a catch flag (we'll see why below).
      *
      * @param HttpFoundation\Request $request
      * @param int                    $type
@@ -52,6 +71,16 @@ class Kernel implements HttpKernel\HttpKernelInterface
      */
     public function handle(HttpFoundation\Request $request, $type = HttpKernel\HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
+        /** @var BaseRouting\Matcher\UrlMatcher $matcher */
+        $this->matcher = $this->routesMap->getMatcher();
+
+        /** @var HttpKernel\Controller\ControllerResolver $resolver */
+        $this->resolver = new HttpKernel\Controller\ControllerResolver();
+
+        /** @var EventDispatcher\EventDispatcher $dispatcher */
+        $this->dispatcher = new EventDispatcher\EventDispatcher();
+        $this->dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($this->matcher, new HttpFoundation\RequestStack()));
+
         // Feed the RequestContext
         $this->matcher->getContext()->fromRequest($request);
 
@@ -71,9 +100,11 @@ class Kernel implements HttpKernel\HttpKernelInterface
             // Invoke the name of the controller that is resolved from a match in our routing class
             /** @var HttpFoundation\Response $response */
             $response = call_user_func_array($controller, $arguments);
+
         } catch (BaseRouting\Exception\ResourceNotFoundException $e) {
             // No such route exception return a 404 response
-            $response = new HttpFoundation\Response(sprintf('Resource not Found: %s', $e->getMessage()), 404);
+            $response = new HttpFoundation\Response(sprintf('Resource not found: %s', $e->getMessage()), 404);
+
         } catch (\Exception $e) {
             $msg = $e->getMessage();
             // Something blew up exception return a 500 response

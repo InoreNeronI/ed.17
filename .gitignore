@@ -1,11 +1,14 @@
-/.idea
 /*-debug.log
 /*-error.log
+/.idea
 /.php_cs.cache
 /app/cache
 /app/config/database.yml
 /bin
 /dbcopy.json
-/public
 /node_modules
+/public/*
+!public/index.php
+!public/images/*.jpg
+!public/images/*.png
 /vendor

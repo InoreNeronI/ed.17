@@ -88,7 +88,7 @@ final class PagesModel extends CredentialsModel
         $pageWidth = empty($config['pageAreaWidths']['p'.$page]) ? static::$pageAreaPercents : $config['pageAreaWidths']['p'.$page];
         /** @var string|null $pageAreaSkip */
         $pageAreaSkip = null;
-         foreach ($pageWidth as $sideLetter => $sideWith) {
+        foreach ($pageWidth as $sideLetter => $sideWith) {
             if (in_array($sideWith, array_keys(static::$widthStyle))) {
                 if ($sideWith === 100) {
                     unset(static::$pageAreaPercents[$sideLetter]);
@@ -134,11 +134,12 @@ final class PagesModel extends CredentialsModel
     }
 
     /**
-     * @param array $args
+     * @param array  $args
      * @param string $page
      * @param string $tag
      * @param string $media
-     * @param array $mediaLibrary
+     * @param array  $mediaLibrary
+     *
      * @return array
      */
     private static function parseMedia(array $args, $page, $tag, $media, array $mediaLibrary)
@@ -149,7 +150,7 @@ final class PagesModel extends CredentialsModel
         if (in_array($mediaExt, static::$mediaLibrary[$tag]['ext']) && ($mediaData[5] === $args['lengua'] || $mediaData[5] === $tag)) {
             $baseDir = $tag === 'img' ? '/images/' : '/media/';
             $offset = 100 - $mediaData[4];
-            $side = str_replace('p' . $page, '', $mediaData[0]);
+            $side = str_replace('p'.$page, '', $mediaData[0]);
             if ($tag === 'audio') {
                 $path = [];
                 foreach (static::$mediaLibrary['audio']['ext'] as $ext) {
@@ -157,12 +158,12 @@ final class PagesModel extends CredentialsModel
                 }
                 $size = $args['sizes']['levels'][$args['sizes'][$mediaData[4]]];
                 $width = $args['sizes']['percentages'][$args['sizes'][$mediaData[4]]];
-            } else/*if ($tag === 'img' || $tag === 'video')*/ {
+            } else /*if ($tag === 'img' || $tag === 'video')*/ {
                 $path = $baseDir.$args['code'].'/'.$media;
                 $size = null;
                 $width = $mediaData[4];
             }
-            $mediaLibrary[$side][$tag][$mediaData[0] . '_' . $mediaData[2]] = [
+            $mediaLibrary[$side][$tag][$mediaData[0].'_'.$mediaData[2]] = [
                 'align' => $mediaData[1],
                 'offset' => static::$widthStyle[isset(static::$widthStyle[$offset]) ? $offset : 'auto'],
                 'path' => $path,
@@ -173,6 +174,7 @@ final class PagesModel extends CredentialsModel
                 'width' => static::$widthStyle[isset(static::$widthStyle[$width]) ? $width : 'auto'],
             ];
         }
+
         return $mediaLibrary;
     }
 }

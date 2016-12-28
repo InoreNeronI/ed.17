@@ -19,7 +19,15 @@ class ContentRenderController extends BaseController
      */
     public static function renderAction(HttpFoundation\Request $request, $expiry_minutes = 1)
     {
-        list($slug, $render) = [$request->get('_route'), static::getRender($request, $request->get('messages'))];
+        try {
+            //dump($request->get)
+            list($slug, $render) = [$request->get('_route'), static::getRender($request, $request->get('messages'))];
+        } catch (\Exception $e) {
+            $session = new HttpFoundation\Session\Session();
+            static::getFlashMessages($session, strtolower($e->getMessage()));
+
+            return HttpFoundation\RedirectResponse::create('/', 302, [/*'error' => $msg*/]);
+        }
 
         return static::processRender($slug, $render, $expiry_minutes);
     }

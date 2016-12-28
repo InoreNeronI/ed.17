@@ -77,4 +77,32 @@ class BaseController
 
         return [];
     }
+
+    /**
+     * @param HttpFoundation\Session\Session $session
+     * @param string                         $msg
+     *
+     * @return array
+     */
+    protected static function getFlashMessages(HttpFoundation\Session\Session $session, $msg)
+    {
+        $session->isStarted() ?: $session->start();
+        // add flash messages
+        if (strpos($msg, 'no connection')) {
+            return $session->getFlashBag()->add(
+                'error',
+                'Data connection error'
+            );
+        } elseif (strpos($msg, 'no result')) {
+            return $session->getFlashBag()->add(
+                'error',
+                'Data query error'
+            );
+        }
+
+        return $session->getFlashBag()->add(
+                'warning',
+                ucfirst($msg)
+            );
+    }
 }

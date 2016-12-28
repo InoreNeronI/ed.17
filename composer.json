@@ -12,8 +12,7 @@
     "php": "^5.4.0|^7.0",
     "doctrine/dbal": "@stable",
     "acelaya/doctrine-enum-type": "@stable",
-    "symfony/http-kernel": "@stable",
-    "symfony/routing": "@stable",
+    "symfony/framework-bundle": "@stable",
     "symfony/yaml": "@stable",
     "twig/twig": "@stable"
   },
@@ -54,13 +53,8 @@
       "cp -rv ./node_modules/font-awesome/css/font-awesome.min.css public/styles",
       "cp -rv ./app/Resources/public/scripts/* public/scripts || true",
       "cp -rv ./app/Resources/public/styles/* public/styles || true",
-      "[ -d \"public/images\" ] || mkdir \"public/images\"",
       "[ -d \"public/images/jquery-resize\" ] || mkdir \"public/images/jquery-resize\"",
-      "cp -rv ./node_modules/jquery-resizable-dom/assets/* public/images/jquery-resize",
-      "cp -rv ./app/Resources/public/images/* \"public/images\"",
-      "[ -d \"public/media\" ] || mkdir \"public/media\"",
-      "cp -rv ./app/Resources/public/media/* public/media",
-      "cp -v ./app/Resources/public/index.php public"
+      "cp -rv ./node_modules/jquery-resizable-dom/assets/* public/images/jquery-resize"
     ],
     "bin-install": [
       "[ -d \"bin\" ] || mkdir bin",

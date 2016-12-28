@@ -51,10 +51,13 @@ class CredentialsModel extends Connection\Connection
                 'naci_dia_alumno' => $args['ffnacidia'],
                 'naci_mes_alumno' => $args['ffnacimes'],
             ]);
+
         /** @var \Doctrine\DBAL\Driver\Statement $query */
         $query = $queryBuilder->execute();
+
         /** @var array $user */
         $user = $query->fetch();
+
         if (!empty($user)) {
             /** @var array $codes */
             $codes = \def::dbSecurity();
