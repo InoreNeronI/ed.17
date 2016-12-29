@@ -1,7 +1,7 @@
 
 # Routes configuration
 routes:
-#  - '/sample'
+  - /sample
   - { path: /, methods: [GET] }
   - { path: /boarding, methods: [POST] }
   - { path: '/{page}', controller: 'App\Controller\ContentRenderController::pageAction', name: onboard, methods: [POST], requirements: { page: \d+ } }
