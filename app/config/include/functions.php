@@ -10,9 +10,19 @@ final class def extends defDB
     private static $langISOCodes;
     private static $paths;
     private static $periods;
+    private static $routesLoaded = false;
     private static $routing;
     private static $sizes;
     private static $styling;
+
+    private static function loadRoutes()
+    {
+        if (!static::$routesLoaded) {
+            $config = parseConfig(CONFIG_DIR, 'routing');
+            static::$routing = $config['routes'];
+            static::$routesLoaded = true;
+        }
+    }
 
     private static function loadConfig()
     {
@@ -59,7 +69,7 @@ final class def extends defDB
 
     public static function routing()
     {
-        static::loadConfig();
+        static::loadRoutes();
 
         return static::$routing;
     }

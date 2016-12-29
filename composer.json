@@ -13,9 +13,8 @@
     "andig/dbcopy": "@dev",
     "incenteev/composer-parameter-handler": "@stable",
     "neronmoon/scriptsdev": "@stable",
-    "symfony/phpunit-bridge": "@stable",
-    "symfony/process": "@stable",
-    "symfony/var-dumper": "@stable"
+    "symfony/var-dumper": "@stable",
+    "symfony/web-profiler-bundle": "@stable"
   },
   "scripts": {
     "codefix": ["php bin/sf-upgrade.phar fix src || true", "php bin/php-cs.phar fix --config=.php_cs || true"],

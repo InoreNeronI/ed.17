@@ -4,6 +4,7 @@ namespace App\Handler\Kernel;
 
 use App\Handler;
 use Symfony\Bundle\FrameworkBundle;
+use Symfony\Bundle\WebProfilerBundle;
 use Symfony\Component\Config;
 use Symfony\Component\DependencyInjection;
 use Symfony\Component\HttpKernel;
@@ -22,9 +23,9 @@ class MicroKernel extends HttpKernel\Kernel implements HttpKernel\HttpKernelInte
      *
      * @param bool|string $debug
      */
-    public function __construct($debug = DEBUG)
+    public function __construct($debug)
     {
-        parent::__construct(DEBUG ? 'dev' : 'prod', DEBUG);
+        parent::__construct($debug ? 'dev' : 'prod', $debug);
     }
 
     /**
@@ -32,7 +33,13 @@ class MicroKernel extends HttpKernel\Kernel implements HttpKernel\HttpKernelInte
      */
     public function registerBundles()
     {
-        return [new FrameworkBundle\FrameworkBundle()];
+        $bundles = [new FrameworkBundle\FrameworkBundle()];
+
+        if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
+            $bundles[] = new WebProfilerBundle\WebProfilerBundle();
+        }
+
+        return $bundles;
     }
 
     /**
@@ -41,6 +48,11 @@ class MicroKernel extends HttpKernel\Kernel implements HttpKernel\HttpKernelInte
     protected function configureRoutes(Routing\RouteCollectionBuilder $routes)
     {
         $routes->import($this->routesMap);
+
+        if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
+            $routes->mount('/_wdt', $routes->import('@WebProfilerBundle/Resources/config/routing/wdt.xml'));
+            $routes->mount('/_profiler', $routes->import('@WebProfilerBundle/Resources/config/routing/profiler.xml'));
+        }
     }
 
     /**
@@ -49,7 +61,18 @@ class MicroKernel extends HttpKernel\Kernel implements HttpKernel\HttpKernelInte
      */
     protected function configureContainer(DependencyInjection\ContainerBuilder $c, Config\Loader\LoaderInterface $loader)
     {
+        // load bundles' configuration
         // framework.secret est le seul paramètre obligatoire pour le framework
-        $c->loadFromExtension('framework', ['secret' => '12345']);
+        $c->loadFromExtension('framework', [
+            'secret' => '12345',
+            'profiler' => null,
+        ]);
+        $c->loadFromExtension('web_profiler', ['toolbar' => true]);
+
+        // add configuration parameters
+//        $c->setParameter('mail_sender', 'user@example.com');
+
+        // register services
+//        $c->register('app.markdown', 'AppBundle\\Service\\Parser\\Markdown');
     }
 }

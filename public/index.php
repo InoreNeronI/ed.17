@@ -1,18 +1,21 @@
 <?php
 
+/** @author Martin Mozos <martinmozos@gmail.com> */
 use App\Handler\Kernel;
-use Symfony\Component\HttpFoundation;
 
-$loader = require dirname(__DIR__).'/app/loader.php';
+if (PHP_VERSION_ID < 50400) {
+    /* @throw \Exception */
+    throw new \Exception('At least PHP 5.4 is required; using the latest version is highly recommended.');
+}
+define('LOADER_DIR', dirname(__DIR__));
+define('TURBO', false);
 
-// Creates a Request object based on the current PHP global variables
-/** @var HttpFoundation\Request $request */
-$request = HttpFoundation\Request::createFromGlobals();
+/** @var \Composer\Autoload\ClassLoader $loader */
+$loader = require LOADER_DIR.'/app/loader.php';
 
-/** @var Kernel\MicroKernel|Kernel\NanoKernel $framework */
-$framework = TURBO ? new Kernel\NanoKernel() : new Kernel\MicroKernel();
+/** @var Kernel\MicroKernel|Kernel\NanoKernel $kernel */
+$app = TURBO ? new Kernel\NanoKernel() : new Kernel\MicroKernel(DEBUG);
+$app->loadClassCache();
 
-/** @var HttpFoundation\Response $response */
-$response = $framework->handle($request);
-
-$response->send();
+// Handles and sends a Request object based on the current PHP global variables
+$app->handle(Symfony\Component\HttpFoundation\Request::createFromGlobals())->send();

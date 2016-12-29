@@ -2,7 +2,7 @@
 
 require __DIR__.'/functions.php';
 
-define('CONFIG_DIR', LOADER_DIR.'/config');
+define('CONFIG_DIR', LOADER_DIR.'/app/config');
 define('DATA_DIR', LOADER_DIR.\def::paths()['data_dir']);
 define('PUBLIC_DIR', LOADER_DIR.\def::paths()['public_dir']);
 define('TEMPLATE_CACHE_DIR', LOADER_DIR.\def::paths()['cache_dir'].'/twig');

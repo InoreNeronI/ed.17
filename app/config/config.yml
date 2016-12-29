@@ -4,29 +4,22 @@ languages: { eus: eu, cas: es, gaz: es, eng: en, ing: en }
 
 # Base dirs and homepage configuration
 paths:
-    # Cache's path relative to '/app' folder
-    cache_dir: /cache
-    # Data files' path relative to '/app' folder
-    data_dir: /config/probak
-    # Public files' path relative to '/app' folder
-    public_dir: /public
-    # Template files' path relative to '/app' folder
-    template_dir: /Resources/view
-    # Translation files' path relative to '/app' folder
-    translation_dir: /Resources/translation
     # Homepage route configuration
     home_url_path: /
     home_url_slug: login
+    # Cache's path relative to '/app' folder
+    cache_dir: /app/cache
+    # Data files' path relative to '/app' folder
+    data_dir: /app/config/probak
+    # Public files' path relative to '/app' folder
+    public_dir: /public
+    # Template files' path relative to '/app' folder
+    template_dir: /app/Resources/view
+    # Translation files' path relative to '/app' folder
+    translation_dir: /app/Resources/translation
 
 # Supported periods
 periods: [ dbh, lh ]
-
-# Routes configuration
-routes:
-#  - '/sample'
-  - { path: /, methods: [GET] }
-  - { path: /boarding, methods: [POST] }
-  - { path: '/{page}', controller: 'App\Controller\ContentRenderController::pageAction', name: onboard, methods: [POST], requirements: { page: \d+ } }
 
 # Sizes, levels and percentages
 sizes:
