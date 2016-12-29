@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Handler;
+namespace App\Handler\Kernel;
 
+use App\Event;
 use App\Handler;
 use Symfony\Component\EventDispatcher;
 use Symfony\Component\HttpFoundation;
@@ -9,9 +10,9 @@ use Symfony\Component\HttpKernel;
 use Symfony\Component\Routing;
 
 /**
- * Trait KernelTrait
+ * Trait NanoKernelTrait
  */
-trait KernelTrait
+trait NanoKernelTrait
 {
     /** @var Handler\RouteHandler */
     public $routesMap;

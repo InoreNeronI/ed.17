@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Handler\Event\Listener;
+namespace App\Event\Listener;
 
-use App\Handler\Event\ResponseEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use App\Event;
+use Symfony\Component\EventDispatcher;
 
 /**
  * Class ContentLengthListener.
  */
-class ContentLengthListener implements EventSubscriberInterface
+class ContentLengthListener implements EventDispatcher\EventSubscriberInterface
 {
     /**
-     * @param ResponseEvent $event
+     * @param Event\ResponseEvent $event
      */
-    public function onResponse(ResponseEvent $event)
+    public function onResponse(Event\ResponseEvent $event)
     {
         $response = $event->getResponse();
         $headers = $response->headers;

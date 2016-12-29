@@ -10,5 +10,5 @@ use Symfony\Component\HttpKernel;
  */
 class NanoKernel implements HttpKernel\HttpKernelInterface
 {
-    use Handler\KernelTrait;
+    use Handler\Kernel\NanoKernelTrait;
 }

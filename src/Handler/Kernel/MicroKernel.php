@@ -12,9 +12,9 @@ use Symfony\Component\Routing;
 /**
  * Class Kernel\Micro.
  */
-class MicroKernel extends HttpKernel\Kernel
+class MicroKernel extends HttpKernel\Kernel implements HttpKernel\HttpKernelInterface
 {
-    use Handler\KernelTrait;
+    use Handler\Kernel\NanoKernelTrait;
     use FrameworkBundle\Kernel\MicroKernelTrait;
 
     /**

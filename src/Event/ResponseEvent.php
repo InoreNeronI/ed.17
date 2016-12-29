@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Handler\Event;
+namespace App\Event;
 
 use Symfony\Component\EventDispatcher;
 use Symfony\Component\HttpFoundation;
