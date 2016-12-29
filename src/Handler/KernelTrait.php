@@ -1,63 +1,29 @@
 <?php
 
-namespace App\Kernel;
+namespace App\Handler;
 
-use App\Event\ResponseEvent;
-use App\Routing\RouteMap;
-use Symfony\Bundle\FrameworkBundle;
-use Symfony\Component\Config;
-use Symfony\Component\DependencyInjection;
+use App\Handler;
 use Symfony\Component\EventDispatcher;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpKernel;
-use Symfony\Component\Routing as BaseRouting;
-
+use Symfony\Component\Routing;
 
 /**
- * Class Kernel\Micro.
+ * Trait KernelTrait
  */
-class Micro extends HttpKernel\Kernel
+trait KernelTrait
 {
-    /** @var RouteMap */
-    private $routesMap;
+    /** @var Handler\RouteHandler */
+    public $routesMap;
 
-    /** @var BaseRouting\Matcher\UrlMatcherInterface */
-    private $matcher;
+    /** @var Routing\Matcher\UrlMatcherInterface */
+    public $matcher;
 
     /** @var HttpKernel\Controller\ControllerResolverInterface */
-    private $resolver;
+    public $resolver;
 
     /** @var EventDispatcher\EventDispatcher */
-    private $dispatcher;
-
-    use FrameworkBundle\Kernel\MicroKernelTrait;
-
-    public function registerBundles()
-    {
-        return array(new FrameworkBundle\FrameworkBundle());
-    }
-
-    protected function configureRoutes(BaseRouting\RouteCollectionBuilder $routes)
-    {
-        $routes->import($this->routesMap);
-    }
-
-    protected function configureContainer(DependencyInjection\ContainerBuilder $c, Config\Loader\LoaderInterface $loader)
-    {
-        // framework.secret est le seul paramètre obligatoire pour le framework
-        $c->loadFromExtension('framework', ['secret' => '12345']);
-    }
-
-    /**
-     * MicroKernel constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct(DEBUG ? 'dev' : 'prod', DEBUG);
-
-        /** @var RouteMap $routesMap */
-        $this->routesMap = new RouteMap();
-    }
+    public $dispatcher;
 
     /**
      * Handles a request.
@@ -71,13 +37,16 @@ class Micro extends HttpKernel\Kernel
      */
     public function handle(HttpFoundation\Request $request, $type = HttpKernel\HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
-        /** @var BaseRouting\Matcher\UrlMatcher $matcher */
+        /* @var Handler\RouteHandler $routesMap */
+        $this->routesMap = new Handler\RouteHandler(new Routing\RouteCollection());
+
+        /* @var Routing\Matcher\UrlMatcher $matcher */
         $this->matcher = $this->routesMap->getMatcher();
 
-        /** @var HttpKernel\Controller\ControllerResolver $resolver */
+        /* @var HttpKernel\Controller\ControllerResolver $resolver */
         $this->resolver = new HttpKernel\Controller\ControllerResolver();
 
-        /** @var EventDispatcher\EventDispatcher $dispatcher */
+        /* @var EventDispatcher\EventDispatcher $dispatcher */
         $this->dispatcher = new EventDispatcher\EventDispatcher();
         $this->dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($this->matcher, new HttpFoundation\RequestStack()));
 
@@ -100,11 +69,9 @@ class Micro extends HttpKernel\Kernel
             // Invoke the name of the controller that is resolved from a match in our routing class
             /** @var HttpFoundation\Response $response */
             $response = call_user_func_array($controller, $arguments);
-
-        } catch (BaseRouting\Exception\ResourceNotFoundException $e) {
+        } catch (Routing\Exception\ResourceNotFoundException $e) {
             // No such route exception return a 404 response
             $response = new HttpFoundation\Response(sprintf('Resource not found: %s', $e->getMessage()), 404);
-
         } catch (\Exception $e) {
             $msg = $e->getMessage();
             // Something blew up exception return a 500 response
@@ -113,7 +80,7 @@ class Micro extends HttpKernel\Kernel
 
         // The dispatcher, the central object of the event dispatcher system, notifies listeners of an event dispatched to it.
         // Put another way: your code dispatches an event to the dispatcher, the dispatcher notifies all registered listeners for the event, and each listener do whatever it wants with the event.
-        $this->dispatcher->dispatch('response', new ResponseEvent($response, $request));
+        $this->dispatcher->dispatch('response', new Event\ResponseEvent($response, $request));
 
         return $response;
     }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Event\Listener;
+namespace App\Handler\Event\Listener;
 
-use App\Event\ResponseEvent;
+use App\Handler\Event\ResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

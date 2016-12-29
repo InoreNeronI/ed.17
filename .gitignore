@@ -12,3 +12,5 @@
 !public/images/*.jpg
 !public/images/*.png
 /vendor
+/vendor-tiny/*
+!vendor-tiny/composer.*

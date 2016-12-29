@@ -4,12 +4,17 @@
 if (PHP_VERSION_ID < 50400) {
     /* @throw \Exception */
     throw new \Exception('At least PHP 5.4 is required; using the latest version is highly recommended.');
-} elseif (is_file(__DIR__.'/../vendor/autoload.php')) {
-    /** @var \Composer\Autoload\ClassLoader $autoload */
-    $autoload = require __DIR__.'/../vendor/autoload.php';
-    // Require constants and return autoload
+}
+
+define('LOADER_DIR', __DIR__);
+define('TURBO', false);
+
+// Require and return loader
+$loader = realpath(LOADER_DIR.'/../'.sprintf('vendor%s/autoload.php', TURBO ? '-tiny' : ''));
+if ($loader !== false) {
     try {
-        define('LOADER_DIR', __DIR__);
+        /** @var \Composer\Autoload\ClassLoader $autoload */
+        $autoload = require $loader;
         require LOADER_DIR.'/config/include/constants.php';
         /* @return \Composer\Autoload\ClassLoader */
         return $autoload;

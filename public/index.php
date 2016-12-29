@@ -1,6 +1,6 @@
 <?php
 
-use App\Kernel;
+use App\Handler\Kernel;
 use Symfony\Component\HttpFoundation;
 
 $loader = require dirname(__DIR__).'/app/loader.php';
@@ -9,8 +9,8 @@ $loader = require dirname(__DIR__).'/app/loader.php';
 /** @var HttpFoundation\Request $request */
 $request = HttpFoundation\Request::createFromGlobals();
 
-/** @var Kernel\Fast|Kernel\Micro $framework */
-$framework = new Kernel\Micro();
+/** @var Kernel\MicroKernel|Kernel\NanoKernel $framework */
+$framework = TURBO ? new Kernel\NanoKernel() : new Kernel\MicroKernel();
 
 /** @var HttpFoundation\Response $response */
 $response = $framework->handle($request);

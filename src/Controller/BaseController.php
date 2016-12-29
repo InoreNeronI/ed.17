@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Routing\Controller;
+namespace App\Controller;
 
+use App\Handler;
 use App\Model;
-use App\View;
 use Symfony\Component\HttpFoundation;
 
 /**
@@ -23,7 +23,7 @@ class BaseController
     protected static function processRender($slug = 'index', $texts = [], $expiry_minutes = 1)
     {
         /** @var string $content */
-        $content = View::render($slug, $texts);
+        $content = Handler\ViewHandler::render($slug, $texts);
 
         /** @var HttpFoundation\Response $response */
         $response = new HttpFoundation\Response($content, 200);

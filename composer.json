@@ -1,7 +1,4 @@
 {
-  "name": "isei-ivei/probak-pruebas",
-  "author": "ISEI - IVEI | Irakas Sistema Ebaluatu eta Ikertzeko Erakundea - Instituto Vasco de Evaluación e Investigación Educativa",
-  "homepage": "http://ediagnostikoak.net/",
   "autoload": {
     "psr-4": {"": "src/"}
   },
@@ -9,12 +6,8 @@
     "psr-4": {"": "test/"}
   },
   "require": {
-    "php": "^5.4.0|^7.0",
-    "doctrine/dbal": "@stable",
-    "acelaya/doctrine-enum-type": "@stable",
     "symfony/framework-bundle": "@stable",
-    "symfony/yaml": "@stable",
-    "twig/twig": "@stable"
+    "wikimedia/composer-merge-plugin": "dev-master"
   },
   "require-dev": {
     "andig/dbcopy": "@dev",
@@ -80,11 +73,14 @@
     "post-update-cmd": ["@bin-update", "@build", "@build-parameters"]
   },
   "extra": {
-    "incenteev-parameters": [{
-      "file": "app/config/database.yml",
-      "dist-file": "app/config/database.dist.yml",
-      "parameter-key": "credentials",
-      "env-map": {}}]
+    "merge-plugin": {
+      "require": ["vendor-tiny/composer.json"],
+      "recurse": false,
+      "replace": true,
+      "merge-dev": true,
+      "merge-extra": true,
+      "merge-extra-deep": true
+    }
   },
   "config": {
     "bin-dir": "bin",

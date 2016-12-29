@@ -1,15 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Handler;
 
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
 
 /**
- * Class Template.
+ * Class ViewHandler.
  */
-class View
+class ViewHandler
 {
     /** @var \Twig_Loader_Filesystem */
     private static $loader;

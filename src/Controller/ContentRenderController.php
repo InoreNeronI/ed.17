@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Routing\Controller;
+namespace App\Controller;
 
 use Symfony\Component\HttpFoundation;
 
