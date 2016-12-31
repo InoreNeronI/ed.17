@@ -8,7 +8,6 @@ if ($loader !== false) {
     try {
         /** @var \Composer\Autoload\ClassLoader $autoload */
         $autoload = require $loader;
-        require LOADER_DIR.'/app/config/include/constants.php';
         /* @return \Composer\Autoload\ClassLoader */
         return $autoload;
     } catch (Exception $e) {

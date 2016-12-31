@@ -10,8 +10,8 @@ if (PHP_VERSION_ID < 50400) {
 define('LOADER_DIR', dirname(__DIR__));
 define('TURBO', false);
 
-/** @var \Composer\Autoload\ClassLoader $loader */
-$loader = require LOADER_DIR.'/app/loader.php';
+require LOADER_DIR.'/app/loader.php';
+require LOADER_DIR.'/app/config/include/constants.php';
 
 /** @var Kernel\MicroKernel|Kernel\NanoKernel $kernel */
 $app = TURBO ? new Kernel\NanoKernel() : new Kernel\MicroKernel(DEBUG);

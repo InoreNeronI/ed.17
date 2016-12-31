@@ -6,7 +6,7 @@
     "psr-4": {"": "../src/"}
   },
   "require": {
-    "php": "^5.4.0|^7.0",
+    "php": "^5.6.4|^7.0",
     "doctrine/dbal": "@stable",
     "acelaya/doctrine-enum-type": "@stable",
     "symfony/http-kernel": "@stable",
@@ -27,7 +27,7 @@
   },
   "config": {
     "bin-dir": "../bin",
-    "platform": {"php": "5.4.0"},
+    "platform": {"php": "5.6.4"},
     "preferred-install": "dist",
     "vendor-dir": "./"
   }
