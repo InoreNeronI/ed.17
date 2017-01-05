@@ -1,4 +1,4 @@
-{% extends 'layout/split-page.html.twig' %}
+{% extends '@App/layout/split-page.html.twig' %}
 
 {% block title flabel ~ ' :: ' ~ title ~ ' :: ' ~ course ~ ' :: ' ~ mainTitle|title %}
 
@@ -16,7 +16,7 @@
                 {% set rightButtonText = '<i class="fa fa-step-backward"></i> ' ~ leftButton %}
             {% endif %}
             <div class="fl pa1-ns pa2-m pa3-l side-left bg-light-gray {{ pageWidth['a']|default }}">
-                {% include 'partial/page-sideform.html.twig' with {'side': 'a', 'rightButtonText': rightButtonText|default} %}
+                {% include '@App/partial/page-sideform.html.twig' with {'side': 'a', 'rightButtonText': rightButtonText|default} %}
             </div>
         {% endif %}
         {% if pageAreaSkip is null %}
@@ -35,7 +35,7 @@
                 {% set leftButtonText = '<i class="fa fa-step-backward"></i> ' ~ leftButton %}
             {% endif %}
             <div class="fl pa1-ns pa2-m pa3-l side-right bg-near-white {{ pageWidth['b']|default }}">
-                {% include 'partial/page-sideform.html.twig' with {'side': 'b'} %}
+                {% include '@App/partial/page-sideform.html.twig' with {'side': 'b'} %}
             </div>
         {% endif %}
     </article>

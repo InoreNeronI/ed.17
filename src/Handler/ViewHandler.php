@@ -33,23 +33,26 @@ class ViewHandler
      * Twig_Loader_Filesystem loads templates from the file system.
      * This loader can find templates in folders on the file system and is the preferred way to load them.
      *
-     * @param string $loader_dir
-     * @param string $cache_dir
+     * @param string $loaderDir
+     * @param bool   $autoescape
+     * @param null   $cacheDir
      * @param bool   $debug
+     * @param bool   $strictVariables
+     * @param string $namespace
      */
-    private static function load($loader_dir, $cache_dir = null, $debug = false)
+    private static function load($loaderDir, $cacheDir = null, $autoescape = false, $debug = false, $strictVariables = true, $namespace = 'App')
     {
         if (true === static::$loaded) {
             throw new \RuntimeException('Error: template-engine had been already loaded.');
         }
 
-        is_array($loader_dir) ?: $loader_dir = [$loader_dir];
-        static::$loader = new Twig_Loader_Filesystem($loader_dir);
+        static::$loader = new Twig_Loader_Filesystem($loaderDir);
+        static::$loader->addPath($loaderDir, $namespace);
         static::$twig = new Twig_Environment(static::$loader, [
-            'autoescape' => false,
-            'cache' => is_null($cache_dir) ? $loader_dir[0].'/cache' : $cache_dir,
+            'autoescape' => $autoescape,
+            'cache' => is_null($cacheDir) ? $loaderDir[0].'/cache' : $cacheDir,
             'debug' => $debug,
-            'strict_variables' => true,
+            'strict_variables' => $strictVariables,
         ]);
         if ($debug) {
             static::$twig->addExtension(new Twig_Extension_Debug());
@@ -62,23 +65,41 @@ class ViewHandler
      *
      * @param string       $slug
      * @param array        $variables
-     * @param array|string $loader_dir
-     * @param string       $cache_dir
-     * @param mixed        $ext
-     * @param mixed        $debug
+     * @param array|string $loaderDir
+     * @param string       $cacheDir
+     * @param bool         $autoescape
+     * @param bool         $debug
+     * @param bool         $strictVariables
      *
      * @return string
      */
-    public static function render($slug = 'index', $variables = [], $loader_dir = TEMPLATE_FILES_DIR, $cache_dir = TEMPLATE_CACHE_DIR, $ext = TEMPLATE_EXTENSION, $debug = DEBUG)
+    public static function render(
+        $slug = 'index',
+        $variables = [],
+        $loaderDir = TEMPLATE_FILES_DIR,
+        $cacheDir = TEMPLATE_CACHE_DIR,
+        $autoescape = false,
+        $debug = DEBUG,
+        $strictVariables = true)
     {
-        static::load($loader_dir, $cache_dir, $debug);
+        static::load($loaderDir, $cacheDir, $autoescape, $debug, $strictVariables);
 
+        return static::$twig->render(static::getTemplatePath($slug), $variables);
+    }
+
+    /**
+     * Returns the path of a template.
+     *
+     * @param $slug
+     * @param $ext
+     *
+     * @return string
+     */
+    public static function getTemplatePath($slug, $ext = TEMPLATE_EXTENSION)
+    {
         /** @var string $path */
         $path = $slug === 'index' ? '' : '/page';
 
-        /** @var string $renderPath */
-        $renderPath = "$path/$slug.$ext";   // path + slug + extension
-
-        return static::$twig->render($renderPath, $variables);
+        return "$path/$slug.$ext";   // path + slug + extension
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Model\Connection;
+namespace App\Security\Connection;
 
-use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL;
 
 /**
  * @url https://github.com/air-php/database/blob/master/src/ConnectionInterface.php
@@ -33,7 +33,7 @@ interface ConnectionInterface
     /**
      * Returns a Doctrine query builder object.
      *
-     * @return QueryBuilder
+     * @return DBAL\Query\QueryBuilder
      */
     public function getQueryBuilder();
 

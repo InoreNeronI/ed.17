@@ -1,26 +1,48 @@
 <?php
 
 /**
+ * @author Martin Mozos <martinmozos@gmail.com>
  * Class def.
  */
 final class def extends defDB
 {
     private static $configLoaded = false;
+    private static $dbCodes;
+    private static $dbSecurity;
+    private static $dbTargets;
     private static $langCodes;
     private static $langISOCodes;
+    private static $metric;
+    private static $metricLoaded = false;
     private static $paths;
+    private static $pathsLoaded = false;
     private static $periods;
     private static $routesLoaded = false;
-    private static $routing;
+    private static $routes;
     private static $sizes;
     private static $styling;
 
     private static function loadRoutes()
     {
         if (!static::$routesLoaded) {
-            $config = parseConfig(CONFIG_DIR, 'routing');
-            static::$routing = $config['routes'];
+            static::$routes = parseConfig(CONFIG_DIR, 'routes');
             static::$routesLoaded = true;
+        }
+    }
+
+    private static function loadPaths()
+    {
+        if (!static::$pathsLoaded) {
+            static::$paths = parseConfig(CONFIG_DIR, 'paths')['paths'];
+            static::$pathsLoaded = true;
+        }
+    }
+
+    private static function loadMetric()
+    {
+        if (!static::$metricLoaded) {
+            static::$metric = parseConfig(CONFIG_DIR, 'metric')['metric'];
+            static::$metricLoaded = true;
         }
     }
 
@@ -28,15 +50,35 @@ final class def extends defDB
     {
         if (!static::$configLoaded) {
             $config = parseConfig(CONFIG_DIR, 'config');
+            static::$dbCodes = $config['codes'];
+            static::$dbSecurity = $config['security'];
+            static::$dbTargets = $config['targets'];
             static::$langCodes = $config['languages'];
             static::$langISOCodes = array_unique(array_values($config['languages']));
-            static::$paths = $config['paths'];
             static::$periods = $config['periods'];
-            static::$routing = $config['routes'];
-            static::$sizes = $config['sizes'];
-            static::$styling = $config['styles'];
             static::$configLoaded = true;
         }
+    }
+
+    public static function dbCodes()
+    {
+        static::loadConfig();
+
+        return static::$dbCodes;
+    }
+
+    public static function dbSecurity()
+    {
+        static::loadConfig();
+
+        return static::$dbSecurity;
+    }
+
+    public static function dbTargets()
+    {
+        static::loadConfig();
+
+        return static::$dbTargets;
     }
 
     public static function langCodes()
@@ -53,9 +95,16 @@ final class def extends defDB
         return static::$langISOCodes;
     }
 
+    public static function metric()
+    {
+        static::loadMetric();
+
+        return static::$metric;
+    }
+
     public static function paths()
     {
-        static::loadConfig();
+        static::loadPaths();
 
         return static::$paths;
     }
@@ -67,30 +116,11 @@ final class def extends defDB
         return static::$periods;
     }
 
-    public static function routing()
+    public static function routes()
     {
         static::loadRoutes();
 
-        return static::$routing;
-    }
-
-    public static function sizes()
-    {
-        static::loadConfig();
-
-        return static::$sizes;
-    }
-
-    public static function styling()
-    {
-        static::loadConfig();
-
-        return static::$styling;
-    }
-
-    public static function translations($view = 'layout')
-    {
-        return parseConfig(TRANSLATIONS_DIR, $view);
+        return static::$routes;
     }
 }
 
@@ -99,29 +129,16 @@ final class def extends defDB
  */
 class defDb
 {
-    protected static $dbCodes;
     protected static $dbCredentials;
-    protected static $dbSecurity;
-    protected static $dbTargets;
     protected static $initialized = false;
 
     private static function loadDbConfig()
     {
         if (!static::$initialized) {
-            $database = parseConfig(CONFIG_DIR, 'database');
-            static::$dbCodes = $database['codes'];
-            static::$dbCredentials = $database['credentials'];
-            static::$dbSecurity = $database['security'];
-            static::$dbTargets = $database['targets'];
+            $connection = parseConfig(CONFIG_DIR, 'connection');
+            static::$dbCredentials = $connection/*['credentials']*/;
             static::$initialized = true;
         }
-    }
-
-    public static function dbCodes()
-    {
-        static::loadDbConfig();
-
-        return static::$dbCodes;
     }
 
     public static function dbCredentials()
@@ -129,20 +146,6 @@ class defDb
         static::loadDbConfig();
 
         return static::$dbCredentials;
-    }
-
-    public static function dbSecurity()
-    {
-        static::loadDbConfig();
-
-        return static::$dbSecurity;
-    }
-
-    public static function dbTargets()
-    {
-        static::loadDbConfig();
-
-        return static::$dbTargets;
     }
 }
 
@@ -164,5 +167,5 @@ function parseConfig($path, $filename = null)
         return [];
     }
 
-    return $filename === 'parameters' ? $config['parameters'] : $config;
+    return isset($config['parameters']) ? $config['parameters'] : $config;
 }

@@ -1,10 +1,10 @@
-{% extends 'layout/form.html.twig' %}
+{% extends '@App/layout/form.html.twig' %}
 
 {% block title title ~ ' :: ' ~ course ~ ' :: ' ~ mainTitle|title %}
 
 {% block content_form %}
     <div class="pb3 dt fr w-100 w-75-m w-75-ns {{ colorInverse }}">
-        {% include 'partial/sample/login-sample.html.twig' %}
+        {% include '@App/partial/sample/login-sample.html.twig' %}
     </div>
     <div class="mt3 fl w-100 tc">
         <div class="dib w-100 w-25-m w-25-ns"></div>
@@ -12,11 +12,11 @@
             <input name="course" type="hidden" value="{{ course }}"/>
             <button class="{{ fontClass }} b bg-navy b--dark-blue br2 dib dim link mb2 ph3 pointer pv1 pv2-l {{ colorInverse }}">{{ submit_text }}</button>
         </div>
-        {% include 'partial/sample/audio-sample.html.twig' with { 'cssClassContainer': 'dib tc tr-m tc-ns w-100 w-25-m w-25-ns', 'cssClassContent': 'fa-inverse' } %}
+        {% include '@App/partial/sample/audio-sample.html.twig' with { 'cssClassContainer': 'dib tc tr-m tc-ns w-100 w-25-m w-25-ns', 'cssClassContent': 'fa-inverse' } %}
     </div>
 {% endblock %}
 
 {% block jq_ready %}
     {{ parent() }}
-    {% include 'asset/audio-click.js.twig' %}
+    {% include '@App/asset/audio-click.js.twig' %}
 {% endblock %}

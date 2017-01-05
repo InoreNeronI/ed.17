@@ -1,6 +1,6 @@
 <div class="{{ cssClassContainer|default('dib tc pv1 w-100') }}">
     <a href="" class="playAudioSample" target="_self" title="{{ audio_file_tip|default(media.tip|default('Play me!')) }}">
-        {% set audio_file_size = audio_file_size is defined ? sizes.levels[audio_file_size]|default('5x') : media.size %}
+        {% set audio_file_size = audio_file_size is defined ? metric.levels[audio_file_size]|default('5x') : media.size %}
         <i class="fa fa-play fa-{{ audio_file_size }} {{ fontClass ~ cssClassContent|default('w-auto') }}">
             {% set audio_file_path = audio_file_path is defined ? audio_file_path : media.path %}
             <audio class="audioSample" preload>

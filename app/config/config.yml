@@ -1,95 +1,105 @@
 
-# Local languages' map
-languages: { eus: eu, cas: es, gaz: es, eng: en, ing: en }
+imports:
+  - { resource: connection.yml }
+  - { resource: metric.yml }
 
-# Base dirs and homepage configuration
-paths:
-    # Homepage route configuration
-    home_url_path: /
-    home_url_slug: login
-    # Cache's path relative to '/app' folder
-    cache_dir: /app/cache
-    # Data files' path relative to '/app' folder
-    data_dir: /app/config/probak
-    # Public files' path relative to '/app' folder
-    public_dir: /public
-    # Template files' path relative to '/app' folder
-    template_dir: /app/Resources/view
-    # Translation files' path relative to '/app' folder
-    translation_dir: /app/Resources/translation
+parameters:
+  # Default locale
+  locale: en
 
-# Supported periods
-periods: [ dbh, lh ]
+  # Default locale
+  secret: $ecret
 
-# Sizes, levels and percentages
-sizes:
-  x1: s
-  x2: m
-  x3: l
-  levels:
-    s: 1x
-    m: 3x
-    l: 5x
-    percentages:
-      s: 10
-      m: 20
-      l: 25
-  percentages:
-    s: 20
-    m: 40
-    l: 75
+  # Trusted host domains
+  trusted_hosts: [ localhost, remake.dev, ediagnostikoak.local ]
 
-# CSS styles' map
-styles:
-  # @url https://github.com/tachyons-css/tachyons/blob/v4.5.5/css/tachyons.css#L1570-L1575
-  font:
-    x1: f6
-    x2: f5
-    x3: f4
-    x4: f3
-    x5: f2
-    x6: f1
-  # @url https://github.com/tachyons-css/tachyons/blob/v4.5.5/css/tachyons.css#L816-L835
-  height:
-    # String Properties
-    auto: h-auto
-    inherit: h-inherit
-    # Font size multiples
-    x1: h1
-    x2: h2
-    x3: h3
-    x4: h4
-    x5: h5
-    # Height Percentages - Based off of height of parent
-    25: h-25
-    50: h-50
-    75: h-75
-    100: h-100
-    min-100: min-h-100
-  # @url https://github.com/tachyons-css/tachyons/blob/v4.5.5/css/tachyons.css#L964-L985
-  width:
-    # String Properties
-    tercio: w-third
-    dos-tercios: w-two-thirds
-    auto: w-auto
-    # Font size multiples
-    x1: w1
-    x2: w2
-    x3: w3
-    x4: w4
-    x5: w5
-    # Width Percentages - Based off of width of parent
-    10: w-10
-    20: w-20
-    25: w-25
-    30: w-30
-    33: w-33
-    34: w-34
-    40: w-40
-    50: w-50
-    60: w-60
-    70: w-70
-    75: w-75
-    80: w-80
-    90: w-90
-    100: w-100
+  # Local languages' map
+  languages: { eus: eu, cas: es, gaz: es, eng: en, ing: en }
+
+  # Supported periods
+  periods: [ dbh, lh ]
+
+  # Database access configuration
+  security:
+    # Eusk
+    EB2746:
+      a:    edg051_testuak_dbh_eusa
+      bd:   edg051_testuak_dbh_eusbd
+    EL2963:
+      a:    edg051_testuak_lh_eusa
+      bd:   edg051_testuak_lh_eusbd
+    # Gazte
+    CB3736: edg051_testuak_dbh_gaz
+    CL2528: edg051_testuak_lh_gaz
+    # Inge
+    IB3896: edg051_testuak_dbh_ing
+    IL8027: edg051_testuak_lh_ing
+    # Mate
+    MB0406: edg051_testuak_dbh_mat
+    ML4612: edg051_testuak_lh_mat
+    # Zie
+    ZB6432: edg051_testuak_dbh_zie
+    ZL2428: edg051_testuak_lh_zie
+    # G. sortak
+    GB3479:
+      a:    edg051_testuak_dbh_gsorta_a
+      b:    edg051_testuak_dbh_gsorta_b
+      c:    edg051_testuak_dbh_gsorta_c
+    GL0615:
+      a:    edg051_testuak_lh_gsorta_a
+      b:    edg051_testuak_lh_gsorta_b
+      c:    edg051_testuak_lh_gsorta_c
+
+  # Database codes' map
+  codes:
+    # Eusk
+    edg051_testuak_dbh_eusa:      ed17_dbh_eusa
+    edg051_testuak_dbh_eusbd:     ed17_dbh_eusbd
+    edg051_testuak_lh_eusa:       ed17_lh_eusa
+    edg051_testuak_lh_eusbd:      ed17_lh_eusbd
+    # Gazte
+    edg051_testuak_dbh_gaz:       ed17_dbh_gaz
+    edg051_testuak_lh_gaz:        ed17_lh_gaz
+    # Inge
+    edg051_testuak_dbh_ing:       ed17_dbh_ing
+    edg051_testuak_lh_ing:        ed17_lh_ing
+    # Mate
+    edg051_testuak_dbh_mat:       ed17_dbh_mat
+    edg051_testuak_lh_mat:        ed17_lh_mat
+    # Zie
+    edg051_testuak_dbh_zie:       ed17_dbh_mat
+    edg051_testuak_lh_zie:        ed17_lh_mat
+    # G. sortak
+    edg051_testuak_dbh_gsorta_a:  ed17_dbh_gso_a
+    edg051_testuak_dbh_gsorta_b:  ed17_dbh_gso_b
+    edg051_testuak_dbh_gsorta_c:  ed17_dbh_gso_c
+    edg051_testuak_lh_gsorta_a:   ed17_lh_gso_a
+    edg051_testuak_lh_gsorta_b:   ed17_lh_gso_b
+    edg051_testuak_lh_gsorta_c:   ed17_lh_gso_c
+
+  # Database tables' map
+  targets:
+    # Eusk
+    edg051_testuak_dbh_eusa:      edg051_erantzunak_dbh_eusa
+    edg051_testuak_dbh_eusbd:     edg051_erantzunak_dbh_eusbd
+    edg051_testuak_lh_eusa:       edg051_erantzunak_lh_eusa
+    edg051_testuak_lh_eusbd:      edg051_erantzunak_lh_eusbd
+    # Gazte
+    edg051_testuak_dbh_gaz:       edg051_erantzunak_dbh_gaz
+    edg051_testuak_lh_gaz:        edg051_erantzunak_lh_gaz
+    # Inge
+    edg051_testuak_dbh_ing:       edg051_erantzunak_dbh_ing
+    edg051_testuak_lh_ing:        edg051_erantzunak_lh_ing
+    # Mate
+    edg051_testuak_dbh_mat:       edg051_erantzunak_dbh_mat
+    edg051_testuak_lh_mat:        edg051_erantzunak_lh_mat
+    # Zie
+    edg051_testuak_dbh_zie:       edg051_erantzunak_dbh_mat
+    edg051_testuak_lh_zie:        edg051_erantzunak_lh_mat
+    # G. sortak
+    edg051_testuak_dbh_gsorta_a:  edg051_erantzunak_dbh_gsorta_a
+    edg051_testuak_dbh_gsorta_b:  edg051_erantzunak_dbh_gsorta_b
+    edg051_testuak_dbh_gsorta_c:  edg051_erantzunak_dbh_gsorta_c
+    edg051_testuak_lh_gsorta_a:   edg051_erantzunak_lh_gsorta_a
+    edg051_testuak_lh_gsorta_b:   edg051_erantzunak_lh_gsorta_b
+    edg051_testuak_lh_gsorta_c:   edg051_erantzunak_lh_gsorta_c

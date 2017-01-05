@@ -1,7 +1,7 @@
 
 <form class="b--black-10 ba br2-ns center min-h-100 mw7 pa1 pa2-m pa3-l" action="{{ formAction }}" accept-charset="utf-8" method="{{ formMethod|default('post') }}">
 
-    {% include 'partial/fields/hidden.html.twig' %}
+    {% include '@App/partial/fields/hidden.html.twig' %}
     <input name="flabel" type="hidden" value="{{ flabel }}" />
     <input name="referrer" type="hidden" value="{{ page }}" />
 
@@ -55,7 +55,7 @@
             {% elseif textNum > media['till']|number_format %}
                 {% set media = null %}
             {% endif %}
-            {% include 'partial/media-horizontal.html.twig' %}
+            {% include '@App/partial/media-horizontal.html.twig' %}
         {% endif %}
 
         {% if tableColNum is not null %}
@@ -67,7 +67,7 @@
             {% else %}
                 {% set column = column + 1 %}
             {% endif %}
-            {% include 'partial/sideform-tablecell.html.twig' %}
+            {% include '@App/partial/sideform-tablecell.html.twig' %}
             {% set isTable = true %}
             {% set parentRowNum = tableRowNum %}
 
@@ -89,15 +89,15 @@
         {% endif %}
 
         {% if isOption %}
-            {% include 'partial/answer-option.html.twig' %}
+            {% include '@App/partial/answer-option.html.twig' %}
         {% else %}
-            {% include 'partial/fields/label.html.twig' with {'labelClass': (isItemText or isTitleText ? 'b ' : '') ~ 'pa0 ' ~ color} %}
+            {% include '@App/partial/fields/label.html.twig' with {'labelClass': (isItemText or isTitleText ? 'b ' : '') ~ 'pa0 ' ~ color} %}
             {% if tableColNum is null or tableRowNum is null %}{% set parent = key %}{% endif %}
         {% endif %}
         </div>
 
         {% if media is not null %}
-            {% include 'partial/media-centered.html.twig' %}
+            {% include '@App/partial/media-centered.html.twig' %}
         {% endif %}
     {% endfor %}
 

@@ -1,4 +1,4 @@
-{% extends 'layout/form.html.twig' %}
+{% extends '@App/layout/form.html.twig' %}
 
 {% block title title ~ ' :: ' ~ course ~ ' :: ' ~ mainTitle|title %}
 
@@ -13,7 +13,7 @@
                     <input name="flabel" type="hidden" value="{{ value }}"/>
                 {% endif %}
             {% endfor %}
-            {% include 'partial/fields/hidden.html.twig' %}
+            {% include '@App/partial/fields/hidden.html.twig' %}
         </div>
     </article>
 {% endblock %}

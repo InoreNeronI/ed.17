@@ -2,32 +2,31 @@
   "name": "isei-ivei/probak-pruebas",
   "author": "ISEI - IVEI | Irakas Sistema Ebaluatu eta Ikertzeko Erakundea - Instituto Vasco de Evaluación e Investigación Educativa",
   "homepage": "http://ediagnostikoak.net/",
-  "autoload": {
-    "psr-4": {"": "../src/"}
-  },
   "require": {
-    "php": "^5.6.4|^7.0",
+    "php": "^5.4.0|^7.0",
     "doctrine/dbal": "@stable",
     "acelaya/doctrine-enum-type": "@stable",
-    "symfony/http-kernel": "@stable",
-    "symfony/routing": "@stable",
-    "symfony/yaml": "@stable",
+    "symfony/http-kernel": "^2.8",
+    "symfony/routing": "^2.8",
+    "symfony/yaml": "^2.8",
     "twig/twig": "@stable"
   },
   "scripts": {
     "post-install-cmd": ["@composer dump-autoload --optimize"],
     "post-update-cmd": ["@composer dump-autoload --optimize"]
   },
+  "autoload": {
+    "psr-4": {"": "../src/"}
+  },
+  "minimum-stability": "stable",
   "extra": {
     "incenteev-parameters": [{
-      "file": "app/config/database.yml",
-      "dist-file": "app/config/database.dist.yml",
-      "parameter-key": "credentials",
-      "env-map": {}}]
+      "file": "app/config/connection.yml",
+      "dist-file": "app/config/connection.dist.yml"}]
   },
   "config": {
     "bin-dir": "../bin",
-    "platform": {"php": "5.6.4"},
+    "platform": {"php": "5.4.0"},
     "preferred-install": "dist",
     "vendor-dir": "./"
   }

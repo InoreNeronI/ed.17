@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Model;
+namespace App\Helper;
+
+use App\Security;
 
 /**
- * Class PagesModel.
+ * Class PagesHelper.
  */
-final class PagesModel extends CredentialsModel
+final class PagesHelper extends Security\Authorization
 {
     /** @var array */
     private static $mediaLibrary = ['audio' => ['ext' => ['mp3', 'ogg']], 'img' => ['ext' => ['jpg', 'png']], 'video' => ['ext' => ['3gp', 'mp4']]];
@@ -66,7 +68,7 @@ final class PagesModel extends CredentialsModel
     public function loadPageData(array $args, $page, $dataDir = DATA_DIR)
     {
         /** @var array static::$widthStyle */
-        static::$widthStyle = \def::styling()['width'];
+        static::$widthStyle = \def::metric()['widths'];
 
         /** @var string $data_folder */
         $data_folder = $dataDir.'/'.$args['code'];
@@ -105,13 +107,13 @@ final class PagesModel extends CredentialsModel
         // Parse media
         $mediaLibrary = [];
         foreach (empty($config['pageAudios']['p'.$page]) ? [] : $config['pageAudios']['p'.$page] as $media) {
-            $mediaLibrary = self::parseMedia($args, $page, 'audio', $media, $mediaLibrary);
+            $mediaLibrary = static::parseMedia($args, $page, 'audio', $media, $mediaLibrary);
         }
         foreach (empty($config['pageImages']['p'.$page]) ? [] : $config['pageImages']['p'.$page] as $media) {
-            $mediaLibrary = self::parseMedia($args, $page, 'img', $media, $mediaLibrary);
+            $mediaLibrary = static::parseMedia($args, $page, 'img', $media, $mediaLibrary);
         }
         foreach (empty($config['pageVideos']['p'.$page]) ? [] : $config['pageVideos']['p'.$page] as $media) {
-            $mediaLibrary = self::parseMedia($args, $page, 'video', $media, $mediaLibrary);
+            $mediaLibrary = static::parseMedia($args, $page, 'video', $media, $mediaLibrary);
         }
 
         // Replaces width
@@ -142,27 +144,29 @@ final class PagesModel extends CredentialsModel
      *
      * @return array
      */
-    private static function parseMedia(array $args, $page, $tag, $media, array $mediaLibrary)
+    private static function parseMedia(array $args, $page, $tag, $media, array $mediaLibrary = [])
     {
         $mediaData = explode('.', $media);
         $mediaExt = strtolower($mediaData[1]);
         $mediaData = explode('_', $mediaData[0]);
         if (in_array($mediaExt, static::$mediaLibrary[$tag]['ext']) && ($mediaData[5] === $args['lengua'] || $mediaData[5] === $tag)) {
             $baseDir = $tag === 'img' ? '/images/' : '/media/';
-            $offset = 100 - $mediaData[4];
-            $side = str_replace('p'.$page, '', $mediaData[0]);
-            if ($tag === 'audio') {
+            if ($tag === 'font' || $tag === 'audio') {
+                $level = $args['metric']['basics'][$mediaData[4]];
+                $size = $args['metric']['levels'][$level];
+                $width = $args['metric']['levels']['percentages'][$level];
+                $offset = 100 - intval($width);
                 $path = [];
                 foreach (static::$mediaLibrary['audio']['ext'] as $ext) {
                     $path[$ext] = $mediaExt === $ext ? $baseDir.$args['code'].'/'.$media : '';
                 }
-                $size = $args['sizes']['levels'][$args['sizes'][$mediaData[4]]];
-                $width = $args['sizes']['percentages'][$args['sizes'][$mediaData[4]]];
             } else /*if ($tag === 'img' || $tag === 'video')*/ {
+                $offset = 100 - intval($mediaData[4]);
                 $path = $baseDir.$args['code'].'/'.$media;
                 $size = null;
                 $width = $mediaData[4];
             }
+            $side = str_replace('p'.$page, '', $mediaData[0]);
             $mediaLibrary[$side][$tag][$mediaData[0].'_'.$mediaData[2]] = [
                 'align' => $mediaData[1],
                 'offset' => static::$widthStyle[isset(static::$widthStyle[$offset]) ? $offset : 'auto'],

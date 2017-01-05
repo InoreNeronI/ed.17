@@ -1,9 +1,9 @@
-{% extends 'layout.html.twig' %}
+{% extends '@App/layout.html.twig' %}
 
 {% block styles %}
     {{ parent() }}
     <style type="text/css">
-        {% include 'asset/bg-resize.css.twig' with { 'bgUrl': images.bgUrl } %}
+        {% include '@App/asset/bg-resize.css.twig' with { 'bgUrl': images.bgUrl } %}
     </style>
 {% endblock %}
 
@@ -38,5 +38,5 @@
 
 {% block jq_ready %}
     {{ parent() }}
-    {% include 'asset/bg-resize.js.twig' %}
+    {% include '@App/asset/bg-resize.js.twig' %}
 {% endblock %}

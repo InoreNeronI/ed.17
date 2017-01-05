@@ -1,0 +1,13 @@
+
+# Database connection configuration
+parameters:
+  database_driver:    pdo_mysql
+  database_host:      127.0.0.1
+  database_port:      3306
+  database_name:      ed17probak
+  database_user:      ed17erab
+  database_password:  ~
+  # You should uncomment this if you want use pdo_sqlite
+  # database_path:      "%kernel.root_dir%/data.db3"
+  # Users table
+  user_table:         edg020_ikasleak

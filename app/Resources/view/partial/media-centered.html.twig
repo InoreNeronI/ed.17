@@ -1,5 +1,5 @@
 {% if not isOption and media is not null %}
     {% if media['align'] is same as('cen') and media['since'] == textNum and media['till']|number_format == textNum %}
-        {% include 'partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContent': media['width'] } %}
+        {% include '@App/partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContent': media['width'] } %}
     {% endif %}
 {% endif %}

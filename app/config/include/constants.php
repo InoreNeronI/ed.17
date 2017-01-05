@@ -1,13 +1,14 @@
 <?php
 
+/** @author Martin Mozos <martinmozos@gmail.com> */
 require __DIR__.'/functions.php';
 
-define('CONFIG_DIR', LOADER_DIR.'/app/config');
-define('DATA_DIR', LOADER_DIR.\def::paths()['data_dir']);
-define('PUBLIC_DIR', LOADER_DIR.\def::paths()['public_dir']);
-define('TEMPLATE_CACHE_DIR', LOADER_DIR.\def::paths()['cache_dir'].'/twig');
+define('CONFIG_DIR', ROOT_DIR.'/app/config');
+define('DATA_DIR', ROOT_DIR.\def::paths()['data_dir']);
+define('PUBLIC_DIR', ROOT_DIR.\def::paths()['public_dir']);
+define('TEMPLATE_CACHE_DIR', ROOT_DIR.\def::paths()['cache_dir'].'/twig');
 define('TEMPLATE_EXTENSION', 'html.twig');
-define('TEMPLATE_FILES_DIR', LOADER_DIR.\def::paths()['template_dir']);
-define('TRANSLATIONS_DIR', LOADER_DIR.\def::paths()['translation_dir']);
+define('TEMPLATE_FILES_DIR', ROOT_DIR.\def::paths()['template_dir']);
 define('USER_TABLE', \def::dbCredentials()['user_table']);
-define('DEBUG', /*!TURBO && */in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1', '10.212.11.247']) ? true : false);
+
+return new App\Kernel\BaseKernel(DEBUG);

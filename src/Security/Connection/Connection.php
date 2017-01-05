@@ -1,11 +1,8 @@
 <?php
 
-namespace App\Model\Connection;
+namespace App\Security\Connection;
 
-use Doctrine\DBAL\Configuration;
-use Doctrine\DBAL\Connection as BaseConnection;
-use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL;
 
 /**
  * @url https://github.com/air-php/database/blob/master/src/Connection.php
@@ -20,7 +17,7 @@ class Connection implements ConnectionInterface
     private $connectionParams;
 
     /**
-     * @var BaseConnection A database connection
+     * @var DBAL\Connection A database connection
      */
     private $connection;
 
@@ -49,25 +46,22 @@ class Connection implements ConnectionInterface
     /**
      * Returns a Doctrine query builder object.
      *
-     * @return QueryBuilder
+     * @return DBAL\Query\QueryBuilder
      */
     public function getQueryBuilder()
     {
-        $connection = $this->getConnection();
-
-        return $connection->createQueryBuilder();
+        return $this->getConnection()->createQueryBuilder();
     }
 
     /**
      * Returns the connection object.
      *
-     * @return BaseConnection
+     * @return DBAL\Connection
      */
-    private function getConnection()
+    public function getConnection()
     {
         if (!isset($this->connection)) {
-            $config = new Configuration();
-            $this->connection = DriverManager::getConnection($this->connectionParams, $config);
+            $this->connection = DBAL\DriverManager::getConnection($this->connectionParams, new DBAL\Configuration());
         }
 
         return $this->connection;

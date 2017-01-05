@@ -16,9 +16,9 @@
 
 {% elseif (isLibreOptionLarge or isLibreOptionSmall or isLibreOption) and tableRowNum is null %}
     {% set inputClass = 'br2-ns br--left-ns pl1' %}
-    {% set inputClass = isLibreOptionLarge ? inputClass ~ ' w-' ~ sizes.percentages['l'] : inputClass %}
-    {% set inputClass = isLibreOptionSmall ? inputClass ~ ' w-' ~ sizes.percentages['s'] : inputClass %}
-    {% set inputClass = isLibreOption ? inputClass ~ ' w-' ~ sizes.percentages['m'] : inputClass %}
+    {% set inputClass = isLibreOptionLarge ? inputClass ~ ' w-' ~ metric.basics.percentages['l'] : inputClass %}
+    {% set inputClass = isLibreOptionSmall ? inputClass ~ ' w-' ~ metric.basics.percentages['s'] : inputClass %}
+    {% set inputClass = isLibreOption ? inputClass ~ ' w-' ~ metric.basics.percentages['m'] : inputClass %}
     {% set name = parent ~ '[' ~ key ~ ']' %}
     {% set type = 'text' %}
     {% set value = '' %}
@@ -37,9 +37,9 @@
 
 {% elseif isLibreOptionLarge or isLibreOptionSmall or isLibreOption %}
     {% set inputClass = 'br2-ns br--left-ns pl1' %}
-    {% set inputClass = isLibreOptionLarge ? inputClass ~ ' w-' ~ sizes.percentages['l'] : inputClass %}
-    {% set inputClass = isLibreOptionSmall ? inputClass ~ ' w-' ~ sizes.percentages['s'] : inputClass %}
-    {% set inputClass = isLibreOption ? inputClass ~ ' w-' ~ sizes.percentages['m'] : inputClass %}
+    {% set inputClass = isLibreOptionLarge ? inputClass ~ ' w-' ~ metric.basics.percentages['l'] : inputClass %}
+    {% set inputClass = isLibreOptionSmall ? inputClass ~ ' w-' ~ metric.basics.percentages['s'] : inputClass %}
+    {% set inputClass = isLibreOption ? inputClass ~ ' w-' ~ metric.basics.percentages['m'] : inputClass %}
     {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ column ~ ']' ~ '[' ~ key ~ ']' %}
     {% set type = 'text' %}
     {% set value = '' %}
@@ -47,17 +47,17 @@
 
 {% set text %}
     {{ value }}
-    {% include 'partial/fields/input.html.twig' %}
+    {% include '@App/partial/fields/input.html.twig' %}
     {% if text is not empty %}{{ text }}{% endif %}
     {% if media is not null and media['align'] is same as('cen') and media['since'] == textNum and media['till'] == textNum %}
-        {% include 'partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContent': media['width'], 'src': media['path'] } %}
+        {% include '@App/partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContent': media['width'], 'src': media['path'] } %}
     {% endif %}
 {% endset %}
 
 {% if isSimpleOption %}
-    {% include 'partial/fields/label.html.twig' with { 'labelClass': 'dib pointer mr1' } %}
+    {% include '@App/partial/fields/label.html.twig' with { 'labelClass': 'dib pointer mr1' } %}
 {% elseif isLibreOptionLarge or isLibreOptionSmall or isLibreOption %}
-    {% include 'partial/fields/label.html.twig' %}
+    {% include '@App/partial/fields/label.html.twig' %}
 {% elseif isMultipleOption %}
-    {% include 'partial/fields/label.html.twig' with { 'labelClass': 'dib pointer mr1' } %}
+    {% include '@App/partial/fields/label.html.twig' with { 'labelClass': 'dib pointer mr1' } %}
 {% endif %}

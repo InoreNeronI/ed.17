@@ -1,30 +1,26 @@
 <?php
 
-namespace App\Handler\Kernel;
+namespace App\Kernel;
 
 use App\Event;
-use App\Handler;
 use Symfony\Component\EventDispatcher;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpKernel;
 use Symfony\Component\Routing;
 
 /**
- * Trait NanoKernelTrait
+ * Trait BaseKernelTrait
  */
-trait NanoKernelTrait
+trait BaseKernelTrait
 {
-    /** @var Handler\RouteHandler */
-    public $routesMap;
+    /** @var EventDispatcher\EventDispatcher */
+    private $dispatcher;
 
     /** @var Routing\Matcher\UrlMatcherInterface */
-    public $matcher;
+    private $matcher;
 
     /** @var HttpKernel\Controller\ControllerResolverInterface */
-    public $resolver;
-
-    /** @var EventDispatcher\EventDispatcher */
-    public $dispatcher;
+    private $resolver;
 
     /**
      * Handles a request.
@@ -38,17 +34,6 @@ trait NanoKernelTrait
      */
     public function handle(HttpFoundation\Request $request, $type = HttpKernel\HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
-        /* @var Handler\RouteHandler $routesMap */
-        $this->routesMap = new Handler\RouteHandler(new Routing\RouteCollection());
-
-        /* @var Routing\Matcher\UrlMatcher $matcher */
-        $this->matcher = $this->routesMap->getMatcher();
-
-        /* @var HttpKernel\Controller\ControllerResolver $resolver */
-        $this->resolver = new HttpKernel\Controller\ControllerResolver();
-
-        /* @var EventDispatcher\EventDispatcher $dispatcher */
-        $this->dispatcher = new EventDispatcher\EventDispatcher();
         $this->dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($this->matcher, new HttpFoundation\RequestStack()));
 
         // Feed the RequestContext

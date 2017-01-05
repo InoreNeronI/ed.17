@@ -3,42 +3,64 @@
 namespace App\Handler;
 
 use Symfony\Component\Routing;
+use Symfony\Component\Yaml;
 
 /**
  * Class RouteHandler.
  */
 class RouteHandler
 {
-    /** @var Routing\RouteCollection $routes */
-    protected $routes;
-
     /** @var bool $loaded */
     protected $loaded = false;
+
+    /** @var Routing\RouteCollection $routeCol */
+    protected $routeCol;
+
+    /** @var array $routeList */
+    protected $routeList;
+
+    /** @var string */
+    protected $translationsDir;
 
     /**
      * RouteHandler constructor.
      *
-     * @param Routing\RouteCollection $routes
+     * @param array  $parsedRoutes
+     * @param string $translationsDir
+     * @param string $homeUrlPath
+     * @param string $homeUrlSlug
      */
-    public function __construct(Routing\RouteCollection $routes)
+    public function __construct(array $parsedRoutes, $translationsDir, $homeUrlPath, $homeUrlSlug)
     {
-        if (true === $this->loaded) {
-            throw new \RuntimeException('Do not add the "routing loader" twice');
-        }
-
-        $this->setRouteCollection($routes);
-        $this->mapRoutes();
+        $this->routeCol = new Routing\RouteCollection();
+        $this->translationsDir = $translationsDir;
+        $this->mapRoutes($parsedRoutes, $homeUrlPath, $homeUrlSlug);
+     //   dump($this->routeList);exit;
         $this->loaded = true;
+    }
+
+    /**
+     * @param string $view
+     *
+     * @return array
+     */
+    private function translations($view = 'layout')
+    {
+        return is_file($file = $this->translationsDir.'/'.$view.'.yml') ? Yaml\Yaml::parse(file_get_contents($file)) : [];
     }
 
     /**
      * Sets route collection.
      *
-     * @param Routing\RouteCollection $routes
+     * @param Routing\RouteCollection $routeCol
+     *
+     * @return $this
      */
-    protected function setRouteCollection(Routing\RouteCollection $routes)
+    protected function setRouteCollection(Routing\RouteCollection $routeCol)
     {
-        $this->routes = $routes;
+        $this->routeCol = $routeCol;
+
+        return $this;
     }
 
     /**
@@ -48,29 +70,31 @@ class RouteHandler
      */
     public function getRouteCollection()
     {
-        return $this->routes;
+        return $this->routeCol;
     }
 
     /**
-     * Retrieves requests' context.
+     * Sets route list.
      *
-     * @return Routing\RequestContext
+     * @param array $routeList
+     *
+     * @return $this
      */
-    public function getContext()
+    protected function setRouteList(array $routeList)
     {
-        return new Routing\RequestContext();
+        $this->routeList = $routeList;
+
+        return $this;
     }
 
     /**
-     * Retrieves url matcher.
+     * Gets the RouteList associated with this Router.
      *
-     * @param Routing\RequestContext|null $context
-     *
-     * @return Routing\Matcher\UrlMatcher
+     * @return array RouteList
      */
-    public function getMatcher(Routing\RequestContext $context = null)
+    public function getRouteList()
     {
-        return new Routing\Matcher\UrlMatcher($this->routes, is_null($context) ? $this->getContext() : $context);
+        return $this->routeList;
     }
 
     // We register a route by invoking the add method with specific arguments. The first argument is a unique name for this route.
@@ -82,79 +106,92 @@ class RouteHandler
      * Adds a route to collection.
      *
      * @param string $path
-     * @param string $routeName
-     * @param array  $translations
+     * @param string $name
      * @param array  $defaults
      * @param array  $methods
-     * @param array  $requirements ['parameter' => '\d+', 'month' => '[0-9]{4}-[0-9]{2}', 'subdomain' => 'www|m']
+     * @param array  $requirements
      * @param array  $schemes
+     * @param array  $options
+     * @param string $host
+     * @param string $condition
      */
-    public function addRouteRender($path = '/', $routeName = 'index', $translations = [], $defaults = [], $methods = ['GET', 'POST'], $requirements = [], $schemes = ['http', 'https'])
+    public function addRouteRender(
+        $path = '/',
+        $name = 'index',
+        $defaults = [],
+        $methods = ['GET', 'POST'],
+        $requirements = [], // ['parameter' => '\d+', 'month' => '[0-9]{4}-[0-9]{2}', 'subdomain' => 'www|m'],
+        $schemes = ['http', 'https'],
+        $options = [],
+        $host = '', // '{subdomain}.example.com',
+        $condition = '')
     {
-        $defaultController = ['_controller' => 'App\\Controller\\ContentRenderController::renderAction'];
-        $defaults = empty($defaults) ? $defaultController : isset($defaults['_controller']) ? $defaults : array_merge($defaults, $defaultController);
+        // Current route messages
+        $translations = $this->translations("page/$name");
+
         if (!empty($translations)) {
             $defaults['messages'] = empty($defaults['messages']) ? $translations : array_merge($defaults['messages'], $translations);
         }
-        $options = [];
-        $host = ''; // '{subdomain}.example.com';
-        $condition = '';
+
         $route = new Routing\Route($path, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
-        $this->routes->add($routeName, $route);
+        if (TURBO) {
+            $this->routeCol->add($name, $route);
+        } else {
+            $this->routeList[$name] = $route;
+        }
     }
 
     /**
      * Parse routes.
+     *
+     * @param array  $routes
+     * @param string $homeUrlPath
+     * @param string $homeUrlSlug
      */
-    private function mapRoutes()
+    private function mapRoutes($routes = [], $homeUrlPath = '/', $homeUrlSlug = 'home')
     {
+        if (true === $this->loaded) {
+            throw new \RuntimeException('Do not add the "routing loader" twice');
+        }
+
         /** @var array $route */
-        foreach (\def::routing() as $route) {
-            // Init variables
-            $defaults = [];
-            $methods = [];
-            $requirements = [];
-            $schemes = [];
+        foreach ($routes as $route) {
+            // Feed variables
+            $defaults = isset($route['defaults']) ? array_unique($route['defaults']) : [];
+            $methods = isset($route['methods']) ? array_unique($route['methods']) : [];
+            $requirements = isset($route['requirements']) ? array_unique($route['requirements']) : [];
+            $schemes = isset($route['schemes']) ? array_unique($route['schemes']) : [];
 
             // Feed variables
             if (is_array($route)) {
-                // Feed variables
-                if (isset($route['defaults'])) {
-                    $defaults = array_unique($route['defaults']);
-                }
-                if (isset($route['controller'])) {
-                    $defaults['_controller'] = $route['controller'];
-                }
-                if (isset($route['methods'])) {
-                    $methods = array_unique($route['methods']);
-                }
-                if (isset($route['requirements'])) {
-                    $requirements = array_unique($route['requirements']);
-                }
-                if (isset($route['schemes'])) {
-                    $schemes = array_unique($route['schemes']);
-                }
                 $routePath = $route['path'];
+                if (!isset($route['action'])) {
+                    $route['action'] = 'render';
+                }
             } else {
                 $routePath = $route;
+                $route = ['action' => 'render'];
             }
             if (isset($route['name'])) {
                 $routeName = $route['name'];
-            } elseif ($routePath === \def::paths()['home_url_path']) {
-                $routeName = \def::paths()['home_url_slug'];
+            } elseif ($routePath === $homeUrlPath) {
+                $routeName = $homeUrlSlug;
             } else {
                 // Template name without extension
                 $routeName = str_replace('/', '', $routePath);
             }
-
-            // Current route messages
-            $translations = \def::translations("page/$routeName");
-
+            if (isset($route['controller']) && !isset($route['action'])) {
+                $defaults['_controller'] = $route['controller'];
+            } elseif (TURBO && isset($route['action'])) {
+                $defaults['_controller'] = 'App\\Controller\\BaseController::'.$route['action'].'Action';
+            } elseif (!TURBO && isset($route['action'])) {
+                $defaults['_controller'] = 'AppBundle\\Action\\'.ucfirst($route['action'].'Action');
+            }
             // Merge defaults with common messages
-            $defaults['messages'] = empty($defaults['messages']) ? \def::translations() : array_unique(array_merge(\def::translations(), $defaults['messages']));
+            $defaults['messages'] = empty($defaults['messages']) ? $this->translations() : array_unique(array_merge($this->translations(), $defaults['messages']));
 
             // Add route to collection
-            $this->addRouteRender($routePath, $routeName, $translations, $defaults, $methods, $requirements, $schemes);
+            $this->addRouteRender($routePath, $routeName, $defaults, $methods, $requirements, $schemes);
         }
     }
 }

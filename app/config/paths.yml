@@ -1,0 +1,19 @@
+# Base dirs configuration
+paths:
+  # Cache's path
+  cache_dir: /app/cache
+
+  # Data files' path
+  data_dir: /app/config/probak
+
+  # Logs files' path
+  logs_dir: /app/logs
+
+  # Public files' path
+  public_dir: /public
+
+  # Template files' path
+  template_dir: /app/Resources/view
+
+  # Translation files' path
+  translations_dir: /app/Resources/translation

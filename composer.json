@@ -1,21 +1,25 @@
 {
   "autoload": {
-    "psr-4": {"": "src/"}
+    "psr-4": {"": "src/",
+      "AppBundle\\": "AppBundle/"}
   },
   "autoload-dev": {
     "psr-4": {"": "test/"}
   },
   "require": {
-    "symfony/framework-bundle": "@stable",
-    "wikimedia/composer-merge-plugin": "dev-master"
+    "dunglas/action-bundle": "@stable",
+    "symfony/framework-bundle": "^2.8",
+    "symfony/twig-bundle": "^2.8",
+    "wikimedia/composer-merge-plugin": "@dev"
   },
   "require-dev": {
     "andig/dbcopy": "@dev",
+    "elao/web-profiler-extra-bundle": "@dev",
     "incenteev/composer-parameter-handler": "@stable",
     "leaseweb/memcache-bundle": "@stable",
     "neronmoon/scriptsdev": "@stable",
-    "symfony/var-dumper": "@stable",
-    "symfony/web-profiler-bundle": "@stable"
+    "symfony/var-dumper": "^2.8",
+    "symfony/web-profiler-bundle": "^2.8"
   },
   "scripts": {
     "codefix": ["php bin/sf-upgrade.phar fix src || true", "php bin/php-cs.phar fix --config=.php_cs || true"],
@@ -84,9 +88,8 @@
   },
   "config": {
     "bin-dir": "bin",
-    "platform": {"php": "5.6.4"},
+    "platform": {"php": "5.5.9"},
     "preferred-install": "dist",
     "vendor-dir": "vendor"
-  },
-  "minimum-stability": "stable"
+  }
 }

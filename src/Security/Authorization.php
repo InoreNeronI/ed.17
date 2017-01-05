@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Model;
+namespace App\Security;
 
 /**
- * Class CredentialsModel.
+ * Class Authorization.
  */
-class CredentialsModel extends Connection\Connection
+class Authorization extends Connection\Connection
 {
     /**
      * Model constructor.
@@ -19,13 +19,7 @@ class CredentialsModel extends Connection\Connection
      */
     public function __construct($host = null, $username = null, $password = null, $database = null, $driver = null, array $options = [])
     {
-        $params = empty($options) ? \def::dbCredentials() : $options;
-        $host = empty($host) ? $params['database_host'] : $host;
-        $username = empty($username) ? $params['database_user'] : $username;
-        $password = empty($password) ? $params['database_password'] : $password;
-        $database = empty($database) ? $params['database_name'] : $database;
-        $driver = empty($driver) ? $params['database_driver'] : $driver;
-        parent::__construct($host, $username, $password, $database, $driver, isset($params['database_port']) ? ['port' => $params['database_port']] : []);
+        parent::__construct($host, $username, $password, $database, $driver, $options);
     }
 
     /**

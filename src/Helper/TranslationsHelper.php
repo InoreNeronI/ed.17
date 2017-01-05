@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Model;
+namespace App\Helper;
 
 /**
- * Class TranslationsModel.
+ * Class TranslationsHelper.
  */
-class TranslationsModel
+class TranslationsHelper
 {
+    /** @var array */
+    private static $langISOCodes;
+
     /** @var array */
     private static $localizedMsg;
 
@@ -14,15 +17,17 @@ class TranslationsModel
      * @param array  $messages
      * @param array  $data
      * @param string $defaultLang
+     * @param array  $langISOCodes
      *
      * @return array
      */
-    public static function localize(array $messages, array $data = [], $defaultLang = 'en')
+    public static function localize(array $messages, array $data = [], $defaultLang = 'en', $langISOCodes = ['en'])
     {
+        static::$langISOCodes = $langISOCodes;
         $messages = static::localizeMessages(array_merge($messages, $data));
         isset($messages['lang']) ?: $messages['lang'] = $defaultLang;
 
-        return array_merge($messages, ['sizes' => \def::sizes()]);
+        return $messages;
     }
 
     /**
@@ -74,7 +79,7 @@ class TranslationsModel
             return $msg_value;
         } elseif ($msg_key === $period && is_array($msg_value)) {
             return static::localizeMessages($msg_value, $lang);
-        } elseif (is_null($lang) && in_array($msg_key, \def::langISOCodes()) && !empty($msg_value)) {
+        } elseif (is_null($lang) && in_array($msg_key, static::$langISOCodes) && !empty($msg_value)) {
             static::$localizedMsg[] = $msg_value;
         }
 
