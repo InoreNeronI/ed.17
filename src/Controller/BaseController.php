@@ -19,21 +19,13 @@ class BaseController
     public function __construct()
     {
         /* @var array authorization */
-        $this->authorization = \def::dbCredentials();
-        if (in_array('database_port', $this->authorization)) {
-            array_merge($this->authorization, ['options' => ['port' => $this->authorization['database_port']]]);
-            unset($this->authorization['database_port']);
-        }
-
+        $this->authorization = $this->renderAuthorization(\def::dbCredentials());
         /* @var array codes */
         $this->codes = \def::dbCodes();
-
         /* @var array langISOCodes */
         $this->langISOCodes = \def::langISOCodes();
-
         /* @var array metric */
         $this->metric = \def::metric();
-
         /* @var array targets */
         $this->targets = \def::dbTargets();
     }
@@ -48,7 +40,7 @@ class BaseController
      */
     public function renderAction(HttpFoundation\Request $request, $expiryMinutes = 1)
     {
-        $render = $this->getRender($request, $this->renderArguments());
+        $render = $this->getRender($request);
         $view = Handler\ViewHandler::render($request->get('_route'), $render);
 
         return static::processRender($view, $expiryMinutes);
@@ -65,7 +57,7 @@ class BaseController
      */
     public function pageRenderAction(HttpFoundation\Request $request, $page = null, $expiry_minutes = 1)
     {
-        $render = $this->getSplitPageRender($request, $page, $this->renderArguments());
+        $render = $this->getSplitPageRender($request, $page);
         $view = Handler\ViewHandler::render($request->get('_route'), $render);
 
         return static::processRender($view, $expiry_minutes);

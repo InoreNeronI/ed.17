@@ -39,6 +39,6 @@ class BaseKernel implements HttpKernel\HttpKernelInterface
         $context = new Routing\RequestContext();
 
         /* @var Routing\Matcher\UrlMatcher $matcher */
-        $this->matcher = new Routing\Matcher\UrlMatcher($routing->getRouteCollection(), $context);
+        $this->matcher = new Routing\Matcher\UrlMatcher($routing->getRoutes(), $context);
     }
 }

@@ -84,7 +84,7 @@ class MicroKernel extends HttpKernel\Kernel implements HttpKernel\HttpKernelInte
     protected function configureContainer(DependencyInjection\ContainerBuilder $container, Config\Loader\LoaderInterface $loader)
     {
         $loader->load($this->getRootDir().'/config/config.yml');
-        $loader->load($this->getRootDir().'/../src/AppBundle/Resources/config/config_'.$this->getEnvironment().'.yml');
+        $loader->load('@AppBundle/Resources/config/config_'.$this->getEnvironment().'.yml');
         //$container->setParameter('paths', $this->paths);
         // load bundles' configuration
         // framework.secret est le seul paramètre obligatoire pour le framework
@@ -124,13 +124,17 @@ class MicroKernel extends HttpKernel\Kernel implements HttpKernel\HttpKernelInte
             $this->routes['home_url_path'],
             $this->routes['home_url_slug']);
 
-        foreach ($routing->getRouteList() as $name => $route) {
+        foreach ($routing->getRoutes()->all() as $name => $route) {
             $routes->addRoute($route, $name);
         }
 
-        if (in_array($this->getEnvironment(), ['dev'/*, 'test'*/], true)) {
-            $routes->mount('/_wdt', $routes->import('@WebProfilerBundle/Resources/config/routing/wdt.xml'));
-            $routes->mount('/_profiler', $routes->import('@WebProfilerBundle/Resources/config/routing/profiler.xml'));
+        // import the WebProfilerRoutes, only if the bundle is enabled
+        if (isset($this->bundles['WebProfilerBundle'])) {
+            $routes->import('@WebProfilerBundle/Resources/config/routing/wdt.xml', '/_wdt');
+            $routes->import('@WebProfilerBundle/Resources/config/routing/profiler.xml', '/_profiler');
         }
+
+        // load the annotation routes
+        //$routes->import(__DIR__.'/../src/App/Controller/', '/', 'annotation');
     }
 }

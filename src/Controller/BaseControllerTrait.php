@@ -23,16 +23,27 @@ trait BaseControllerTrait
     private $targets;
 
     /**
+     * @param array $credentials
+     * @param array $options
+     *
      * @return array
      */
-    private function renderArguments()
+    private function renderAuthorization(array $credentials, array $options = [])
     {
-        return array_merge($this->authorization, [
-            'codes' => $this->codes,
-            'langISOCodes' => $this->langISOCodes,
-            'metric' => $this->metric,
-            'targets' => $this->targets,
-        ]);
+        if (in_array('database_path', $credentials)) {
+            $options['path'] = $credentials['database_path'];
+            unset($credentials['database_path']);
+        }
+        if (in_array('database_port', $credentials)) {
+            $options['port'] = $credentials['database_port'];
+            unset($credentials['database_port']);
+        }
+        if (in_array('database_socket', $credentials)) {
+            $options['unix_socket'] = $credentials['database_socket'];
+            unset($credentials['database_socket']);
+        }
+
+        return array_merge($credentials, ['options' => $options]);
     }
 
     /**
@@ -60,63 +71,60 @@ trait BaseControllerTrait
 
     /**
      * @param HttpFoundation\Request $request
-     * @param array                  $options
-     * @param $data
+     * @param array                  $data
      *
      * @return array
      */
-    private static function prepareMessages(HttpFoundation\Request $request, array $options, $data)
+    private function prepareMessages(HttpFoundation\Request $request, $data)
     {
-        $messages = Helper\TranslationsHelper::localize($request->get('messages'), $data, $request->getLocale(), $options['langISOCodes']);
+        $messages = isset($data['table']) ? array_merge($request->get('messages'), [
+            'code' => $this->codes[$data['table']],
+            'table' => $data['table'],
+            'target' => $this->targets[$data['table']], ]) : $request->get('messages');
+        $messages = Helper\TranslationsHelper::localize($messages, $data, $request->getLocale(), $this->langISOCodes);
 
-        return isset($data['table']) ? array_merge($messages, [
-            'code' => $options['codes'][$data['table']],
-            'metric' => $options['metric'],
-            'target' => $options['targets'][$data['table']], ]) : array_merge($messages, ['metric' => $options['metric']]);
+        return array_merge($messages, ['metric' => $this->metric]);
     }
 
     /**
      * @param HttpFoundation\Request $request
-     * @param array                  $options
      *
      * @return array
      */
-    private function getRender(HttpFoundation\Request $request, array $options)
+    private function getRender(HttpFoundation\Request $request)
     {
         $data = [];
         if ($request->getMethod() === 'POST') {
             $manager = new Security\Authorization(
-                $options['database_host'],
-                $options['database_user'],
-                $options['database_password'],
-                $options['database_name'],
-                $options['database_driver'],
-                isset($options['options']) ? $options['options'] : []);
+                $this->authorization['database_host'],
+                $this->authorization['database_user'],
+                $this->authorization['database_password'],
+                $this->authorization['database_name'],
+                $this->authorization['database_driver'],
+                isset($this->authorization['options']) ? $this->authorization['options'] : []);
             $data = $manager->checkCredentials($request->request->all());
         }
 
-        return static::prepareMessages($request, $options, $data);
+        return $this->prepareMessages($request, $data);
     }
 
     /**
      * @param HttpFoundation\Request $request
      * @param string                 $page
-     * @param array                  $options
      *
      * @return array
      */
-    private function getSplitPageRender(HttpFoundation\Request $request, $page, array $options)
+    private function getSplitPageRender(HttpFoundation\Request $request, $page)
     {
         if ($request->getMethod() === 'POST') {
             $manager = new Helper\PagesHelper(
-                $options['database_host'],
-                $options['database_user'],
-                $options['database_password'],
-                $options['database_name'],
-                $options['database_driver'],
-                isset($options['options']) ? $options['options'] : []);
-            $data = $request->request->all();
-            $messages = $this->prepareMessages($request, $options, $data);
+                $this->authorization['database_host'],
+                $this->authorization['database_user'],
+                $this->authorization['database_password'],
+                $this->authorization['database_name'],
+                $this->authorization['database_driver'],
+                isset($this->authorization['options']) ? $this->authorization['options'] : []);
+            $messages = $this->prepareMessages($request, $request->request->all());
 
             return $manager->loadPageData($messages, sprintf('%02d', intval($page)));
         }

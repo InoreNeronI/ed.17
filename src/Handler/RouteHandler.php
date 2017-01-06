@@ -13,11 +13,8 @@ class RouteHandler
     /** @var bool $loaded */
     protected $loaded = false;
 
-    /** @var Routing\RouteCollection $routeCol */
-    protected $routeCol;
-
-    /** @var array $routeList */
-    protected $routeList;
+    /** @var Routing\RouteCollection $routes */
+    protected $routes;
 
     /** @var string */
     protected $translationsDir;
@@ -32,11 +29,18 @@ class RouteHandler
      */
     public function __construct(array $parsedRoutes, $translationsDir, $homeUrlPath, $homeUrlSlug)
     {
-        $this->routeCol = new Routing\RouteCollection();
+        $this->routes = new Routing\RouteCollection();
         $this->translationsDir = $translationsDir;
         $this->mapRoutes($parsedRoutes, $homeUrlPath, $homeUrlSlug);
-     //   dump($this->routeList);exit;
         $this->loaded = true;
+    }
+
+    /**
+     * @return Routing\RouteCollection
+     */
+    public function getRoutes()
+    {
+        return $this->routes;
     }
 
     /**
@@ -47,54 +51,6 @@ class RouteHandler
     private function translations($view = 'layout')
     {
         return is_file($file = $this->translationsDir.'/'.$view.'.yml') ? Yaml\Yaml::parse(file_get_contents($file)) : [];
-    }
-
-    /**
-     * Sets route collection.
-     *
-     * @param Routing\RouteCollection $routeCol
-     *
-     * @return $this
-     */
-    protected function setRouteCollection(Routing\RouteCollection $routeCol)
-    {
-        $this->routeCol = $routeCol;
-
-        return $this;
-    }
-
-    /**
-     * Gets the RouteCollection instance associated with this Router.
-     *
-     * @return Routing\RouteCollection A RouteCollection instance
-     */
-    public function getRouteCollection()
-    {
-        return $this->routeCol;
-    }
-
-    /**
-     * Sets route list.
-     *
-     * @param array $routeList
-     *
-     * @return $this
-     */
-    protected function setRouteList(array $routeList)
-    {
-        $this->routeList = $routeList;
-
-        return $this;
-    }
-
-    /**
-     * Gets the RouteList associated with this Router.
-     *
-     * @return array RouteList
-     */
-    public function getRouteList()
-    {
-        return $this->routeList;
     }
 
     // We register a route by invoking the add method with specific arguments. The first argument is a unique name for this route.
@@ -115,7 +71,7 @@ class RouteHandler
      * @param string $host
      * @param string $condition
      */
-    public function addRouteRender(
+    private function addRoute(
         $path = '/',
         $name = 'index',
         $defaults = [],
@@ -133,12 +89,7 @@ class RouteHandler
             $defaults['messages'] = empty($defaults['messages']) ? $translations : array_merge($defaults['messages'], $translations);
         }
 
-        $route = new Routing\Route($path, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
-        if (TURBO) {
-            $this->routeCol->add($name, $route);
-        } else {
-            $this->routeList[$name] = $route;
-        }
+        $this->routes->add($name, new Routing\Route($path, $defaults, $requirements, $options, $host, $schemes, $methods, $condition));
     }
 
     /**
@@ -151,7 +102,7 @@ class RouteHandler
     private function mapRoutes($routes = [], $homeUrlPath = '/', $homeUrlSlug = 'home')
     {
         if (true === $this->loaded) {
-            throw new \RuntimeException('Do not add the "routing loader" twice');
+            throw new \RuntimeException('Do not add the "routes loader" twice');
         }
 
         /** @var array $route */
@@ -191,7 +142,7 @@ class RouteHandler
             $defaults['messages'] = empty($defaults['messages']) ? $this->translations() : array_unique(array_merge($this->translations(), $defaults['messages']));
 
             // Add route to collection
-            $this->addRouteRender($routePath, $routeName, $defaults, $methods, $requirements, $schemes);
+            $this->addRoute($routePath, $routeName, $defaults, $methods, $requirements, $schemes);
         }
     }
 }

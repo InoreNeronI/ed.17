@@ -2,6 +2,7 @@
 
 namespace App\Handler;
 
+use RuntimeException;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
@@ -11,10 +12,10 @@ use Twig_Loader_Filesystem;
  */
 class ViewHandler
 {
-    /** @var \Twig_Loader_Filesystem */
+    /** @var Twig_Loader_Filesystem */
     private static $loader;
 
-    /** @var \Twig_Environment */
+    /** @var Twig_Environment */
     private static $twig;
 
     /** @var bool */
@@ -43,7 +44,7 @@ class ViewHandler
     private static function load($loaderDir, $cacheDir = null, $autoescape = false, $debug = false, $strictVariables = true, $namespace = 'App')
     {
         if (true === static::$loaded) {
-            throw new \RuntimeException('Error: template-engine had been already loaded.');
+            throw new RuntimeException('Error: template-engine had been already loaded.');
         }
 
         static::$loader = new Twig_Loader_Filesystem($loaderDir);
