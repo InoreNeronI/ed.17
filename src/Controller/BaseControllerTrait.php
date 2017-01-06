@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Helper;
-use App\Security;
-use ReflectionClass;
 use Symfony\Component\HttpFoundation;
 
 /**
@@ -13,7 +11,7 @@ use Symfony\Component\HttpFoundation;
 trait BaseControllerTrait
 {
     /* @var array authorization */
-    private $authorization = [];
+    private $authorization;
     /* @var array codes */
     private $codes;
     /* @var array langISOCodes */
@@ -24,64 +22,45 @@ trait BaseControllerTrait
     private $targets;
 
     /**
-     * @param array $credentials
-     * @param array $options
-     *
-     * @return array
-     */
-    private function renderAuthorization(array $credentials = [], array $options = [])
-    {
-        empty($credentials) ? $credentials = $this->authorization : null;
-        if (in_array('database_path', array_keys($credentials))) {
-            $options['path'] = $credentials['database_path'];
-            unset($credentials['database_path']);
-        }
-        if (in_array('database_port', array_keys($credentials))) {
-            $options['port'] = $credentials['database_port'];
-            unset($credentials['database_port']);
-        }
-        if (in_array('database_socket', array_keys($credentials))) {
-            $options['unix_socket'] = $credentials['database_socket'];
-            unset($credentials['database_socket']);
-        }
-        if (in_array('user_table', array_keys($credentials))) {
-            $options['entity'] = $credentials['user_table'];
-            unset($credentials['user_table']);
-        }
-        $this->authorization = array_merge($credentials, ['options' => $options]);
-    }
-
-    /**
-     * @param HttpFoundation\Request $request
-     * @param array                  $data
-     *
-     * @return array
-     */
-    private function prepareMessages(HttpFoundation\Request $request, $data)
-    {
-        $messages = isset($data['table']) ? array_merge($request->get('messages'), [
-            'code' => $this->codes[$data['table']],
-            'table' => $data['table'],
-            'target' => $this->targets[$data['table']], ]) : $request->get('messages');
-        $messages = Helper\TranslationsHelper::localize($messages, $data, $request->getLocale(), $this->langISOCodes);
-
-        return array_merge($messages, ['metric' => $this->metric]);
-    }
-
-    /**
      * @param string $class
-     * @param array $args
+     * @param string $method
+     * @param array  $args
+     * @param array  $options
      *
      * @return object
      */
-    private function getAuthManager($class, array $args = [])
+    private function getAuthManager($class, $method = null, array $args = [], array $options = [])
     {
-        $this->renderAuthorization();
-        $rc = new ReflectionClass($class);
-        //$args = array_values(empty($args) ? $this->authorization : $args);
-        $args = empty($args) ? $this->authorization : $args;
+        if (empty($args)) {
+            $args = $this->authorization;
+        }
+        if (in_array('database_path', array_keys($args))) {
+            $options['path'] = $args['database_path'];
+            unset($args['database_path']);
+        }
+        if (in_array('database_port', array_keys($args))) {
+            $options['port'] = $args['database_port'];
+            unset($args['database_port']);
+        }
+        if (in_array('database_socket', array_keys($args))) {
+            $options['unix_socket'] = $args['database_socket'];
+            unset($args['database_socket']);
+        }
+        if (in_array('user_table', array_keys($args))) {
+            $options['entity'] = $args['user_table'];
+            unset($args['user_table']);
+        }
+        $this->authorization = array_merge($args, empty($options) ? [] : ['options' => $options]);
 
-        return $rc->newInstanceArgs($args);
+        $object = new $class(
+            $this->authorization['database_host'],
+            $this->authorization['database_user'],
+            $this->authorization['database_password'],
+            $this->authorization['database_name'],
+            $this->authorization['database_driver'],
+            isset($this->authorization['options']) ? $this->authorization['options'] : []);
+
+        return is_null($method) ? $object : new \ReflectionMethod($object, $method);
     }
 
     /**
@@ -93,18 +72,11 @@ trait BaseControllerTrait
     {
         $data = [];
         if ($request->getMethod() === 'POST') {
-            $this->renderAuthorization();
-            $manager = new Security\Authorization(
-                $this->authorization['database_host'],
-                $this->authorization['database_user'],
-                $this->authorization['database_password'],
-                $this->authorization['database_name'],
-                $this->authorization['database_driver'],
-                isset($this->authorization['options']) ? $this->authorization['options'] : []);
+            $manager = $this->getAuthManager('App\Security\Authorization');
             $data = $manager->checkCredentials($request->request->all());
         }
 
-        return $this->prepareMessages($request, $data);
+        return $this->localizeMessages($request, $data);
     }
 
     /**
@@ -116,20 +88,30 @@ trait BaseControllerTrait
     private function getSplitPageRender(HttpFoundation\Request $request, $page)
     {
         if ($request->getMethod() === 'POST') {
-            $this->renderAuthorization();
-            $manager = new Helper\PagesHelper(
-                $this->authorization['database_host'],
-                $this->authorization['database_user'],
-                $this->authorization['database_password'],
-                $this->authorization['database_name'],
-                $this->authorization['database_driver'],
-                isset($this->authorization['options']) ? $this->authorization['options'] : []);
-            $messages = $this->prepareMessages($request, $request->request->all());
+            $manager = $this->getAuthManager('App\Helper\PagesHelper');
+            $messages = $this->localizeMessages($request, $request->request->all());
 
             return $manager->loadPageData($messages, sprintf('%02d', intval($page)));
         }
 
         return [];
+    }
+
+    /**
+     * @param HttpFoundation\Request $request
+     * @param array                  $data
+     *
+     * @return array
+     */
+    private function localizeMessages(HttpFoundation\Request $request, $data)
+    {
+        $messages = isset($data['table']) ? array_merge($request->get('messages'), [
+            'code' => $this->codes[$data['table']],
+            'origin' => $data['table'],
+            'target' => $this->targets[$data['table']], ]) : $request->get('messages');
+        $messages = Helper\TranslationsHelper::localize($messages, $data, $request->getLocale(), $this->langISOCodes);
+
+        return array_merge($messages, ['metric' => $this->metric]);
     }
 
     /**

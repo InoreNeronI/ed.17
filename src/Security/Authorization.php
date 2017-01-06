@@ -8,21 +8,6 @@ namespace App\Security;
 class Authorization extends Connection\Connection
 {
     /**
-     * Model constructor.
-     *
-     * @param string|null $host
-     * @param string|null $username
-     * @param string|null $password
-     * @param string|null $database
-     * @param string|null $driver
-     * @param array       $options
-     */
-    public function __construct($host = null, $username = null, $password = null, $database = null, $driver = null, array $options = [])
-    {
-        parent::__construct($host, $username, $password, $database, $driver, $options);
-    }
-
-    /**
      * @param array       $args
      * @param string|null $table
      *
