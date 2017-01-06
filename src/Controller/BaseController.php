@@ -19,7 +19,7 @@ class BaseController
     public function __construct()
     {
         /* @var array authorization */
-        $this->authorization = $this->renderAuthorization(\def::dbCredentials());
+        $this->authorization = \def::dbCredentials();
         /* @var array codes */
         $this->codes = \def::dbCodes();
         /* @var array langISOCodes */
@@ -28,6 +28,29 @@ class BaseController
         $this->metric = \def::metric();
         /* @var array targets */
         $this->targets = \def::dbTargets();
+    }
+
+    /**
+     * Generates a response from the given content.
+     *
+     * @param string $content
+     * @param int    $expiryMinutes
+     *
+     * @return HttpFoundation\Response
+     */
+    private static function processView($content = 'Hello World!', $expiryMinutes = 1)
+    {
+        /** @var HttpFoundation\Response $response */
+        $response = new HttpFoundation\Response($content, 200);
+
+        // avoid one of the most widespread Internet security issue, XSS (Cross-Site Scripting)
+        $response->headers->set('Content-Type', 'text/html');
+
+        // configure the HTTP cache headers
+        $response->setMaxAge($expiryMinutes * 60);
+
+        // return response object back
+        return $response;
     }
 
     /**
@@ -43,7 +66,7 @@ class BaseController
         $render = $this->getRender($request);
         $view = Handler\ViewHandler::render($request->get('_route'), $render);
 
-        return static::processRender($view, $expiryMinutes);
+        return static::processView($view, $expiryMinutes);
     }
 
     /**
@@ -60,6 +83,6 @@ class BaseController
         $render = $this->getSplitPageRender($request, $page);
         $view = Handler\ViewHandler::render($request->get('_route'), $render);
 
-        return static::processRender($view, $expiry_minutes);
+        return static::processView($view, $expiry_minutes);
     }
 }

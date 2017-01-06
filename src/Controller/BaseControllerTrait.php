@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Helper;
 use App\Security;
+use ReflectionClass;
 use Symfony\Component\HttpFoundation;
 
 /**
@@ -28,45 +29,26 @@ trait BaseControllerTrait
      *
      * @return array
      */
-    private function renderAuthorization(array $credentials, array $options = [])
+    private function renderAuthorization(array $credentials = [], array $options = [])
     {
-        if (in_array('database_path', $credentials)) {
+        empty($credentials) ? $credentials = $this->authorization : null;
+        if (in_array('database_path', array_keys($credentials))) {
             $options['path'] = $credentials['database_path'];
             unset($credentials['database_path']);
         }
-        if (in_array('database_port', $credentials)) {
+        if (in_array('database_port', array_keys($credentials))) {
             $options['port'] = $credentials['database_port'];
             unset($credentials['database_port']);
         }
-        if (in_array('database_socket', $credentials)) {
+        if (in_array('database_socket', array_keys($credentials))) {
             $options['unix_socket'] = $credentials['database_socket'];
             unset($credentials['database_socket']);
         }
-
-        return array_merge($credentials, ['options' => $options]);
-    }
-
-    /**
-     * Generates a response from the given request object.
-     *
-     * @param string $content
-     * @param int    $expiryMinutes
-     *
-     * @return HttpFoundation\Response
-     */
-    private static function processRender($content = 'Hello World!', $expiryMinutes = 1)
-    {
-        /** @var HttpFoundation\Response $response */
-        $response = new HttpFoundation\Response($content, 200);
-
-        // avoid one of the most widespread Internet security issue, XSS (Cross-Site Scripting)
-        $response->headers->set('Content-Type', 'text/html');
-
-        // configure the HTTP cache headers
-        $response->setMaxAge($expiryMinutes * 60);
-
-        // return response object back
-        return $response;
+        if (in_array('user_table', array_keys($credentials))) {
+            $options['entity'] = $credentials['user_table'];
+            unset($credentials['user_table']);
+        }
+        $this->authorization = array_merge($credentials, ['options' => $options]);
     }
 
     /**
@@ -87,6 +69,22 @@ trait BaseControllerTrait
     }
 
     /**
+     * @param string $class
+     * @param array $args
+     *
+     * @return object
+     */
+    private function getAuthManager($class, array $args = [])
+    {
+        $this->renderAuthorization();
+        $rc = new ReflectionClass($class);
+        //$args = array_values(empty($args) ? $this->authorization : $args);
+        $args = empty($args) ? $this->authorization : $args;
+
+        return $rc->newInstanceArgs($args);
+    }
+
+    /**
      * @param HttpFoundation\Request $request
      *
      * @return array
@@ -95,6 +93,7 @@ trait BaseControllerTrait
     {
         $data = [];
         if ($request->getMethod() === 'POST') {
+            $this->renderAuthorization();
             $manager = new Security\Authorization(
                 $this->authorization['database_host'],
                 $this->authorization['database_user'],
@@ -117,6 +116,7 @@ trait BaseControllerTrait
     private function getSplitPageRender(HttpFoundation\Request $request, $page)
     {
         if ($request->getMethod() === 'POST') {
+            $this->renderAuthorization();
             $manager = new Helper\PagesHelper(
                 $this->authorization['database_host'],
                 $this->authorization['database_user'],

@@ -50,7 +50,7 @@ trait RenderActionTrait
         $container->hasParameter('database_port') ? $credentials['database_port'] = $container->getParameter('database_port') : null;
         $container->hasParameter('database_socket') ? $credentials['database_socket'] = $container->getParameter('database_socket') : null;
         /* @var array authorization */
-        $this->authorization = $this->renderAuthorization($credentials);
+        $this->authorization = $credentials;
         /* @var array codes */
         $this->codes = $container->getParameter('codes');
         /* @var array langISOCodes */
