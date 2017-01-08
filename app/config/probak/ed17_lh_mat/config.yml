@@ -86,11 +86,11 @@ pageImages:
 pageTextReplaces:
   p00:
     p00b_t02:
-      parameters: {  }
+      #parameters: { width: 30 }
       template: 'partial/fields/input.html.twig'
   p05:
     p05b_t09:
-      parameters: {  }
+      #parameters: { width: 10 }
       template: 'partial/fields/input.html.twig'
       
 pageTitles:

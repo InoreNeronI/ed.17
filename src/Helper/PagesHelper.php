@@ -57,6 +57,15 @@ final class PagesHelper extends Security\Authorization
     }
 
     /**
+     * @param string $percent
+     * @return string
+     */
+    private static function widthPercentToHtmlClass($percent = '100')
+    {
+        return static::$widthStyle[isset(static::$widthStyle[$percent]) ? $percent : 'auto'];
+    }
+
+    /**
      * @param array  $args
      * @param string $page
      * @param string $dataDir
@@ -120,7 +129,9 @@ final class PagesHelper extends Security\Authorization
         /** @var array $pageTextReplaces */
         $pageTextReplaces = empty($config['pageTextReplaces']['p'.$page]) ? [] : $config['pageTextReplaces']['p'.$page];
         foreach ($pageTextReplaces as $code => $replace) {
-            $pageTextReplaces[$code]['parameters']['width'] = static::$widthStyle[isset($pageTextReplaces[$code]['parameters']['width']) ? $pageTextReplaces[$code]['parameters']['width'] : 'auto'];
+            empty($pageTextReplaces[$code]['parameters']['width']) ?:
+                $pageTextReplaces[$code]['parameters']['width'] =
+                    static::widthPercentToHtmlClass($pageTextReplaces[$code]['parameters']['width']);
         }
 
         return array_merge($args, static::$pageTexts, [
@@ -169,13 +180,13 @@ final class PagesHelper extends Security\Authorization
             $side = str_replace('p'.$page, '', $mediaData[0]);
             $mediaLibrary[$side][$tag][$mediaData[0].'_'.$mediaData[2]] = [
                 'align' => $mediaData[1],
-                'offset' => static::$widthStyle[isset(static::$widthStyle[$offset]) ? $offset : 'auto'],
+                'offset' => static::widthPercentToHtmlClass($offset),
                 'path' => $path,
                 'since' => intval(str_replace('t', '', $mediaData[2])),
                 'size' => $size,
                 'tag' => $tag,
                 'till' => intval(str_replace('t', '', $mediaData[3])),
-                'width' => static::$widthStyle[isset(static::$widthStyle[$width]) ? $width : 'auto'],
+                'width' => static::widthPercentToHtmlClass($width),
             ];
         }
 
