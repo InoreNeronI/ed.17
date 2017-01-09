@@ -5,5 +5,5 @@ parameters:
     database_port: 3306
     database_name: zored17probak
     database_user: root
-    database_password: null
+    database_password: or0236sql
     user_table: edg020_ikasleak

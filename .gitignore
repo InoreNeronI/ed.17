@@ -3,7 +3,7 @@
 /.idea
 /.php_cs.cache
 /app/cache
-/app/config/database.yml
+/app/config/connection.yml
 /bin
 /dbcopy.json
 /node_modules
