@@ -1,9 +1,0 @@
-# This file is auto-generated during the composer install
-parameters:
-    database_driver: pdo_mysql
-    database_host: 127.0.0.1
-    database_port: 3306
-    database_name: zored17probak
-    database_user: root
-    database_password: or0236sql
-    user_table: edg020_ikasleak
