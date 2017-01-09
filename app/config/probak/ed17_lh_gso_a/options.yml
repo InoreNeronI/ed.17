@@ -1,26 +1,29 @@
 p00:
   text:
     - p00b_t09
-    - p00b_t16
-    - p00b_t23
-  simple:
-    - p00b_t10
-    - p00b_t11
-    - p00b_t12
-    - p00b_t13
-    - p00b_t14
-    - p00b_t17
-    - p00b_t18
-    - p00b_t19
-    - p00b_t20
     - p00b_t21
+    - p00b_t33
+  simple:
+    - p00b_t11_f0
+    - p00b_t13_f0
+    - p00b_t15_f0
+    - p00b_t17_f0
+    - p00b_t19_f0
+    - p00b_t23_c01
+    - p00b_t25_c02
+    - p00b_t27_c03
+    - p00b_t29_c04
+    - p00b_t31_c05
+    
   multiple:
-    - p00b_t24
-    - p00b_t25
-    - p00b_t26
-    - p00b_t27
-    - p00b_t28
-    - p00b_t29
+    - p00b_t35_c01
+    - p00b_t37_c02
+    - p00b_t39_c03
+    - p00b_t41_c04
+    - p00b_t43_c05
+    - p00b_t45_c06
+    
+    
 p01:
   simple:
     - p01b_t05
