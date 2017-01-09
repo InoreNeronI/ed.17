@@ -1,7 +1,8 @@
 
-{% set cellClass = 'dtc ph2 pv1 v-mid' %}
+{% set cellClass = 'b--mid-gray dtc ph2 pv1 v-mid' %}
 
-{% if tableRowNum is same as('0') or (isOption and text is empty) %}
+{#{% if tableRowNum is same as('0') or (isOption and text is empty) %}#}
+{% if isOption and text is empty %}
     {% set cellClass = cellClass ~ ' tc' %}
 {% endif %}
 

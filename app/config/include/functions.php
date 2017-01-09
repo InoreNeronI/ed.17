@@ -19,8 +19,6 @@ final class def extends defDB
     private static $periods;
     private static $routesLoaded = false;
     private static $routes;
-    private static $sizes;
-    private static $styling;
 
     private static function loadRoutes()
     {

@@ -46,8 +46,8 @@
 {% endif %}
 
 {% set text %}
-    {{ value }}
     {% include '@App/partial/fields/input.html.twig' %}
+    <i class="blue f6">{{ value }}</i>
     {% if text is not empty %}{{ text }}{% endif %}
     {% if media is not null and media['align'] is same as('cen') and media['since'] == textNum and media['till'] == textNum %}
         {% include '@App/partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContent': media['width'], 'src': media['path'] } %}
