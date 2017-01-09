@@ -19,7 +19,8 @@
     "leaseweb/memcache-bundle": "@stable",
     "neronmoon/scriptsdev": "@stable",
     "symfony/var-dumper": "^2.8",
-    "symfony/web-profiler-bundle": "^2.8"
+    "symfony/web-profiler-bundle": "^2.8",
+    "symfony/web-server-bundle": "3.3.x-dev"
   },
   "scripts": {
     "codefix": ["php bin/sf-upgrade.phar fix src || true", "php bin/php-cs.phar fix --config=.php_cs || true"],

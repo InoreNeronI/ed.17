@@ -58,6 +58,7 @@ final class PagesHelper extends Security\Authorization
 
     /**
      * @param string $percent
+     *
      * @return string
      */
     private static function widthPercentToHtmlClass($percent = '100')
