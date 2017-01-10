@@ -10,10 +10,10 @@
 {% block content %}
     {{ parent() }}
     <article class="cf ph4 pv2 tc">
-        <div class="fl tc w-100 w-100-m w-50-ns">
+        <div class="fl tc w-100 w-50-ns">
             <img src="{{ images.logoUrl }}" class="dib" title="{{ block('title') }}"/>
         </div>
-        <div class="dn dib-ns dn-m fl tc w-100 w-100-m w-50-ns">
+        <div class="dn dib-ns dn-m fl tc w-100 w-50-ns">
             <h3 class="dark-blue {{ fontClass }} fw6 mh0 ph0 w-100">{{ course }}</h3>
             <h3 class="{{ fontClassX2 }} fw6 mb2 navy"><strong>{{ title }}</strong></h3>
         </div>

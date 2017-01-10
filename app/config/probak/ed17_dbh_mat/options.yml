@@ -91,10 +91,10 @@ p08:
     - p08b_t06
 p09:
   simple:
-    - p09b_t03
-    - p09b_t04
-    - p09b_t05
-    - p09b_t06
+    - p09b_t02a
+    - p09b_t03a
+    - p09b_t04a
+    - p09b_t05a
 p10:
   simple:
     - p10b_t02
