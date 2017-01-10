@@ -88,8 +88,6 @@ pageTextReplaces:
       template: 'partial/fields/input.html.twig'
       
 pageAreaWidths:
-  p00:
-    b: 40
   p04:
     a: 40
   p18:

@@ -70,12 +70,10 @@ p05:
     - p05b_t03
     - p05b_t04
     - p05b_t05
-          
 p06:
   text:
     - p06a_t02
   simple:
-    - p06b_t01
     - p06b_t02
     - p06b_t03
     - p06b_t04
@@ -182,6 +180,7 @@ p17:
     - p17a_t02
     - p17a_t03
     - p17a_t04
+  simple:
     - p17b_t06_f1
     - p17b_t07_f1
     - p17b_t09_f2
