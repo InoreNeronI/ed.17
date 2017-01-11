@@ -51,11 +51,14 @@
         {% set textAlignParts = key|slice(key|length-1,1) %}
         {% set textAlignLeft = textAlignParts is same as('a') ? true : false %}
         {% set textAlignRight = textAlignParts is same as('b') ? true : false %}
-        {% set class = class ~ (textAlignLeft ? ' fl' : textAlignRight ? ' dib' : ' cl') %}
-        {% if textAlignLeft and isOption or textAlignRight and isOption %}
-            {% set class = class ~ ' w-auto' %}
-        {% elseif textAlignLeft or textAlignRight %}
-            {% set class = class ~ ' w-50' %}
+        {% set isTextAligned = textAlignLeft or textAlignRight %}
+        {% if isTextAligned and not isOption %}
+            {% if textAlignLeft %}
+                <div class="dib w-100">
+            {% endif %}
+            <div class="{{ textAlignLeft ? 'fl ' : textAlignRight ? 'dib ' : '' }}w-50">
+        {% elseif isTextAligned and isOption %}
+            {% set class = class ~ ' dib' %}
         {% endif %}
 
         {% set textNum = key|split('t')[1]|number_format %}
@@ -117,13 +120,19 @@
         {% if isOption %}
             {% include '@App/partial/answer-option.html.twig' %}
         {% else %}
-            {% include '@App/partial/fields/label.html.twig' with {'labelClass': (isItemText or isTitleText ? 'b ' : '') ~ 'pa0 ' ~ color} %}
+            {% include '@App/partial/fields/label.html.twig' with {'labelClass': (isItemText or isTitleText ? 'b ' : '') ~ 'pa0'} %}
             {% if tableColNum is null or tableRowNum is null %}{% set parent = key %}{% endif %}
         {% endif %}
         </div>
 
         {% if not isOption and media is not null %}
             {% include '@App/partial/media-post.html.twig' %}
+        {% endif %}
+        {% if isTextAligned and not isOption %}
+            </div>
+            {% if textAlignRight %}
+                </div>
+            {% endif %}
         {% endif %}
     {% endfor %}
 

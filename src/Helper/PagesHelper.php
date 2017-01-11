@@ -107,6 +107,9 @@ final class PagesHelper extends Security\Authorization
                     $pageAreaSkip = array_keys(static::$pageAreaPercents)[0];
                 }
                 $pageWidth[$sideLetter] = static::$widthStyle[$sideWith];
+                $sideLetterOpposite = $sideLetter === 'a' ? 'b' : 'a';
+                isset($pageWidth[$sideLetterOpposite]) ? $pageWidth[$sideLetterOpposite] = static::$widthStyle[100-$sideWith] : null;
+                break;
             }
         }
 

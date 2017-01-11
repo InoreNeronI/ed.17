@@ -9,7 +9,7 @@ pageImages:
   p03:
     - p03b_cen_t02_t02_60_img.png
   p04:
-    - p04a_cen_t01_t01_100_img.png
+    - p04a_cen_t02_t02_100_img.png
   p05:
     - p05a_cen_t02_t02_100_img.png
   p06:
@@ -53,25 +53,15 @@ pageTitles:
   - p02a_t01
   - p02a_t06
   - p03b_t01
-  - p04a_t01
   - p04a_t02
   - p05a_t02
   - p06a_t02
-  - p07a_t01
   - p07a_t02
   - p08a_t02
   - p09a_t02
-  - p10a_t01
   - p10a_t02
-  - p10a_t03
-  - p10a_t04
   - p11a_t02
-  - p11a_t03
-  - p11a_t04
   - p12a_t02
-  - p12a_t03
-  - p12a_t04
-  - p13a_t01
   - p13a_t02
   - p14a_t02
   - p15b_t03
@@ -79,6 +69,28 @@ pageTitles:
 pageAreaWidths:
   p03:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage
+  p04:
+    a: 60
+  p05:
+    a: 60
+  p06:
+    a: 60
+  p07:
+    a: 60
+  p08:
+    a: 60
+  p09:
+    a: 60
+  p10:
+    a: 60
+  p11:
+    a: 60
+  p12:
+    a: 60
+  p13:
+    a: 60
+  p14:
+    a: 60
   p15:
     b: 100
   
