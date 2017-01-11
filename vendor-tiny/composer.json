@@ -4,9 +4,12 @@
   "homepage": "http://ediagnostikoak.net/",
   "require": {
     "php": "^5.4.0|^7.0",
+    "ext-memcache": "^3.0",
     "doctrine/dbal": "@stable",
     "acelaya/doctrine-enum-type": "@stable",
+    "symfony/event-dispatcher": "^2.8",
     "symfony/http-kernel": "^2.8",
+    "symfony/http-foundation": "^2.8",
     "symfony/routing": "^2.8",
     "symfony/yaml": "^2.8",
     "twig/twig": "@stable"

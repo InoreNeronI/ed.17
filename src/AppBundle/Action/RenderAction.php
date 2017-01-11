@@ -35,7 +35,7 @@ final class RenderAction
         /** @var string $name */    // @ + namespace + path + slug + extension
         $name = "@$templateNamespace$path/$slug.$templateExtension";
         /** @var array $render */
-        $render = $this->getRender($request);
+        $render = $this->getData($request);
 
         return new HttpFoundation\Response($this->twig->render($name, $render));
     }

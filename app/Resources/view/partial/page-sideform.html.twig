@@ -1,6 +1,5 @@
 
 <form class="b--black-10 ba br2-ns center min-h-100 mw7 pa1 pa2-m pa3-l" action="{{ formAction }}" accept-charset="utf-8" method="{{ formMethod|default('post') }}">
-
     {% include '@App/partial/fields/hidden.html.twig' %}
     <input name="flabel" type="hidden" value="{{ flabel }}" />
     <input name="referrer" type="hidden" value="{{ page }}" />
@@ -83,7 +82,9 @@
             {% elseif textNum > media['till']|number_format %}
                 {% set media = null %}
             {% endif %}
-            {% include '@App/partial/media-horizontal.html.twig' %}
+            {% if not isOption and media is not null %}
+                {% include '@App/partial/media-pre.html.twig' %}
+            {% endif %}
         {% endif %}
 
         {% if tableRowNum is not null %}
@@ -121,8 +122,8 @@
         {% endif %}
         </div>
 
-        {% if media is not null %}
-            {% include '@App/partial/media-centered.html.twig' %}
+        {% if not isOption and media is not null %}
+            {% include '@App/partial/media-post.html.twig' %}
         {% endif %}
     {% endfor %}
 

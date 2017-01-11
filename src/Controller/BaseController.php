@@ -46,6 +46,9 @@ class BaseController
         // avoid one of the most widespread Internet security issue, XSS (Cross-Site Scripting)
         $response->headers->set('Content-Type', 'text/html');
 
+        // compression
+        $response->headers->set('Accept-Encoding', 'gzip, deflate');
+
         // configure the HTTP cache headers
         $response->setMaxAge($expiryMinutes * 60);
 
@@ -63,8 +66,8 @@ class BaseController
      */
     public function renderAction(HttpFoundation\Request $request, $expiryMinutes = 1)
     {
-        $render = $this->getRender($request);
-        $view = Handler\ViewHandler::render($request->get('_route'), $render);
+        $data = $this->getData($request);
+        $view = Handler\ViewHandler::render($request->get('_route'), $data);
 
         return static::processView($view, $expiryMinutes);
     }
@@ -80,8 +83,8 @@ class BaseController
      */
     public function pageRenderAction(HttpFoundation\Request $request, $page = null, $expiry_minutes = 1)
     {
-        $render = $this->getSplitPageRender($request, $page);
-        $view = Handler\ViewHandler::render($request->get('_route'), $render);
+        $data = $this->getSplitPageData($request, $page);
+        $view = Handler\ViewHandler::render($request->get('_route'), $data);
 
         return static::processView($view, $expiry_minutes);
     }

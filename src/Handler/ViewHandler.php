@@ -24,7 +24,7 @@ class ViewHandler
     /**
      * Construct won't be called inside this class and is uncallable from the outside. This prevents instantiating this class.
      *
-     * @url http://stackoverflow.com/a/11576945
+     * @see http://stackoverflow.com/a/11576945
      */
     private function __construct()
     {

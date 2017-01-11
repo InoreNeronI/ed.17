@@ -13,14 +13,48 @@ use Symfony\Component\Routing;
  */
 trait BaseKernelTrait
 {
+    /** @var string $baseSlug */
+    private $baseSlug = 'index';
+
+    /** @var string $baseUrl */
+    private $baseUrl = '/';
+
     /** @var EventDispatcher\EventDispatcher */
     private $dispatcher;
+
+    /** @var array $headers */
+    private $headers = [];
 
     /** @var Routing\Matcher\UrlMatcherInterface */
     private $matcher;
 
     /** @var HttpKernel\Controller\ControllerResolverInterface */
     private $resolver;
+
+    /** @var HttpFoundation\Response */
+    private $response;
+
+    /**
+     * @param HttpFoundation\Response $response
+     */
+    private function setResponse(HttpFoundation\Response $response)
+    {
+        $this->response = $response;
+    }
+
+    /**
+     * @param int        $code
+     * @param \Exception $exception
+     * @param string     $title
+     */
+    private function setWarningHeader($code, $exception, $title = 'An error occurred')
+    {
+        /** @var string $message */
+        $message = $exception->getMessage();
+        $this->headers = array_merge($this->headers, [
+            'warn-code' => $code,
+            'warn-text' => sprintf('%s: %s', $title, empty($message) ? $exception->getTraceAsString() : $message), ]);
+    }
 
     /**
      * Handles a request.
@@ -30,7 +64,7 @@ trait BaseKernelTrait
      * @param int                    $type
      * @param bool                   $catch
      *
-     * @return HttpFoundation\Response
+     * @return HttpFoundation\Response|HttpFoundation\RedirectResponse
      */
     public function handle(HttpFoundation\Request $request, $type = HttpKernel\HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
@@ -53,21 +87,22 @@ trait BaseKernelTrait
             $arguments = $this->resolver->getArguments($request, $controller);
 
             // Invoke the name of the controller that is resolved from a match in our routing class
-            /** @var HttpFoundation\Response $response */
-            $response = call_user_func_array($controller, $arguments);
+            $this->setResponse(call_user_func_array($controller, $arguments));
         } catch (Routing\Exception\ResourceNotFoundException $e) {
             // No such route exception return a 404 response
-            $response = new HttpFoundation\Response(sprintf('Resource not found: %s', $e->getMessage()), 404);
+            $this->setWarningHeader(HttpFoundation\Response::HTTP_NOT_FOUND, $e, 'Resource not found');
+            $this->setResponse(HttpFoundation\RedirectResponse::create($this->baseUrl, HttpFoundation\Response::HTTP_SEE_OTHER, $this->headers));
         } catch (\Exception $e) {
-            $msg = $e->getMessage();
             // Something blew up exception return a 500 response
-            $response = new HttpFoundation\Response(sprintf('An error occurred: %s', empty($msg) ? $e->getTraceAsString() : $msg), 500);
+            $this->setWarningHeader(HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR, $e);
+            $this->setResponse(HttpFoundation\RedirectResponse::create($this->baseUrl, HttpFoundation\Response::HTTP_SEE_OTHER, $this->headers));
         }
+        $this->response->headers->add($this->headers);
 
         // The dispatcher, the central object of the event dispatcher system, notifies listeners of an event dispatched to it.
         // Put another way: your code dispatches an event to the dispatcher, the dispatcher notifies all registered listeners for the event, and each listener do whatever it wants with the event.
-        $this->dispatcher->dispatch('response', new Event\ResponseEvent($response, $request));
+        $this->dispatcher->dispatch('response', new Event\ResponseEvent($this->response, $request));
 
-        return $response;
+        return $this->response;
     }
 }

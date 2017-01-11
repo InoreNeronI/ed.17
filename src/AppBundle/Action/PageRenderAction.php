@@ -32,7 +32,7 @@ final class PageRenderAction
         /** @var string $name */    // @ + namespace + path + slug + extension
         $name = "@$templateNamespace$path/$slug.$templateExtension";
         /** @var array $render */
-        $render = $this->getSplitPageRender($request, $page);
+        $render = $this->getSplitPageData($request, $page);
 
         return new HttpFoundation\Response($this->twig->render($name, $render));
     }

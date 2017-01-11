@@ -5,7 +5,7 @@ namespace App\Security\Connection;
 use Doctrine\DBAL;
 
 /**
- * @url https://github.com/air-php/database/blob/master/src/ConnectionInterface.php
+ * @see https://github.com/air-php/database/blob/master/src/ConnectionInterface.php
  *
  * Interface ConnectionInterface
  */

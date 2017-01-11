@@ -68,7 +68,7 @@ trait BaseControllerTrait
      *
      * @return array
      */
-    private function getRender(HttpFoundation\Request $request)
+    private function getData(HttpFoundation\Request $request)
     {
         $data = [];
         if ($request->getMethod() === 'POST') {
@@ -85,7 +85,7 @@ trait BaseControllerTrait
      *
      * @return array
      */
-    private function getSplitPageRender(HttpFoundation\Request $request, $page)
+    private function getSplitPageData(HttpFoundation\Request $request, $page)
     {
         if ($request->getMethod() === 'POST') {
             $manager = $this->getAuthManager('App\Helper\PagesHelper');
@@ -114,13 +114,13 @@ trait BaseControllerTrait
         return array_merge($messages, ['metric' => $this->metric]);
     }
 
-    /**
+    /*
      * @param HttpFoundation\Session\Session $session
      * @param string                         $msg
      *
      * @return array
      */
-    private static function getFlashMessages(HttpFoundation\Session\Session $session, $msg)
+    /*private static function getFlashMessages(HttpFoundation\Session\Session $session, $msg)
     {
         $session->isStarted() ?: $session->start();
         // add flash messages
@@ -140,5 +140,5 @@ trait BaseControllerTrait
             'warning',
             ucfirst($msg)
         );
-    }
+    }*/
 }

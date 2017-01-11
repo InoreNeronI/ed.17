@@ -5,7 +5,7 @@ namespace App\Security\Connection;
 use Doctrine\DBAL;
 
 /**
- * @url https://github.com/air-php/database/blob/master/src/Connection.php
+ * @see https://github.com/air-php/database/blob/master/src/Connection.php
  *
  * Class Connection
  */
@@ -87,7 +87,7 @@ class Connection implements ConnectionInterface
     protected $transactionRestartDelay = 1;
 
     /**
-     * @url https://github.com/weavora/doctrine-extensions/blob/master/lib/Weavora/Doctrine/DBAL/Connection.php
+     * @see https://github.com/weavora/doctrine-extensions/blob/master/lib/Weavora/Doctrine/DBAL/Connection.php
      * Execute update query
      * Return number of affected rows
      *

@@ -8,7 +8,18 @@
   },
   "require": {
     "dunglas/action-bundle": "@stable",
+    "leaseweb/memcache-bundle": "@stable",
+    "symfony/asset": "^2.8",
+    "symfony/class-loader": "^2.8",
+    "symfony/dependency-injection": "^2.8",
+    "symfony/filesystem": "^2.8",
+    "symfony/finder": "^2.8",
     "symfony/framework-bundle": "^2.8",
+    "symfony/security-core": "^2.8",
+    "symfony/security-csrf": "^2.8",
+    "symfony/stopwatch": "^2.8",
+    "symfony/templating": "^2.8",
+    "symfony/twig-bridge": "^2.8",
     "symfony/twig-bundle": "^2.8",
     "wikimedia/composer-merge-plugin": "@dev"
   },
@@ -16,8 +27,9 @@
     "andig/dbcopy": "@dev",
     "elao/web-profiler-extra-bundle": "@dev",
     "incenteev/composer-parameter-handler": "@stable",
-    "leaseweb/memcache-bundle": "@stable",
     "neronmoon/scriptsdev": "@stable",
+    "symfony/console": "^2.8",
+    "symfony/process": "^2.8",
     "symfony/var-dumper": "^2.8",
     "symfony/web-profiler-bundle": "^2.8",
     "symfony/web-server-bundle": "3.3.x-dev"
@@ -89,7 +101,7 @@
   },
   "config": {
     "bin-dir": "bin",
-    "platform": {"php": "5.5.9"},
+    "platform": {"php": "5.6.0"},
     "preferred-install": "dist",
     "vendor-dir": "vendor"
   }
