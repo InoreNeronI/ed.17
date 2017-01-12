@@ -13,13 +13,16 @@
         {% block styles %}{% endblock %}
     </head>
     <body>
-    {% set color = 'black-90 ' %}
-    {% set colorInverse = 'white-90 ' %}
-    {% set fontClass = 'f6-s f5-m f4-l ' %}
-    {% set fontClassX2 = 'f5-s f4-m f3-l ' %}
-    {% set fontClassDefault = fontClass ~ color %}
-    {% set fontClassTitle = fontClassX2 ~ color %}
-    {% set buttonClass = fontClassDefault ~ buttonClass|default(color ~ ' bg-' ~ colorInverse ~ ' ba br1-s br2-m br3-l bw1 bw2-l dib dim fw6-l link ph2 pointer pv1 tc') %}
+        {% if ErrorCode|default(false) and ErrorMessage|default(false) %}
+            {% include '@App/partial/sample/error-sample.html.twig' %}
+        {% endif %}
+        {% set color = 'black-90 ' %}
+        {% set colorInverse = 'white-90 ' %}
+        {% set fontClass = 'f6-s f5-m f4-l ' %}
+        {% set fontClassX2 = 'f5-s f4-m f3-l ' %}
+        {% set fontClassDefault = fontClass ~ color %}
+        {% set fontClassTitle = fontClassX2 ~ color %}
+        {% set buttonClass = fontClassDefault ~ buttonClass|default(color ~ ' bg-' ~ colorInverse ~ ' ba br1-s br2-m br3-l bw1 bw2-l dib dim fw6-l link ph2 pointer pv1 tc') %}
         {% block content %}{% endblock %}
         {% block scripts %}
             <script type="text/javascript" src="/scripts/jquery/jquery.min.js"></script>

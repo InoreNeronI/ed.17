@@ -60,12 +60,14 @@ class BaseController
      * Generates a response from the given request object.
      *
      * @param HttpFoundation\Request $request
+     * @param array                  $headers
      * @param int                    $expiryMinutes
      *
      * @return HttpFoundation\Response
      */
-    public function renderAction(HttpFoundation\Request $request, $expiryMinutes = 1)
+    public function renderAction(HttpFoundation\Request $request, array $headers = [], $expiryMinutes = 1)
     {
+        empty($headers) ?: $request->headers->add($headers);
         $data = $this->getData($request);
         $view = Handler\ViewHandler::render($request->get('_route'), $data);
 
@@ -77,12 +79,14 @@ class BaseController
      *
      * @param HttpFoundation\Request $request
      * @param string|null            $page
+     * @param array                  $headers
      * @param int                    $expiry_minutes
      *
      * @return HttpFoundation\Response
      */
-    public function pageRenderAction(HttpFoundation\Request $request, $page = null, $expiry_minutes = 1)
+    public function pageRenderAction(HttpFoundation\Request $request, $page, array $headers = [], $expiry_minutes = 1)
     {
+        empty($headers) ?: $request->headers->add($headers);
         $data = $this->getSplitPageData($request, $page);
         $view = Handler\ViewHandler::render($request->get('_route'), $data);
 

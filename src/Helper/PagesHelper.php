@@ -53,7 +53,8 @@ final class PagesHelper extends Security\Authorization
 
             return static::$pageTexts;
         }
-        throw new \Exception(sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())));
+        //throw new \Exception(sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())));
+        throw new \Exception('No results found');
     }
 
     /**
@@ -108,7 +109,10 @@ final class PagesHelper extends Security\Authorization
                 }
                 $pageWidth[$sideLetter] = static::$widthStyle[$sideWith];
                 $sideLetterOpposite = $sideLetter === 'a' ? 'b' : 'a';
-                isset($pageWidth[$sideLetterOpposite]) ? $pageWidth[$sideLetterOpposite] = static::$widthStyle[100-$sideWith] : null;
+                $sideWithOpposite = 100 - intval($sideWith);
+                isset($pageWidth[$sideLetterOpposite]) ?
+                    $pageWidth[$sideLetterOpposite] = isset(static::$widthStyle[$sideWithOpposite]) ? static::$widthStyle[$sideWithOpposite] : 'w-auto' :
+                    null;
                 break;
             }
         }

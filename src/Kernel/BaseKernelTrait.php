@@ -2,6 +2,7 @@
 
 namespace App\Kernel;
 
+use App\Controller;
 use App\Event;
 use Symfony\Component\EventDispatcher;
 use Symfony\Component\HttpFoundation;
@@ -43,17 +44,24 @@ trait BaseKernelTrait
     }
 
     /**
-     * @param int        $code
      * @param \Exception $exception
      * @param string     $title
      */
-    private function setWarningHeader($code, $exception, $title = 'An error occurred')
+    private function setWarning($exception, $title = 'Error occurred')
     {
+        if ($exception instanceof Routing\Exception\ResourceNotFoundException) {
+            $title = 'Resource not found (such route does not exist)';
+            // No such route exception return a 404 response
+            $status = HttpFoundation\Response::HTTP_NOT_FOUND;
+        } else {
+            // Something blew up exception return a 500 response
+            $status = HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
+        }
         /** @var string $message */
         $message = $exception->getMessage();
         $this->headers = array_merge($this->headers, [
-            'warn-code' => $code,
-            'warn-text' => sprintf('%s: %s', $title, empty($message) ? $exception->getTraceAsString() : $message), ]);
+            'ErrorCode' => $status,
+            'ErrorMessage' => sprintf('%s: %s', $title, empty($message) ? $exception->getTraceAsString() : $message), ]);
     }
 
     /**
@@ -75,7 +83,9 @@ trait BaseKernelTrait
 
         // Next we take our HTTP request object and see if our Request contains a routing match (see our routes class below for a match)
         try {
-            $request->attributes->add($this->matcher->match($request->getPathInfo()));
+            /** @var array $parameters */
+            $parameters = $this->matcher->match($request->getPathInfo());
+            $request->attributes->add($parameters);
 
             // Our request found a match so let's use the Controller Resolver to resolve our controller.
             /** @var callable|false $controller */
@@ -88,14 +98,18 @@ trait BaseKernelTrait
 
             // Invoke the name of the controller that is resolved from a match in our routing class
             $this->setResponse(call_user_func_array($controller, $arguments));
-        } catch (Routing\Exception\ResourceNotFoundException $e) {
-            // No such route exception return a 404 response
-            $this->setWarningHeader(HttpFoundation\Response::HTTP_NOT_FOUND, $e, 'Resource not found');
-            $this->setResponse(HttpFoundation\RedirectResponse::create($this->baseUrl, HttpFoundation\Response::HTTP_SEE_OTHER, $this->headers));
         } catch (\Exception $e) {
-            // Something blew up exception return a 500 response
-            $this->setWarningHeader(HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR, $e);
-            $this->setResponse(HttpFoundation\RedirectResponse::create($this->baseUrl, HttpFoundation\Response::HTTP_SEE_OTHER, $this->headers));
+            $this->setWarning($e);
+            $controller = new Controller\BaseController();
+            $request = HttpFoundation\Request::create($this->baseUrl);
+            $request->attributes->add(['_route' => $this->baseSlug, 'messages' => array_merge(
+                $this->headers,
+                parseConfig(ROOT_DIR.\def::paths()['translations_dir'], 'layout'),
+                parseConfig(ROOT_DIR.\def::paths()['translations_dir'], 'page/'.$this->baseSlug)
+            )]);
+            $response = $controller->renderAction($request, $this->headers);
+            $response->setStatusCode(HttpFoundation\Response::HTTP_SEE_OTHER);
+            $this->setResponse($response/*->sendHeaders()*/);
         }
         $this->response->headers->add($this->headers);
 

@@ -65,7 +65,7 @@ class ViewHandler
      * Renders a template.
      *
      * @param string       $slug
-     * @param array        $variables
+     * @param array        $context
      * @param array|string $loaderDir
      * @param string       $cacheDir
      * @param bool         $autoescape
@@ -76,7 +76,7 @@ class ViewHandler
      */
     public static function render(
         $slug = 'index',
-        $variables = [],
+        $context = [],
         $loaderDir = TEMPLATE_FILES_DIR,
         $cacheDir = TEMPLATE_CACHE_DIR,
         $autoescape = false,
@@ -85,7 +85,7 @@ class ViewHandler
     {
         static::load($loaderDir, $cacheDir, $autoescape, $debug, $strictVariables);
 
-        return static::$twig->render(static::getTemplatePath($slug), $variables);
+        return static::$twig->render(static::getTemplatePath($slug), $context);
     }
 
     /**

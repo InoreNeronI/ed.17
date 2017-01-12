@@ -14,12 +14,13 @@ class ResponseEvent extends EventDispatcher\Event
 {
     private $request;
     private $response;
+    private $session;
 
     public function __construct(HttpFoundation\Response $response, HttpFoundation\Request $request)
     {
         $this->response = $response;
         $this->request = $request;
-        $this->handleSession();
+        $this->setSession();
     }
 
     public function getResponse()
@@ -32,35 +33,44 @@ class ResponseEvent extends EventDispatcher\Event
         return $this->request;
     }
 
-    private function handleSession($options = [], $expiretime = 10)
+    private function setSession($options = [], $expireTime = 10)
+    {
+        /** @var bool $wasError */
+        $wasError = false;
+        if ($this->session instanceof HttpFoundation\Session\SessionInterface) {
+            $wasError = $this->session->has('ErrorCode') && $this->session->has('ErrorMessage');
+        } else {
+            $this->startSession($options, $expireTime);
+        }
+        /** @var bool $isError */
+        $isError = $this->response->isRedirect() || $this->response->getContent() === '';
+        if ($isError && $this->response->headers->has('ErrorCode') && $this->response->headers->has('ErrorMessage')) {
+            $this->session->set('ErrorCode', $this->response->headers->get('ErrorCode'));
+            $this->session->set('ErrorMessage', $this->response->headers->get('ErrorMessage'));
+        } elseif (time() - $this->session->getMetadataBag()->getLastUsed() > $expireTime || $wasError) {
+            $this->response = 'tuvo';
+            $this->session->invalidate();
+            //throw new SessionExpired; // redirect to expired session page
+        }
+        $this->request->setSession($this->session);
+    }
+
+    private function startSession($options = [], $expireTime = 10, $lock = true, $lockWait = 250, $maxWait = 2)
     {
         //$storage = new HttpFoundation\Session\Storage\NativeSessionStorage($options, new Handler\NativeSqliteSessionHandler(ROOT_DIR.'/app/Resources/db/sessions.db'));
         $memcache = new \MemcachePool();
         if ($memcache->connect('localhost', 11211) !== false) {
-            if (!($session = $this->request->getSession() instanceof HttpFoundation\Session\SessionInterface)) {
-                $handler = new Handler\Session\LockingSessionHandler($memcache, [
-                    'expiretime' => $expiretime,
-                    'locking' => true,
-                    'spin_lock_wait' => 250,
-                    'lock_max_wait' => 2, ]);
-                $storage = new HttpFoundation\Session\Storage\NativeSessionStorage($options, $handler);
-                $session = new HttpFoundation\Session\Session($storage);
-                $session->start();
-            }
-            $isError = $this->response->isRedirect() || $this->response->getContent() === '';
-            $wasError = $session->has('warn-code') && $session->has('warn-text');
-            if ($isError && $this->response->headers->has('warn-code') && $this->response->headers->has('warn-text')) {
-                $session->set('warn-code', $this->response->headers->get('warn-code'));
-                $session->set('warn-text', $this->response->headers->get('warn-text'));
-                //print_r($this->response->headers->all());
-                //print_r([$code,$text]);exit;
-            } elseif (time() - $session->getMetadataBag()->getLastUsed() > $expiretime || $wasError) {
-                $session->invalidate();
-                //throw new SessionExpired; // redirect to expired session page
-            }
-            $this->request->setSession($session);
+            $this->session = $this->request->getSession();
+            $handler = new Handler\Session\LockingSessionHandler($memcache, [
+                'expiretime' => $expireTime,
+                'locking' => $lock,
+                'spin_lock_wait' => $lockWait,
+                'lock_max_wait' => $maxWait, ]);
+            $storage = new HttpFoundation\Session\Storage\NativeSessionStorage($options, $handler);
+            $this->session = new HttpFoundation\Session\Session($storage);
+            $this->session->start();
         } else {
-            throw new \Exception('Cannot connect to Memcache default server');
+            throw new \Exception('Cannot connect to Session default server');
         }
     }
 }

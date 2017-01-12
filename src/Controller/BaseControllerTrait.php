@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Helper;
+use App\Security;
 use Symfony\Component\HttpFoundation;
 
 /**
@@ -72,6 +73,7 @@ trait BaseControllerTrait
     {
         $data = [];
         if ($request->getMethod() === 'POST') {
+            /** @var Security\Authorization $manager */
             $manager = $this->getAuthManager('App\Security\Authorization');
             $data = $manager->checkCredentials($request->request->all());
         }
@@ -88,6 +90,7 @@ trait BaseControllerTrait
     private function getSplitPageData(HttpFoundation\Request $request, $page)
     {
         if ($request->getMethod() === 'POST') {
+            /** @var Helper\PagesHelper $manager */
             $manager = $this->getAuthManager('App\Helper\PagesHelper');
             $messages = $this->localizeMessages($request, $request->request->all());
 
@@ -103,42 +106,16 @@ trait BaseControllerTrait
      *
      * @return array
      */
-    private function localizeMessages(HttpFoundation\Request $request, $data)
+    private function localizeMessages(HttpFoundation\Request $request, $data = [])
     {
-        $messages = isset($data['table']) ? array_merge($request->get('messages'), [
-            'code' => $this->codes[$data['table']],
-            'origin' => $data['table'],
-            'target' => $this->targets[$data['table']], ]) : $request->get('messages');
-        $messages = Helper\TranslationsHelper::localize($messages, $data, $request->getLocale(), $this->langISOCodes);
-
-        return array_merge($messages, ['metric' => $this->metric]);
-    }
-
-    /*
-     * @param HttpFoundation\Session\Session $session
-     * @param string                         $msg
-     *
-     * @return array
-     */
-    /*private static function getFlashMessages(HttpFoundation\Session\Session $session, $msg)
-    {
-        $session->isStarted() ?: $session->start();
-        // add flash messages
-        if (strpos($msg, 'no connection')) {
-            return $session->getFlashBag()->add(
-                'error',
-                'Data connection error'
-            );
-        } elseif (strpos($msg, 'no result')) {
-            return $session->getFlashBag()->add(
-                'error',
-                'Data query error'
-            );
+        $messages = Helper\TranslationsHelper::localize($request->get('messages'), $data, $request->getLocale(), $this->langISOCodes);
+        if (($session = $request->getSession()) && $session->isStarted() && $session->has('ErrorCode') && $session->has('ErrorMessage')) {
+            $messages = array_merge(['ErrorCode' => $session->get('ErrorCode'), 'ErrorMessage' => $session->get('ErrorMessage')], $messages);
         }
 
-        return $session->getFlashBag()->add(
-            'warning',
-            ucfirst($msg)
-        );
-    }*/
+        return array_merge(isset($data['table']) ? [
+            'code' => $this->codes[$data['table']],
+            'origin' => $data['table'],
+            'target' => $this->targets[$data['table']], ] : [], $messages, $data, ['metric' => $this->metric]);
+    }
 }
