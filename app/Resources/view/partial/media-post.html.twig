@@ -1,5 +1,3 @@
-{% if media['align'] is same as('dch') and media['since']|number_format == textNum %}
-    {% include '@App/partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContainer': 'fr pl1 tc ' ~ media['width'] } %}
-{% elseif media['align'] is same as('cen') and media['since'] == textNum and media['till']|number_format == textNum %}
+{% if media['align'] is same as('cen') and media['since'] == textNum and media['till']|number_format == textNum %}
     {% include '@App/partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContainer': 'cb db pv1 tc w-100', 'cssClassContent': media['width'] } %}
 {% endif %}

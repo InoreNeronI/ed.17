@@ -13,14 +13,6 @@
         {% set isItemText = key in numbers[side]|keys %}
         {% set isPlainText = pageOptions['text'] is defined ? key in pageOptions['text'] : false %}
         {% set isTitleText = key in pageTitles %}
-        {% set fontClass = isTitleText ? fontClassTitle : fontClassDefault %}
-        {% if pageMedia[side]['audio'] is defined and key in pageMedia[side]['audio']|keys %}
-            {% set media = pageMedia[side]['audio'][key] %}
-        {% elseif pageMedia[side]['img'] is defined and key in pageMedia[side]['img']|keys %}
-            {% set media = pageMedia[side]['img'][key] %}
-        {% elseif pageMedia[side]['video'] is defined and key in pageMedia[side]['video']|keys %}
-            {% set media = pageMedia[side]['video'][key] %}
-        {% endif %}
         {% set isSimpleOption = pageOptions['simple'] is defined ? key in pageOptions['simple'] : false %}
         {% set isLibreOption = pageOptions['libre'] is defined ? key in pageOptions['libre'] : false %}
         {% set isLibreOption = pageOptions['libre-m'] is defined ? key in pageOptions['libre-m'] : isLibreOption %}
@@ -29,7 +21,7 @@
         {% set isMultipleOption = pageOptions['multiple'] is defined ? key in pageOptions['multiple'] : false %}
         {% set isOption = isSimpleOption or isLibreOption or isLibreOptionLarge or isLibreOptionSmall or isMultipleOption %}
         {% set class = isOption ? 'option' : isPlainText ? 'text' : 'description' %}
-
+        {% set fontClass = isTitleText ? fontClassTitle : fontClassDefault %}
         {% if key|split('_c')|length is same as(2) %}
             {% set tableColNumParts = key|split('_c') %}
             {% set key = tableColNumParts[0] %}
@@ -47,11 +39,32 @@
         {% if tableColNum is not null %}
             {% set tableRowNum = tableColNum %}
         {% endif %}
-
         {% set textAlignParts = key|slice(key|length-1,1) %}
         {% set textAlignLeft = textAlignParts is same as('a') ? true : false %}
         {% set textAlignRight = textAlignParts is same as('b') ? true : false %}
         {% set isTextAligned = textAlignLeft or textAlignRight %}
+        {% if pageMedia[side]['audio'] is defined and key in pageMedia[side]['audio']|keys %}
+            {% set media = pageMedia[side]['audio'][key] %}
+        {% elseif pageMedia[side]['img'] is defined and key in pageMedia[side]['img']|keys %}
+            {% set media = pageMedia[side]['img'][key] %}
+        {% elseif pageMedia[side]['video'] is defined and key in pageMedia[side]['video']|keys %}
+            {% set media = pageMedia[side]['video'][key] %}
+        {% endif %}
+        {% if media is not null %}
+            {% if isMedia %}
+                {% set class = class ~ ' cl' %}
+                {% set isMedia = false %}
+            {% endif %}
+            {% if textNum <= media['till']|number_format and (isOption or media['align'] is same as('dch') or media['align'] is same as('izq')) %}
+                {% set class = class ~ ' dib ' ~ media['offset'] %}
+                {% if textNum == media['till']|number_format %}
+                    {% set isMedia = true %}
+                {% endif %}
+            {% elseif textNum > media['till']|number_format %}
+                {% set media = null %}
+            {% endif %}
+        {% endif %}
+
         {% if isTextAligned and not isOption %}
             {% if textAlignLeft %}
                 <div class="dib w-100">
@@ -72,22 +85,8 @@
             {% set text = text|format(wildcard) %}
         {% endif %}
 
-        {% if media is not null %}
-            {% if isMedia %}
-                {% set class = class ~ ' cl' %}
-                {% set isMedia = false %}
-            {% endif %}
-            {% if textNum <= media['till']|number_format and (isOption or media['align'] is same as('dch') or media['align'] is same as('izq')) %}
-                {% set class = class ~ ' dib ' ~ media['offset'] %}
-                {% if textNum == media['till']|number_format %}
-                    {% set isMedia = true %}
-                {% endif %}
-            {% elseif textNum > media['till']|number_format %}
-                {% set media = null %}
-            {% endif %}
-            {% if not isOption and media is not null %}
-                {% include '@App/partial/media-pre.html.twig' %}
-            {% endif %}
+        {% if not isOption and media is not null and tableRowNum is null %}
+            {% include '@App/partial/media-pre.html.twig' %}
         {% endif %}
 
         {% if tableRowNum is not null %}
@@ -97,6 +96,9 @@
                 {% set column = column + 1 %}
             {% endif %}
             {% include '@App/partial/sideform-tablecell.html.twig' %}
+            {% if not isOption and media is not null %}
+                {% include '@App/partial/media-pre.html.twig' %}
+            {% endif %}
             {% set isTable = true %}
             {% set parentRowNum = tableRowNum %}
 
@@ -110,6 +112,9 @@
                 {% set class = textNum is same as('1') ? class ~ ' pb1' : class ~ ' pv1' %}
             {% endif %}
             {% if isTable %}
+                {% if not isOption and media is not null %}
+                    {% include '@App/partial/media-post.html.twig' %}
+                {% endif %}
                 {% set isTable = false %}
                 {% set parentRowNum = null %}
                 </div></div>
@@ -125,7 +130,7 @@
         {% endif %}
         </div>
 
-        {% if not isOption and media is not null %}
+        {% if not isOption and media is not null and tableRowNum is null %}
             {% include '@App/partial/media-post.html.twig' %}
         {% endif %}
         {% if isTextAligned and not isOption %}

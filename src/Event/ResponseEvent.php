@@ -40,7 +40,10 @@ class ResponseEvent extends EventDispatcher\Event
         if ($this->session instanceof HttpFoundation\Session\SessionInterface) {
             $wasError = $this->session->has('ErrorCode') && $this->session->has('ErrorMessage');
         } else {
-            $this->startSession($options, $expireTime);
+            if (DEBUG)
+                $this->startSQLiteSession($options, $expireTime);
+            else
+                $this->startMemcacheSession($options, $expireTime);
         }
         /** @var bool $isError */
         $isError = $this->response->isRedirect() || $this->response->getContent() === '';
@@ -48,16 +51,14 @@ class ResponseEvent extends EventDispatcher\Event
             $this->session->set('ErrorCode', $this->response->headers->get('ErrorCode'));
             $this->session->set('ErrorMessage', $this->response->headers->get('ErrorMessage'));
         } elseif (time() - $this->session->getMetadataBag()->getLastUsed() > $expireTime || $wasError) {
-            $this->response = 'tuvo';
             $this->session->invalidate();
             //throw new SessionExpired; // redirect to expired session page
         }
         $this->request->setSession($this->session);
     }
 
-    private function startSession($options = [], $expireTime = 10, $lock = true, $lockWait = 250, $maxWait = 2)
+    private function startMemcacheSession($options = [], $expireTime = 10, $lock = true, $lockWait = 250, $maxWait = 2)
     {
-        //$storage = new HttpFoundation\Session\Storage\NativeSessionStorage($options, new Handler\NativeSqliteSessionHandler(ROOT_DIR.'/app/Resources/db/sessions.db'));
         $memcache = new \MemcachePool();
         if ($memcache->connect('localhost', 11211) !== false) {
             $this->session = $this->request->getSession();
@@ -72,5 +73,11 @@ class ResponseEvent extends EventDispatcher\Event
         } else {
             throw new \Exception('Cannot connect to Session default server');
         }
+    }
+
+    private function startSQLiteSession($options = [], $expireTime = 10, $lock = true, $lockWait = 250, $maxWait = 2)
+    {
+        $storage = new HttpFoundation\Session\Storage\NativeSessionStorage($options, new Handler\Session\SQLiteSessionHandler(ROOT_DIR.'/app/Resources/db/sessions.db'));
+
     }
 }

@@ -44,7 +44,8 @@ class ViewHandler
     private static function load($loaderDir, $cacheDir = null, $autoescape = false, $debug = false, $strictVariables = true, $namespace = 'App')
     {
         if (true === static::$loaded) {
-            throw new RuntimeException('Error: template-engine had been already loaded.');
+            //throw new RuntimeException('Error: template-engine had been already loaded.');
+            return;
         }
 
         static::$loader = new Twig_Loader_Filesystem($loaderDir);

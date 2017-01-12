@@ -57,8 +57,8 @@ class SQLiteSessionHandler extends HttpFoundation\Session\Storage\Handler\Native
             $savePath = ini_get('session.save_path');
         }
 
-        //phpinfo();
-        ini_set('session.save_handler', 'sqlite');
+        phpinfo();
+        ini_set('session.save_handler', 'sqlite3');
         ini_set('session.save_path', $savePath);
         //ini_set('[sqlite3].sqlite3.extension_dir', $savePath.'/ext');
         /* @see http://stackoverflow.com/a/19597247 */
