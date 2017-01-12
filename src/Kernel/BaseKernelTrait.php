@@ -50,7 +50,7 @@ trait BaseKernelTrait
     private function setWarning($exception, $title = 'Error occurred')
     {
         if ($exception instanceof Routing\Exception\ResourceNotFoundException) {
-            $title = 'Resource not found (such route does not exist)';
+            $title = 'Resource not found';
             // No such route exception return a 404 response
             $status = HttpFoundation\Response::HTTP_NOT_FOUND;
         } else {
