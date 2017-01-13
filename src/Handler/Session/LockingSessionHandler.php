@@ -6,7 +6,7 @@
  * provided by the PHP memcache extension with added locking support.
  *
  * @see http://php.net/memcache
- * @see https://github.com/LeaseWeb/LswMemcacheBundle/blob/master/Session/Storage/LockingSessionHandler.php
+ * @see https://github.com/LeaseWeb/LswMemcacheBundle/blob/323278ae626495bcda1ff4d55348d1bc0b193e14/Session/Storage/LockingSessionHandler.php
  *
  * @author Maurits van der Schee <m.vanderschee@leaseweb.com>
  */

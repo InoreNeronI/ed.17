@@ -1,11 +1,10 @@
 <div class="db center">
-    <div class="absolute flex items-center justify-center pa3 bg-lightest-blue navy o-80 tc w-100">
-        <i class="fa fa-warning fa-4x fl"></i>
-        <blockquote class="ph0 mh0 measure lh-copy center">
+    <div class="absolute flex items-center justify-center pa3 bg-lightest-blue cf navy o-80 tc w-100">
+        <i class="fa fa-warning fa-5x dark-red w-10" style="margin-top: -2rem;">
+            <span class="absolute b f2 dark-red" style="margin-left: -4.2rem; margin-top: 4.6rem;">{{ ErrorCode }}</span>
+        </i>
+        <blockquote class="ph0 mh0 lh-solid center w-90">
             <cite class="f6 ttu tracked fs-normal">{{ ErrorMessage }}</cite>
         </blockquote>
-        <i class="fa fa-sticky-note fa-5x">
-            <span class="absolute b f2 lightest-blue" style="margin-left: -3.75rem; margin-top: .75rem;">{{ ErrorCode }}</span>
-        </i>
     </div>
 </div>

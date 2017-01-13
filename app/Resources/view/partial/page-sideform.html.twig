@@ -43,6 +43,7 @@
         {% set textAlignLeft = textAlignParts is same as('a') ? true : false %}
         {% set textAlignRight = textAlignParts is same as('b') ? true : false %}
         {% set isTextAligned = textAlignLeft or textAlignRight %}
+        {% set textNum = key|split('t')[1]|number_format %}
         {% if pageMedia[side]['audio'] is defined and key in pageMedia[side]['audio']|keys %}
             {% set media = pageMedia[side]['audio'][key] %}
         {% elseif pageMedia[side]['img'] is defined and key in pageMedia[side]['img']|keys %}
@@ -74,9 +75,7 @@
             {% set class = class ~ ' dib' %}
         {% endif %}
 
-        {% set textNum = key|split('t')[1]|number_format %}
         {% set text = text|trim %}
-
         {% if key in pageTextReplaces|keys %}
             {% set wildcardParams = pageTextReplaces[key]['parameters'] is defined ? pageTextReplaces[key]['parameters'] : [] %}
             {% set wildcard %}

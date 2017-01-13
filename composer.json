@@ -35,7 +35,7 @@
     "symfony/web-server-bundle": "3.3.x-dev"
   },
   "scripts": {
-    "codefix": ["php bin/sf-upgrade.phar fix src || true", "php bin/php-cs.phar fix --config=.php_cs || true"],
+    "codefix": "php bin/php-cs.phar fix --config=.php_cs || true",
     "deptrac": "php bin/deptrac.phar",
     "optimize": "@composer dump-autoload --optimize",
     "phpunit": "php bin/phpunit.phar",

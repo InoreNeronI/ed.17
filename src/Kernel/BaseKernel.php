@@ -24,6 +24,7 @@ class BaseKernel implements HttpKernel\HttpKernelInterface
     {
         $this->baseUrl = \def::routes()['home_url_path'];
         $this->baseSlug = \def::routes()['home_url_slug'];
+        $this->debug = (bool) $debug;
 
         /* @var EventDispatcher\EventDispatcher $dispatcher */
         $this->dispatcher = new EventDispatcher\EventDispatcher();

@@ -20,6 +20,9 @@ trait BaseKernelTrait
     /** @var string $baseUrl */
     private $baseUrl = '/';
 
+    /** @var bool */
+    private $debug;
+
     /** @var EventDispatcher\EventDispatcher */
     private $dispatcher;
 
@@ -47,7 +50,7 @@ trait BaseKernelTrait
      * @param \Exception $exception
      * @param string     $title
      */
-    private function setWarning($exception, $title = 'Error occurred')
+    private function setWarning($exception, $title = 'Error')
     {
         if ($exception instanceof Routing\Exception\ResourceNotFoundException) {
             $title = 'Resource not found';
@@ -57,11 +60,14 @@ trait BaseKernelTrait
             // Something blew up exception return a 500 response
             $status = HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
         }
-        /** @var string $message */
+        $title .= ' <span class="b">#'.$exception->getCode().'</span>';
         $message = $exception->getMessage();
-        $this->headers = array_merge($this->headers, [
-            'ErrorCode' => $status,
-            'ErrorMessage' => sprintf('%s: %s', $title, empty($message) ? $exception->getTraceAsString() : $message), ]);
+        if ($this->debug) {
+            $message = sprintf('<label class="lh-title">%s</label><br/><code class="b dark-red lh-copy">%s</code><br/><label class="b">Line </label><code class="b dark-red lh-copy">%s</code><i class="fa fa-arrow-right"></i><code class="b blue bg-white ba br-pill ph1">%s</code>',
+                $title, $message, $exception->getLine(), $exception->getFile());
+        }
+
+        $this->headers = array_merge($this->headers, ['ErrorCode' => $status, 'ErrorMessage' => $message]);
     }
 
     /**
