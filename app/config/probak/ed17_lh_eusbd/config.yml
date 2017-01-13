@@ -7,11 +7,11 @@ pageImages:
   p02:
     - p02a_cen_t03_t03_30_img.png
   p03:
-    - p03a_cen_t04_t04_80_img.png
-    - p03a_cen_t05_t05_80_img.png
+    - p03a_cen_t04_t04_100_img.png
+    - p03a_cen_t05_t05_100_img.png
   p04:
-    - p04a_cen_t04_t04_80_img.png
-    - p04a_cen_t05_t05_80_img.png
+    - p04a_cen_t04_t04_100_img.png
+    - p04a_cen_t05_t05_100_img.png
   p05:
     - p05a_dch_t03_t03_25_img.png
     - p05a_izq_t10_t18_25_img.png
@@ -42,16 +42,12 @@ pageImages:
 pageTextReplaces:
   p10:
     p10b_t02:
-      parameters: {  }
       template: 'partial/fields/input.html.twig'
     p10b_t03:
-      parameters: {  }
       template: 'partial/fields/input.html.twig'
     p10b_t04:
-      parameters: {  }
       template: 'partial/fields/input.html.twig'
     p10b_t05:
-      parameters: {  }
       template: 'partial/fields/input.html.twig'
 
 pageAudios:
@@ -89,6 +85,10 @@ pageTitles:
   - p14b_t03
 
 pageAreaWidths:
+  p03:
+    a: 60
+  p04:
+    a: 60
   p14:
     b: 100
 

@@ -5,17 +5,17 @@ pageImages:
   p01:
     - p01a_cen_t03_t03_40_img.png
   p02:
-    - p02a_cen_t02_t02_30_img.png
+    - p02a_cen_t03_t03_30_img.png
   p03:
-    - p03a_cen_t03_t03_30_img.png
-    - p03a_cen_t02_t02_30_img.png
+    - p03a_cen_t05a_t05a_30_img.png
+    - p03a_cen_t06b_t06b_30_img.png
   p04:
-    - p04a_cen_t03_t03_30_img.png
-    - p04a_cen_t02_t02_30_img.png
-    - p04b_cen_t02_t02_70_img.png
-    - p04b_cen_t03_t03_40_img.png
-    - p04b_cen_t04_t04_50_img.png
-    - p04b_cen_t05_t05_70_img.png
+    - p04a_cen_t05a_t05a_30_img.png
+    - p04a_cen_t06b_t06b_30_img.png
+    - p04b_cen_t02_t02_100_img.png
+    - p04b_cen_t03_t03_100_img.png
+    - p04b_cen_t04_t04_100_img.png
+    - p04b_cen_t05_t05_100_img.png
   p05:
     - p05a_dch_t03_t03_25_img.png
     - p05a_izq_t10_t18_25_img.png
@@ -48,7 +48,7 @@ pageTextReplaces:
 
 pageAudios:
   p01:
-    - p01a_cen_t07_t07_x3_eus.mp3
+    - p01a_cen_t09_t09_x3_eus.mp3
   p02:
     - p02a_cen_t05_t05_x3_eus.mp3
     
@@ -57,12 +57,13 @@ pageTitles:
   - p00a_t02
   - p00b_t01
   - p01a_t01
-  - p01a_t04
+  - p01a_t10
   - p02a_t01
-  - p02a_t04
-  - p03a_t00
-  - p03a_t03
+  - p02a_t06
+  - p03a_t01
+  - p03a_t04
   - p04a_t01
+  - p04a_t04
   - p05a_t00
   - p05a_t02
   - p06a_t02
@@ -76,6 +77,12 @@ pageTitles:
   - p12b_t03
 
 pageAreaWidths:
+  p10:
+    a: 60
+    b: 40
+  p11:
+    a: 60
+    b: 40
   p12:
     b: 100
 

@@ -46,8 +46,10 @@
 {% endif %}
 
 {% set text %}
+    {% if not isLibreOptionLarge or not isLibreOptionSmall or not isLibreOption %}
+        <i class="blue f6">{{ value }}</i> {# TODO: comment/remove this line #}
+    {% endif %}
     {% include '@App/partial/fields/input.html.twig' %}
-    <i class="blue f6">{{ value }}</i> {# TODO: comment/remove this line #}
     {{ text|default }}
     {% if media is not null and media['align'] is same as('cen') and media['since'] == textNum and media['till'] == textNum %}
         {% include '@App/partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContent': media['width'], 'src': media['path'] } %}

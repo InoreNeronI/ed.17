@@ -26,12 +26,6 @@ p00:
     - p00b_t21_f3
     - p00b_t22_f3
 p01:
-  text:
-    - p01a_t02
-    - p01a_t03
-    - p01a_t05
-    - p01a_t06
-    - p01a_t07
   simple:
     - p01b_t02
     - p01b_t03
@@ -65,6 +59,8 @@ p02:
   text:
     - p02a_t02
     - p02a_t03
+    - p02a_t04
+    - p02a_t05
   simple:
     - p02b_t02
     - p02b_t03
