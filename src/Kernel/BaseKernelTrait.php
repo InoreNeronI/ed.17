@@ -60,14 +60,13 @@ trait BaseKernelTrait
             // Something blew up exception return a 500 response
             $status = HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
         }
-        $title .= ' <span class="b">#'.$exception->getCode().'</span>';
+        $title = '<label class="w-20-ns">'.$title.' #'.$exception->getCode().'</label>';
         $message = $exception->getMessage();
+        $data = ['ErrorData' => ['debug' => $this->debug, 'message' => $message, 'status' => $status]];
         if ($this->debug) {
-            $message = sprintf('<label class="lh-title">%s</label><br/><code class="b dark-red lh-copy">%s</code><br/><label class="b">Line </label><code class="b dark-red lh-copy">%s</code><i class="fa fa-arrow-right"></i><code class="b blue bg-white ba br-pill ph1">%s</code>',
-                $title, $message, $exception->getLine(), $exception->getFile());
+            $data['ErrorData'] = array_merge($data['ErrorData'], ['file' => $exception->getFile(), 'line' => $exception->getLine(), 'title' => $title ]);
         }
-
-        $this->headers = array_merge($this->headers, ['ErrorCode' => $status, 'ErrorMessage' => $message]);
+        $this->headers = array_merge($this->headers, $data);
     }
 
     /**

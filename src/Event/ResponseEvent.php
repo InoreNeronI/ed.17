@@ -57,9 +57,8 @@ class ResponseEvent extends EventDispatcher\Event
         if ($sessionHandler->startSession()) {
             $session = $sessionHandler->getSession();
             $isError = $this->response->isRedirect() || $this->response->getContent() === '';
-            if ($isError && $this->response->headers->has('ErrorCode') && $this->response->headers->has('ErrorMessage')) {
-                $session->set('ErrorCode', $this->response->headers->get('ErrorCode'));
-                $session->set('ErrorMessage', $this->response->headers->get('ErrorMessage'));
+            if ($isError && $this->response->headers->has('ErrorData')) {
+                $session->set('ErrorData', $this->response->headers->get('ErrorData'));
             } elseif (time() - $session->getMetadataBag()->getLastUsed() > $expireTime || $sessionHandler->hasError()) {
                 $session->invalidate();   //throw new SessionExpired; // redirect to expired session page
             }

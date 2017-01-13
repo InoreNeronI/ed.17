@@ -96,10 +96,7 @@ class SessionHandler
      */
     public function hasError()
     {
-        return $this->session instanceof HttpFoundation\Session\SessionInterface &&
-            $this->session->isStarted() &&
-            $this->session->has('ErrorCode') &&
-            $this->session->has('ErrorMessage');
+        return $this->session instanceof HttpFoundation\Session\SessionInterface && $this->session->isStarted() && $this->session->has('ErrorData');
     }
 
     /**

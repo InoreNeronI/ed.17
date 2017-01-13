@@ -1,6 +1,12 @@
-$('.playAudioSample').on('click', function(ev) {
-    return $(this).find('.audioSample').each(function() {
-        this.play();
+$('.playAudioSample').each(function() {
+    $(this).on('click', function(ev) {
+        $(this).find('.iconAudioSample').each(function() {
+            if (this.paused) {
+                $(this).removeClass('fa fa-play').addClass('fa fa-pause').find('.tagAudioSample').each(function() { this.play(); });
+            } else {
+                $(this).removeClass('fa fa-pause').addClass('fa fa-play').find('.tagAudioSample').each(function() { this.pause(); });
+            }
+        });
         ev.preventDefault();
         return false;
     });

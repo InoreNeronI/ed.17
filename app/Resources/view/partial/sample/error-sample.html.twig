@@ -1,10 +1,27 @@
-<div class="db center">
-    <div class="absolute flex items-center justify-center pa3 bg-lightest-blue cf navy o-80 tc w-100">
-        <i class="fa fa-warning fa-5x dark-red w-10" style="margin-top: -2rem;">
-            <span class="absolute b f2 dark-red" style="margin-left: -4.2rem; margin-top: 4.6rem;">{{ ErrorCode }}</span>
+
+<div class="absolute flex items-center justify-center pa3 bg-lightest-blue cf navy o-80 tc w-100">
+    <div class="ph0 mh0 lh-solid center w-20-ns">
+        <i class="fa fa-warning fa-4x dark-red tc w-100-ns" style="margin-top: -1.5rem;">
+            <span class="absolute b f2 dark-red" style="margin-top: 3.7rem; margin-left: -3.7rem;">{{ ErrorData['status'] }}</span>
         </i>
-        <blockquote class="ph0 mh0 lh-solid center w-90">
-            <cite class="f6 ttu tracked fs-normal">{{ ErrorMessage }}</cite>
-        </blockquote>
     </div>
+    <blockquote class="ph0 mh0 lh-solid center w-100 w-80-ns">
+        {% if ErrorData['debug'] %}
+            <div class="b ttu tracked fs-normal">
+                <label class="{{ fontClass }}b fl lh-title">{{ ErrorData['title'] }}</label><br/>
+                <code class="{{ fontClass }}b fr dark-red lh-copy">{{ ErrorData['message'] }}</code>
+            {#</div>
+            <div class="f6 ttu tracked fs-normal w-100 w-80-ns">#}
+                <div class="fl">
+                    <label class="b lh-title">Line <span class="b dark-red">{{ ErrorData['line'] }}</span></label>
+                    <i class="fa fa-arrow-right"></i>
+                    <code class="blue bg-white ba br-pill lh-copy ph1">{{ ErrorData['file'] }}</code>
+                </div>
+            </div>
+        {% else %}
+            <cite class="b ttu tracked fs-normal">
+                <code class="b dark-red lh-copy">{{ ErrorData['message'] }}</code>
+            </cite>
+        {% endif %}
+    </blockquote>
 </div>
