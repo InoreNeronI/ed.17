@@ -1,13 +1,28 @@
+
+{# @see http://stackoverflow.com/a/15587181 #}
 $('.playAudioSample').each(function() {
-    $(this).on('click', function(ev) {
-        $(this).find('.iconAudioSample').each(function() {
-            if (this.paused) {
-                $(this).removeClass('fa fa-play').addClass('fa fa-pause').find('.tagAudioSample').each(function() { this.play(); });
-            } else {
-                $(this).removeClass('fa fa-pause').addClass('fa fa-play').find('.tagAudioSample').each(function() { this.pause(); });
+    $(this).on('click', function(event) {
+        var son = $(this).children();
+        if (son.hasClass('iconAudioSample')) {
+            var grandson = son.children();
+            if (grandson.hasClass('tagAudioSample')) {
+                grandson.on('pause', function() {
+                    son.removeClass('fa-pause').addClass(this.ended ? 'fa-undo' : 'fa-play');
+                });
+                {#grandson.on('ended', function() {
+                    son.removeClass('fa-pause').addClass('fa-undo');
+                });#}
+                grandson.on('playing', function() {
+                    son.removeClass('fa-play fa-undo').addClass('fa-pause');
+                });
+                if (grandson.get(0).paused) {
+                    grandson.get(0).play();
+                } else {
+                    grandson.get(0).pause();
+                }
             }
-        });
-        ev.preventDefault();
-        return false;
+        }
+        event.preventDefault();
+        event.stopPropagation();
     });
 });

@@ -35,38 +35,51 @@ trait BaseKernelTrait
     /** @var HttpKernel\Controller\ControllerResolverInterface */
     private $resolver;
 
-    /** @var HttpFoundation\Response */
-    private $response;
-
-    /**
-     * @param HttpFoundation\Response $response
-     */
-    private function setResponse(HttpFoundation\Response $response)
-    {
-        $this->response = $response;
-    }
-
     /**
      * @param \Exception $exception
      * @param string     $title
      */
-    private function setWarning($exception, $title = 'Error')
+    private function addException(\Exception $exception, $title = 'Error')
     {
-        if ($exception instanceof Routing\Exception\ResourceNotFoundException) {
+        if ($exception instanceof Routing\Exception\ResourceNotFoundException && $exception->getCode() === 0) {
             $title = 'Resource not found';
-            // No such route exception return a 404 response
+            // No such route exception, return a 404 response
             $status = HttpFoundation\Response::HTTP_NOT_FOUND;
         } else {
-            // Something blew up exception return a 500 response
+            if ($exception->getCode() !== 0) {
+                $title .= ' #'.$exception->getCode();
+            }
+            // Something blew up exception, return a 500 response
             $status = HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
         }
-        $title = '<label class="w-20-ns">'.$title.' #'.$exception->getCode().'</label>';
-        $message = $exception->getMessage();
-        $data = ['ErrorData' => ['debug' => $this->debug, 'message' => $message, 'status' => $status]];
-        if ($this->debug) {
-            $data['ErrorData'] = array_merge($data['ErrorData'], ['file' => $exception->getFile(), 'line' => $exception->getLine(), 'title' => $title ]);
-        }
-        $this->headers = array_merge($this->headers, $data);
+        $this->headers = array_merge($this->headers, ['ErrorData' => [
+            'debug' => $this->debug,
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine(),
+            'message' => $exception->getMessage(),
+            'status' => $status,
+            'title' => $title, ]]);
+    }
+
+    /**
+     * @param \Exception $exception
+     *
+     * @return array
+     */
+    private function fallbackResponse(\Exception $exception)
+    {
+        $this->addException($exception);
+        $controller = new Controller\BaseController();
+        $request = HttpFoundation\Request::create($this->baseUrl);
+        $request->attributes->add(['_route' => $this->baseSlug, 'messages' => array_merge(
+            $this->headers,
+            parseConfig(ROOT_DIR.\def::paths()['translations_dir'], 'layout'),
+            parseConfig(ROOT_DIR.\def::paths()['translations_dir'], 'page/'.$this->baseSlug)
+        )]);
+        $response = $controller->renderAction($request, $this->headers);
+        $response->setStatusCode(HttpFoundation\Response::HTTP_SEE_OTHER);
+
+        return [$request, $response];
     }
 
     /**
@@ -86,8 +99,8 @@ trait BaseKernelTrait
         // Feed the RequestContext
         $this->matcher->getContext()->fromRequest($request);
 
-        // Next we take our HTTP request object and see if our Request contains a routing match (see our routes class below for a match)
         try {
+            // Next we take our HTTP request object and see if our Request contains a routing match (see our routes class below for a match)
             /** @var array $parameters */
             $parameters = $this->matcher->match($request->getPathInfo());
             $request->attributes->add($parameters);
@@ -102,26 +115,23 @@ trait BaseKernelTrait
             $arguments = $this->resolver->getArguments($request, $controller);
 
             // Invoke the name of the controller that is resolved from a match in our routing class
-            $this->setResponse(call_user_func_array($controller, $arguments));
+            /** @var HttpFoundation\Response $response */
+            $response = call_user_func_array($controller, $arguments);
         } catch (\Exception $e) {
-            $this->setWarning($e);
-            $controller = new Controller\BaseController();
-            $request = HttpFoundation\Request::create($this->baseUrl);
-            $request->attributes->add(['_route' => $this->baseSlug, 'messages' => array_merge(
-                $this->headers,
-                parseConfig(ROOT_DIR.\def::paths()['translations_dir'], 'layout'),
-                parseConfig(ROOT_DIR.\def::paths()['translations_dir'], 'page/'.$this->baseSlug)
-            )]);
-            $response = $controller->renderAction($request, $this->headers);
-            $response->setStatusCode(HttpFoundation\Response::HTTP_SEE_OTHER);
-            $this->setResponse($response/*->sendHeaders()*/);
+            list($request, $response) = $this->fallbackResponse($e);
         }
-        $this->response->headers->add($this->headers);
 
-        // The dispatcher, the central object of the event dispatcher system, notifies listeners of an event dispatched to it.
-        // Put another way: your code dispatches an event to the dispatcher, the dispatcher notifies all registered listeners for the event, and each listener do whatever it wants with the event.
-        $this->dispatcher->dispatch('response', new Event\ResponseEvent($this->response, $request));
+        // Add previously defined headers to the response object
+        $response->headers->add($this->headers);
 
-        return $this->response;
+        try {
+            // The dispatcher, the central object of the event dispatcher system, notifies listeners of an event dispatched to it.
+            // Put another way: your code dispatches an event to the dispatcher, the dispatcher notifies all registered listeners for the event, and each listener do whatever it wants with the event.
+            $this->dispatcher->dispatch('response', new Event\ResponseEvent($response, $request));
+        } catch (\Exception $e) {
+            list($request, $response) = $this->fallbackResponse($e);
+        }
+
+        return $response;
     }
 }

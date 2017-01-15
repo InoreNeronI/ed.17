@@ -154,9 +154,7 @@ class SessionHandler
             throw new \RuntimeException('PHP does not have "memcache" extension enabled');
         }
         $memcache = new \MemcachePool();
-        if ($memcache->connect($host, $port) === false) {
-            throw new \Exception('Couldn\'t connect to Sessions\' default server');
-        }
+        $memcache->connect($host, $port);
         $handler = new Handler\Session\LockingSessionHandler($memcache, [
             'expiretime' => $this->expireTime,
             'locking' => $lock,

@@ -1,9 +1,9 @@
 <div class="{{ cssClassContainer|default('cb db pv1 tc') }}">
     <a href="" class="playAudioSample" target="_self" title="{{ audio_file_tip|default(media.tip|default('Play me!')) }}">
         {% set audio_file_size = audio_file_size is defined ? metric.levels[audio_file_size]|default('5x') : media.size %}
-        <i class="iconAudioSample {{ fontClass ~ cssClassContent|default('w-auto') }} fa fa-play fa-{{ audio_file_size }}">
+        <i class="iconAudioSample dim {{ fontClass ~ cssClassContent|default('w-auto') }} fa fa-play fa-{{ audio_file_size }}">
             {% set audio_file_path = audio_file_path is defined ? audio_file_path : media.path %}
-            <audio class=tagAudioSample" preload>
+            <audio class="tagAudioSample" preload="auto">
                 {% if audio_file_path.mp3 is not empty %}
                     <source src="{{ audio_file_path.mp3 }}" type="audio/mpeg">
                 {% endif %}

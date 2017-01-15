@@ -1,27 +1,27 @@
 
-<div class="absolute flex items-center justify-center pa3 bg-lightest-blue cf navy o-80 tc w-100">
-    <div class="ph0 mh0 lh-solid center w-20-ns">
-        <i class="fa fa-warning fa-4x dark-red tc w-100-ns" style="margin-top: -1.5rem;">
+<div class="absolute flex h4 items-center justify-center pa3 bg-white-80 cf navy tc w-100">
+    <div class="center lh-solid mh0 ph0 w-10">
+        <i class="fa fa-warning fa-4x dark-red tc w-100" style="margin-top: -1.5rem;">
             <span class="absolute b f2 dark-red" style="margin-top: 3.7rem; margin-left: -3.7rem;">{{ ErrorData['status'] }}</span>
         </i>
     </div>
-    <blockquote class="ph0 mh0 lh-solid center w-100 w-80-ns">
-        {% if ErrorData['debug'] %}
-            <div class="b ttu tracked fs-normal">
-                <label class="{{ fontClass }}b fl lh-title">{{ ErrorData['title'] }}</label><br/>
-                <code class="{{ fontClass }}b fr dark-red lh-copy">{{ ErrorData['message'] }}</code>
-            {#</div>
-            <div class="f6 ttu tracked fs-normal w-100 w-80-ns">#}
+    <blockquote class="center lh-solid mh0 ph0 w-90">
+        <div class="b fs-normal ttu tracked">
+            {% if ErrorData['debug'] %}
+                {% if ErrorData['title']|default %}
+                    <label class="{{ fontClass }}b fl lh-title">{{ ErrorData['title'] }}</label>
+                {% endif %}
+                <code class="dib dark-red lh-title">{{ ErrorData['message'] }}</code>
                 <div class="fl">
                     <label class="b lh-title">Line <span class="b dark-red">{{ ErrorData['line'] }}</span></label>
                     <i class="fa fa-arrow-right"></i>
-                    <code class="blue bg-white ba br-pill lh-copy ph1">{{ ErrorData['file'] }}</code>
+                    <code class="blue bg-white ba br-pill lh-solid ph1">{{ ErrorData['file'] }}</code>
                 </div>
-            </div>
-        {% else %}
-            <cite class="b ttu tracked fs-normal">
-                <code class="b dark-red lh-copy">{{ ErrorData['message'] }}</code>
-            </cite>
-        {% endif %}
+            {% else %}
+                <cite class="b fs-normal ttu tracked">
+                    <code class="dib dark-red lh-solid">{{ ErrorData['message'] }}</code>
+                </cite>
+            {% endif %}
+        </div>
     </blockquote>
 </div>

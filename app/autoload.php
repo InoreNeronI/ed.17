@@ -1,6 +1,29 @@
 <?php
 
 /** @author Martin Mozos <martinmozos@gmail.com> */
+class NoticeException extends Exception
+{
+    public function __toString()
+    {
+        return  "Notice #{$this->code}: {$this->message}";
+    }
+}
+class WarningException extends Exception
+{
+    public function __toString()
+    {
+        return  "Warning #{$this->code}: {$this->message}";
+    }
+}
+set_error_handler('error_handler', E_ALL);
+function error_handler($errno, $errstr)
+{
+    if ($errno === E_WARNING) {
+        throw new WarningException($errstr, $errno);
+    } elseif ($errno === E_NOTICE) {
+        throw new NoticeException($errstr, $errno);
+    }
+}
 define('DEBUG', php_sapi_name() !== 'cli-server' &&
                 !isset($_SERVER['HTTP_CLIENT_IP']) &&
                 !isset($_SERVER['HTTP_X_FORWARDED_FOR']) &&
