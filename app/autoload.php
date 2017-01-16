@@ -5,25 +5,28 @@ class NoticeException extends Exception
 {
     public function __toString()
     {
-        return  "Notice #{$this->code}: {$this->message}";
+        return sprintf("Notice%s: {$this->message}", $this->code !== 0 ? " #{$this->code}" : '');
     }
 }
 class WarningException extends Exception
 {
     public function __toString()
     {
-        return  "Warning #{$this->code}: {$this->message}";
+        return sprintf("Warning%s: {$this->message}", $this->code !== 0 ? " #{$this->code}" : '');
     }
 }
-set_error_handler('error_handler', E_ALL);
-function error_handler($errno, $errstr)
-{
-    if ($errno === E_WARNING) {
-        throw new WarningException($errstr, $errno);
-    } elseif ($errno === E_NOTICE) {
-        throw new NoticeException($errstr, $errno);
+/* @see: http://stackoverflow.com/a/4410769
+register_shutdown_function(function () {
+    $error = error_get_last();
+    if ($error['type'] === E_ERROR) {
+        // fatal error has occured
+        //throw new Exception($error['message'], 404);
     }
-}
+});*/
+set_error_handler(function ($id, $msg) {
+    throw $id === E_WARNING ? new WarningException($msg, $id) : $id === E_NOTICE ? new NoticeException($msg, $id) : null;
+}, E_ALL);
+
 define('DEBUG', php_sapi_name() !== 'cli-server' &&
                 !isset($_SERVER['HTTP_CLIENT_IP']) &&
                 !isset($_SERVER['HTTP_X_FORWARDED_FOR']) &&

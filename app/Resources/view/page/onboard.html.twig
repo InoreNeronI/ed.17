@@ -15,7 +15,7 @@
             {% elseif not isFirstPage %}
                 {% set rightButtonText = '<i class="fa fa-step-backward"></i> ' ~ leftButton %}
             {% endif %}
-            <div class="fl pa1-ns pa2-m pa3-l side-left bg-light-gray {{ pageWidth['a']|default }}">
+            <div class="fl pa1-ns pa2-m pa3-l side-left bg-light-gray {{ pageAreaWidths['a']|default }}">
                 {% include '@App/partial/page-sideform.html.twig' with {'side': 'a', 'rightButtonText': rightButtonText|default} %}
             </div>
         {% endif %}
@@ -34,7 +34,7 @@
             {% if pageAreaSkip is not null and not isFirstPage %}
                 {% set leftButtonText = '<i class="fa fa-step-backward"></i> ' ~ leftButton %}
             {% endif %}
-            <div class="fl pa1-ns pa2-m pa3-l side-right bg-near-white {{ pageWidth['b']|default }}">
+            <div class="fl pa1-ns pa2-m pa3-l side-right bg-near-white {{ pageAreaWidths['b']|default }}">
                 {% include '@App/partial/page-sideform.html.twig' with {'side': 'b'} %}
             </div>
         {% endif %}

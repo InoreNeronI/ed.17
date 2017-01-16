@@ -43,9 +43,13 @@ pageImages:
     - p11a_cen_t04_t04_100_img.png
   p12:
     - p12b_cen_t01_t01_60_img.jpg
- 
-pageTextReplaces:
 
+pageOptionReplaces:
+  p10: # Page where any replace's being done
+    p10b_t04: # Option code
+      parameters: {disabled: true, enabled: true, type: checkbox}  # Parameter(s) for the replacing template
+      template:   'partial/fields/input.html.twig' # Templates' location path (TEMPLATE_FILES_DIR relative)
+ 
 pageAudios:
   p01:
     - p01a_cen_t09_t09_x3_eus.mp3

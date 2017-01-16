@@ -13,7 +13,7 @@ class Authorization extends Connection\Connection
      *
      * @return array
      *
-     * @throws \Exception
+     * @throws \NoticeException
      */
     public function checkCredentials(array $args, $table = USER_TABLE)
     {   //$fields = static::parseFields($args, static::getFilename($slug), $table);
@@ -45,10 +45,10 @@ class Authorization extends Connection\Connection
             if (isset($codes[$codPrueba])) {
                 return static::requestAccess($user, $codes[$codPrueba]);
             }
-            throw new \Exception(sprintf('The code you have entered does not match: \'%s\'', $codPrueba));
+            throw new \NoticeException(sprintf('The code you have entered does not match: \'%s\'', $codPrueba));
         }
         //throw new \Exception(sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())));
-        throw new \Exception('No results found');
+        throw new \NoticeException('No results found');
     }
 
     /**
@@ -75,7 +75,7 @@ class Authorization extends Connection\Connection
      *
      * @return array
      *
-     * @throws \Exception
+     * @throws \NoticeException
      */
     private static function getAccess(array $user, $args)
     {
@@ -112,7 +112,7 @@ class Authorization extends Connection\Connection
             (strpos($args, 'zie') !== false && $mod = 'zie')) {
             return ['lengua' => $lengua = static::getLanguage($user, $mod), 'lang' => \def::langCodes()[$lengua], 'table' => $args];
         } else {
-            throw new \Exception(sprintf('Access denied for student \'%s\'', $user['edg020_libro_escolaridad']));
+            throw new \NoticeException(sprintf('Access denied for student \'%s\'', $user['edg020_libro_escolaridad']));
         }
     }
 
@@ -123,7 +123,7 @@ class Authorization extends Connection\Connection
      *
      * @return null|string
      *
-     * @throws \Exception
+     * @throws \NoticeException
      */
     private static function getLanguage($user, $default, $asIs = ['eus', 'cas'])
     {
@@ -136,6 +136,6 @@ class Authorization extends Connection\Connection
         if (in_array($default, $asIs)) {
             return $default;
         }
-        throw new \Exception(sprintf('No language found for student \'%s\'', $user['edg020_libro_escolaridad']));
+        throw new \NoticeException(sprintf('No language found for student \'%s\'', $user['edg020_libro_escolaridad']));
     }
 }

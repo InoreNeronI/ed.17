@@ -11,8 +11,14 @@ use Symfony\Component\HttpFoundation;
  */
 class SessionHandler
 {
+    /** @var bool */
+    private $debug;
+
     /** @var int */
     private $expireTime;
+
+    /** @var array */
+    private $options;
 
     /** @var string */
     private $savePath;
@@ -23,8 +29,9 @@ class SessionHandler
     /**
      * SessionHandler constructor.
      *
+     * @param bool   $debug
      * @param int    $expireTime
-     * @param string $savePath   path to SQLite database file itself
+     * @param string $savePath   path to session file itself
      * @param array  $options    Session configuration options:
      *                           cache_limiter, "" (use "0" to prevent headers from being sent entirely).
      *                           cookie_domain, ""
@@ -53,7 +60,7 @@ class SessionHandler
      *                           upload_progress.min-freq, "1"
      *                           url_rewriter.tags, "a=href,area=href,frame=src,form=,fieldset="
      */
-    public function __construct($expireTime = 10, $savePath = '/app/cache/sessions', array $options = [])
+    public function __construct($debug = DEBUG, $expireTime = 10, $savePath = '/app/Resources/session', array $options = [])
     {
         $this->expireTime = $expireTime;
         // Get session save-path.
@@ -66,6 +73,7 @@ class SessionHandler
             throw new \RuntimeException('Couldn\'t save to Sessions\' default path because write access isn\'t granted');
         }
         $this->savePath = $savePath;
+        $this->options = $options;
         $this->session = null;
     }
 
@@ -80,13 +88,11 @@ class SessionHandler
     /**
      * Starts session.
      *
-     * @param bool $debug
-     *
      * @return bool
      */
-    public function startSession($debug = DEBUG)
+    public function startSession()
     {
-        return $debug ? $this->startNativeFileSession() : $this->startMemcacheSession();
+        return $this->debug ? $this->startNativeFileSession() : $this->startMemcacheSession();
     }
 
     /**
@@ -116,15 +122,13 @@ class SessionHandler
     /**
      * Driver for the native filesystem session save handler.
      *
-     * @param array $options
-     *
      * @return bool
      */
-    private function startNativeFileSession(array $options = [])
+    private function startNativeFileSession()
     {
         $this->setSessionConfig();
         $storage = new HttpFoundation\Session\Storage\NativeSessionStorage(
-            array_merge($options, ['cache_limiter' => session_cache_limiter()]),
+            array_merge($this->options, ['cache_limiter' => session_cache_limiter()]),
             new HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler());
         $this->session = new HttpFoundation\Session\Session($storage);
 
@@ -139,7 +143,6 @@ class SessionHandler
      *
      * @param string $host
      * @param int    $port
-     * @param array  $options
      * @param bool   $lock
      * @param int    $lockWait
      * @param int    $maxWait
@@ -148,19 +151,18 @@ class SessionHandler
      *
      * @throws \Exception
      */
-    private function startMemcacheSession($host = 'localhost', $port = 11211, array $options = [], $lock = true, $lockWait = 250, $maxWait = 2)
+    private function startMemcacheSession($host = 'localhost', $port = 11211, $lock = true, $lockWait = 250, $maxWait = 2)
     {
         if (!extension_loaded('memcache')) {
             throw new \RuntimeException('PHP does not have "memcache" extension enabled');
         }
         $memcache = new \MemcachePool();
         $memcache->connect($host, $port);
-        $handler = new Handler\Session\LockingSessionHandler($memcache, [
+        $storage = new HttpFoundation\Session\Storage\NativeSessionStorage($this->options, new Handler\Session\LockingSessionHandler($memcache, [
             'expiretime' => $this->expireTime,
             'locking' => $lock,
             'spin_lock_wait' => $lockWait,
-            'lock_max_wait' => $maxWait, ]);
-        $storage = new HttpFoundation\Session\Storage\NativeSessionStorage($options, $handler);
+            'lock_max_wait' => $maxWait, ]));
         $this->session = new HttpFoundation\Session\Session($storage);
 
         return $this->session->start();
@@ -172,26 +174,23 @@ class SessionHandler
      *
      * @see https://github.com/zikula/NativeSession/blob/4992c11f7b832f05561b98b0c192ce852e6ed602/Drak/NativeSession/NativeSqliteSessionHandler.php
      *
-     * @param array $options
-     *
      * @return bool
      */
-    private function startSQLiteSession(array $options = [])
+    private function startSQLiteSession()
     {
         if (!extension_loaded('sqlite')) {
             throw new \RuntimeException('PHP does not have "sqlite" extension enabled');
         }
-        $this->savePath = '/app/Resources/sessions.db';
         $this->setSessionConfig('sqlite');
 
         // Set rest of session related ini values.
-        foreach ($options as $key => $value) {
-            if (in_array($key, ['sqlite.assoc_case'])) {
+        foreach ($this->options as $key => $value) {
+            if (strpos($key, 'sqlite')) {
                 ini_set($key, $value);
             }
         }
         /** @var HttpFoundation\Session\Storage\NativeSessionStorage $storage */
-        $storage = new HttpFoundation\Session\Storage\NativeSessionStorage($options, new HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler());
+        $storage = new HttpFoundation\Session\Storage\NativeSessionStorage($this->options, new HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler());
         $this->session = new HttpFoundation\Session\Session($storage);
 
         return $this->session->start();

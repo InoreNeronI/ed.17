@@ -10,13 +10,47 @@ use App\Security;
 final class PagesHelper extends Security\Authorization
 {
     /** @var array */
-    private static $mediaLibrary = ['audio' => ['ext' => ['mp3', 'ogg']], 'img' => ['ext' => ['jpg', 'png']], 'video' => ['ext' => ['3gp', 'mp4']]];
+    private static $library = ['audio' => ['ext' => ['mp3', 'ogg']], 'img' => ['ext' => ['jpg', 'png']], 'video' => ['ext' => ['3gp', 'mp4']]];
     /** @var array */
     private static $pageAreaPercents = ['a' => '50', 'b' => '50'];
     /** @var array */
     private static $pageTexts = ['code' => '', 'numbers' => [], 'texts' => []];
     /** @var array */
     private static $widthStyle = [];
+
+    /**
+     * @param array  $args
+     * @param array  $config
+     * @param string $page
+     *
+     * @return array
+     */
+    private function loadTexts(array $args, array $config, $page)
+    {
+        // Sides' width
+        $pageAreaWidths = empty($config['pageAreaWidths']['p'.$page]) ? static::$pageAreaPercents : $config['pageAreaWidths']['p'.$page];
+        $pageAreaSkip = null;
+        foreach ($pageAreaWidths as $side => $sideWith) {
+            if (in_array($sideWith, array_keys(static::$widthStyle))) {
+                if ($sideWith === 100) {
+                    unset(static::$pageAreaPercents[$side]);
+                    $pageAreaSkip = array_keys(static::$pageAreaPercents)[0];
+                }
+                $pageAreaWidths[$side] = static::$widthStyle[$sideWith];
+                $sideOpposite = $side === 'a' ? 'b' : 'a';
+                $sideWithOpposite = 100 - intval($sideWith);
+                isset($pageAreaWidths[$sideOpposite]) ?
+                    $pageAreaWidths[$sideOpposite] = isset(static::$widthStyle[$sideWithOpposite]) ? static::$widthStyle[$sideWithOpposite] : 'w-auto' :
+                    null;
+                break;
+            }
+        }
+        // Load texts
+        $pageAreaSkip !== 'a' ? $this->loadData($args, $page, 'a') : null;
+        $pageAreaSkip !== 'b' ? $this->loadData($args, $page, 'b') : null;
+
+        return [$pageAreaSkip, $pageAreaWidths];
+    }
 
     /**
      * @param array  $args
@@ -54,17 +88,7 @@ final class PagesHelper extends Security\Authorization
             return static::$pageTexts;
         }
         //throw new \Exception(sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())));
-        throw new \Exception('No results found');
-    }
-
-    /**
-     * @param string $percent
-     *
-     * @return string
-     */
-    private static function widthPercentToHtmlClass($percent = '100')
-    {
-        return static::$widthStyle[isset(static::$widthStyle[$percent]) ? $percent : 'auto'];
+        throw new \NoticeException('No results found');
     }
 
     /**
@@ -80,78 +104,75 @@ final class PagesHelper extends Security\Authorization
     {
         /** @var array static::$widthStyle */
         static::$widthStyle = \def::metric()['widths'];
-
-        /** @var string $data_folder */
-        $data_folder = $dataDir.'/'.$args['code'];
-
+        /** @var string $target */
+        $target = $dataDir.'/'.$args['code'];
         /** @var array $config */
-        $config = parseConfig($data_folder, 'config');
+        $config = parseConfig($target, 'config');
         if (empty($config)) {
-            throw new \Exception(sprintf('The configuration file `%s` is missing in the target: %s', 'config.yml', $data_folder));
+            throw new \Exception(sprintf('The configuration file `%s` is missing in the target: %s', 'config.yml', $target));
         }
-
         /** @var array $options */
-        $options = parseConfig($data_folder, 'options');
+        $options = parseConfig($target, 'options');
         if (empty($options)) {
-            throw new \Exception(sprintf('The options file `%s` is missing in the target: %s', 'options.yml', $data_folder));
+            throw new \Exception(sprintf('The options file `%s` is missing in the target: %s', 'options.yml', $target));
         }
-
-        // Sides' width
-        /** @var array $pageWidth */
-        $pageWidth = empty($config['pageAreaWidths']['p'.$page]) ? static::$pageAreaPercents : $config['pageAreaWidths']['p'.$page];
+        /** @var array $pageAreaWidths */
         /** @var string|null $pageAreaSkip */
-        $pageAreaSkip = null;
-        foreach ($pageWidth as $sideLetter => $sideWith) {
-            if (in_array($sideWith, array_keys(static::$widthStyle))) {
-                if ($sideWith === 100) {
-                    unset(static::$pageAreaPercents[$sideLetter]);
-                    $pageAreaSkip = array_keys(static::$pageAreaPercents)[0];
-                }
-                $pageWidth[$sideLetter] = static::$widthStyle[$sideWith];
-                $sideLetterOpposite = $sideLetter === 'a' ? 'b' : 'a';
-                $sideWithOpposite = 100 - intval($sideWith);
-                isset($pageWidth[$sideLetterOpposite]) ?
-                    $pageWidth[$sideLetterOpposite] = isset(static::$widthStyle[$sideWithOpposite]) ? static::$widthStyle[$sideWithOpposite] : 'w-auto' :
-                    null;
-                break;
-            }
-        }
-
-        // Load texts
-        $pageAreaSkip !== 'a' ? $this->loadData($args, $page, 'a') : null;
-        $pageAreaSkip !== 'b' ? $this->loadData($args, $page, 'b') : null;
-
-        // Parse media
-        $mediaLibrary = [];
-        foreach (empty($config['pageAudios']['p'.$page]) ? [] : $config['pageAudios']['p'.$page] as $media) {
-            $mediaLibrary = static::parseMedia($args, $page, 'audio', $media, $mediaLibrary);
-        }
-        foreach (empty($config['pageImages']['p'.$page]) ? [] : $config['pageImages']['p'.$page] as $media) {
-            $mediaLibrary = static::parseMedia($args, $page, 'img', $media, $mediaLibrary);
-        }
-        foreach (empty($config['pageVideos']['p'.$page]) ? [] : $config['pageVideos']['p'.$page] as $media) {
-            $mediaLibrary = static::parseMedia($args, $page, 'video', $media, $mediaLibrary);
-        }
-
-        // Replaces width
-        /** @var array $pageTextReplaces */
-        $pageTextReplaces = empty($config['pageTextReplaces']['p'.$page]) ? [] : $config['pageTextReplaces']['p'.$page];
-        foreach ($pageTextReplaces as $code => $replace) {
-            empty($pageTextReplaces[$code]['parameters']['width']) ?:
-                $pageTextReplaces[$code]['parameters']['width'] =
-                    static::widthPercentToHtmlClass($pageTextReplaces[$code]['parameters']['width']);
-        }
+        list($pageAreaSkip, $pageAreaWidths) = $this->loadTexts($args, $config, $page);
 
         return array_merge($args, static::$pageTexts, [
             'page' => $page,
-            'pageMedia' => empty($mediaLibrary) ? [] : $mediaLibrary,
+            'pageMedia' => $this->translatePageLibrary($page, $config, $args),
             'pageOptions' => empty($options['p'.$page]) ? [] : $options['p'.$page],
             'pageTitles' => empty($config['pageTitles']) ? [] : $config['pageTitles'],
-            'pageTextReplaces' => $pageTextReplaces,
-            'pageWidth' => $pageWidth,
+            'pageOptionReplaces' => $this->translatePageReplaces($page, $config, 'Option'),
+            'pageTextReplaces' => $this->translatePageReplaces($page, $config),
+            'pageAreaWidths' => $pageAreaWidths,
             'pageAreaSkip' => $pageAreaSkip,
             'totalPages' => $config['totalPages'],
         ]);
+    }
+
+    /**
+     * @param string $page
+     * @param array  $config
+     * @param string $brand
+     *
+     * @return array
+     */
+    private function translatePageReplaces($page, array $config, $brand = 'Text')
+    {
+        $replaces = empty($config['page'.$brand.'Replaces']['p'.$page]) ? [] : $config['page'.$brand.'Replaces']['p'.$page];
+        foreach ($replaces as $code => $replace) {
+            empty($replaces[$code]['parameters']['width']) ?:
+                $replaces[$code]['parameters']['width'] =
+                    static::widthPercentToHtmlClass($replaces[$code]['parameters']['width']);
+        }
+
+        return $replaces;
+    }
+
+    /**
+     * @param string $page
+     * @param array  $config
+     * @param array  $args
+     * @param array  $library
+     *
+     * @return array
+     */
+    private function translatePageLibrary($page, array $config, array $args, array $library = [])
+    {
+        foreach (empty($config['pageAudios']['p'.$page]) ? [] : $config['pageAudios']['p'.$page] as $media) {
+            $library = static::translatePageMedia($args, $page, 'audio', $media, $library);
+        }
+        foreach (empty($config['pageImages']['p'.$page]) ? [] : $config['pageImages']['p'.$page] as $media) {
+            $library = static::translatePageMedia($args, $page, 'img', $media, $library);
+        }
+        foreach (empty($config['pageVideos']['p'.$page]) ? [] : $config['pageVideos']['p'.$page] as $media) {
+            $library = static::translatePageMedia($args, $page, 'video', $media, $library);
+        }
+
+        return $library;
     }
 
     /**
@@ -159,45 +180,56 @@ final class PagesHelper extends Security\Authorization
      * @param string $page
      * @param string $tag
      * @param string $media
-     * @param array  $mediaLibrary
+     * @param array  $library
      *
      * @return array
      */
-    private static function parseMedia(array $args, $page, $tag, $media, array $mediaLibrary = [])
+    private static function translatePageMedia(array $args, $page, $tag, $media, array $library = [])
     {
         $mediaData = explode('.', $media);
         $mediaExt = strtolower($mediaData[1]);
         $mediaData = explode('_', $mediaData[0]);
-        if (in_array($mediaExt, static::$mediaLibrary[$tag]['ext']) && ($mediaData[5] === $args['lengua'] || $mediaData[5] === $tag)) {
+        if (in_array($mediaExt, static::$library[$tag]['ext']) && ($mediaData[5] === $args['lengua'] || $mediaData[5] === $tag)) {
             $baseDir = $tag === 'img' ? '/images/' : '/media/';
+            if (/*$tag === 'font' || */$tag === 'audio' || $tag === 'video') {
+                $path = [];
+                foreach (static::$library[$tag]['ext'] as $ext) {
+                    $path[$ext] = $mediaExt === $ext ? $baseDir.$args['code'].'/'.$media : '';
+                }
+            } else {
+                $path = $baseDir.$args['code'].'/'.$media;
+            }
             if ($tag === 'font' || $tag === 'audio') {
                 $level = $args['metric']['basics'][$mediaData[4]];
                 $size = $args['metric']['levels'][$level];
                 $width = $args['metric']['levels']['percentages'][$level];
-                $offset = 100 - intval($width);
-                $path = [];
-                foreach (static::$mediaLibrary['audio']['ext'] as $ext) {
-                    $path[$ext] = $mediaExt === $ext ? $baseDir.$args['code'].'/'.$media : '';
-                }
             } else /*if ($tag === 'img' || $tag === 'video')*/ {
-                $offset = 100 - intval($mediaData[4]);
-                $path = $baseDir.$args['code'].'/'.$media;
                 $size = null;
                 $width = $mediaData[4];
             }
             $side = str_replace('p'.$page, '', $mediaData[0]);
-            $mediaLibrary[$side][$tag][$mediaData[0].'_'.$mediaData[2]] = [
+            $library[$side][$tag][$mediaData[0].'_'.$mediaData[2]] = [
                 'align' => $mediaData[1],
-                'offset' => static::widthPercentToHtmlClass($offset),
+                'offset' => static::widthPercentToHtmlClass(100 - intval($width)),
                 'path' => $path,
                 'since' => intval(str_replace('t', '', $mediaData[2])),
                 'size' => $size,
                 'tag' => $tag,
                 'till' => intval(str_replace('t', '', $mediaData[3])),
-                'width' => static::widthPercentToHtmlClass($width),
+                'width' => static::widthPercentToHtmlClass(intval($width)),
             ];
         }
 
-        return $mediaLibrary;
+        return $library;
+    }
+
+    /**
+     * @param string $percent
+     *
+     * @return string
+     */
+    private static function widthPercentToHtmlClass($percent = '100')
+    {
+        return static::$widthStyle[isset(static::$widthStyle[$percent]) ? $percent : 'auto'];
     }
 }

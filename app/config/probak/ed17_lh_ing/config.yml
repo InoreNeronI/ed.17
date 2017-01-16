@@ -90,8 +90,6 @@ pageTitles: # All centered texts' codes
   - p10a_t02
   - p11b_t03
   
-pageTextReplaces:
-
 pageAudios:
   p01:
     - p01a_cen_t06_t06_x3_cas.mp3
@@ -118,5 +116,4 @@ pageAreaWidths:
     b: 100
  
 
-# TODO: being dynamic
 totalPages: 11  # The final total pages

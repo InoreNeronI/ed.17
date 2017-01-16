@@ -15,19 +15,19 @@ use Symfony\Component\Routing;
 trait BaseKernelTrait
 {
     /** @var string $baseSlug */
-    private $baseSlug = 'index';
+    private static $baseSlug = 'index';
 
     /** @var string $baseUrl */
-    private $baseUrl = '/';
+    private static $baseUrl = '/';
 
     /** @var bool */
-    private $debug;
+    private static $debug;
 
     /** @var EventDispatcher\EventDispatcher */
     private $dispatcher;
 
     /** @var array $headers */
-    private $headers = [];
+    private static $headers = [];
 
     /** @var Routing\Matcher\UrlMatcherInterface */
     private $matcher;
@@ -37,11 +37,15 @@ trait BaseKernelTrait
 
     /**
      * @param \Exception $exception
+     * @param bool       $notice
      * @param string     $title
+     *
+     * @return HttpFoundation\Request
      */
-    private function addException(\Exception $exception, $title = 'Error')
+    private static function prepareExceptionRequest(\Exception $exception, $notice = false, $title = 'Error')
     {
-        if ($exception instanceof Routing\Exception\ResourceNotFoundException && $exception->getCode() === 0) {
+        if ($exception instanceof Routing\Exception\ResourceNotFoundException ||
+            $exception instanceof Routing\Exception\MethodNotAllowedException ) {
             $title = 'Resource not found';
             // No such route exception, return a 404 response
             $status = HttpFoundation\Response::HTTP_NOT_FOUND;
@@ -52,34 +56,59 @@ trait BaseKernelTrait
             // Something blew up exception, return a 500 response
             $status = HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
         }
-        $this->headers = array_merge($this->headers, ['ErrorData' => [
-            'debug' => $this->debug,
+        static::$headers = array_merge(static::$headers, ['ErrorData' => [
+            'debug' => static::$debug,
             'file' => $exception->getFile(),
             'line' => $exception->getLine(),
             'message' => $exception->getMessage(),
             'status' => $status,
+            'notice' => $notice,
             'title' => $title, ]]);
+
+        return static::getRequest(HttpFoundation\Request::create(static::$baseUrl));
     }
 
     /**
-     * @param \Exception $exception
+     * @param HttpFoundation\Request $request
      *
-     * @return array
+     * @return HttpFoundation\Request
      */
-    private function fallbackResponse(\Exception $exception)
+    private static function getRequest(HttpFoundation\Request $request)
     {
-        $this->addException($exception);
-        $controller = new Controller\BaseController();
-        $request = HttpFoundation\Request::create($this->baseUrl);
-        $request->attributes->add(['_route' => $this->baseSlug, 'messages' => array_merge(
-            $this->headers,
-            parseConfig(ROOT_DIR.\def::paths()['translations_dir'], 'layout'),
-            parseConfig(ROOT_DIR.\def::paths()['translations_dir'], 'page/'.$this->baseSlug)
-        )]);
-        $response = $controller->renderAction($request, $this->headers);
-        $response->setStatusCode(HttpFoundation\Response::HTTP_SEE_OTHER);
+        $route = $request->attributes->get('_route');
+        $request->attributes->add(['_route' => is_null($route) ? static::$baseSlug : $route, 'messages' => static::getMessages()]);
 
-        return [$request, $response];
+        return $request;
+    }
+
+    /**
+     * @param HttpFoundation\Response $response
+     * @param int                     $status
+     *
+     * @return HttpFoundation\Response
+     */
+    private static function getResponse(HttpFoundation\Response $response, $status = HttpFoundation\Response::HTTP_OK)
+    {
+        // Add previously defined headers to the response object
+        //$response->headers->add(static::$headers);
+        $response->setStatusCode($status);
+
+        return $response;
+    }
+
+    /**
+     * @param \Exception $e
+     * @param bool       $notice
+     *
+     * @return HttpFoundation\Response
+     */
+    private static function getFallbackResponse(\Exception $e, $notice = false)
+    {
+        $controller = new Controller\BaseController();
+        $request = static::prepareExceptionRequest($e, $notice);
+        $response = $controller->renderAction($request);
+
+        return static::getResponse($response, HttpFoundation\Response::HTTP_SEE_OTHER);
     }
 
     /**
@@ -116,20 +145,17 @@ trait BaseKernelTrait
 
             // Invoke the name of the controller that is resolved from a match in our routing class
             /** @var HttpFoundation\Response $response */
-            $response = call_user_func_array($controller, $arguments);
-        } catch (\Exception $e) {
-            list($request, $response) = $this->fallbackResponse($e);
-        }
+            $response = static::getResponse(call_user_func_array($controller, $arguments));
 
-        // Add previously defined headers to the response object
-        $response->headers->add($this->headers);
-
-        try {
             // The dispatcher, the central object of the event dispatcher system, notifies listeners of an event dispatched to it.
             // Put another way: your code dispatches an event to the dispatcher, the dispatcher notifies all registered listeners for the event, and each listener do whatever it wants with the event.
             $this->dispatcher->dispatch('response', new Event\ResponseEvent($response, $request));
+        } catch (\NoticeException $e) {
+            return static::getFallbackResponse($e, true);
+        } catch (\WarningException $e) {
+            return static::getFallbackResponse($e, true);
         } catch (\Exception $e) {
-            list($request, $response) = $this->fallbackResponse($e);
+            return static::getFallbackResponse($e);
         }
 
         return $response;

@@ -1,13 +1,9 @@
 
-pageImages:
-
 pageTitles: # All centered texts' codes
   - p00b_t01
   - p01b_t01
   - p06b_t01
   - p12b_t46
-
-pageTextReplaces:
 
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
@@ -37,5 +33,4 @@ pageAreaWidths:
   p12:
     b: 100
 
-# TODO: being dynamic
 totalPages: 12  # The final total pages

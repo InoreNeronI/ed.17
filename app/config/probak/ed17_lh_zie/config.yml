@@ -93,5 +93,4 @@ pageAreaWidths:
   p18:
     b: 100
 
-# TODO: being dynamic
 totalPages: 18  # The final total pages
