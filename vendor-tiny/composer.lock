@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "083ef342df329d8311afda67b8c46657",
+    "content-hash": "bba603e60f270d3518cdd9af068feaf6",
     "packages": [
         {
             "name": "acelaya/doctrine-enum-type",
@@ -1268,13 +1268,179 @@
             "time": "2017-01-11T19:36:15+00:00"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "andig/dbcopy",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/andig/dbcopy.git",
+                "reference": "00481a1dd6905cfa51aafb96c3eff08b5bf0c169"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/andig/dbcopy/zipball/00481a1dd6905cfa51aafb96c3eff08b5bf0c169",
+                "reference": "00481a1dd6905cfa51aafb96c3eff08b5bf0c169",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^2.5",
+                "symfony/console": "^2.6|^3.0"
+            },
+            "bin": [
+                "dbcopy.php"
+            ],
+            "type": "project",
+            "autoload": {
+                "psr-0": {
+                    "DatabaseCopy\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "http://github.com/andig/dbcopy/",
+            "time": "2016-12-27T16:09:21+00:00"
+        },
+        {
+            "name": "symfony/console",
+            "version": "v2.8.16",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/console.git",
+                "reference": "2e18b8903d9c498ba02e1dfa73f64d4894bb6912"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/console/zipball/2e18b8903d9c498ba02e1dfa73f64d4894bb6912",
+                "reference": "2e18b8903d9c498ba02e1dfa73f64d4894bb6912",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9",
+                "symfony/debug": "~2.7,>=2.7.2|~3.0.0",
+                "symfony/polyfill-mbstring": "~1.0"
+            },
+            "require-dev": {
+                "psr/log": "~1.0",
+                "symfony/event-dispatcher": "~2.1|~3.0.0",
+                "symfony/process": "~2.1|~3.0.0"
+            },
+            "suggest": {
+                "psr/log": "For using the console logger",
+                "symfony/event-dispatcher": "",
+                "symfony/process": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Console\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Console Component",
+            "homepage": "https://symfony.com",
+            "time": "2017-01-08T20:43:03+00:00"
+        },
+        {
+            "name": "symfony/var-dumper",
+            "version": "v2.8.16",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/var-dumper.git",
+                "reference": "8d2df79c132df0b14df305727fb2c26d33ab5492"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/8d2df79c132df0b14df305727fb2c26d33ab5492",
+                "reference": "8d2df79c132df0b14df305727fb2c26d33ab5492",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9",
+                "symfony/polyfill-mbstring": "~1.0"
+            },
+            "require-dev": {
+                "twig/twig": "~1.20|~2.0"
+            },
+            "suggest": {
+                "ext-symfony_debug": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "Resources/functions/dump.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Component\\VarDumper\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony mechanism for exploring and dumping PHP variables",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "debug",
+                "dump"
+            ],
+            "time": "2017-01-02T20:30:24+00:00"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "doctrine/dbal": 0,
         "acelaya/doctrine-enum-type": 0,
-        "twig/twig": 0
+        "symfony/event-dispatcher": 0,
+        "symfony/http-kernel": 0,
+        "symfony/http-foundation": 0,
+        "symfony/routing": 0,
+        "symfony/yaml": 0,
+        "twig/twig": 0,
+        "andig/dbcopy": 20,
+        "symfony/var-dumper": 0
     },
     "prefer-stable": false,
     "prefer-lowest": false,
