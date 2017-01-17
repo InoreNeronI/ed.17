@@ -40,17 +40,15 @@ trait RenderActionTrait
         $this->twig = $twig;*/
         /** @var array $credentials */
         $credentials = [
-            'database_host' => $container->hasParameter('database_host') ? $container->getParameter('database_host') : null,
-            'database_user' => $container->hasParameter('database_user') ? $container->getParameter('database_user') : null,
-            'database_password' => $container->hasParameter('database_password') ? $container->getParameter('database_password') : null,
-            'database_name' => $container->hasParameter('database_name') ? $container->getParameter('database_name') : null,
-            'database_driver' => $container->hasParameter('database_driver') ? $container->getParameter('database_driver') : null,
+            'host' => $container->hasParameter('host') ? $container->getParameter('host') : null,
+            'user' => $container->hasParameter('user') ? $container->getParameter('user') : null,
+            'password' => $container->hasParameter('password') ? $container->getParameter('password') : null,
+            'dbname' => $container->hasParameter('dbname') ? $container->getParameter('dbname') : null,
+            'driver' => $container->hasParameter('driver') ? $container->getParameter('driver') : null,
         ];
-        $container->hasParameter('database_path') ? $credentials['database_path'] = $container->getParameter('database_path') : null;
-        $container->hasParameter('database_port') ? $credentials['database_port'] = $container->getParameter('database_port') : null;
-        $container->hasParameter('database_socket') ? $credentials['database_socket'] = $container->getParameter('database_socket') : null;
-        /* @var array authorization */
-        $this->authorization = $credentials;
+        $container->hasParameter('path') ? $credentials['path'] = $container->getParameter('path') : null;
+        $container->hasParameter('port') ? $credentials['port'] = $container->getParameter('port') : null;
+        $container->hasParameter('unix_socket') ? $credentials['unix_socket'] = $container->getParameter('unix_socket') : null;
         /* @var array codes */
         $this->codes = $container->getParameter('codes');
         /* @var array langISOCodes */

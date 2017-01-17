@@ -9,29 +9,16 @@
   "require": {
     "dunglas/action-bundle": "@stable",
     "leaseweb/memcache-bundle": "@stable",
-    "symfony/asset": "^2.8",
-    "symfony/class-loader": "^2.8",
-    "symfony/dependency-injection": "^2.8",
-    "symfony/filesystem": "^2.8",
-    "symfony/finder": "^2.8",
-    "symfony/framework-bundle": "^2.8",
-    "symfony/security-core": "^2.8",
-    "symfony/security-csrf": "^2.8",
-    "symfony/stopwatch": "^2.8",
-    "symfony/templating": "^2.8",
-    "symfony/twig-bridge": "^2.8",
-    "symfony/twig-bundle": "^2.8",
+    "lexik/form-filter-bundle": "@stable",
+    "symfony/dotenv": "3.3.x-dev",
     "wikimedia/composer-merge-plugin": "@dev"
   },
   "require-dev": {
-    "andig/dbcopy": "@dev",
     "elao/web-profiler-extra-bundle": "@dev",
     "incenteev/composer-parameter-handler": "@stable",
     "neronmoon/scriptsdev": "@stable",
-    "symfony/console": "^2.8",
-    "symfony/process": "^2.8",
-    "symfony/var-dumper": "^2.8",
-    "symfony/web-profiler-bundle": "^2.8",
+    "symfony/var-dumper": "@stable",
+    "symfony/web-profiler-bundle": "@stable",
     "symfony/web-server-bundle": "3.3.x-dev"
   },
   "scripts": {
@@ -39,8 +26,8 @@
     "deptrac": "php bin/deptrac.phar",
     "optimize": "@composer dump-autoload --optimize",
     "phpunit": "php bin/phpunit.phar",
-    "post-install-cmd": ["@composer optimize", "printf \"\\n\\tVendors had been installed succesfully\\n\\n\""],
-    "post-update-cmd": ["@composer optimize", "printf \"\\n\\tVendors had been updated succesfully\\n\\n\""],
+    "post-install-cmd": ["@composer optimize", "printf \"\\n\\tVendors installed succesfully\\n\\n\""],
+    "post-update-cmd": ["@composer optimize", "printf \"\\n\\tVendors updated succesfully\\n\\n\""],
     "pre-install-cmd": "printf \"\\n\\tInstalling dependencies\\n\\n\"",
     "pre-update-cmd": "printf \"\\n\\tUpdating dependencies\\n\\n\"",
     "production-install": "@composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader",
@@ -72,7 +59,7 @@
       "[ -e \"bin/deptrac.phar\" ] || curl -Lo bin/deptrac.phar http://get.sensiolabs.de/deptrac.phar",
       "[ -e \"bin/php-cs.phar\" ] || curl -Lo bin/php-cs.phar https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.0.0/php-cs-fixer.phar",
       "[ -e \"bin/phpunit.phar\" ] || curl -Lo bin/phpunit.phar https://phar.phpunit.de/phpunit-old.phar",
-      "printf \"\\n\\tBinaries had been installed succesfully\\n\\n\"",
+      "printf \"\\n\\tBinaries installed succesfully\\n\\n\"",
       "printf \"\\n\\tInstalling Node Packaged Modules\\n\\n\"",
       "npm install"
     ],
@@ -81,7 +68,7 @@
       "php bin/deptrac.phar selfupdate || true",
       "php bin/php-cs.phar selfupdate || true",
       "php bin/phpunit.phar --self-update || true",
-      "printf \"\\n\\tBinaries had been updated succesfully\\n\\n\"",
+      "printf \"\\n\\tBinaries updated succesfully\\n\\n\"",
       "printf \"\\n\\tUpdating Node Packaged Modules\\n\\n\"",
       "npm update"
     ],
@@ -101,8 +88,7 @@
   },
   "config": {
     "bin-dir": "bin",
-    "platform": {"php": "5.6.0"},
-    "preferred-install": "dist",
+    "platform": {"php": "5.5.9"},
     "vendor-dir": "vendor"
   }
 }

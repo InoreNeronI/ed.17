@@ -5,10 +5,10 @@
 app/cache/
 app/config/connection.yml
 app/logs/
+app/Resources/data/*.db3
 app/Resources/session/
 !app/Resources/session/.gitkeep
 bin/
-dbcopy.json
 node_modules/
 public/
 !public/index.php

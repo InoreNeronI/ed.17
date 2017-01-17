@@ -45,7 +45,7 @@ trait BaseKernelTrait
     private static function prepareExceptionRequest(\Exception $exception, $notice = false, $title = 'Error')
     {
         if ($exception instanceof Routing\Exception\ResourceNotFoundException ||
-            $exception instanceof Routing\Exception\MethodNotAllowedException ) {
+            $exception instanceof Routing\Exception\MethodNotAllowedException) {
             $title = 'Resource not found';
             // No such route exception, return a 404 response
             $status = HttpFoundation\Response::HTTP_NOT_FOUND;

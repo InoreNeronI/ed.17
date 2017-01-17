@@ -7,15 +7,43 @@ namespace App\Security;
  */
 class Authorization extends Connection\Connection
 {
+    /** @var string $current */
+    protected static $current = 'dist';
+
     /**
-     * @param array       $args
-     * @param string|null $table
+     * @param string $current
+     *
+     * @return array
+     *
+     * @throws \NoticeException
+     */
+    public static function setCurrent($current)
+    {
+        static::$current = $current;
+    }
+
+    /**
+     * @param array  $args
+     * @param string $table
      *
      * @return array
      *
      * @throws \NoticeException
      */
     public function checkCredentials(array $args, $table = USER_TABLE)
+    {
+        return call_user_func(__METHOD__.static::$current, $args, $table);
+    }
+
+    /**
+     * @param array  $args
+     * @param string $table
+     *
+     * @return array
+     *
+     * @throws \NoticeException
+     */
+    public function checkCredentialsDist(array $args, $table)
     {   //$fields = static::parseFields($args, static::getFilename($slug), $table);
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
@@ -49,6 +77,37 @@ class Authorization extends Connection\Connection
         }
         //throw new \Exception(sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())));
         throw new \NoticeException('No results found');
+    }
+
+    /**
+     * @param array  $args
+     * @param string $table
+     *
+     * @return array
+     *
+     * @throws \NoticeException
+     */
+    public function checkCredentialsLocal(array $args, $table)
+    {
+        //return $this->checkCredentialsDist($args, $table);
+        $data = $this->getConnection()->fetchAll('SELECT * FROM `sqlite_master`');
+        var_dump($data);exit;
+        var_dump($this->getConnection()->getSchemaManager()->getDatabasePlatform()->getName());
+        $queryBuilder = $this->getQueryBuilder()
+            ->select('u.*')->from($table, 'u');
+        /** @var \Doctrine\DBAL\Driver\Statement $query */
+        $query = $queryBuilder->execute();
+
+        /** @var array $user */
+        $user = $query->fetch();
+        var_dump($user);
+
+        /** @see http://stackoverflow.com/a/25211533 */
+        /** @var \Doctrine\DBAL\Schema\MySqlSchemaManager $sm */
+        $sm = $this->getConnection()->getSchemaManager();
+        var_dump($sm->listTableDetails('edg020_ikasleak'));
+        /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
+        $queryBuilder = $this->getQueryBuilder();
     }
 
     /**

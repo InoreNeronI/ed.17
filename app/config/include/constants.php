@@ -9,6 +9,6 @@ define('PUBLIC_DIR', ROOT_DIR.\def::paths()['public_dir']);
 define('TEMPLATE_CACHE_DIR', ROOT_DIR.\def::paths()['cache_dir'].'/twig');
 define('TEMPLATE_EXTENSION', 'html.twig');
 define('TEMPLATE_FILES_DIR', ROOT_DIR.\def::paths()['template_dir']);
-define('USER_TABLE', \def::dbCredentials()['user_table']);
+define('USER_TABLE', \defDb::userEntity());
 
 return new App\Kernel\BaseKernel(DEBUG);

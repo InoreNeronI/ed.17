@@ -127,23 +127,62 @@ final class def extends defDB
  */
 class defDb
 {
-    protected static $dbCredentials;
-    protected static $initialized = false;
+    private static $adminUsername;
+    private static $adminPassword;
+    private static $dbDist;
+    private static $dbLocal;
+    private static $userEntity;
+    private static $initialized = false;
 
     private static function loadDbConfig()
     {
         if (!static::$initialized) {
-            $connection = parseConfig(CONFIG_DIR, 'connection');
-            static::$dbCredentials = $connection/*['credentials']*/;
+            $connectionConfig = parseConfig(CONFIG_DIR, 'connection');
+            $connectionDist = $connectionConfig['default_connection'];
+            $connections = $connectionConfig['connections'];
+            $localUsers = $connectionConfig['users']['local'];
+            static::$adminUsername = $localUsers['admin']['name'];
+            static::$adminPassword = $localUsers['admin']['pw'];
+            static::$dbDist = $connections[$connectionDist];
+            static::$dbLocal = $connections['local'];
+            static::$userEntity = $connectionConfig['users'][$connectionDist];
             static::$initialized = true;
         }
     }
 
-    public static function dbCredentials()
+    public static function adminUsername()
     {
         static::loadDbConfig();
 
-        return static::$dbCredentials;
+        return static::$adminUsername;
+    }
+
+    public static function adminPassword()
+    {
+        static::loadDbConfig();
+
+        return static::$adminPassword;
+    }
+
+    public static function dbDist()
+    {
+        static::loadDbConfig();
+
+        return static::$dbDist;
+    }
+
+    public static function dbLocal()
+    {
+        static::loadDbConfig();
+
+        return static::$dbLocal;
+    }
+
+    public static function userEntity()
+    {
+        static::loadDbConfig();
+
+        return static::$userEntity;
     }
 }
 

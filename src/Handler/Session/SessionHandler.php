@@ -29,7 +29,6 @@ class SessionHandler
     /**
      * SessionHandler constructor.
      *
-     * @param bool   $debug
      * @param int    $expireTime
      * @param string $savePath   path to session file itself
      * @param array  $options    Session configuration options:
@@ -59,8 +58,9 @@ class SessionHandler
      *                           upload_progress.freq, "1%"
      *                           upload_progress.min-freq, "1"
      *                           url_rewriter.tags, "a=href,area=href,frame=src,form=,fieldset="
+     * @param bool   $debug
      */
-    public function __construct($debug = DEBUG, $expireTime = 10, $savePath = '/app/Resources/session', array $options = [])
+    public function __construct($expireTime = 10, $savePath = '/app/Resources/session', array $options = [], $debug = DEBUG)
     {
         $this->expireTime = $expireTime;
         // Get session save-path.
@@ -74,6 +74,7 @@ class SessionHandler
         }
         $this->savePath = $savePath;
         $this->options = $options;
+        $this->debug = $debug;
         $this->session = null;
     }
 

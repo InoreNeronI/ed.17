@@ -51,7 +51,7 @@ class ResponseEvent extends EventDispatcher\Event
      * @param int    $expireTime
      * @param string $savePath
      */
-    private function handleSession($expireTime = 20, $savePath = '/app/Resources/session')
+    private function handleSession($expireTime = 1, $savePath = '/app/Resources/session')
     {
         $sessionHandler = new Handler\Session\SessionHandler($expireTime, $savePath);
         if ($sessionHandler->startSession()) {

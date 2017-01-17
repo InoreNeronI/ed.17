@@ -11,8 +11,6 @@ use Symfony\Component\HttpFoundation;
  */
 trait BaseControllerTrait
 {
-    /* @var array authorization */
-    private $authorization;
     /* @var array codes */
     private $codes;
     /* @var array langISOCodes */
@@ -24,44 +22,37 @@ trait BaseControllerTrait
 
     /**
      * @param string $class
-     * @param string $method
-     * @param array  $args
+     * @param array  $authorization
      * @param array  $options
      *
-     * @return object
+     * @return Security\Authorization|Helper\PagesHelper
      */
-    private function getAuthManager($class, $method = null, array $args = [], array $options = [])
+    public static function getAuthManager($class, array $authorization, array $options = [])
     {
-        if (empty($args)) {
-            $args = $this->authorization;
+        if (in_array('path', array_keys($authorization))) {
+            $options['path'] = $authorization['path'];
+            unset($authorization['path']);
         }
-        if (in_array('database_path', array_keys($args))) {
-            $options['path'] = $args['database_path'];
-            unset($args['database_path']);
+        if (in_array('port', array_keys($authorization))) {
+            $options['port'] = $authorization['port'];
+            unset($authorization['port']);
         }
-        if (in_array('database_port', array_keys($args))) {
-            $options['port'] = $args['database_port'];
-            unset($args['database_port']);
+        if (in_array('unix_socket', array_keys($authorization))) {
+            $options['unix_socket'] = $authorization['unix_socket'];
+            unset($authorization['unix_socket']);
         }
-        if (in_array('database_socket', array_keys($args))) {
-            $options['unix_socket'] = $args['database_socket'];
-            unset($args['database_socket']);
-        }
-        if (in_array('user_table', array_keys($args))) {
-            $options['entity'] = $args['user_table'];
-            unset($args['user_table']);
-        }
-        $this->authorization = array_merge($args, empty($options) ? [] : ['options' => $options]);
+        /** @var Security\Authorization|Helper\PagesHelper $manager */
+        $manager = new $class(
+            isset($authorization['host']) ? $authorization['host'] : null,
+            isset($authorization['user']) ? $authorization['user'] : null,
+            isset($authorization['password']) ? $authorization['password'] : null,
+            isset($authorization['dbname']) ? $authorization['dbname'] : null,
+            $authorization['driver'],
+            isset($authorization['options']) ? array_merge($authorization['options'], $options) : $options);
 
-        $object = new $class(
-            $this->authorization['database_host'],
-            $this->authorization['database_user'],
-            $this->authorization['database_password'],
-            $this->authorization['database_name'],
-            $this->authorization['database_driver'],
-            isset($this->authorization['options']) ? $this->authorization['options'] : []);
+        $manager::setCurrent(static::isAdmin($authorization) ? 'local' : 'dist');
 
-        return is_null($method) ? $object : new \ReflectionMethod($object, $method);
+        return $manager;
     }
 
     /**
@@ -73,9 +64,12 @@ trait BaseControllerTrait
     {
         $data = [];
         if ($request->getMethod() === 'POST') {
+            /** @var array $args */
+            $args = $request->request->all();
             /** @var Security\Authorization $manager */
-            $manager = $this->getAuthManager('App\Security\Authorization');
-            $data = $manager->checkCredentials($request->request->all());
+            $manager = $this->getAuthManager('App\Security\Authorization', static::authorize($args));
+            /** @var array $data */
+            $data = $manager->checkCredentials($args);
         }
 
         return $this->localizeMessages($request, $data);
@@ -90,9 +84,12 @@ trait BaseControllerTrait
     private function getSplitPageData(HttpFoundation\Request $request, $page)
     {
         if ($request->getMethod() === 'POST') {
+            /** @var array $args */
+            $args = $request->request->all();
             /** @var Helper\PagesHelper $manager */
-            $manager = $this->getAuthManager('App\Helper\PagesHelper');
-            $messages = $this->localizeMessages($request, $request->request->all());
+            $manager = $this->getAuthManager('App\Helper\PagesHelper', static::authorize($args));
+            /** @var array $messages */
+            $messages = $this->localizeMessages($request, $args);
 
             return $manager->loadPageData($messages, sprintf('%02d', intval($page)));
         }

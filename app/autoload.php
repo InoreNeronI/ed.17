@@ -1,31 +1,7 @@
 <?php
 
 /** @author Martin Mozos <martinmozos@gmail.com> */
-class NoticeException extends Exception
-{
-    public function __toString()
-    {
-        return sprintf("Notice%s: {$this->message}", $this->code !== 0 ? " #{$this->code}" : '');
-    }
-}
-class WarningException extends Exception
-{
-    public function __toString()
-    {
-        return sprintf("Warning%s: {$this->message}", $this->code !== 0 ? " #{$this->code}" : '');
-    }
-}
-/* @see: http://stackoverflow.com/a/4410769
-register_shutdown_function(function () {
-    $error = error_get_last();
-    if ($error['type'] === E_ERROR) {
-        // fatal error has occured
-        //throw new Exception($error['message'], 404);
-    }
-});*/
-set_error_handler(function ($id, $msg) {
-    throw $id === E_WARNING ? new WarningException($msg, $id) : $id === E_NOTICE ? new NoticeException($msg, $id) : null;
-}, E_ALL);
+includeIfExists(ROOT_DIR.'/app/config/include/errorHandler.php');
 
 define('DEBUG', php_sapi_name() !== 'cli-server' &&
                 !isset($_SERVER['HTTP_CLIENT_IP']) &&
@@ -33,18 +9,19 @@ define('DEBUG', php_sapi_name() !== 'cli-server' &&
                 in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', 'fe80::1', '::1', '10.212.11.240']) ? true : false);
 define('TURBO', true);
 
-// Require and return loader
-$loader = realpath(ROOT_DIR.sprintf('/vendor%s/autoload.php', TURBO ? '-tiny' : ''));
-
-if ($loader !== false) {
-    try {
-        /* @return \Composer\Autoload\ClassLoader */
-        return require $loader;
-    } catch (Exception $e) {
-        /* @throw \Exception */
-        throw new \Exception(sprintf('Internal error: %s', $e->getMessage()));
+function includeIfExists($file)
+{
+    if (file_exists($file)) {
+        return include $file;
     }
-} else {
-    /* @throw \Exception */
-    throw new \Exception('Vendor files not found, please run "Composer" dependency manager: https://getcomposer.org/');
 }
+// Require and return loader
+if (!$loader = includeIfExists(ROOT_DIR.sprintf('/vendor%s/autoload.php', TURBO ? '-tiny' : ''))) {
+    /* @throw \Exception */
+    throw new \Exception(
+        'You must set up the project dependencies, run the following commands:'.PHP_EOL.
+        'curl -s http://getcomposer.org/installer | php'.PHP_EOL.
+        'php composer.phar install'.PHP_EOL);
+}
+/* @return \Composer\Autoload\ClassLoader */
+return $loader;

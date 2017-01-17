@@ -18,8 +18,6 @@ class BaseController
      */
     public function __construct()
     {
-        /* @var array authorization */
-        $this->authorization = \def::dbCredentials();
         /* @var array codes */
         $this->codes = \def::dbCodes();
         /* @var array langISOCodes */
@@ -28,6 +26,30 @@ class BaseController
         $this->metric = \def::metric();
         /* @var array targets */
         $this->targets = \def::dbTargets();
+    }
+
+    /**
+     * @param array $args
+     *
+     * @return bool
+     */
+    private static function isAdmin(array $args)
+    {
+        return isset($args['fcodalued']) && $args['fcodalued'] === \defDb::adminUsername() && isset($args['code']) && $args['code'] === \defDb::adminPassword();
+    }
+
+    /**
+     * @param array $args
+     *
+     * @return bool
+     */
+    private static function authorize(array $args)
+    {
+        if ($path = static::isAdmin($args) ? str_replace('%kernel.root_dir%', ROOT_DIR.'/app', \defDb::dbLocal()['path']) : false) {
+            return array_merge($args, \defDb::dbLocal(), ['path' => $path]);
+        }
+
+        return array_merge($args, \defDb::dbDist());
     }
 
     /**

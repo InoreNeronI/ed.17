@@ -1,13 +1,27 @@
 
-# Database connection configuration
 parameters:
-  database_driver:    pdo_mysql
-  database_host:      127.0.0.1
-  database_port:      3306
-  database_name:      ed17probak
-  database_user:      ed17erab
-  database_password:  ~
-  # You should uncomment this if you want use pdo_sqlite
-  # database_path:      "%kernel.root_dir%/data.db3"
-  # Users table
-  user_table:         edg020_ikasleak
+    # Database connection configuration (Doctrine style)
+    # @see: http://symfony.com/doc/2.8/doctrine/multiple_entity_managers.html
+    default_connection: dist
+    connections:
+        dist:
+            driver:   pdo_mysql
+            host:     127.0.0.1
+            port:     3306
+            dbname:   ed17probak
+            user:     ed17erab
+            password: ~
+            charset:  UTF8
+        local:
+            dbname:   ed17
+            driver:   pdo_sqlite
+            path:     '%kernel.root_dir%/Resources/data/data.db3'
+            charset:  UTF8
+    users:
+        # Users distribution table
+        dist:         edg020_ikasleak
+        # Local in-memory users
+        local:
+            admin:
+                name: admin
+                pw:   admin
