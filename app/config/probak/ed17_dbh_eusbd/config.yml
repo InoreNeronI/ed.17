@@ -9,7 +9,7 @@ pageAudios:
 
 pageImages:
   p01:
-    - p01a_cen_t07_t07_70_img.png
+    - p01a_cen_t07_t07_50_img.png
     - p01a_cen_t08_t08_30_img.jpg
   p02:
     - p02a_cen_t02_t02_70_img.jpg
@@ -65,6 +65,9 @@ pageTitles:
   - p13b_t03
 
 pageAreaWidths:
+   p04:
+    a: 60
+    b: 40
   p13:
     b: 100
 

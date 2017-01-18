@@ -119,6 +119,7 @@ p03:
 p04:
   text:
     - p04a_t05
+    - p04a_t06
   simple:
     - p04b_t02
     - p04b_t03
@@ -144,6 +145,7 @@ p04:
 p05:
   text:
     - p05a_t03
+    - p05a_t04
   simple:
     - p05b_t02
     - p05b_t03

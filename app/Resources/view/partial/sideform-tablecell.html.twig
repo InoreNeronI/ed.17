@@ -21,7 +21,7 @@
 {% endif %}
 
 {% if parentRowNum is not defined or parentRowNum is null %}
-    <div class="dt {{ class }} mv1 mv2-l w-100"><div class="dt-row"><div class="{{ cellClass }}">
+    <div class="dt {{ class }} w-100"><div class="dt-row"><div class="{{ cellClass }}">
 {% elseif tableRowNum > parentRowNum %}
     </div><div class="dt-row"><div class="{{ cellClass }}">
 {% elseif tableRowNum is same as('0') or tableRowNum is same as(parentRowNum) %}

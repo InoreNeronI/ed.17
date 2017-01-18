@@ -88,6 +88,8 @@ pageTextReplaces:
       template: 'partial/fields/input.html.twig'
       
 pageAreaWidths:
+  p00:  # Page affected with any custom side-width
+    b: 100  # side-letter: window-relative-width-percentage
   p04:
     a: 40
   p18:

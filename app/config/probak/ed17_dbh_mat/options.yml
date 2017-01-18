@@ -47,7 +47,7 @@ p04:
     - p04b_t04
     - p04b_t05
     - p04b_t06
-  libre-s:
+  libre-m:
     - p04b_t09
     - p04b_t11
     - p04b_t13
@@ -91,10 +91,10 @@ p08:
     - p08b_t06
 p09:
   simple:
-    - p09b_t03a
-    - p09b_t04a
-    - p09b_t05a
-    - p09b_t06a
+    - p09b_t03
+    - p09b_t04
+    - p09b_t05
+    - p09b_t06
 p10:
   simple:
     - p10b_t02

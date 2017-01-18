@@ -3,7 +3,7 @@
         {% include '@App/partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContainer': 'fl pr1 tc ' ~ media['width'] } %}
     {% endset %}
 {% elseif media['align'] is same as('izq') and media['since']|number_format == textNum %}
-    {% include '@App/partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContainer': 'fl pr1 tc ' ~ media['width'] } %}
+    {% include '@App/partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContainer': 'cb fl pr1 tc ' ~ media['width'] } %}
 {% elseif media['align'] is same as('dch') and media['since']|number_format == textNum %}
-    {% include '@App/partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContainer': 'fr pl1 tc ' ~ media['width'] } %}
+    {% include '@App/partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContainer': 'cb fr pl1 tc ' ~ media['width'] } %}
 {% endif %}
