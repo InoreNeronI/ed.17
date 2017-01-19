@@ -139,8 +139,6 @@ p05:
     - p05a_t07
     - p05a_t08
     - p05a_t09
-    - p05a_t17
-    - p05a_t18
   simple:
     - p05b_t02
     - p05b_t03
@@ -159,8 +157,6 @@ p06:
     - p06a_t07
     - p06a_t08
     - p06a_t09
-    - p06a_t17
-    - p06a_t18
   simple:
     - p06b_t02
     - p06b_t03
@@ -179,8 +175,6 @@ p07:
     - p07a_t07
     - p07a_t08
     - p07a_t09
-    - p07a_t17
-    - p07a_t18    
   simple:
     - p07b_t02
     - p07b_t03

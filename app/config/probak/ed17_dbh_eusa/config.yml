@@ -62,7 +62,13 @@ pageTitles:
   - p13b_t01
 
 pageAreaWidths:
-  p13:
+   p06:
+    b: 40
+   p11:
+    b: 40
+   p12:
+    b: 40
+   p13:
     b: 100
 
 totalPages: 13

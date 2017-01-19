@@ -1,20 +1,11 @@
 p00:
   text:
-    - p00a_t03
-    - p00a_t04
-    - p00a_t05
-    - p00a_t06
-    - p00a_t07
-    - p00a_t08
-    - p00a_t09
     - p00b_t02
     - p00b_t03
     - p00b_t04
     - p00b_t05
     - p00b_t06
     - p00b_t07
-    - p00b_t08
-        
 p01:
   text:
     - p01a_t02
@@ -77,6 +68,7 @@ p06:
     - p06b_t02
     - p06b_t03
     - p06b_t04
+    - p06b_t05
     - p06b_t08
     - p06b_t09
     - p06b_t10
@@ -107,7 +99,7 @@ p09:
   text:
     - p09a_t02
     - p09a_t03
-  libre:
+  libre-l:
     - p09b_t03
     - p09b_t04
     - p09b_t05

@@ -66,9 +66,12 @@ pageTitles:
 
 pageAreaWidths:
    p04:
-    a: 60
     b: 40
-  p13:
+   p07:
+    b: 40
+   p08:
+    b: 40
+   p13:
     b: 100
 
 totalPages: 13  # The final total pages
