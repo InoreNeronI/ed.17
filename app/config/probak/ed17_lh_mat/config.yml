@@ -6,20 +6,20 @@ pageImages:
     - p01a_cen_t03_t03_60_img.png
   p02:
     - p02a_cen_t01_t01_70_img.png
-    - p02b_cen_t02_t02_100_cas.png
-    - p02b_cen_t02_t02_100_eus.png
+    - p02b_cen_t01_t01_100_cas.png
+    - p02b_cen_t01_t01_100_eus.png
   p03:
     - p03a_cen_t01_t01_70_img.png
     - p03b_cen_t01_t01_100_cas.png
     - p03b_cen_t01_t01_100_eus.png
-    - p03b_cen_t03_t03_100_cas.png
-    - p03b_cen_t04_t04_100_cas.png
-    - p03b_cen_t05_t05_100_cas.png
-    - p03b_cen_t06_t06_100_cas.png
-    - p03b_cen_t03_t03_100_eus.png
-    - p03b_cen_t04_t04_100_eus.png
-    - p03b_cen_t05_t05_100_eus.png
-    - p03b_cen_t06_t06_100_eus.png
+    - p03b_cen_t03_t03_50_cas.png
+    - p03b_cen_t04_t04_50_cas.png
+    - p03b_cen_t05_t05_50_cas.png
+    - p03b_cen_t06_t06_50_cas.png
+    - p03b_cen_t03_t03_50_eus.png
+    - p03b_cen_t04_t04_50_eus.png
+    - p03b_cen_t05_t05_50_eus.png
+    - p03b_cen_t06_t06_50_eus.png
   p04:
     - p04a_cen_t01_t01_70_img.png
   p05:
@@ -51,10 +51,10 @@ pageImages:
   p10:
     - p10a_cen_t01_t01_50_img.png
     - p10b_cen_t01_t01_30_img.png
-    - p10b_cen_t03_t03_60_img.png
-    - p10b_cen_t04_t04_60_img.png
-    - p10b_cen_t05_t05_60_img.png
-    - p10b_cen_t06_t06_60_img.png
+    - p10b_cen_t03_t03_100_img.png
+    - p10b_cen_t04_t04_100_img.png
+    - p10b_cen_t05_t05_100_img.png
+    - p10b_cen_t06_t06_100_img.png
   p11:
     - p11a_cen_t02_t02_100_img.png
   p12:

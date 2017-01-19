@@ -54,6 +54,12 @@ p05:
 p06:
   text:
     - p06a_t02
+    - p06b_t02
+    - p06b_t03
+    - p06b_t04
+    - p06b_t11
+    - p06b_t12
+    - p06b_t13    
   simple:
     - p06b_t06
     - p06b_t07
@@ -98,6 +104,16 @@ p10:
 p11:
   text:
     - p11a_t02
+    - p11b_t02
+    - p11b_t03
+    - p11b_t04
+    - p11b_t05
+    - p11b_t06
+    - p11b_t12
+    - p11b_t13
+    - p11b_t14
+    - p11b_t15
+    - p11b_t16
   simple:
     - p11b_t07
     - p11b_t08
