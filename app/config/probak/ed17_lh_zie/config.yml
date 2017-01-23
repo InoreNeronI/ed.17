@@ -6,8 +6,8 @@ pageImages:
     - p02b_cen_t01_t01_80_cas.png
     - p02b_cen_t01_t01_80_eus.png
   p03:
-    - p03a_cen_t03_t03_80_cas.png
-    - p03a_cen_t03_t03_80_eus.png
+    - p03a_cen_t03_t03_100_cas.png
+    - p03a_cen_t03_t03_100_eus.png
   p04:
     - p04a_cen_t03_t03_60_img.png
     - p04b_cen_t06_t06_80_cas.png
@@ -23,7 +23,7 @@ pageImages:
     - p08a_cen_t03_t03_60_cas.png
     - p08a_cen_t03_t03_60_eus.png
   p09:
-    - p09a_cen_t03_t03_90_img.png
+    - p09a_cen_t03_t03_100_img.png
   p10:
     - p10a_cen_t02_t02_90_cas.png
     - p10a_cen_t02_t02_90_eus.png
@@ -35,12 +35,12 @@ pageImages:
   p13:
     - p13a_cen_t01_t01_60_img.png
   p15:
-    - p15a_cen_t02_t02_70_img.png
+    - p15a_cen_t02_t02_60_img.png
   p16:
     - p16a_cen_t02_t02_80_cas.png
     - p16a_cen_t02_t02_80_eus.png
   p17:
-    - p17a_cen_t02_t02_80_img.png
+    - p17a_cen_t02_t02_60_img.png
   p18:
     - p18b_cen_t01_t01_60_img.jpg
 
@@ -87,8 +87,12 @@ pageTextReplaces:
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage
+  p03:
+    a: 60
   p04:
     a: 40
+  p09:
+    a: 60 
   p18:
     b: 100
 

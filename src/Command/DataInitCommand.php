@@ -9,9 +9,8 @@ use Symfony\Component\Console;
 
 class DataInitCommand extends CreateCommand
 {
-
-    const MODE_COPY = 'copy';
     const BATCH_SIZE = 1000;
+    const MODE_COPY = 'copy';
     use Command\DataCommandTrait;
 
     protected function configure()

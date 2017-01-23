@@ -53,6 +53,9 @@ pageTitles:
   - p08b_t03
 
 pageAreaWidths:
+  p07:
+    a: 60
+    b: 40
   p08:
     b: 100
 

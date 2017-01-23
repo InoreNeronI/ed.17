@@ -47,7 +47,7 @@ trait RenderActionTrait
         $this->metric = $container->getParameter('metric');
         /* @var array targets */
         $this->targets = $container->getParameter('targets');
-        /** @var array $args */
+        /* @var array $args */
         /*$args = [
             'host' => $container->hasParameter('host') ? $container->getParameter('host') : null,
             'user' => $container->hasParameter('user') ? $container->getParameter('user') : null,
@@ -58,7 +58,7 @@ trait RenderActionTrait
         $container->hasParameter('path') ? $args['path'] = $container->getParameter('path') : null;
         $container->hasParameter('port') ? $args['port'] = $container->getParameter('port') : null;
         $container->hasParameter('unix_socket') ? $args['unix_socket'] = $container->getParameter('unix_socket') : null;*/
-        /** @var DependencyInjection\Container $container */
+        /* @var DependencyInjection\Container $container */
         $this->container = $container;
     }
 

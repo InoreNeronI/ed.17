@@ -4,55 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bba603e60f270d3518cdd9af068feaf6",
+    "content-hash": "55cdcb24be0664ddb2bc1fe0ff220914",
     "packages": [
-        {
-            "name": "acelaya/doctrine-enum-type",
-            "version": "v1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/acelaya/doctrine-enum-type.git",
-                "reference": "3d63f81b4f310ad9f2826c53eb4773b5b354dc86"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/acelaya/doctrine-enum-type/zipball/3d63f81b4f310ad9f2826c53eb4773b5b354dc86",
-                "reference": "3d63f81b4f310ad9f2826c53eb4773b5b354dc86",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/dbal": "~2.4",
-                "myclabs/php-enum": "~1.4",
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Acelaya\\Doctrine\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alejandro Celaya",
-                    "email": "alejandro@alejandrocelaya.com"
-                }
-            ],
-            "description": "A custom Doctrine type that maps column values to enum objects using myclabs/php-enum",
-            "keywords": [
-                "doctrine",
-                "enum",
-                "type"
-            ],
-            "time": "2016-01-20T19:23:37+00:00"
-        },
         {
             "name": "doctrine/annotations",
             "version": "v1.2.7",
@@ -332,16 +285,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.7",
+            "version": "v2.5.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "3a351369582dade60c750e2cef540eb7b568e6b3"
+                "reference": "0d2f8187d4b4c7b72d8e2acba359e25c36feaf5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/3a351369582dade60c750e2cef540eb7b568e6b3",
-                "reference": "3a351369582dade60c750e2cef540eb7b568e6b3",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/0d2f8187d4b4c7b72d8e2acba359e25c36feaf5e",
+                "reference": "0d2f8187d4b4c7b72d8e2acba359e25c36feaf5e",
                 "shasum": ""
             },
             "require": {
@@ -399,7 +352,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2017-01-14T21:05:28+00:00"
+            "time": "2017-01-19T13:27:33+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -563,50 +516,6 @@
                 "password"
             ],
             "time": "2014-11-20T16:49:30+00:00"
-        },
-        {
-            "name": "myclabs/php-enum",
-            "version": "1.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/myclabs/php-enum.git",
-                "reference": "e42fa9d2ae5dd660dbd0fb573d94c61e5a0dbb02"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/php-enum/zipball/e42fa9d2ae5dd660dbd0fb573d94c61e5a0dbb02",
-                "reference": "e42fa9d2ae5dd660dbd0fb573d94c61e5a0dbb02",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.*",
-                "squizlabs/php_codesniffer": "1.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "MyCLabs\\Enum\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP Enum contributors",
-                    "homepage": "https://github.com/myclabs/php-enum/graphs/contributors"
-                }
-            ],
-            "description": "PHP Enum implementation",
-            "homepage": "http://github.com/myclabs/php-enum",
-            "keywords": [
-                "enum"
-            ],
-            "time": "2016-10-09T21:43:05+00:00"
         },
         {
             "name": "psr/log",
@@ -1432,7 +1341,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "doctrine/dbal": 0,
-        "acelaya/doctrine-enum-type": 0,
         "symfony/event-dispatcher": 0,
         "symfony/http-kernel": 0,
         "symfony/http-foundation": 0,
@@ -1446,7 +1354,8 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^5.4.0|^7.0",
-        "ext-memcache": "^3.0"
+        "ext-pdo_mysql": "*",
+        "ext-pdo_sqlite": "*"
     },
     "platform-dev": [],
     "platform-overrides": {

@@ -97,11 +97,35 @@ pageTitles: # All centered texts' codes
   - p26a_t01
   - p27a_t01
   - p28a_t01
-  - p29b_t02
+
  
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage
+  p05:
+    a: 60
+    b: 40
+  p07:
+    a: 60
+    b: 40
+  p09:
+    a: 60
+    b: 40
+  p12:
+    a: 60
+    b: 40
+  p13:
+    a: 60
+    b: 40
+  p14:
+    a: 60
+    b: 40
+  p22:
+    a: 60
+    b: 40
+  p23:
+    a: 60
+    b: 40
   p29:
     b: 100
 

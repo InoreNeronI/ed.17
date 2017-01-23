@@ -4,9 +4,9 @@
   "homepage": "http://ediagnostikoak.net/",
   "require": {
     "php": "^5.4.0|^7.0",
-    "ext-memcache": "^3.0",
+    "ext-pdo_mysql": "*",
+    "ext-pdo_sqlite": "*",
     "doctrine/dbal": "@stable",
-    "acelaya/doctrine-enum-type": "@stable",
     "symfony/event-dispatcher": "@stable",
     "symfony/http-kernel": "@stable",
     "symfony/http-foundation": "@stable",

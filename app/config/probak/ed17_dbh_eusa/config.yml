@@ -63,10 +63,13 @@ pageTitles:
 
 pageAreaWidths:
    p06:
+    a: 60
     b: 40
    p11:
+    a: 60
     b: 40
    p12:
+    a: 60 
     b: 40
    p13:
     b: 100

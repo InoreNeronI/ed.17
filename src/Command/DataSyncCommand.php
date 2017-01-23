@@ -30,51 +30,47 @@ class DataSyncCommand extends BackupCommand
 
         // make sure all connections are UTF8
         if ($this->sc->getDatabasePlatform()->getName() === 'mysql') {
-            $this->sc->executeQuery('SET NAMES utf8'); /*
+            $this->sc->executeQuery('SET NAMES utf8');
         }
-        if ($this->tc->getDatabasePlatform()->getName() == 'mysql') {
-            $this->tc->executeQuery("SET NAMES utf8");*/
+        if ($this->tc->getDatabasePlatform()->getName() === 'mysql') {
+            $this->sc->executeQuery('SET NAMES utf8');
         }
         $sm = $this->sc->getSchemaManager();
         $tm = $this->tc->getSchemaManager();
+        $tables = $this->getOptionalConfig('tables');
 
         if (!$this->getConfig('keep-constraints')) {
-            $this->dropConstraints($tm, $this->getConfig('tables'));
+            $this->dropConstraints($tm, $tables);
         }
 
-        if (($tables = $this->getOptionalConfig('tables')) === null) {
-            $output->writeln('Tables not configured - discovering from source schema');
+        if ($tables === null) {
+            $output->writeln(PHP_EOL.'Tables not configured - discovering from source schema');
             $tables = [];
             foreach ($this->getTables($sm) as $tableName) {
                 $output->writeln(sprintf('`%s` discovered', $tableName));
                 $tables[] = ['name' => $tableName, 'mode' => static::MODE_COPY];
             }
         }
-        try {
-            $db = $this->getConfig('target.dbname');
-            $dbExists = in_array($db, $tm->listDatabases());
+        $db = $this->sc->getDatabasePlatform()->getName() === 'mysql' ? $this->sc->getDatabase() : $this->tc->getDatabasePlatform()->getName() === 'mysql' ? $this->tc->getDatabase() : null;
+        $dbExists = ($this->tc->getDatabasePlatform()->getName() === 'mysql' &&
+            $dbs = $this->tc->fetchArray("SHOW DATABASES LIKE '$db';")) &&
+            in_array($db, $dbs);
 
-            if (!$dbExists) {
-                throw new \WarningException(sprintf('Database `%s` doesn\'t exist.', $db), 404);
-            }
-        } catch (\Exception $e) {
-            $output->writeln(PHP_EOL.$e->getMessage().PHP_EOL);
-        }
-        if ($file = realpath($this->getConfig('target.path'))) {
+        if ($dbExists) {
+            return $output->writeln(PHP_EOL.sprintf('Database `%s` already exists.', $db));
+        } elseif ($this->tc->getDatabasePlatform()->getName() === 'sqlite' && $file = realpath($this->getConfig('target.path'))) {
             $path = dirname($file).DIRECTORY_SEPARATOR;
             $oldFilename = str_replace($path, '', $file);
             $newFilename = basename($oldFilename, '.db3').'#'.(new \DateTime())->format('Y-m-d#H.i.s').'.db3';
-            $output->writeln(sprintf('Backing up previous database: `%s` -> `%s`'.PHP_EOL, $oldFilename, $newFilename));
+            $output->writeln(PHP_EOL.sprintf('Backing up previous database: `%s` -> `%s`', $oldFilename, $newFilename));
             rename($file, $path.$newFilename);
         }
+        $output->writeln(PHP_EOL.sprintf('Creating database: `%s`', $this->tc->getDatabase()));
         $command = $this->getApplication()->find('init');
         $returnCode = $command->run($input, $output);
         foreach ($tables as $workItem) {
             $name = $workItem['name'];
-            //var_dump($this->validateTableExists($sm, $name));exit;
-            //$this->validateTableExists($sm, $name);
             $mode = strtolower($workItem['mode']);
-
             $table = $sm->listTableDetails($name);
 
             switch ($mode) {

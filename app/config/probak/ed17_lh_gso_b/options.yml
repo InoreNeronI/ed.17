@@ -151,18 +151,18 @@ p05:
   libre-l:
     - p05b_t02    
   simple:
-    - p05b_t04
     - p05b_t05
     - p05b_t06
     - p05b_t07
     - p05b_t08
     - p05b_t09
-    - p05b_t11
+    - p05b_t10
     - p05b_t12
     - p05b_t13
     - p05b_t14
     - p05b_t15
     - p05b_t16
+    - p05b_t17
 p06:
     simple:
     - p06b_t03b

@@ -64,8 +64,8 @@ pageImages:
   p15:
     - p15a_cen_t01_t01_20_cas.png
     - p15a_cen_t01_t01_20_eus.png
-    - p15a_cen_t02_t02_80_cas.png
-    - p15a_cen_t02_t02_80_eus.png
+    - p15a_cen_t02_t02_100_cas.png
+    - p15a_cen_t02_t02_100_eus.png
   p16:
     - p16a_cen_t02_t02_33_img.png
     - p16b_cen_t01_t01_70_cas.png
@@ -83,6 +83,8 @@ pageImages:
     - p18b_cen_t04_t04_100_eus.png
     - p18b_cen_t05_t05_100_cas.png
     - p18b_cen_t05_t05_100_eus.png
+  p19: 
+    - p19b_cen_t01_t01_60_img.jpg
 
 pageTitles: # All centered texts' codes
   - p00b_t01
@@ -118,12 +120,17 @@ pageAreaWidths:
   p00:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage
   p09:
-    a: 30
+    a: 50
+    b: 50
   p10:
-    a: 60
-    b: 40
+    a: 50
+    b: 50
   p13:
+    a: 40
     b: 60
+  p18:
+    a: 30
+    b: 70
   p19:
     b: 100
 
