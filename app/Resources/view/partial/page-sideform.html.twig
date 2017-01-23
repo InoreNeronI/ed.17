@@ -23,7 +23,7 @@
         {% set fontClass = isTitleText ? fontClassTitle : fontClassDefault %}
         {% set textNum = key|split('t')[1]|number_format %}
         {% if isItemText %}
-            {% set class = textNum is same as('1') ? class ~ ' pb1' : class ~ ' pt3 pb1' %}
+            {% set class = textNum is same as('1') ? class ~ ' pb1' : class ~ ' pt1 pt2-s pt3-m pt3-l pb1' %}
             {% set text = '<span class="' ~ colorInverse ~ ' bg-' ~ color ~ ' ph1 br2">' ~ numbers[side][key] ~ '</span> ' ~ text %}
         {% else %}
             {% set class = textNum is same as('1') ? class ~ ' pb1' : class ~ ' pv1' %}
@@ -106,7 +106,7 @@
             {% set parentRowNum = tableRowNum %}
 
         {% else %}
-            {% set class = isOption or isPlainText ? class ~ ' pl1 pl2-ns pl3-m pl4-l' : class %}
+            {% set class = isOption or isPlainText ? class ~ ' pl1 pl2-s pl3-m pl3-l' : class %}
             {% set class = isTitleText ? class ~ ' tc' : class %}
             {% if isTable %}
                 {% if not isOption and media is not null %}

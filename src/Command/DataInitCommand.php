@@ -2,36 +2,29 @@
 
 namespace App\Command;
 
-use DatabaseCopy\Command;
+use App\Command;
+use DatabaseCopy\Command\CreateCommand;
 use Doctrine\DBAL;
 use Symfony\Component\Console;
 
-class DataInitCommand extends Command\CreateCommand
+class DataInitCommand extends CreateCommand
 {
-    public function __construct($name = null)
-    {
-        parent::__construct($name);
 
-        $this->config['source'] = \defDb::dbDist();
-
-        $path = str_replace('%kernel.root_dir%', ROOT_DIR.'/app', \defDb::dbLocal()['path']);
-        $this->config['target'] = array_merge(\defDb::dbLocal(), ['path' => $path]);
-
-        $this->config['tables'] = [];
-        $tableNames = array_keys(isset(\defDb::dbDist()['tables']) ? \defDb::dbDist()['tables'] : array_merge(\def::dbCodes(), [\defDb::userEntity() => null]));
-        foreach ($tableNames as $tableName) {
-            echo sprintf('`%s` discovered', $tableName).PHP_EOL;
-            $this->config['tables'][] = ['name' => $tableName, 'mode' => 'copy'];
-        }
-    }
+    const MODE_COPY = 'copy';
+    const BATCH_SIZE = 1000;
+    use Command\DataCommandTrait;
 
     protected function configure()
     {
-        $this->setName('init')->setDescription('Init for Sync from dist to local');
+        $this->setName('init')
+            ->setDescription('Init for Sync from/to dist to/from local')
+            ->addOption('source', 's', Console\Input\InputOption::VALUE_REQUIRED, 'source connection')
+            ->addOption('target', 't', Console\Input\InputOption::VALUE_REQUIRED, 'target connection');
     }
 
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
+        $this->init($input);
         $this->sc = DBAL\DriverManager::getConnection($this->getConfig('source'));
         $this->tc = DBAL\DriverManager::getConnection($this->getConfig('target'));
 

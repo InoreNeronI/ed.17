@@ -90,9 +90,9 @@ class Authorization extends Connection\Connection
     public function checkCredentialsLocal(array $args, $table)
     {
         //return $this->checkCredentialsDist($args, $table);
-        $data = $this->getConnection()->fetchAll('SELECT * FROM `sqlite_master`');
-        var_dump($data);exit;
-        var_dump($this->getConnection()->getSchemaManager()->getDatabasePlatform()->getName());
+        $data = $this->getConnection()->getSchemaManager()->listTableDetails('edg020_ikasleak');
+        //var_dump($data);exit;
+        var_dump($this->getConnection()->fetchAll('select * from edg020_ikasleak'));
         $queryBuilder = $this->getQueryBuilder()
             ->select('u.*')->from($table, 'u');
         /** @var \Doctrine\DBAL\Driver\Statement $query */
@@ -120,7 +120,7 @@ class Authorization extends Connection\Connection
     {
         $data = static::getAccess($user, $args);
         foreach (\def::periods() as $period) {
-            if (strpos($data['table'], $period) !== false && empty($data['period'])) {
+            if (strpos($data['table'], $period) !== false/* && empty($data['period'])*/) {
                 $data['period'] = $period;
             }
         }

@@ -11,12 +11,10 @@ parameters:
             dbname:   ed17probak
             user:     ed17erab
             password: ~
-            charset:  UTF8
+            charset:  utf8
         local:
-            dbname:   ed17
             driver:   pdo_sqlite
             path:     '%kernel.root_dir%/Resources/data/data.db3'
-            charset:  UTF8
     users:
         # Users distribution table
         dist:         edg020_ikasleak

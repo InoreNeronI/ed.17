@@ -41,7 +41,7 @@ class BaseController
     /**
      * @param array $args
      *
-     * @return bool
+     * @return array
      */
     private static function authorize(array $args)
     {
