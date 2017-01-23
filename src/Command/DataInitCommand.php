@@ -29,15 +29,11 @@ class DataInitCommand extends CreateCommand
 
         // make sure all connections are UTF8
         if ($this->sc->getDatabasePlatform()->getName() === 'mysql') {
-            $this->sc->executeQuery('SET NAMES utf8'); /*
-        }
-        if ($this->tc->getDatabasePlatform()->getName() == 'mysql') {
-            $this->tc->executeQuery("SET NAMES utf8");*/
+            $this->sc->executeQuery('SET NAMES utf8');
         }
         $sm = $this->sc->getSchemaManager();
-        //$tm = $this->tc->getSchemaManager();
         try {
-            $output->writeln('Creating target tables');
+            $output->writeln(PHP_EOL.'Creating target tables');
             $schema = $sm->createSchema();
             // sync configured tables only
             if (($tables = $this->getOptionalConfig('tables'))) {

@@ -27,34 +27,8 @@ class DataSyncCommand extends BackupCommand
         $this->output = $output;
         $this->sc = DBAL\DriverManager::getConnection($this->getConfig('source'));
         $this->tc = DBAL\DriverManager::getConnection($this->getConfig('target'));
-
-        // make sure all connections are UTF8
-        if ($this->sc->getDatabasePlatform()->getName() === 'mysql') {
-            $this->sc->executeQuery('SET NAMES utf8');
-        }
-        if ($this->tc->getDatabasePlatform()->getName() === 'mysql') {
-            $this->sc->executeQuery('SET NAMES utf8');
-        }
-        $sm = $this->sc->getSchemaManager();
-        $tm = $this->tc->getSchemaManager();
-        $tables = $this->getOptionalConfig('tables');
-
-        if (!$this->getConfig('keep-constraints')) {
-            $this->dropConstraints($tm, $tables);
-        }
-
-        if ($tables === null) {
-            $output->writeln(PHP_EOL.'Tables not configured - discovering from source schema');
-            $tables = [];
-            foreach ($this->getTables($sm) as $tableName) {
-                $output->writeln(sprintf('`%s` discovered', $tableName));
-                $tables[] = ['name' => $tableName, 'mode' => static::MODE_COPY];
-            }
-        }
         $db = $this->sc->getDatabasePlatform()->getName() === 'mysql' ? $this->sc->getDatabase() : $this->tc->getDatabasePlatform()->getName() === 'mysql' ? $this->tc->getDatabase() : null;
-        $dbExists = ($this->tc->getDatabasePlatform()->getName() === 'mysql' &&
-            $dbs = $this->tc->fetchArray("SHOW DATABASES LIKE '$db';")) &&
-            in_array($db, $dbs);
+        $dbExists = ($this->tc->getDatabasePlatform()->getName() === 'mysql' && $dbs = $this->tc->fetchArray("SHOW DATABASES LIKE '$db';")) && in_array($db, $dbs);
 
         if ($dbExists) {
             return $output->writeln(PHP_EOL.sprintf('Database `%s` already exists.', $db));
@@ -65,9 +39,34 @@ class DataSyncCommand extends BackupCommand
             $output->writeln(PHP_EOL.sprintf('Backing up previous database: `%s` -> `%s`', $oldFilename, $newFilename));
             rename($file, $path.$newFilename);
         }
+
+        // make sure all connections are UTF8
+        if ($this->sc->getDatabasePlatform()->getName() === 'mysql') {
+            $this->sc->executeQuery('SET NAMES utf8');
+        }
+        $sm = $this->sc->getSchemaManager();
+        if ($this->tc->getDatabasePlatform()->getName() === 'mysql') {
+            $this->tc->executeQuery('SET NAMES utf8');
+        }
+        $tm = $this->tc->getSchemaManager();
+
+        $tables = $this->getOptionalConfig('tables');
+        if (!$this->getConfig('keep-constraints')) {
+            $this->dropConstraints($tm, $tables);
+        }
+        if ($tables === null) {
+            $output->writeln(PHP_EOL.'Tables not configured - discovering from source schema');
+            $tables = [];
+            foreach ($this->getTables($sm) as $tableName) {
+                $output->writeln(sprintf('`%s` discovered', $tableName));
+                $tables[] = ['name' => $tableName, 'mode' => static::MODE_COPY];
+            }
+        }
+
         $output->writeln(PHP_EOL.sprintf('Creating database: `%s`', $this->tc->getDatabase()));
         $command = $this->getApplication()->find('init');
         $returnCode = $command->run($input, $output);
+
         foreach ($tables as $workItem) {
             $name = $workItem['name'];
             $mode = strtolower($workItem['mode']);
