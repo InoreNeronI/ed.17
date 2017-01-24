@@ -34,5 +34,5 @@ if ((!$functions = includeIfExists(CONFIG_DIR.'/include/functions.php'))) {
 }
 
 $app = new \DatabaseCopy\ConsoleApplication('Database sync tool');
-$app->addCommands([new \App\Command\DataInitCommand(), new \App\Command\DataSyncCommand()]);
+$app->addCommands([new \App\Command\DataSchemaCommand(), new \App\Command\DataSyncCommand()]);
 $app->run();
