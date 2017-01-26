@@ -155,41 +155,26 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
         try {
             $mergeSql = $this->getMergeSql();
             if (null !== $mergeSql) {
-                $mergeStmt = $this->getConnection()->prepare($mergeSql);
-                $mergeStmt->bindParam(':id', $sessionId, 'string');
-                $mergeStmt->bindParam(':data', $encoded, 'string');
-                $mergeStmt->bindValue(':time', time(), 'integer');
-                $mergeStmt->execute();
-
-                return true;
-            }
-            $this->getConnection()->beginTransaction();
-
-            try {
-                $deleteStmt = $this->getConnection()->prepare(
-                    "DELETE FROM $this->entity WHERE $this->idCol = :id"
-                );
-                $deleteStmt->bindParam(':id', $sessionId, 'string');
-                $deleteStmt->execute();
-
-                $insertStmt = $this->getConnection()->prepare(
-                    "INSERT INTO $this->entity ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time)"
-                );
-                $insertStmt->bindParam(':id', $sessionId, 'string');
-                $insertStmt->bindParam(':data', $encoded, 'string');
-                $insertStmt->bindValue(':time', time(), 'integer');
-                $insertStmt->execute();
-
-                $this->getConnection()->commit();
-            } catch (\Exception $e) {
-                $this->getConnection()->rollback();
-                throw $e;
+                return $this->mergeAndCommit($mergeSql, $sessionId, $encoded);
             }
         } catch (\Exception $e) {
             throw new \RuntimeException(sprintf('Error while trying to write the session data: %s', $e->getMessage()), 0, $e);
         }
+        try {
+            $this->getConnection()->beginTransaction();
+            $deleteStmt = $this->getConnection()->prepare(
+                "DELETE FROM $this->entity WHERE $this->idCol = :id"
+            );
+            $deleteStmt->bindParam(':id', $sessionId, 'string');
+            $deleteStmt->execute();
 
-        return true;
+            $insertSql = "INSERT INTO $this->entity ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time)";
+
+            return $this->mergeAndCommit($insertSql, $sessionId, $encoded);
+        } catch (\Exception $e) {
+            $this->getConnection()->rollback();
+            throw new \RuntimeException(sprintf('Error while trying to write the session data: %s', $e->getMessage()), 0, $e);
+        }
     }
 
     /**
@@ -226,5 +211,25 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     protected function getConnection()
     {
         return $this->connection;
+    }
+
+    /**
+     * @param string $sql
+     * @param string $sessionId
+     * @param string $encoded
+     *
+     * @return bool
+     */
+    private function mergeAndCommit($sql, $sessionId, $encoded)
+    {
+        $mergeStmt = $this->getConnection()->prepare($sql);
+        $mergeStmt->bindParam(':id', $sessionId, 'string');
+        $mergeStmt->bindParam(':data', $encoded, 'string');
+        $mergeStmt->bindValue(':time', time(), 'integer');
+        $mergeStmt->execute();
+
+        $this->getConnection()->commit();
+
+        return true;
     }
 }
