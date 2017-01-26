@@ -93,7 +93,7 @@ class SessionHandler
      */
     public function startSession()
     {
-        return $this->debug ? $this->startNativeFileSession() : $this->startMemcacheSession();
+        return !$this->debug ? $this->filesystemSession()->start() : $this->doctrineSession('ed_2017_session')->start();
     }
 
     /**
@@ -123,9 +123,9 @@ class SessionHandler
     /**
      * Driver for the native filesystem session save handler.
      *
-     * @return bool
+     * @return HttpFoundation\Session\Session
      */
-    private function startNativeFileSession()
+    private function filesystemSession()
     {
         $this->setSessionConfig();
         $storage = new HttpFoundation\Session\Storage\NativeSessionStorage(
@@ -133,7 +133,7 @@ class SessionHandler
             new HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler());
         $this->session = new HttpFoundation\Session\Session($storage);
 
-        return $this->session->start();
+        return $this->session;
     }
 
     /**
@@ -148,15 +148,16 @@ class SessionHandler
      * @param int    $lockWait
      * @param int    $maxWait
      *
-     * @return bool
+     * @return HttpFoundation\Session\Session
      *
      * @throws \Exception
      */
-    private function startMemcacheSession($host = 'localhost', $port = 11211, $lock = true, $lockWait = 250, $maxWait = 2)
+    private function memcacheSession($host = 'localhost', $port = 11211, $lock = true, $lockWait = 250, $maxWait = 2)
     {
         if (!extension_loaded('memcache')) {
             throw new \RuntimeException('PHP does not have "memcache" extension enabled');
         }
+        $this->setSessionConfig('memcache');
         $memcache = new \MemcachePool();
         $memcache->connect($host, $port);
         $storage = new HttpFoundation\Session\Storage\NativeSessionStorage($this->options, new Handler\Session\LockingSessionHandler($memcache, [
@@ -166,7 +167,7 @@ class SessionHandler
             'lock_max_wait' => $maxWait, ]));
         $this->session = new HttpFoundation\Session\Session($storage);
 
-        return $this->session->start();
+        return $this->session;
     }
 
     /**
@@ -175,9 +176,9 @@ class SessionHandler
      *
      * @see https://github.com/zikula/NativeSession/blob/4992c11f7b832f05561b98b0c192ce852e6ed602/Drak/NativeSession/NativeSqliteSessionHandler.php
      *
-     * @return bool
+     * @return HttpFoundation\Session\Session
      */
-    private function startSQLiteSession()
+    private function sqliteSession()
     {
         if (!extension_loaded('sqlite')) {
             throw new \RuntimeException('PHP does not have "sqlite" extension enabled');
@@ -194,6 +195,32 @@ class SessionHandler
         $storage = new HttpFoundation\Session\Storage\NativeSessionStorage($this->options, new HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler());
         $this->session = new HttpFoundation\Session\Session($storage);
 
-        return $this->session->start();
+        return $this->session;
+    }
+
+    /**
+     * Storing symfony sessions using doctrine. Based on Symfony\Component\HttpFoundation\Session\Storage\Handler\PDOSessionHandler
+     *
+     * @see https://gist.github.com/xocasdashdash/48c3871aee9e898d4fb4
+     *
+     * @param string $entity The name of the table [required]
+     * @param string $id     The column where to store the session id [default: session_id]
+     * @param string $data   The column where to store the session data [default: session_value]
+     * @param string $time   The column where to store the timestamp [default: session_time]
+     *
+     * @return HttpFoundation\Session\Session
+     */
+    private function doctrineSession($entity, $id = 'session_id', $data = 'session_value', $time = 'session_time')
+    {
+        /** @var Handler\Session\DoctrineSessionHandler $storage */
+        $storage = new HttpFoundation\Session\Storage\NativeSessionStorage($this->options, new Handler\Session\DoctrineSessionHandler([
+            'entity' => $entity,
+            'id' => $id,
+            'data' => $data,
+            'time' => $time,
+        ]));
+        $this->session = new HttpFoundation\Session\Session($storage);
+
+        return $this->session;
     }
 }

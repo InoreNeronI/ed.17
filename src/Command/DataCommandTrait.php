@@ -57,10 +57,7 @@ trait DataCommandTrait
         $tableNames = array_keys(array_merge(\def::dbCodes(), [\defDb::userEntity() => null]));
         foreach ($tableNames as $tableName) {
             echo sprintf('`%s` discovered', $tableName).PHP_EOL;
-            $this->config['tables'][] = [
-                'name' => $tableName,
-                'mode' => static::MODE_COPY,
-            ];
+            $this->config['tables'][] = ['name' => $tableName, 'mode' => static::MODE_COPY];
         }
         /* @var \Doctrine\DBAL\Connection $sc */
         $this->sc = DBAL\DriverManager::getConnection($this->getConfig('source'));
@@ -73,7 +70,7 @@ trait DataCommandTrait
      */
     private function prepare()
     {
-        // make sure all connections are UTF8
+        // make sure all connections are UTF8 in source
         try {
             if ($this->sc->getDatabasePlatform()->getName() === 'mysql') {
                 $this->sc->executeQuery('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;');
@@ -84,7 +81,9 @@ trait DataCommandTrait
             } elseif (strpos($e->getMessage(), 'Unknown database')) {
                 throw new \Exception(sprintf('Unknown source database: `%s`', $this->sc->getDatabase()));
             }
+            throw new \Exception($e->getMessage());
         }
+        // make sure all connections are UTF8 in target
         $dbTarget = $this->tc->getDatabase();
         try {
             if ($this->tc->getDatabasePlatform()->getName() === 'mysql') {
@@ -110,8 +109,8 @@ trait DataCommandTrait
             } elseif (strpos($e->getMessage(), 'Unknown database')) {
                 $this->output->writeln(PHP_EOL.sprintf('Unknown target database: `%s`', $dbTarget));
                 $this->output->writeln(PHP_EOL.sprintf('Creating target database `%s`...', $dbTarget).PHP_EOL);
-                $tmp = $this->getConfig('target');
                 // @see https://github.com/doctrine/DoctrineBundle/blob/v1.5.2/Command/CreateDatabaseDoctrineCommand.php
+                $tmp = $this->getConfig('target');
                 // Need to get rid of _every_ occurrence of dbname from connection configuration and we have already extracted all relevant info from url
                 unset($tmp['dbname'], $tmp['path'], $tmp['url']);
                 $tmpConnection = DBAL\DriverManager::getConnection($tmp);

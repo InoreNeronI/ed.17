@@ -2,10 +2,12 @@
 
 namespace App\Security;
 
+use App\Security;
+
 /**
  * Class Authorization.
  */
-class Authorization extends Connection\Connection
+class Authorization extends Security\Connection\Connection
 {
     /** @var string $current */
     protected static $current = 'dist';
