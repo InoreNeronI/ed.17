@@ -7,9 +7,11 @@ parameters:
       x2: m
       x3: l
       percentages:
-        s: 20
-        m: 40
+        xs: 10
+        s: 25
+        m: 50
         l: 75
+        xl: 90
     levels:
       s: 1x
       m: 3x
@@ -18,7 +20,7 @@ parameters:
         s: 10
         m: 20
         l: 25
-    # @url https://github.com/tachyons-css/tachyons/blob/v4.5.5/css/tachyons.css#L1570-L1575
+    # @url https://github.com/tachyons-css/tachyons/blob/v4.6.2/css/tachyons.css#L1772-L1777
     fonts:
       x1: f6
       x2: f5
@@ -26,7 +28,7 @@ parameters:
       x4: f3
       x5: f2
       x6: f1
-    # @url https://github.com/tachyons-css/tachyons/blob/v4.5.5/css/tachyons.css#L816-L835
+    # @url https://github.com/tachyons-css/tachyons/blob/v4.6.2/css/tachyons.css#L868-L887
     heights:
       # String Properties
       auto: h-auto
@@ -43,7 +45,7 @@ parameters:
       75: h-75
       100: h-100
       min-100: min-h-100
-    # @url https://github.com/tachyons-css/tachyons/blob/v4.5.5/css/tachyons.css#L964-L985
+    # @url https://github.com/tachyons-css/tachyons/blob/v4.6.2/css/tachyons.css#L1020-L1041
     widths:
       # String Properties
       tercio: w-third

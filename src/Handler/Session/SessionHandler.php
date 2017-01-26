@@ -93,7 +93,7 @@ class SessionHandler
      */
     public function startSession()
     {
-        return !$this->debug ? $this->filesystemSession()->start() : $this->doctrineSession('ed_2017_session')->start();
+        return $this->debug ? $this->doctrineSession('ed_2017_session')->start() : $this->filesystemSession()->start();
     }
 
     /**

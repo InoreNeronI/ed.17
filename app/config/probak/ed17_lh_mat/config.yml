@@ -1,7 +1,7 @@
 
 pageImages:
   p00:
-    - p00b_cen_t06_t06_80_img.png
+    - p00b_cen_t06_t06_50_img.png
   p01:
     - p01a_cen_t03_t03_60_img.png
   p02:
@@ -132,7 +132,7 @@ pageAreaWidths:
   p08:
     a: 34
   p09:
-    a: 40
+    a: 50
   p11:
     a: 40
   p12:

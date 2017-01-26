@@ -39,16 +39,11 @@ pageImages:
   p14:
     - p14b_cen_t01_t01_60_img.jpg
 
-pageTextReplaces:
+pageOptionAttributes:
   p10:
-    p10b_t02:
-      template: 'partial/fields/input.html.twig'
-    p10b_t03:
-      template: 'partial/fields/input.html.twig'
     p10b_t04:
-      template: 'partial/fields/input.html.twig'
-    p10b_t05:
-      template: 'partial/fields/input.html.twig'
+      readonly: readonly
+      value: 1
 
 pageAudios:
   p01:

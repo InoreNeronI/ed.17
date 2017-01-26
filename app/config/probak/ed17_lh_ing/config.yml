@@ -1,7 +1,7 @@
 
 pageImages:
   p00:  # Page where any image's being show
-    - p00b_izq_t05_t06_30_img.png
+    - p00b_izq_t05_t06_20_img.png
   p01:
     - p01a_cen_t01_t01_90_img.png
     - p01b_cen_t17_t17_100_img.png
@@ -64,7 +64,7 @@ pageImages:
     - p08a_izq_t06_t07_40_img.png
     - p08a_izq_t09_t12_40_img.png
   p09:
-    - p09a_cen_t02_t02_80_img.png
+    - p09a_cen_t02_t02_100_img.png
   p10:
     - p10a_cen_t03_t03_90_img.png
   p11:
@@ -110,6 +110,9 @@ pageAreaWidths:
  p05:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage
  p07:
+    a: 60
+    b: 40
+ p09:
     a: 60
     b: 40
  p11:

@@ -104,8 +104,7 @@ p03:
     - p03b_t59_f07
     - p03b_t60_f07
     - p03b_t61_f07
-    - p03b_t62_f07   
-    
+    - p03b_t62_f07
   multiple:
     - p03b_t08
     - p03b_t09
@@ -114,15 +113,11 @@ p03:
     - p03b_t12
     - p03b_t13
 p04:
-   simple:
+  simple:
     - p04b_t02
     - p04b_t03
     - p04b_t04
     - p04b_t05
-    - p04b_t07
-    - p04b_t08
-    - p04b_t09
-    - p04b_t10
     - p04b_t24_f01
     - p04b_t25_f01
     - p04b_t26_f01
@@ -172,10 +167,14 @@ p04:
     - p04b_t74_f05
     - p04b_t75_f05
     - p04b_t76_f05
-    - p04b_t76_f05
     - p04b_t77_f05
+  multiple:
+    - p04b_t07
+    - p04b_t08
+    - p04b_t09
+    - p04b_t10
 p05:
-  libre-l:
+  libre:
     - p05b_t02    
   simple:
     - p05b_t05
@@ -191,7 +190,7 @@ p05:
     - p05b_t16
     - p05b_t17
 p06:
-    simple:
+  simple:
     - p06b_t03b
     - p06b_t04b
     - p06b_t05b
@@ -351,14 +350,14 @@ p09:
     - p09b_t100_f19
     - p09b_t101_f19
 p10:
-    multiple:
+  multiple:
     - p10b_t02
     - p10b_t03
     - p10b_t04
     - p10b_t05
     - p10b_t06
     - p10b_t07
-    simple:
+  simple:
     - p10b_t09
     - p10b_t10
     - p10b_t11
@@ -367,5 +366,3 @@ p10:
     - p10b_t14
     - p10b_t15
     - p10b_t16
-   
-

@@ -36,6 +36,7 @@ final class PagesTranslationHelper
             'pageMedia' => static::processLibrary($page, $config, $args),
             'pageOptions' => empty($options['p'.$page]) ? [] : $options['p'.$page],
             'pageTitles' => empty($config['pageTitles']) ? [] : $config['pageTitles'],
+            'pageOptionAttributes' => empty($config['pageOptionAttributes']['p'.$page]) ? [] : $config['pageOptionAttributes']['p'.$page],
             'pageOptionReplaces' => static::processReplaces($page, $config, 'Option'),
             'pageTextReplaces' => static::processReplaces($page, $config),
             'totalPages' => $config['totalPages'],

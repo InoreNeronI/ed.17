@@ -81,6 +81,8 @@ pageTitles:
   - p12b_t03
 
 pageAreaWidths:
+  p04:
+    a: 60
   p05:
     a: 60
   p06:

@@ -731,16 +731,16 @@
         },
         {
             "name": "lexik/form-filter-bundle",
-            "version": "v5.0.2",
+            "version": "v5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lexik/LexikFormFilterBundle.git",
-                "reference": "f7b3155795f48eb6ae3b9e5b61bba2fc32897b28"
+                "reference": "124a6c8e9eb109e7616a18d916bbc33137bb308d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lexik/LexikFormFilterBundle/zipball/f7b3155795f48eb6ae3b9e5b61bba2fc32897b28",
-                "reference": "f7b3155795f48eb6ae3b9e5b61bba2fc32897b28",
+                "url": "https://api.github.com/repos/lexik/LexikFormFilterBundle/zipball/124a6c8e9eb109e7616a18d916bbc33137bb308d",
+                "reference": "124a6c8e9eb109e7616a18d916bbc33137bb308d",
                 "shasum": ""
             },
             "require": {
@@ -787,7 +787,7 @@
                 "filter",
                 "form"
             ],
-            "time": "2016-12-26T15:05:34+00:00"
+            "time": "2017-01-24T13:03:45+00:00"
         },
         {
             "name": "paragonie/random_compat",
