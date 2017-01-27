@@ -3,7 +3,6 @@
 namespace App\Kernel;
 
 use App\Handler;
-use App\Kernel;
 use AppBundle;
 use Dunglas\ActionBundle;
 use Symfony\Bundle\FrameworkBundle;

@@ -4,6 +4,7 @@ namespace App\Helper;
 
 use App\Helper;
 use App\Security;
+use Doctrine\DBAL;
 
 /**
  * Class PagesHelper.
@@ -126,9 +127,78 @@ final class PagesHelper extends Security\Authorization
 
     /**
      * @param array $args
-     * @param bool  $debug
+     * @return string
      */
-    private function saveData(array $args, $debug = DEBUG)
+    public function saveData(array $args)
     {
+        //dump($args);
+        $sql = 'SELECT count(id) FROM '.$args['target'].';';
+        try {
+            $this->getConnection()->beginTransaction();
+            $stmt = $this->getConnection()->prepare($sql);
+            //$stmt->bindParam(':id', $sessionId, 2);
+            $stmt->execute();
+            $total = $stmt->fetch(\PDO::FETCH_NUM);
+
+            if ($total !== false) {
+                return $this->mergeAndCommit($args['target'], $args['course'], $args['period'], $args['code'], $args['lang'], $args['lengua']);
+            }
+            return false;
+        } catch (\Exception $e) {
+            if (strpos($e->getMessage(), 'Base table or view not found') !== false) {
+                $table = new DBAL\Schema\Table($args['target']);
+                $table->addColumn('id', 'bigint', ['unsigned' => true, 'autoincrement' => true]);
+                $table->addColumn('year', 'integer', ['length' => 4]);
+                $table->addColumn('period', 'string', ['length' => 4]);
+                $table->addColumn('code', 'string', ['length' => 20]);
+                $table->addColumn('lang', 'string', ['length' => 5]);
+                $table->addColumn('lengua', 'string', ['length' => 3]);
+                $table->addColumn('time', 'string', ['length' => 30]);
+                $table->setPrimaryKey(['id']);
+                $this->getConnection()->getSchemaManager()->createTable($table);
+
+                return $this->saveData($args);
+            }
+            throw new \RuntimeException(sprintf('Error while trying to read the session data: %s', $e->getMessage()), 0, $e);
+        }
+    }
+
+    /**
+     * Returns a merge/upsert (i.e. insert or update) SQL query when supported by the database.
+     *
+     * @param string $table
+     *
+     * @return string|null The SQL string or null when not supported
+     */
+    private function zeroSql($table)
+    {
+        return 'INSERT INTO '.$table.' (year, period, code, lang, lengua, time) VALUES (:year, :period, :code, :lang, :lengua, :time) '.
+            'ON DUPLICATE KEY UPDATE year = VALUES(year), period = VALUES(period), code = VALUES(code), lang = VALUES(lang), lengua = VALUES(lengua), time = VALUES(time)';
+    }
+
+    /**
+     * @param string $table
+     * @param int $year
+     * @param string $period
+     * @param string $code
+     * @param string $lang
+     * @param string $lengua
+     *
+     * @return bool
+     */
+    private function mergeAndCommit($table, $year, $period, $code, $lang, $lengua)
+    {
+        $mergeStmt = $this->getConnection()->prepare($this->zeroSql($table));
+        $mergeStmt->bindParam(':year', $year);
+        $mergeStmt->bindParam(':period', $period);
+        $mergeStmt->bindValue(':code', $code);
+        $mergeStmt->bindValue(':lang', $lang);
+        $mergeStmt->bindValue(':lengua', $lengua);
+        $mergeStmt->bindValue(':time', date(\DateTime::RFC822, time()));
+        $mergeStmt->execute();
+
+        $this->getConnection()->commit();
+
+        return true;
     }
 }

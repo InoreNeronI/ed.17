@@ -45,8 +45,8 @@ class DataSchemaCommand extends CreateCommand
             $synchronizer = new DBAL\Schema\Synchronizer\SingleDatabaseSynchronizer($this->tc);
             $synchronizer->createSchema($schema);
         } catch (\Exception $e) {
-            $sql = $schema->toSql($this->tc->getDatabasePlatform());
-            echo implode($sql, PHP_EOL.PHP_EOL);
+            echo ''.PHP_EOL;
+            echo implode($schema->toSql($this->tc->getDatabasePlatform()), PHP_EOL.PHP_EOL);
             throw $e;
         }
     }

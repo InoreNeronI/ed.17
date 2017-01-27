@@ -86,8 +86,11 @@ trait BaseControllerTrait
         if ($request->getMethod() === 'POST') {
             /** @var array $args */
             $args = $request->request->all();
+
             /** @var Helper\PagesHelper $manager */
             $manager = $this->getAuthManager('App\Helper\PagesHelper', static::authorize($args));
+            $manager->saveData($args);
+
             /** @var array $messages */
             $messages = $this->localizeMessages($request, $args);
 

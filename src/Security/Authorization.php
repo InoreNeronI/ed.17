@@ -45,7 +45,7 @@ class Authorization extends Security\Connection\Connection
      *
      * @throws \NoticeException
      */
-    public function checkCredentialsDist(array $args, $table)
+    private function checkCredentialsDist(array $args, $table)
     {   //$fields = static::parseFields($args, static::getFilename($slug), $table);
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
@@ -89,7 +89,7 @@ class Authorization extends Security\Connection\Connection
      *
      * @throws \NoticeException
      */
-    public function checkCredentialsLocal(array $args, $table)
+    private function checkCredentialsLocal(array $args, $table)
     {
         //return $this->checkCredentialsDist($args, $table);
         $data = $this->getConnection()->getSchemaManager()->listTableDetails('edg020_ikasleak');

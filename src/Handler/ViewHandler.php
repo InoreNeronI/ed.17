@@ -2,7 +2,7 @@
 
 namespace App\Handler;
 
-use RuntimeException;
+//use RuntimeException;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
@@ -102,6 +102,6 @@ class ViewHandler
         /** @var string $path */
         $path = $slug === 'index' ? '' : '/page';
 
-        return "$path/$slug.$ext";   // path + slug + extension
+        return "$path/$slug.$ext";  // path + slug + extension
     }
 }
