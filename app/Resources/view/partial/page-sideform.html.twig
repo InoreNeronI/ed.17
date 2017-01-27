@@ -66,9 +66,11 @@
                     {% set class = class ~ ' fl' %}
                 {% endif %}
                 {% set class = class ~ ' dib ' ~ media['offset'] %}
-            {% elseif textNum > media['till']|number_format %}
+            {% else %}
                 {% set class = class ~ ' cb' %}
-                {% set media = null %}
+                {% if textNum > media['till']|number_format %}
+                    {% set media = null %}
+                {% endif %}
             {% endif %}
         {% endif %}
 

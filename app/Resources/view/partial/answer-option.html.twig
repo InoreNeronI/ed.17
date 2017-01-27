@@ -2,63 +2,74 @@
 {% set id = parent ~ '-' ~ key %}
 {% set name = parent %}
 
+{% macro inputClass(inputType, metric) %}
+    {% if inputType is same as('simple') or inputType is same as('multiple') %}
+        {{ 'bn mt1 pointer' }}
+    {% elseif inputType is same as('libre-xs') %}
+        {{ 'br2-ns br--left-ns pl1' ~ ' w-' ~ metric.basics.percentages['xs'] }}
+    {% elseif inputType is same as('libre-s') %}
+        {{ 'br2-ns br--left-ns pl1' ~ ' w-' ~ metric.basics.percentages['s'] }}
+    {% elseif inputType is same as('libre-m') %}
+        {{ 'br2-ns br--left-ns pl1' ~ ' w-' ~ metric.basics.percentages['m'] }}
+    {% elseif inputType is same as('libre-l') %}
+        {{ 'br2-ns br--left-ns pl1' ~ ' w-' ~ metric.basics.percentages['l'] }}
+    {% elseif inputType is same as('libre-xl') %}
+        {{ 'br2-ns br--left-ns pl1' ~ ' w-' ~ metric.basics.percentages['xl'] }}
+    {% endif %}
+{% endmacro %}
+
+{% import _self as answerOption %}
+
 {% if isSimpleOption and tableRowNum is null %}
-    {% set inputClass = 'bn mt1 pointer' %}
+    {% set inputClass = answerOption.inputClass('simple', metric) %}
     {% set name = parent %}
     {% set type = 'radio' %}
     {% set value = (textNum|number_format - parent|split('t')[1]|number_format) %}
 
 {% elseif isMultipleOption and tableRowNum is null %}
-    {% set inputClass = 'bn mt1 pointer' %}
+    {% set inputClass = answerOption.inputClass('multiple', metric) %}
     {% set name = parent ~ '[' ~ key ~ ']' %}
     {% set type = 'checkbox' %}
     {% set value = (textNum|number_format - parent|split('t')[1]|number_format) %}
 
 {% elseif (isLibreOptionLarge or isLibreOptionSmall or isLibreOptionExtraSmall or isLibreOptionExtraLarge or isLibreOption) and tableRowNum is null %}
-    {% set inputClass = block('libreOptionInputClass') %}
+    {% set inputClass = answerOption.inputClass(isLibreOptionExtraLarge ? 'libre-xl' : isLibreOptionLarge ? 'libre-l' : isLibreOptionExtraSmall ? 'libre-xs' : isLibreOptionSmall ? 'libre-s' : 'libre-m', metric ) %}
     {% set name = parent ~ '[' ~ key ~ ']' %}
     {% set type = 'text' %}
     {% set value = '' %}
 
 {% elseif isSimpleOption %}
-    {% set inputClass = 'bn mt1 pointer' %}
+    {% set inputClass = answerOption.inputClass('simple', metric) %}
     {% set name = tableColNum is null ? name : name ~ '[' ~ column ~ ']' %}
     {% set type = 'radio' %}
     {% set value = tableColNum is null ? (textNum|number_format - parent|split('t')[1]|number_format) : tableColNum %}
 
 {% elseif isMultipleOption %}
-    {% set inputClass = 'bn mt1 pointer' %}
+    {% set inputClass = answerOption.inputClass('multiple', metric) %}
     {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ column ~ ']' ~ '[' ~ key ~ ']' %}
     {% set type = 'checkbox' %}
     {% set value = tableColNum is null ? (textNum|number_format - parent|split('t')[1]|number_format) : tableColNum %}
 
 {% elseif isLibreOptionLarge or isLibreOptionSmall or isLibreOptionExtraSmall or isLibreOptionExtraLarge or isLibreOption %}
-    {% set inputClass = block('libreOptionInputClass') %}
-    {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ column ~ ']' ~ '[' ~ key ~ ']' %}
+    {% set inputClass = answerOption.inputClass(isLibreOptionExtraLarge ? 'libre-xl' : isLibreOptionLarge ? 'libre-l' : isLibreOptionExtraSmall ? 'libre-xs' : isLibreOptionSmall ? 'libre-s' : 'libre-m', metric ) %}
+        {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ column ~ ']' ~ '[' ~ key ~ ']' %}
     {% set type = 'text' %}
     {% set value = '' %}
 {% endif %}
 
 {% set text %}
+    {% if media is not null and media['align'] is same as('cen') and media['since'] == textNum and media['till'] == textNum %}
+        {% set inputClass = inputClass ~ ' v-top' %}
+    {% endif %}
     {% if key in pageOptionAttributes|keys %}
         {% include '@App/partial/fields/input.html.twig' with pageOptionAttributes[key] %}
     {% else %}
         {% include '@App/partial/fields/input.html.twig' %}
     {% endif %}
-    {{ text|default }}
     {% if media is not null and media['align'] is same as('cen') and media['since'] == textNum and media['till'] == textNum %}
-        {% include '@App/partial/sample/' ~ media['tag'] ~ '-sample.html.twig' with { 'cssClassContent': media['width'], 'src': media['path'] } %}
+        {% include '@App/partial/fields/' ~ media['tag'] ~ '.html.twig' with { 'cssClassContent': media['width'], 'src': media['path'] } %}
     {% endif %}
+    {{ text|default }}
 {% endset %}
 
 {% include '@App/partial/fields/label.html.twig' %}
-
-{% block libreOptionInputClass %}
-    {% set cssClass = 'br2-ns br--left-ns pl1' %}
-    {% set cssClass = isLibreOptionLarge ? cssClass ~ ' w-' ~ metric.basics.percentages['l'] : cssClass %}
-    {% set cssClass = isLibreOptionSmall ? cssClass ~ ' w-' ~ metric.basics.percentages['s'] : cssClass %}
-    {% set cssClass = isLibreOptionExtraSmall ? cssClass ~ ' w-' ~ metric.basics.percentages['xs'] : cssClass %}
-    {% set cssClass = isLibreOptionExtraLarge ? cssClass ~ ' w-' ~ metric.basics.percentages['xl'] : cssClass %}
-    {% set cssClass = isLibreOption ? cssClass ~ ' w-' ~ metric.basics.percentages['m'] : cssClass %}
-    {{ cssClass }}
-{% endblock %}

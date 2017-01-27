@@ -127,6 +127,7 @@ final class PagesHelper extends Security\Authorization
 
     /**
      * @param array $args
+     *
      * @return string
      */
     public function saveData(array $args)
@@ -143,6 +144,7 @@ final class PagesHelper extends Security\Authorization
             if ($total !== false) {
                 return $this->mergeAndCommit($args['target'], $args['course'], $args['period'], $args['code'], $args['lang'], $args['lengua']);
             }
+
             return false;
         } catch (\Exception $e) {
             if (strpos($e->getMessage(), 'Base table or view not found') !== false) {
@@ -178,7 +180,7 @@ final class PagesHelper extends Security\Authorization
 
     /**
      * @param string $table
-     * @param int $year
+     * @param int    $year
      * @param string $period
      * @param string $code
      * @param string $lang

@@ -1,4 +1,4 @@
-{% set inputClass = fontClass ~ inputClass|default('bg-white pl1 br2-ns br--left-ns') ~ ' v-top' %}
+{% set inputClass = fontClass ~ inputClass|default('bg-white pl1 br2-ns br--left-ns') %}
 {% set inputClass = width is defined ? inputClass ~ ' ' ~ width : inputClass %}
 {% set placeholder = type|default('text') is same as('text') ? ' placeholder="' ~ placeholder|default(textPlaceholder|default) ~ '"' : '' %}
 {% set inputPattern = maxLength|default is not empty or minLegth|default is not empty ? ' pattern=".{' ~ minLegth|default(0) ~ ',}" maxlegth="' ~ maxLegth|default(10) ~ '" title="' ~ minLegth|default(0) ~ ' to ' ~ maxLegth|default(10) ~ ' chars"' : '' %}

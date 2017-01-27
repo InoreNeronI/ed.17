@@ -1,11 +1,11 @@
 
 {# @see http://stackoverflow.com/a/15587181 #}
-$('.playAudioSample').each(function() {
+$('.playAudio').each(function() {
     $(this).on('click', function(event) {
         {#var son = $(this).children();
-        if (son.hasClass('iconAudioSample')) {
+        if (son.hasClass('iconAudio')) {
             var grandson = son.children();
-            if (grandson.hasClass('tagAudioSample')) {
+            if (grandson.hasClass('tagAudio')) {
                 grandson.on('pause', function() {
                     son.removeClass('fa-pause').addClass(this.ended ? 'fa-undo' : 'fa-play');
                 });
@@ -23,7 +23,7 @@ $('.playAudioSample').each(function() {
             }
         }
         #}var grandson = $(this).children().children();
-        if (grandson.hasClass('tagAudioSample') && grandson.get(0).paused) { grandson.get(0).play(); }
+        if (grandson.hasClass('tagAudio') && grandson.get(0).paused) { grandson.get(0).play(); }
         event.preventDefault();
         event.stopPropagation();
     });
