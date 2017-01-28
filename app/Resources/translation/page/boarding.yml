@@ -8,6 +8,10 @@ title:
     es: 'Pruebas de evaluación de EP'
     en: ''
 formAction: '/0'
+intro:
+  eu: 'Sarrera'
+  es: 'Entrada'
+  en: ''
 actions:
   # Eusk
   edg051_testuak_dbh_eusa:

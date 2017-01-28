@@ -15,10 +15,6 @@ body {
     overflow-x: hidden;
 }
 
-button {
-    border-color: #727272;
-}
-
 .side-container {
     display: -webkit-box;
     display: -webkit-flex;
@@ -42,11 +38,15 @@ button {
 }
 
 .side-left, .side-right {
-    background-color: white;
     height: auto;
     overflow: auto;
+    overflow-scrolling: touch;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: none;
+}
+
+.side-left form, .side-right form {
+    background-color: white;
 }
 
 .side-left {
@@ -56,4 +56,11 @@ button {
 
 .side-right {
     flex: 1 1 auto;
+}
+{#.side-submit {
+    box-shadow: -.1rem 0 gray, 0 0 gray, .1rem 0 gray, 0 -.1rem gray;
+}#}
+.side-submit:hover {
+    border-color: gray;
+    box-shadow: none;
 }

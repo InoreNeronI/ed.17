@@ -110,10 +110,10 @@ trait DataCommandTrait
                 $this->output->writeln(PHP_EOL.sprintf('Unknown target database: `%s`', $dbTarget));
                 $this->output->writeln(PHP_EOL.sprintf('Creating target database `%s`...', $dbTarget).PHP_EOL);
                 // @see https://github.com/doctrine/DoctrineBundle/blob/v1.5.2/Command/CreateDatabaseDoctrineCommand.php
-                $tmp = $this->getConfig('target');
+                $dbTargetParams = $this->getConfig('target');
                 // Need to get rid of _every_ occurrence of dbname from connection configuration and we have already extracted all relevant info from url
-                unset($tmp['dbname'], $tmp['path'], $tmp['url']);
-                $tmpConnection = DBAL\DriverManager::getConnection($tmp);
+                unset($dbTargetParams['dbname'], $dbTargetParams['path'], $dbTargetParams['url']);
+                $tmpConnection = DBAL\DriverManager::getConnection($dbTargetParams);
                 $tmpConnection->getSchemaManager()->createDatabase($dbTarget);
             } else {
                 throw new \Exception($e->getMessage());
@@ -128,7 +128,7 @@ trait DataCommandTrait
     protected function copyTable($table, $keyColumn = false)
     {
         $columns = implode(array_map(function ($column) {
-            return $this->sc->quoteIdentifier($column->getName());
+            return /*$this->sc->quoteIdentifier(*/$column->getName()/*)*/;
         }, $table->getColumns()), ',');
 
         $sqlParameters = [];

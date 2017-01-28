@@ -9,34 +9,24 @@
 
 {% block content %}
     {{ parent() }}
-    <article class="cf ph4 pv2 tc">
-        <div class="fl tc w-100 w-50-ns">
+    <article class="cf ph4 tc">
+        <div class="fl dib-ns fl-m tc w-100 w-50-ns">
             <img src="{{ images.logoUrl }}" class="dib" title="{{ block('title') }}"/>
         </div>
-        <div class="dn dib-ns dn-m fl tc w-100 w-50-ns">
-            <h3 class="dark-blue {{ fontClass }} fw6 mh0 ph0 w-100">{{ course }}</h3>
-            <h3 class="{{ fontClassX2 }} fw6 mb2 navy"><strong>{{ title }}</strong></h3>
+        <div class="dn dib-ns dn-m fl tr w-100 w-50-ns">
+            <h3 class="login-logo f3 fw8 mh0 ph0 w-100">{{ course }}</h3>
         </div>
     </article>
-    <article class="has-bg-image cf pv2 mh1-ns mh1-m mh3-l">
+    <article class="login-bg cf mh1-ns mh1-m mh3-l">
         <form action="{{ formAction|default }}" accept-charset="utf-8" method="{{ formMethod|default('post') }}">
             {% block content_form %}{% endblock %}
         </form>
     </article>
-    <footer class="ph3 ph5-m ph6-l pv4">
-        <div class="fl tc w-100">
-            <img src="{{ images.logoUrlFooter }}" class="dib w-90-s w-70-m w-50-l" title="{{ block('title') }}"/>
-        </div>
-    </footer>
 {% endblock %}
 
 {% block scripts %}
     {{ parent() }}
-    <script type="text/javascript" src="/scripts/jquery-resize/jquery.debouncedresize.js"></script>{#
-    <script type="text/javascript" src="/scripts/jquery-resize/jquery.throttledresize.js"></script>#}
-{% endblock %}
-
-{% block jq_ready %}
-    {{ parent() }}
-    {% include '@App/asset/bg-resize.js.twig' %}
+    <script src="/scripts/jquery-resize/jquery.debouncedresize.js"></script>
+    {#<script src="/scripts/jquery-resize/jquery.throttledresize.js"></script>#}
+    <script>{% include '@App/asset/bg-resize.js.twig' %}</script>
 {% endblock %}

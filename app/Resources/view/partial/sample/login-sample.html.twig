@@ -1,13 +1,13 @@
 <div class="dtc mt3 fl w-100 tc">
-    <label class="db {{ fontClassX2 }}fw3 lh-copy dib v-mid w-100 w-50-m w-50-ns tc tr-ns pr2-ns" for="fcodalued">{{ code }}</label>
-    <input class="b pv1 pv2-l input-reset ba b--black navy v-mid w-75 w-30-m w-30-ns tc" type="text" name="fcodalued" id="fcodalued" required/>
+    <label class="db {{ fontClassX3 }}fw3 lh-copy dib v-mid w-100 w-50-m w-50-ns tc tr-ns pr2-ns" for="fcodalued">{{ code }}</label>
+    <input class="b pv1 pv2-l input-reset ba login-brc v-mid w-75 w-30-m w-30-ns tc" type="text" name="fcodalued" id="fcodalued" required/>
 </div>
 <div class="dtc mt3 fr w-100">
-    <label class="db {{ fontClassX2 }}fw3 lh-copy dib v-mid w-100 w-50-m w-50-ns tc tr-ns" for="ffnacidia">{{ bdate }}</label>
+    <label class="db {{ fontClassX3 }}fw3 lh-copy dib v-mid w-100 w-50-m w-50-ns tc tr-ns" for="ffnacidia">{{ bdate }}</label>
     <div class="dib v-mid w-100 w-40-m w-40-ns tc tr-m">
         <div class="db w-100 tc pb1">
             <label for="ffnacidia" class="dib {{ fontClass }}fw3 v-mid w-100 w-40-m w-50-ns">{{ bday }}</label>
-            <select class="no-underline dib v-mid b pa1-l input-reset ba b--black navy w-75 w-50-m w-40-ns tc" name="ffnacidia" id="ffnacidia" required>
+            <select class="no-underline dib v-mid b pa1-l input-reset ba login-brc w-75 w-50-m w-40-ns tc" name="ffnacidia" id="ffnacidia" required>
                 <option class="black" value="" selected="selected"></option>
                 {% for i in 1..31 %}
                     <option class="black" value="{{ (1 == loop.index|length ? '0' : '') ~ loop.index }}">{{ loop.index }}</option>
@@ -16,7 +16,7 @@
         </div>
         <div class="db w-100 tc">
             <label for="ffnacimes" class="dib {{ fontClass }}fw3 v-mid w-100 w-40-m w-50-ns">{{ bmonth }}</label>
-            <select class="no-underline dib v-mid b pa1-l input-reset ba b--black navy w-75 w-50-m w-40-ns tc" name="ffnacimes" id="ffnacimes" required>
+            <select class="no-underline dib v-mid b pa1-l input-reset ba login-brc w-75 w-50-m w-40-ns tc" name="ffnacimes" id="ffnacimes" required>
                 <option class="black" value="" selected="selected"></option>
                 <option class="black" value="01">{{ jan }}</option>
                 <option class="black" value="02">{{ feb }}</option>
@@ -35,6 +35,6 @@
     </div>
 </div>
 <div class="dtc mt3 fl w-100 tc">
-    <label class="db {{ fontClassX2 }}fw3 lh-copy dib v-mid w-100 w-60-m w-70-ns tc tr-ns pr2-ns" for="code">{{ codpro }}</label>
-    <input class="b pv1 pv2-l input-reset ba b--black navy v-mid w-75 w-20-m w-10-ns tc" type="text" name="code" id="code" required/>
+    <label class="db {{ fontClassX3 }}fw3 lh-copy dib v-mid w-100 w-60-m w-70-ns tc tr-ns pr2-ns" for="code">{{ codpro }}</label>
+    <input class="b pv1 pv2-l input-reset ba login-brc v-mid w-75 w-20-m w-10-ns tc" type="text" name="code" id="code" required/>
 </div>

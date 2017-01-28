@@ -2,16 +2,17 @@
 {# @see http://stackoverflow.com/a/15587181 #}
 $('.playAudio').each(function() {
     $(this).on('click', function(event) {
-        {#var son = $(this).children();
+        var son = $(this).children();
         if (son.hasClass('iconAudio')) {
             var grandson = son.children();
             if (grandson.hasClass('tagAudio')) {
+            {% if type|default is same as('full') %}
                 grandson.on('pause', function() {
                     son.removeClass('fa-pause').addClass(this.ended ? 'fa-undo' : 'fa-play');
                 });
-                #}{#grandson.on('ended', function() {
+                grandson.on('ended', function() {
                     son.removeClass('fa-pause').addClass('fa-undo');
-                });#}{#
+                });
                 grandson.on('playing', function() {
                     son.removeClass('fa-play fa-undo').addClass('fa-pause');
                 });
@@ -20,10 +21,19 @@ $('.playAudio').each(function() {
                 } else {
                     grandson.get(0).pause();
                 }
+            {% else %}
+                grandson.on('ended', function() {
+                    son.removeClass('fa-play').addClass('fa-undo');
+                });
+                grandson.on('playing', function() {
+                    son.removeClass('fa-undo').addClass('fa-play');
+                });
+                if (grandson.get(0).paused) {
+                    grandson.get(0).play();
+                }
+            {% endif %}
             }
         }
-        #}var grandson = $(this).children().children();
-        if (grandson.hasClass('tagAudio') && grandson.get(0).paused) { grandson.get(0).play(); }
         event.preventDefault();
         event.stopPropagation();
     });

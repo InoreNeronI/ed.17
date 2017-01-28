@@ -22,6 +22,11 @@ class Connection implements ConnectionInterface
     private $connection;
 
     /**
+     * @var bool
+     */
+    protected static $debug = DEBUG;
+
+    /**
      * Constructor to collect required database credentials.
      *
      * @param string $host     The hostname

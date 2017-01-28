@@ -1,15 +1,7 @@
 var _window = $(window),
     bgResize = function(_window) {
-        if (_window.width() < 920) {
-            $('.has-bg-image').css('background-size', '100% 100%');
-        } else {
-            $('.has-bg-image').css('background-size', 'cover');
-        }
+        $('body').css('height', _window.height());
     };
-_window.on('resize', function() {
-    bgResize($(this));
-    //console.log( 'Resize event fired:'+ (+new Date()) );
-});
 _window.on('debouncedresize', function() {
     bgResize($(this));
     //console.log( 'Debounce event fired:'+ (+new Date()) );

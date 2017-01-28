@@ -5,6 +5,6 @@ mainTitle:
   es: 'Evaluación diagnóstica'
   en: ''
 images:
-  bgUrl: '/images/ikasleak.jpg'
+  bgUrl: '/images/background.jpg'
   logoUrl: '/images/logoed.jpg'
-  logoUrlFooter: '/images/logo_hezkuntza.png'
+  logoUrlFooter: '/images/logo.png'

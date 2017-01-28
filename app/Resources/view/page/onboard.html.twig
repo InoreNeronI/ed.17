@@ -34,7 +34,7 @@
             {% if pageAreaSkip is not null and not isFirstPage %}
                 {% set leftButtonText = '<i class="fa fa-step-backward"></i> ' ~ leftButton %}
             {% endif %}
-            <div class="fl pa1-ns pa2-m pa3-l side-right bg-near-white {{ pageAreaWidths['b']|default }}">
+            <div class="fl pa1-ns pa2-m pa3-l side-right bg-light-gray {{ pageAreaWidths['b']|default }}">
                 {% include '@App/partial/page-sideform.html.twig' with {'side': 'b'} %}
             </div>
         {% endif %}

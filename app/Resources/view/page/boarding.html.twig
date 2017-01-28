@@ -3,10 +3,13 @@
 {% block title title ~ ' :: ' ~ course ~ ' :: ' ~ mainTitle|title %}
 
 {% block content_form %}
-    <article class="mw6 mw7-m mw7-ns br4 hidden ba b--black-10 fr ma4 dt w-100 w-75-m w-75-ns">
-        <div class="pa2 tc">
+    <div class="dn dib-ns dn-m fl pl2 {{ colorInverse }}w-100 w-25-m w-25-ns">
+        <h3 class="{{ fontClassX3 }}fw6 mb2 pl4"><strong>{{ intro }}</strong></h3>
+    </div>
+    <div class="ba b--black-10 br4 dt fr ma2-ns mb4-m mb5-l mw7-ns hidden w-100-s w-60-m w-50-l">
+        <article class="pa2 tc">
             {% for key, value in actions %}
-                <button class="{{ fontClass ~ (key is same as(table) ? ' b bg-navy b--dark-blue dim pointer ' : ' arrow ba bg-transparent ') ~ colorInverse }} br1 br2-l lh-copy measure mh1 mv2 ph3 pv2 w-30-ns w-40-m" name="{{ key }}"{{ (key is not same as(table)) ? ' disabled="disabled"' }}>
+                <button class="{{ fontClass ~ (key is same as(table) ? ' b login-logo-bg navy br2 br3-ns pointer ' : ' arrow ba bg-transparent ') ~ colorInverse }} br1 br2-l lh-copy measure mh1 mv2 ph3 pv2 w-30-ns w-40-m" name="{{ key }}"{{ (key is not same as(table)) ? ' disabled="disabled"' }}>
                     {{ value }}
                 </button>
                 {% if (key is same as(table)) %}
@@ -14,6 +17,11 @@
                 {% endif %}
             {% endfor %}
             {% include '@App/partial/fields/hidden.html.twig' %}
+        </article>
+    </div>
+    <div class="fl w-100 tc">
+        <div class="dn fr-ns dn-m v-btm w-100-s w-50-m w-20-l">
+            <img src="{{ images.logoUrlFooter }}" class="fr-m w-25 w-34-m w-60-l" title="{{ block('title') }}"/>
         </div>
-    </article>
+    </div>
 {% endblock %}

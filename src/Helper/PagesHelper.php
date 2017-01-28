@@ -91,8 +91,8 @@ final class PagesHelper extends Security\Authorization
 
             return static::$pageTexts;
         }
-        //throw new \Exception(sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())));
-        throw new \NoticeException('No results found');
+
+        throw new \NoticeException(static::$debug ? sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())) : 'No results found');
     }
 
     /**

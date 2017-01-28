@@ -15,18 +15,20 @@
     <body>
         {% set color = 'black-90 ' %}
         {% set colorInverse = 'white-90 ' %}
-        {% set fontClass = 'f6-s f5-m f4-l ' %}
-        {% set fontClassX2 = 'f5-s f4-m f3-l ' %}
+        {% set fontClass = 'f6 f6-m f5-l ' %}
+        {% set fontClassX2 = 'f5 f5-m f4-l ' %}
+        {% set fontClassX3 = 'f4 f4-m f3-l ' %}
         {% set fontClassDefault = fontClass ~ color %}
-        {% set fontClassTitle = fontClassX2 ~ color %}
-        {% set buttonClass = fontClassDefault ~ buttonClass|default(color ~ ' bg-' ~ colorInverse ~ ' ba br1-s br2-m br3-l bw1 bw2-l dib dim fw6-l link ph2 pointer pv1 tc') %}
+        {% set fontClassItem = fontClassX2 ~ color %}
+        {% set fontClassTitle = fontClassX3 ~ color %}
+        {% set buttonClass = fontClassItem ~ 'bg-' ~ colorInverse ~ 'side-submit br--top br--top-m br--top-l br1 br2-m br3-l bw1 bw2-l fw6-l link ph2 pointer pv1 tc' %}
         {% if ErrorData|default is not empty %}
             {% include '@App/partial/sample/error-sample.html.twig' %}
         {% endif %}
         {% block content %}{% endblock %}
         {% block scripts %}
-            <script type="text/javascript" src="/scripts/jquery/jquery.min.js"></script>
-            <script type="text/javascript">
+            <script src="/scripts/jquery/jquery.min.js"></script>
+            <script>
                 document.addEventListener('touchmove', function(ev) { ev.preventDefault(); });
                 {#var _gaq = _gaq || [];
                 _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);

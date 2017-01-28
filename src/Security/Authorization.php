@@ -77,8 +77,7 @@ class Authorization extends Security\Connection\Connection
             }
             throw new \NoticeException(sprintf('The code you have entered does not match: \'%s\'', $codPrueba));
         }
-        //throw new \Exception(sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())));
-        throw new \NoticeException('No results found');
+        throw new \NoticeException(static::$debug ? sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())) : 'No results found');
     }
 
     /**
