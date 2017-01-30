@@ -38,7 +38,7 @@ pageImages:
     - p04b_cen_t12_t12_100_img.png
     - p04b_cen_t13_t13_100_img.png
     - p04b_cen_t14_t14_100_img.png
-    - p04b_cen_t15_t15_100_img.png    
+    - p04b_cen_t15_t15_100_img.png
   p05:
     - p05b_cen_t01_t01_30_img.png
   p06:
@@ -54,7 +54,7 @@ pageImages:
     - p06b_cen_t17_t17_100_img.png
     - p06b_cen_t18_t18_100_img.png
     - p06b_cen_t19_t19_100_img.png
-    - p06b_cen_t20_t20_100_img.png 
+    - p06b_cen_t20_t20_100_img.png
   p07:
     - p07a_cen_t03_t03_70_img.png
     - p07a_cen_t04_t04_30_img.png
@@ -89,7 +89,7 @@ pageTitles: # All centered texts' codes
   - p09a_t02
   - p10a_t02
   - p11b_t03
-  
+
 pageAudios:
   p01:
     - p01a_cen_t06_t06_x3_cas.mp3
@@ -103,7 +103,7 @@ pageAudios:
   p04:
     - p04a_cen_t06_t06_x3_cas.mp3
     - p04a_cen_t06_t06_x3_eus.mp3
-  
+
 pageAreaWidths:
  p00:
     b: 100
@@ -117,6 +117,6 @@ pageAreaWidths:
     b: 40
  p11:
     b: 100
- 
+
 
 totalPages: 11  # The final total pages

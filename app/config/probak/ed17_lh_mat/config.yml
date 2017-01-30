@@ -47,7 +47,7 @@ pageImages:
     - p09b_cen_t03_t03_100_img.png
     - p09b_cen_t04_t04_100_img.png
     - p09b_cen_t05_t05_100_img.png
-    - p09b_cen_t06_t06_100_img.png  
+    - p09b_cen_t06_t06_100_img.png
   p10:
     - p10a_cen_t01_t01_50_img.png
     - p10b_cen_t01_t01_30_img.png
@@ -92,7 +92,7 @@ pageTextReplaces:
     p05b_t09:
       #parameters: { width: 10 }
       template: 'partial/fields/input.html.twig'
-      
+
 pageTitles:
   - p00b_t01
   - p01a_t01

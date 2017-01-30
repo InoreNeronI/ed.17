@@ -1,9 +1,8 @@
 p00:
   text:
- 
 p01:
   simple:
-    - p01b_t02 
+    - p01b_t02
     - p01b_t03
     - p01b_t04
     - p01b_t05
@@ -15,7 +14,6 @@ p01:
     - p01a_t03
     - p01a_t04
     - p01a_t05
- 
 p02:
   simple:
     - p02b_t06_f01
@@ -71,7 +69,7 @@ p08:
     - p08a_t08
     - p08a_t09
     - p08a_t10
-    - p08a_t11    
+    - p08a_t11
   simple:
     - p08b_t02
     - p08b_t03
@@ -90,7 +88,7 @@ p10:
     - p10b_t13_f03
     - p10b_t14_f03
     - p10b_t16_f04
-    - p10b_t17_f04 
+    - p10b_t17_f04
     - p10b_t19_f05
     - p10b_t20_f05
     - p10b_t22_f06
@@ -104,8 +102,8 @@ p11:
     - p11a_t08
     - p11a_t09
     - p11a_t10
-    - p11a_t11 
-    - p11a_t12     
+    - p11a_t11
+    - p11a_t12
   simple:
     - p11b_t03
     - p11b_t04
@@ -131,11 +129,11 @@ p14:
     - p14a_t08
     - p14a_t09
     - p14a_t10
-    - p14a_t11 
-    - p14a_t12     
+    - p14a_t11
+    - p14a_t12
     - p14a_t13
-    - p14a_t15    
-    - p14a_t14    
+    - p14a_t15
+    - p14a_t14
   simple:
     - p14b_t02
     - p14b_t03
@@ -194,13 +192,13 @@ p19:
     - p19b_t02
     - p19b_t03
     - p19b_t04
-    - p19b_t05  
+    - p19b_t05
 p20:
   simple:
     - p20b_t02
     - p20b_t03
     - p20b_t04
-    - p20b_t05  
+    - p20b_t05
 p21:
   simple:
     - p21b_t02
@@ -233,7 +231,7 @@ p24:
     - p24b_t07
     - p24b_t08
     - p24b_t09
-    - p24b_t10   
+    - p24b_t10
 p25:
   simple:
     - p25b_t02

@@ -14,7 +14,6 @@ p00:
     - p00b_t22_c2
     - p00b_t24_c3
     - p00b_t26_c4
-
   multiple:
     - p00b_t30_c0
     - p00b_t32_c1
@@ -22,7 +21,6 @@ p00:
     - p00b_t36_c3
     - p00b_t38_c4
     - p00b_t40_c5
-
 p01:
   simple:
     - p01b_t05
@@ -149,7 +147,7 @@ p04:
     - p04b_t45_f05
 p05:
   libre:
-    - p05b_t02    
+    - p05b_t02
   simple:
     - p05b_t05
     - p05b_t06
@@ -245,7 +243,6 @@ p08:
     - p08b_t49_f03
     - p08b_t50_f03
     - p08b_t51_f03
-        
 p09:
   simple:
     - p09b_t08_f01

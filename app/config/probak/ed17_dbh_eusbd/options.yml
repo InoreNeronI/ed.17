@@ -1,6 +1,5 @@
 p00:
   text:
-
     - p00a_t04
     - p00a_t05
     - p00b_t03
@@ -19,9 +18,7 @@ p00:
     - p00b_t22_f3
 p01:
   text:
-   
     - p01a_t08
-
   simple:
     - p01b_t02
     - p01b_t03
@@ -73,10 +70,7 @@ p02:
     - p02b_t28
     - p02b_t29
     - p02b_t30
-
 p03:
-  text:
- 
   simple:
     - p03b_t02
     - p03b_t03
@@ -107,7 +101,6 @@ p04:
     - p04a_t07
     - p04a_t08
     - p04a_t09
-
   simple:
     - p04b_t02
     - p04b_t03
@@ -129,7 +122,6 @@ p04:
     - p04b_t23
     - p04b_t24
     - p04b_t25
-
 p05:
   text:
     - p05a_t03
@@ -162,7 +154,6 @@ p06:
     - p06b_t08
     - p06b_t09
     - p06b_t10
- 
 p07:
   text:
     - p07a_t03
@@ -172,7 +163,6 @@ p07:
     - p07a_t07
     - p07a_t08
     - p07a_t09
-
   simple:
     - p07b_t02
     - p07b_t03
@@ -182,10 +172,7 @@ p07:
     - p07b_t08
     - p07b_t09
     - p07b_t10
-  
 p08:
-  text:
-    
   simple:
     - p08b_t02
     - p08b_t03
@@ -219,7 +206,6 @@ p09:
     - p09a_t14
     - p09a_t15
     - p09a_t16
-
   simple:
     - p09b_t02
     - p09b_t03

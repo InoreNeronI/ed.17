@@ -10,12 +10,17 @@
 {% block content %}
     {{ parent() }}
     <article class="cf ph4 tc">
-        <div class="fl dib-ns fl-m tc w-100 w-50-ns">
-            <img src="{{ images.logoUrl }}" class="dib" title="{{ block('title') }}"/>
-        </div>
-        <div class="dn dib-ns dn-m fl tr w-100 w-50-ns">
+        {% block content_header %}
+            <div class="fl dib-ns fl-m tc w-100 w-50-ns">
+                <img src="{{ images.logoUrl }}" class="dib" title="{{ block('title') }}"/>
+            </div>
+            <div class="dn dib-ns dn-m fl tr w-75 w-40-ns">
+                <h3 class="{{ fontClassTitle }}b mb0 mb1-ns"><strong>{{ title }}</strong></h3>
+            </div>
+            <div class="dn dib-ns dn-m fl tr w-25 w-10-ns">
             <h3 class="login-logo f3 fw8 mh0 ph0 w-100">{{ course }}</h3>
-        </div>
+            </div>
+        {% endblock %}
     </article>
     <article class="login-bg cf mh1-ns mh1-m mh3-l">
         <form action="{{ formAction|default }}" accept-charset="utf-8" method="{{ formMethod|default('post') }}">

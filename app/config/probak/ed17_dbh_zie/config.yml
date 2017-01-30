@@ -98,7 +98,7 @@ pageTitles: # All centered texts' codes
   - p27a_t01
   - p28a_t01
 
- 
+
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage

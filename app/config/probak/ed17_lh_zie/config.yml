@@ -83,7 +83,7 @@ pageTextReplaces:
     p09b_t07:
       parameters: {maxLength: 10, minLength: 0}
       template: 'partial/fields/input.html.twig'
-      
+
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage
@@ -93,7 +93,7 @@ pageAreaWidths:
   p04:
     a: 40
   p09:
-    a: 60 
+    a: 60
   p18:
     b: 100
 

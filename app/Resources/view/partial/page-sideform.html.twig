@@ -22,7 +22,7 @@
         {% set isLibreOptionExtraLarge = pageOptions['libre-xl'] is defined ? key in pageOptions['libre-xl'] : false %}
         {% set isMultipleOption = pageOptions['multiple'] is defined ? key in pageOptions['multiple'] : false %}
         {% set isOption = isSimpleOption or isMultipleOption or isLibreOptionLarge or isLibreOptionSmall or isLibreOptionExtraSmall or isLibreOptionExtraLarge or isLibreOption %}
-        {% set class = isOption ? 'option' : isPlainText ? 'text' : 'cl description' %}
+        {% set class = isOption ? 'option' : isPlainText ? 'text' : 'description' %}
         {% set fontClass = isItemText ? fontClassItem : isTitleText ? fontClassTitle : fontClassDefault %}
         {% set textNum = key|split('t')[1]|number_format %}
         {% if isItemText or isTitleText %}
@@ -75,6 +75,9 @@
                     {% set media = null %}
                 {% endif %}
             {% endif %}
+        {% endif %}
+        {% if media is null and not isOption %}
+            {% set class = class ~ ' cl' %}
         {% endif %}
 
         {% if isTextAligned and not isOption %}

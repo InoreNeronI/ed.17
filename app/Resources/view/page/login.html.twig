@@ -2,6 +2,15 @@
 
 {% block title title ~ ' :: ' ~ course ~ ' :: ' ~ mainTitle|title %}
 
+{% block content_header %}
+    <div class="fl dib-ns fl-m tc w-100 w-50-ns">
+        <img src="{{ images.logoUrl }}" class="dib" title="{{ block('title') }}"/>
+    </div>
+    <div class="dn dib-ns dn-m fl tr w-100 w-50-ns">
+        <h3 class="login-logo f3 fw8 mh0 ph0 w-100">{{ course }}</h3>
+    </div>
+{% endblock %}
+
 {% block content_form %}
     <div class="dn dib-ns dn-m fl pl2 {{ colorInverse }}w-100 w-25-m w-25-ns">
         <h3 class="{{ fontClassX3 }}fw6 mb2 pl4"><strong>{{ title }}</strong></h3>
@@ -16,7 +25,7 @@
         <div class="dib w-100-s w-25-m w-60-l tc mb3-m mb4-l">
             <input name="course" type="hidden" value="{{ course }}"/>
             {% include '@App/partial/fields/audio.html.twig' with { 'cssClassContent': 'login-label fa-inverse pb4 w-100' } %}
-            <button class="{{ fontClass }} bg-navy b--blue br2 link mb2 ph3 pointer pv1 pv2-l {{ colorInverse }}">{{ submit_text }}</button>
+            <button class="{{ fontClass }}{{ colorInverse }}bg-navy b--blue br2 link mb2 ph3 pointer pv1 pv2-l">{{ submit_text }}</button>
         </div>
         <div class="dn dib-ns dn-m v-btm w-100-s w-50-m w-20-l">
             <img src="{{ images.logoUrlFooter }}" class="fr-m w-25 w-34-m w-60-l" title="{{ block('title') }}"/>

@@ -3,7 +3,7 @@ pageImages:
   p00:
     - p00a_izq_t03_t04_30_img.png
   p01:
-    - p01a_cen_t07_t07_50_img.png    
+    - p01a_cen_t07_t07_50_img.png
   p02:
     - p02a_cen_t02_t02_50_img.png
   p03:
@@ -38,7 +38,7 @@ pageAudios:
     - p01a_cen_t11_t11_x3_cas.mp3
   p02:
     - p02a_cen_t06_t06_x3_cas.mp3
-  
+
 pageTitles:
   - p00a_t01
   - p00b_t01
@@ -88,5 +88,5 @@ pageAreaWidths:
     a: 60
   p15:
     b: 100
-  
+
 totalPages: 15

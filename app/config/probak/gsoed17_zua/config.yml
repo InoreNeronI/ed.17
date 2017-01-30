@@ -15,14 +15,14 @@ pageAreaWidths:
     b: 100
   p03:
     b: 100
-  p04:  
+  p04:
     b: 100
-  p05:  
+  p05:
     b: 100
-  p06:  
+  p06:
     b: 100
-  p07:  
+  p07:
     b: 100
-  
+
 
 totalPages: 07  # The final total pages
