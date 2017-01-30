@@ -320,7 +320,7 @@ p05:
     - p05b_t091_f14
     - p05b_t094
 p06:
-    simple:
+  simple:
     - p06b_t03
     - p06b_t04
     - p06b_t05

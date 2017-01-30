@@ -109,6 +109,8 @@ trait BaseControllerTrait
     private function localizeMessages(HttpFoundation\Request $request, $data = [])
     {
         $messages = Helper\TranslationsHelper::localize($request->get('messages'), $data, $request->getLocale(), $this->langISOCodes);
+        dump($messages);
+        //dump($data);
         if (($session = $request->getSession()) && $session->isStarted() && $session->has('ErrorData')) {
             $messages = array_merge(['ErrorData' => $session->get('ErrorData')], $messages);
         }

@@ -162,7 +162,7 @@ p05:
     - p05b_t16
     - p05b_t17
 p06:
-    simple:
+  simple:
     - p06b_t03b
     - p06b_t04b
     - p06b_t05b

@@ -4,6 +4,20 @@ mainTitle:
   eu: 'Ebaluazio diagnostikoa'
   es: 'Evaluación diagnóstica'
   en: ''
+validation:
+  required:
+    text:
+      eu: 'Bete eremu hau'
+      es: 'Rellene este campo'
+      en: ''
+    checkbox:
+      eu: 'Markatu lauki hauetako baten bat edo beste'
+      es: 'Marque alguna(s) casilla(s)'
+      en: ''
+    radio:
+      eu: 'Hautatu aukera hauetako bat'
+      es: 'Seleccione una de estas opciones'
+      en: ''
 images:
   bgUrl: '/images/ikasleak.jpg'
   logoUrl: '/images/logoed.jpg'

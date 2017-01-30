@@ -355,7 +355,7 @@ p05:
     - p05b_t104_f16
     - p05b_t106
 p06:
-    simple:
+  simple:
     - p06b_t03
     - p06b_t04
     - p06b_t05

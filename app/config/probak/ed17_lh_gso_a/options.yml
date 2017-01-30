@@ -162,7 +162,7 @@ p05:
     - p05b_t16
     - p05b_t17
 p06:
-    simple:
+  simple:
     - p06b_t03b
     - p06b_t04b
     - p06b_t05b
@@ -318,14 +318,14 @@ p09:
     - p09b_t95_f18
     - p09b_t96_f18
 p10:
-    multiple:
+  multiple:
     - p10b_t02
     - p10b_t03
     - p10b_t04
     - p10b_t05
     - p10b_t06
     - p10b_t07
-    simple:
+  simple:
     - p10b_t09
     - p10b_t10
     - p10b_t11

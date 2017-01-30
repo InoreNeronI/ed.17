@@ -271,7 +271,7 @@ p05:
     - p05b_t55_f08
     - p05b_t56_f08
 p06:
-    simple:
+  simple:
     - p06b_t12_f01
     - p06b_t13_f01
     - p06b_t14_f01

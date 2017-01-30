@@ -31,17 +31,57 @@ pageAreaWidths:
     b: 100
 
 pageOptionRequired:  # All required item texts' codes
-  p11:
-    - p00b_t18_c0
-    - p00b_t20_c1
-    - p00b_t22_c2
-    - p00b_t24_c3
-    - p00b_t26_c4
-    - p00b_t30_c0
-    - p00b_t32_c1
-    - p00b_t34_c2
-    - p00b_t36_c3
-    - p00b_t38_c4
-    - p00b_t40_c5
+  p03:
+    - p03b_t02
+    - p03b_t03
+    - p03b_t04
+    - p03b_t05
+    - p03b_t06
+    - p03b_t08
+    - p03b_t09
+    - p03b_t10
+    - p03b_t11
+    - p03b_t12
+    - p03b_t13
+    - p03b_t22_f01
+    - p03b_t23_f01
+    - p03b_t24_f01
+    - p03b_t25_f01
+    - p03b_t26_f01
+    - p03b_t28_f02
+    - p03b_t29_f02
+    - p03b_t30_f02
+    - p03b_t31_f02
+    - p03b_t32_f02
+    - p03b_t34_f03
+    - p03b_t35_f03
+    - p03b_t36_f03
+    - p03b_t37_f03
+    - p03b_t38_f03
+    - p03b_t40_f04
+    - p03b_t41_f04
+    - p03b_t42_f04
+    - p03b_t43_f04
+    - p03b_t44_f04
+    - p03b_t46_f05
+    - p03b_t47_f05
+    - p03b_t48_f05
+    - p03b_t49_f05
+    - p03b_t50_f05
+    - p03b_t52_f06
+    - p03b_t53_f06
+    - p03b_t54_f06
+    - p03b_t55_f06
+    - p03b_t56_f06
+    - p03b_t58_f07
+    - p03b_t59_f07
+    - p03b_t60_f07
+    - p03b_t61_f07
+    - p03b_t62_f07
+  p04:
+    - p04b_t07
+    - p04b_t08
+  p05:
+    - p05b_t02
 
 totalPages: 10  # The final total pages

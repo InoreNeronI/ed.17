@@ -2,46 +2,59 @@
 $('.side-left').resizable({ handleSelector: '.side-splitter', resizeHeight: false });
 
 {# Radios: @url http://jsfiddle.net/dan74/6KYVP #}
-$('input:radio').on('click', function() {
+var radios = $('input:radio'), requiredRadios = [];
+radios.each(function() {
+    var item = this.id.split('-');
+    if (!(item[0] in requiredRadios)) {
+        requiredRadios[item[0]] = [];
+    }
+    requiredRadios[item[0]][item[1]] = $(this).prop('required');
+});
+radios.on('click', function() {
     var oldStatus = $(this).attr('oldStatus');
     if (oldStatus === 'checked' || (typeof oldStatus === 'undefined' && $(this).prop('checked') === false)) {
         $(this).prop('checked', false);
         $(this).removeAttr('oldStatus');
     } else {
         $(this).attr('oldStatus', 'checked');
+        {# @url http://stackoverflow.com/a/24392931 #}
+        var key, item = this.id.split('-');
+        for (key in requiredRadios[item[0]]) {
+            $('#'+item[0]+'-'+key).get(0).setCustomValidity('');
+        }
     }
 });
 
 {# Checkboxes: @url http://stackoverflow.com/a/7264962 #}
-var checkboxes = $('input:checkbox'), requireds = [], realRequireds = [];
+var checkboxes = $('input:checkbox'), requiredCheckboxes = [], realRequiredCheckboxes = [];
 checkboxes.each(function() {
     var item = this.id.split('-');
-    if (!(item[0] in requireds)) {
-        requireds[item[0]] = [];
+    if (!(item[0] in requiredCheckboxes)) {
+        requiredCheckboxes[item[0]] = [];
     }
-    requireds[item[0]][item[1]] = $(this).prop('required');
+    requiredCheckboxes[item[0]][item[1]] = $(this).prop('required');
 });
 checkboxes.on('click', function() {
     var key, item = this.id.split('-');
-    if (item[1] in requireds[item[0]] && $(this).prop('checked') === false) {
-        realRequireds[item[0]] = [];
-        for (key in requireds[item[0]]) {
-            if (requireds[item[0]][key] !== false) {
-                realRequireds[item[0]].push(key);
+    if (item[1] in requiredCheckboxes[item[0]] && $(this).prop('checked') === false) {
+        realRequiredCheckboxes[item[0]] = [];
+        for (key in requiredCheckboxes[item[0]]) {
+            if (requiredCheckboxes[item[0]][key] !== false) {
+                realRequiredCheckboxes[item[0]].push(key);
             }
         }
-        var requiredOptions = $('#'+item[0]+'-'+realRequireds[item[0]].join(',#'+item[0]+'-')), requiredOptionsLength = requiredOptions.length;
+        var requiredOptions = $('#'+item[0]+'-'+realRequiredCheckboxes[item[0]].join(',#'+item[0]+'-')), requiredOptionsLength = requiredOptions.length;
         $(requiredOptions).each(function() { this.checked ? requiredOptionsLength-- : null; });
-        for (key in realRequireds[item[0]]) {
+        for (key in realRequiredCheckboxes[item[0]]) {
             if (requiredOptionsLength < requiredOptions.length) {
                 $(requiredOptions.eq(key)).removeAttr('required');
             } else {
-                $(requiredOptions.eq(key)).prop('required', requireds[item[0]][item[1]]);
+                $(requiredOptions.eq(key)).prop('required', requiredCheckboxes[item[0]][item[1]]);
             }
         }
     } else {
-        for (key in requireds[item[0]]) {
-            $('#'+item[0]+'-'+key).removeAttr('required');
+        for (key in requiredCheckboxes[item[0]]) {
+            $('#'+item[0]+'-'+key).removeAttr('required').get(0).setCustomValidity('');
         }
     }
 });
@@ -53,10 +66,15 @@ $('form').each(function() {
         e.preventDefault();
         form.attr('action', parseInt({{ page|number_format }})-1).submit();
     });
-{% if page|number_format == totalPages|number_format %}
-    form.find('button.right-button').on('click', function(e) {
-        e.preventDefault();
-        form.attr('method', 'get').submit();
+    {% if page|number_format == totalPages|number_format %}
+        form.find('button.right-button').on('click', function(e) {
+            e.preventDefault();
+            form.attr('method', 'get').submit();
+        });
+    {% endif %}
+    form.on('submit', function() {
+        $(this).find('button').each(function() {
+            this.disabled = true;
+        });
     });
-{% endif %}
 });
