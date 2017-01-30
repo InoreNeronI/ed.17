@@ -20,13 +20,13 @@ final class PagesHelper extends Security\Authorization
     /**
      * @param string $lang
      * @param string $table
-     * @param int    $year
+     * @param int    $course
      * @param array  $config
      * @param string $page
      *
      * @return array
      */
-    private function loadTexts($lang, $table, $year, array $config, $page)
+    private function loadTexts($lang, $table, $course, array $config, $page)
     {
         // Sides' width
         $pageAreaWidths = empty($config['pageAreaWidths']['p'.$page]) ? static::$pageAreaPercents : $config['pageAreaWidths']['p'.$page];
@@ -48,8 +48,8 @@ final class PagesHelper extends Security\Authorization
             }
         }
         // Load texts
-        $pageAreaSkip !== 'a' ? $this->loadData($lang, $table, $year, $page, 'a') : null;
-        $pageAreaSkip !== 'b' ? $this->loadData($lang, $table, $year, $page, 'b') : null;
+        $pageAreaSkip !== 'a' ? $this->loadData($lang, $table, $course, $page, 'a') : null;
+        $pageAreaSkip !== 'b' ? $this->loadData($lang, $table, $course, $page, 'b') : null;
 
         return array_merge(static::$pageTexts, ['pageAreaSkip' => $pageAreaSkip, 'pageAreaWidths' => $pageAreaWidths]);
     }
@@ -57,7 +57,7 @@ final class PagesHelper extends Security\Authorization
     /**
      * @param string $lang
      * @param string $table
-     * @param int    $year
+     * @param int    $course
      * @param string $wildcardA
      * @param string $wildcardB
      *
@@ -65,16 +65,16 @@ final class PagesHelper extends Security\Authorization
      *
      * @throws \Exception
      */
-    private function loadData($lang, $table, $year, $wildcardA, $wildcardB)
+    private function loadData($lang, $table, $course, $wildcardA, $wildcardB)
     {
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
             ->select('LOWER(t.edg051_codprueba) as code', 'LOWER(t.edg051_cod_texto) as text_code', 'TRIM(t.edg051_item_num) as item_num', 'TRIM(t.edg051_texto_'.$lang.') as text_string')
             ->from($table, 't')
-            ->where('t.edg051_periodo = :periodo')
+            ->where('t.edg051_periodo = :course')
             ->andWhere('t.edg051_cod_texto LIKE :text_code')
             ->orderBy('t.edg051_cod_texto')
-            ->setParameters(['periodo' => $year, 'text_code' => 'p'.$wildcardA.$wildcardB.'%']);
+            ->setParameters(['course' => $course, 'text_code' => 'p'.$wildcardA.$wildcardB.'%']);
 
         /** @var array $texts */
         $texts = $queryBuilder->execute()->fetchAll();
@@ -132,8 +132,7 @@ final class PagesHelper extends Security\Authorization
      */
     public function saveData(array $args)
     {
-        //dump($args);
-        $sql = 'SELECT count(id) FROM '.$args['target'].';';
+        $sql = 'SELECT count(id) FROM '.$args['target'].' WHERE `id` = "'.$args['studentCode'].'";';
         try {
             $this->getConnection()->beginTransaction();
             $stmt = $this->getConnection()->prepare($sql);
@@ -142,16 +141,18 @@ final class PagesHelper extends Security\Authorization
             $total = $stmt->fetch(\PDO::FETCH_NUM);
 
             if ($total !== false) {
-                return $this->mergeAndCommit($args['target'], $args['course'], $args['period'], $args['code'], $args['lang'], $args['lengua']);
+                return $this->mergeAndCommit($args['target'], $args['studentCode'], $args['studentDay'], $args['studentMonth'], $args['course'], $args['stage'], $args['code'], $args['lang'], $args['lengua']);
             }
 
             return false;
         } catch (\Exception $e) {
             if (strpos($e->getMessage(), 'Base table or view not found') !== false) {
                 $table = new DBAL\Schema\Table($args['target']);
-                $table->addColumn('id', 'bigint', ['unsigned' => true, 'autoincrement' => true]);
-                $table->addColumn('year', 'integer', ['length' => 4]);
-                $table->addColumn('period', 'string', ['length' => 4]);
+                $table->addColumn('id', 'string', ['length' => 11]);
+                $table->addColumn('birthday', 'integer', ['length' => 2]);
+                $table->addColumn('birthmonth', 'integer', ['length' => 2]);
+                $table->addColumn('course', 'integer', ['length' => 4]);
+                $table->addColumn('stage', 'string', ['length' => 4]);
                 $table->addColumn('code', 'string', ['length' => 20]);
                 $table->addColumn('lang', 'string', ['length' => 5]);
                 $table->addColumn('lengua', 'string', ['length' => 3]);
@@ -161,7 +162,7 @@ final class PagesHelper extends Security\Authorization
 
                 return $this->saveData($args);
             }
-            throw new \RuntimeException(sprintf('Error while trying to read the session data: %s', $e->getMessage()), 0, $e);
+            throw new \RuntimeException(sprintf('Error while trying to save data: %s', $e->getMessage()), 0, $e);
         }
     }
 
@@ -174,31 +175,36 @@ final class PagesHelper extends Security\Authorization
      */
     private function zeroSql($table)
     {
-        return 'INSERT INTO '.$table.' (year, period, code, lang, lengua, time) VALUES (:year, :period, :code, :lang, :lengua, :time) '.
-            'ON DUPLICATE KEY UPDATE year = VALUES(year), period = VALUES(period), code = VALUES(code), lang = VALUES(lang), lengua = VALUES(lengua), time = VALUES(time)';
+        return 'INSERT INTO '.$table.' (id, birthday, birthmonth, course, stage, code, lang, lengua, time) VALUES (:id, :birthday, :birthmonth, :course, :stage, :code, :lang, :lengua, :time) '.
+            'ON DUPLICATE KEY UPDATE id = VALUES(id), birthday = VALUES(birthday), birthmonth = VALUES(birthmonth), course = VALUES(course), stage = VALUES(stage), code = VALUES(code), lang = VALUES(lang), lengua = VALUES(lengua), time = VALUES(time)';
     }
 
     /**
      * @param string $table
-     * @param int    $year
-     * @param string $period
+     * @param string $id
+     * @param string $birthday
+     * @param string $birthmonth
+     * @param int    $course
+     * @param string $stage
      * @param string $code
      * @param string $lang
      * @param string $lengua
      *
      * @return bool
      */
-    private function mergeAndCommit($table, $year, $period, $code, $lang, $lengua)
+    private function mergeAndCommit($table, $id, $birthday, $birthmonth, $course, $stage, $code, $lang, $lengua)
     {
         $mergeStmt = $this->getConnection()->prepare($this->zeroSql($table));
-        $mergeStmt->bindParam(':year', $year);
-        $mergeStmt->bindParam(':period', $period);
+        $mergeStmt->bindValue(':id', $id);
+        $mergeStmt->bindValue(':birthday', $birthday);
+        $mergeStmt->bindValue(':birthmonth', $birthmonth);
+        $mergeStmt->bindValue(':course', $course);
+        $mergeStmt->bindValue(':stage', $stage);
         $mergeStmt->bindValue(':code', $code);
         $mergeStmt->bindValue(':lang', $lang);
         $mergeStmt->bindValue(':lengua', $lengua);
         $mergeStmt->bindValue(':time', date(\DateTime::RFC822, time()));
         $mergeStmt->execute();
-
         $this->getConnection()->commit();
 
         return true;

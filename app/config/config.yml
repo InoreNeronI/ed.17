@@ -16,8 +16,8 @@ parameters:
   # Local languages' map
   languages: { eus: eu, cas: es, gaz: es, eng: en, ing: en }
 
-  # Supported periods
-  periods: [ dbh, lh ]
+  # Supported stages
+  stages: [ dbh, lh ]
 
   # Database access configuration
   security:

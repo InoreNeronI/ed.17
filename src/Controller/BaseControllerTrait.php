@@ -115,7 +115,7 @@ trait BaseControllerTrait
 
         return array_merge(isset($data['table']) ? [
             'code' => $this->codes[$data['table']],
-            'origin' => $data['table'],
+            //'origin' => $data['table'],
             'target' => $this->targets[$data['table']], ] : [], $messages, $data, ['metric' => $this->metric]);
     }
 }

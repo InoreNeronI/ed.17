@@ -47,19 +47,21 @@ class Authorization extends Security\Connection\Connection
      */
     private function checkCredentialsDist(array $args, $table)
     {   //$fields = static::parseFields($args, static::getFilename($slug), $table);
+        /** @var array $credentials */
+        $credentials = [
+            'course' => $args['course'],
+            'studentCode' => $args['studentCode'],
+            'studentDay' => $args['studentDay'],
+            'studentMonth' => $args['studentMonth'],
+        ];
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
             ->select('u.*')->from($table, 'u')
-            ->where('u.edg020_id_periodo = :periodo')
-            ->andWhere('u.edg020_libro_escolaridad = :cod_alumno')
-            ->andWhere('u.edg020_fec_dia = :naci_dia_alumno')
-            ->andWhere('u.edg020_fec_mes = :naci_mes_alumno')
-            ->setParameters([
-                'periodo' => $args['course'],
-                'cod_alumno' => $args['fcodalued'],
-                'naci_dia_alumno' => $args['ffnacidia'],
-                'naci_mes_alumno' => $args['ffnacimes'],
-            ]);
+            ->where('u.edg020_id_periodo = :course')
+            ->andWhere('u.edg020_libro_escolaridad = :studentCode')
+            ->andWhere('u.edg020_fec_dia = :studentDay')
+            ->andWhere('u.edg020_fec_mes = :studentMonth')
+            ->setParameters($credentials);
 
         /** @var \Doctrine\DBAL\Driver\Statement $query */
         $query = $queryBuilder->execute();
@@ -71,9 +73,9 @@ class Authorization extends Security\Connection\Connection
             /** @var array $codes */
             $codes = \def::dbSecurity();
             /** @var string $codPrueba */
-            $codPrueba = $args['code'];
+            $codPrueba = $args['studentPassword'];
             if (isset($codes[$codPrueba])) {
-                return static::requestAccess($user, $codes[$codPrueba]);
+                return array_merge(static::requestAccess($user, $codes[$codPrueba]), $credentials);
             }
             throw new \NoticeException(sprintf('The code you have entered does not match: \'%s\'', $codPrueba));
         }
@@ -120,9 +122,10 @@ class Authorization extends Security\Connection\Connection
     private static function requestAccess(array $user, $args)
     {
         $data = static::getAccess($user, $args);
-        foreach (\def::periods() as $period) {
-            if (strpos($data['table'], $period) !== false/* && empty($data['period'])*/) {
-                $data['period'] = $period;
+        foreach (\def::stages() as $stage) {
+            if (strpos($data['table'], $stage) !== false/* && empty($data['stage'])*/) {
+                $data['stage'] = $stage;
+                break;
             }
         }
 
@@ -141,8 +144,7 @@ class Authorization extends Security\Connection\Connection
     {
         if (is_array($args)) {
             foreach ($args as $key => $item) {
-                /* Eusk: */
-                if ((strpos($item, 'eus') !== false &&
+                if (/* Eusk: */(strpos($item, 'eus') !== false &&
                         (strtolower($key) === strtolower($user['edg020_tipo_eus']) || strpos(strtolower($key), lcfirst($user['edg020_codmodelo'])) !== false) &&
                         $mod = 'eus') ||
                     /* Gazte: */
@@ -158,8 +160,7 @@ class Authorization extends Security\Connection\Connection
                     return ['lengua' => $lengua = static::getLanguage($user, $mod), 'lang' => \def::langCodes()[$lengua], 'table' => $item];
                 }
             }
-            /* Eusk: */
-        } elseif ((strpos($args, 'eus') !== false && $mod = 'eus') ||
+        } elseif (/* Eusk: */(strpos($args, 'eus') !== false && $mod = 'eus') ||
             /* Gazte: */
             ((strpos($args, 'cas') !== false || strpos($args, 'gaz') !== false) && $mod = 'cas') ||
             /* G. sortak: */

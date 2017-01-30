@@ -69,7 +69,7 @@ trait RenderActionTrait
      */
     private function isAdmin(array $args)
     {
-        return isset($args['fcodalued']) && $args['fcodalued'] === $this->container->getParameter('users.local.admin.name') && isset($args['code']) && $args['code'] === $this->container->getParameter('users.local.admin.pw');
+        return isset($args['studentCode']) && $args['studentCode'] === $this->container->getParameter('users.local.admin.name') && isset($args['code']) && $args['code'] === $this->container->getParameter('users.local.admin.pw');
     }
 
     /**

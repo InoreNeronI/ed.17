@@ -30,7 +30,7 @@ pageAreaWidths:
   p10:
     b: 100
 
-pageOptionRequired: # All required item texts' codes
+pageOptionRequired:  # All required item texts' codes
   p11:
     - p00b_t18_c0
     - p00b_t20_c1

@@ -35,7 +35,7 @@ class BaseController
      */
     private static function isAdmin(array $args)
     {
-        return isset($args['fcodalued']) && $args['fcodalued'] === \defDb::adminUsername() && isset($args['code']) && $args['code'] === \defDb::adminPassword();
+        return isset($args['studentCode']) && $args['studentCode'] === \defDb::adminUsername() && isset($args['code']) && $args['code'] === \defDb::adminPassword();
     }
 
     /**

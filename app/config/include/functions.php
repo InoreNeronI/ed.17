@@ -16,7 +16,7 @@ final class def extends defDB
     private static $metricLoaded = false;
     private static $paths;
     private static $pathsLoaded = false;
-    private static $periods;
+    private static $stages;
     private static $routesLoaded = false;
     private static $routes;
 
@@ -53,7 +53,7 @@ final class def extends defDB
             static::$dbTargets = $config['targets'];
             static::$langCodes = $config['languages'];
             static::$langISOCodes = array_unique(array_values($config['languages']));
-            static::$periods = $config['periods'];
+            static::$stages = $config['stages'];
             static::$configLoaded = true;
         }
     }
@@ -107,11 +107,11 @@ final class def extends defDB
         return static::$paths;
     }
 
-    public static function periods()
+    public static function stages()
     {
         static::loadConfig();
 
-        return static::$periods;
+        return static::$stages;
     }
 
     public static function routes()

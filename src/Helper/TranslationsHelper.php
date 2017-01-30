@@ -33,31 +33,31 @@ class TranslationsHelper
     /**
      * @param array       $messages
      * @param string|null $lang
-     * @param string|null $period
+     * @param string|null $stage
      *
      * @return array
      */
-    private static function localizeMessages(array $messages, $lang = null, $period = null)
+    private static function localizeMessages(array $messages, $lang = null, $stage = null)
     {
         $lang = is_null($lang) && isset($messages['lang']) ? $messages['lang'] : $lang;
-        $period = is_null($period) && isset($messages['period']) ? $messages['period'] : $period;
+        $stage = is_null($stage) && isset($messages['stage']) ? $messages['stage'] : $stage;
         foreach ($messages as $key => $message) {
-            if ($key === 'actions'/* && !is_null($period)*/) {
+            if ($key === 'actions'/* && !is_null($stage)*/) {
                 foreach ($message as $k => $v) {
-                    if (strpos($k, $period) === false) {
+                    if (strpos($k, $stage) === false) {
                         unset($messages[$key][$k]);
                     }
                 }
-                $messages[$key] = static::localizeMessages($messages[$key], $lang, $period);
+                $messages[$key] = static::localizeMessages($messages[$key], $lang, $stage);
             } elseif (is_array($message)) {
                 static::$localizedMsg = [];
                 foreach ($message as $msg_key => $msg_value) {
-                    if (($msg = static::localizeMessage($msg_key, $msg_value, $lang, $period)) !== false) {
+                    if (($msg = static::localizeMessage($msg_key, $msg_value, $lang, $stage)) !== false) {
                         $messages[$key] = $msg;
                     }
                 }
                 empty(static::$localizedMsg) ?: $messages[$key] = implode(' / ', static::$localizedMsg);
-            } elseif (($msg = static::localizeMessage($key, $message, $lang, $period)) !== false) {
+            } elseif (($msg = static::localizeMessage($key, $message, $lang, $stage)) !== false) {
                 $messages = $msg;
             }
         }
@@ -69,15 +69,15 @@ class TranslationsHelper
      * @param string       $msg_key
      * @param array|string $msg_value
      * @param string|null  $lang
-     * @param string|null  $period
+     * @param string|null  $stage
      *
      * @return array|false
      */
-    private static function localizeMessage($msg_key, $msg_value, $lang = null, $period = null)
+    private static function localizeMessage($msg_key, $msg_value, $lang = null, $stage = null)
     {
         if ($msg_key === $lang/* && !empty($msg_value)*/) {
             return $msg_value;
-        } elseif ($msg_key === $period && is_array($msg_value)) {
+        } elseif ($msg_key === $stage && is_array($msg_value)) {
             return static::localizeMessages($msg_value, $lang);
         } elseif (is_null($lang) && in_array($msg_key, static::$langISOCodes) && !empty($msg_value)) {
             static::$localizedMsg[] = $msg_value;
