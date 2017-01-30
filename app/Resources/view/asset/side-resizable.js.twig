@@ -1,16 +1,48 @@
 {# @url https://codepen.io/rstrahl/pen/eJZQej #}
 $('.side-left').resizable({ handleSelector: '.side-splitter', resizeHeight: false });
 
-{# @url http://jsfiddle.net/dan74/6KYVP #}
+{# Radios: @url http://jsfiddle.net/dan74/6KYVP #}
 $('input:radio').on('click', function() {
-    var oldValue = $(this).attr('oldValue');
-    if (oldValue === 'checked' || (typeof oldValue === 'undefined' && $(this).prop('checked') === false)) {
+    var oldStatus = $(this).attr('oldStatus');
+    if (oldStatus === 'checked' || (typeof oldStatus === 'undefined' && $(this).prop('checked') === false)) {
         $(this).prop('checked', false);
-        $(this).attr('oldValue', false);
+        $(this).removeAttr('oldStatus');
     } else {
-        var name = $(this).prop('name');
-        $('input[name="'+name+'"]:radio').attr('oldValue', false);
-        $(this).attr('oldValue', 'checked');
+        $(this).attr('oldStatus', 'checked');
+    }
+});
+
+{# Checkboxes: #}
+var checkboxes = $('input:checkbox'), requireds = [], realRequireds = [];
+checkboxes.each(function() {
+    var item = this.id.split('-');
+    if (!(item[0] in requireds)) {
+        requireds[item[0]] = [];
+    }
+    requireds[item[0]][item[1]] = $(this).prop('required');
+});
+checkboxes.on('click', function() {
+    var key, item = this.id.split('-');
+    if (item[1] in requireds[item[0]] && $(this).prop('checked') === false) {
+        realRequireds[item[0]] = [];
+        for (key in requireds[item[0]]) {
+            if (requireds[item[0]][key] !== false) {
+                realRequireds[item[0]].push(key);
+            }
+        }
+        var requiredOptions = $('#'+item[0]+'-'+realRequireds[item[0]].join(',#'+item[0]+'-')), requiredOptionsLength = requiredOptions.length;
+        $(requiredOptions).each(function() { this.checked ? requiredOptionsLength-- : null; });
+        for (key in realRequireds[item[0]]) {
+            if (requiredOptionsLength < requiredOptions.length) {
+                $(requiredOptions.eq(key)).removeAttr('required');
+            } else {
+                $(requiredOptions.eq(key)).prop('required', requireds[item[0]][item[1]]);
+            }
+        }
+    } else {
+        for (key in requireds[item[0]]) {
+            $('#'+item[0]+'-'+key).removeAttr('required');
+        }
     }
 });
 

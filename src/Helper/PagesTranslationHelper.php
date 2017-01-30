@@ -34,9 +34,9 @@ final class PagesTranslationHelper
         return array_merge($args, [
             'page' => $page,
             'pageMedia' => static::processLibrary($page, $config, $args),
-            'pageOptions' => empty($options['p'.$page]) ? [] : $options['p'.$page],
-            'pageTitles' => empty($config['pageTitles']) ? [] : $config['pageTitles'],
-            'pageOptionAttributes' => empty($config['pageOptionAttributes']['p'.$page]) ? [] : $config['pageOptionAttributes']['p'.$page],
+            'pageOptions' => $options = empty($options['p'.$page]) ? [] : $options['p'.$page],
+            'pageTitles' => $titles = empty($config['pageTitles']) ? [] : $config['pageTitles'],
+            'pageOptionAttributes' => static::processAttributes($page, $config, $options),
             'pageOptionReplaces' => static::processReplaces($page, $config, 'Option'),
             'pageTextReplaces' => static::processReplaces($page, $config),
             'totalPages' => $config['totalPages'],
@@ -64,6 +64,31 @@ final class PagesTranslationHelper
         }
 
         return $library;
+    }
+
+    /**
+     * @param string $page
+     * @param array  $config
+     * @param array  $options
+     *
+     * @return array
+     */
+    private static function processAttributes($page, array $config, array $options)
+    {
+        $pageOptionAttributes = empty($config['pageOptionAttributes']['p'.$page]) ? [] : $config['pageOptionAttributes']['p'.$page];
+        $pageOptionRequired = empty($config['pageOptionRequired']['p'.$page]) ? [] : $config['pageOptionRequired']['p'.$page];
+
+        foreach ($pageOptionRequired as $item) {
+            foreach ($options as $optionType => $list) {
+                if (in_array($item, $list)) {
+                    isset($pageOptionAttributes[$item]) ?: $pageOptionAttributes[$item] = [];
+                    $pageOptionAttributes[$item] = array_merge($pageOptionAttributes[$item], ['required' => 'required']);
+                    break;
+                }
+            }
+        }
+
+        return $pageOptionAttributes;
     }
 
     /**

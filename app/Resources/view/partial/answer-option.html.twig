@@ -1,20 +1,17 @@
 
-{% set id = parent ~ '-' ~ key %}
-{% set name = parent %}
-
 {% macro inputClass(inputType, metric) %}
     {% if inputType is same as('simple') or inputType is same as('multiple') %}
         {{ 'bn mt1 pointer' }}
     {% elseif inputType is same as('libre-xs') %}
-        {{ 'br2-ns br--left-ns pl1' ~ ' w-' ~ metric.basics.percentages['xs'] }}
+        {{ 'br2-ns br--left-ns pl1 w-' ~ metric.basics.percentages['xs'] }}
     {% elseif inputType is same as('libre-s') %}
-        {{ 'br2-ns br--left-ns pl1' ~ ' w-' ~ metric.basics.percentages['s'] }}
+        {{ 'br2-ns br--left-ns pl1 w-' ~ metric.basics.percentages['s'] }}
     {% elseif inputType is same as('libre-m') %}
-        {{ 'br2-ns br--left-ns pl1' ~ ' w-' ~ metric.basics.percentages['m'] }}
+        {{ 'br2-ns br--left-ns pl1 w-' ~ metric.basics.percentages['m'] }}
     {% elseif inputType is same as('libre-l') %}
-        {{ 'br2-ns br--left-ns pl1' ~ ' w-' ~ metric.basics.percentages['l'] }}
+        {{ 'br2-ns br--left-ns pl1 w-' ~ metric.basics.percentages['l'] }}
     {% elseif inputType is same as('libre-xl') %}
-        {{ 'br2-ns br--left-ns pl1' ~ ' w-' ~ metric.basics.percentages['xl'] }}
+        {{ 'br2-ns br--left-ns pl1 w-' ~ metric.basics.percentages['xl'] }}
     {% endif %}
 {% endmacro %}
 
@@ -40,29 +37,30 @@
 
 {% elseif isSimpleOption %}
     {% set inputClass = answerOption.inputClass('simple', metric) %}
-    {% set name = tableColNum is null ? name : name ~ '[' ~ column ~ ']' %}
+    {% set name = tableColNum is null ? parent : parent ~ '[' ~ column ~ ']' %}
     {% set type = 'radio' %}
     {% set value = tableColNum is null ? (textNum|number_format - parent|split('t')[1]|number_format) : tableColNum %}
 
 {% elseif isMultipleOption %}
     {% set inputClass = answerOption.inputClass('multiple', metric) %}
-    {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ column ~ ']' ~ '[' ~ key ~ ']' %}
+    {% set name = tableColNum is null ? parent ~ '[' ~ key ~ ']' : parent ~ '[' ~ column ~ '][' ~ key ~ ']' %}
     {% set type = 'checkbox' %}
     {% set value = tableColNum is null ? (textNum|number_format - parent|split('t')[1]|number_format) : tableColNum %}
 
 {% elseif isLibreOptionLarge or isLibreOptionSmall or isLibreOptionExtraSmall or isLibreOptionExtraLarge or isLibreOption %}
     {% set inputClass = answerOption.inputClass(isLibreOptionExtraLarge ? 'libre-xl' : isLibreOptionLarge ? 'libre-l' : isLibreOptionExtraSmall ? 'libre-xs' : isLibreOptionSmall ? 'libre-s' : 'libre-m', metric ) %}
-        {% set name = tableColNum is null ? name ~ '[' ~ key ~ ']' : name ~ '[' ~ column ~ ']' ~ '[' ~ key ~ ']' %}
+        {% set name = tableColNum is null ? parent ~ '[' ~ key ~ ']' : parent ~ '[' ~ column ~ '][' ~ key ~ ']' %}
     {% set type = 'text' %}
     {% set value = '' %}
 {% endif %}
 
+{% set id = parent ~ '-' ~ key %}
 {% set text %}
     {% if media is not null and media['align'] is same as('cen') and media['since'] == textNum and media['till'] == textNum %}
         {% set inputClass = inputClass ~ ' v-top' %}
     {% endif %}
-    {% if key in pageOptionAttributes|keys %}
-        {% include '@App/partial/fields/input.html.twig' with pageOptionAttributes[key] %}
+    {% if clonekey|default(key) in pageOptionAttributes|keys %}
+        {% include '@App/partial/fields/input.html.twig' with pageOptionAttributes[clonekey|default(key)] %}
     {% else %}
         {% include '@App/partial/fields/input.html.twig' %}
     {% endif %}
