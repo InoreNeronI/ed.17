@@ -106,6 +106,7 @@ class BaseController
     public function pageRenderAction(HttpFoundation\Request $request, $page, $expiryMinutes = 1)
     {
         $data = $this->getSplitPageData($request, $page);
+        //dump($data);
         $view = Handler\ViewHandler::render($request->get('_route'), $data);
 
         return static::processView($view, $expiryMinutes);

@@ -1,4 +1,4 @@
-{# @url https://codepen.io/rstrahl/pen/eJZQej #}
+{# Layout @url https://codepen.io/rstrahl/pen/eJZQej #}
 $('.side-left').resizable({ handleSelector: '.side-splitter', resizeHeight: false });
 
 {# Radios: @url http://jsfiddle.net/dan74/6KYVP #}
@@ -60,12 +60,15 @@ checkboxes.on('click', function() {
     }
 });
 
-$('form').each(function() {
-    var form = $(this);
+var forms = document.getElementsByTagName('form');
+$.each(forms, function(index, elem) {
+    var form = $(elem);
+
     {# @see http://stackoverflow.com/a/16966460 #}
     form.find('button').on('click', function(e) {
         if ($(this).hasClass('left-button')) {
             e.preventDefault();
+            $(forms[1]).not(':submit').find('input').clone().hide().appendTo(form);
             form.attr('action', parseInt({{ page|number_format }})-1).submit();
         }
         if ($(this).hasClass('right-button')) {
