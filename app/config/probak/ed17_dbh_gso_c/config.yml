@@ -30,5 +30,152 @@ pageAreaWidths:
   p10:
     b: 100
 
-
+pageOptionRequired:  # All required item texts' codes
+  p03b:
+    - p03b_t02
+    - p03b_t03
+    - p03b_t04
+    - p03b_t05
+    - p03b_t06
+    - p03b_t08
+    - p03b_t09
+    - p03b_t10
+    - p03b_t11
+    - p03b_t12
+    - p03b_t13
+    - p03b_t22_f01
+    - p03b_t23_f01
+    - p03b_t24_f01
+    - p03b_t25_f01
+    - p03b_t26_f01
+    - p03b_t28_f02
+    - p03b_t29_f02
+    - p03b_t30_f02
+    - p03b_t31_f02
+    - p03b_t32_f02
+    - p03b_t34_f03
+    - p03b_t35_f03
+    - p03b_t36_f03
+    - p03b_t37_f03
+    - p03b_t38_f03
+    - p03b_t40_f04
+    - p03b_t41_f04
+    - p03b_t42_f04
+    - p03b_t43_f04
+    - p03b_t44_f04
+    - p03b_t46_f05
+    - p03b_t47_f05
+    - p03b_t48_f05
+    - p03b_t49_f05
+    - p03b_t50_f05
+    - p03b_t52_f06
+    - p03b_t53_f06
+    - p03b_t54_f06
+    - p03b_t55_f06
+    - p03b_t56_f06
+    - p03b_t58_f07
+    - p03b_t59_f07
+    - p03b_t60_f07
+    - p03b_t61_f07
+    - p03b_t62_f07
+  p04b:
+    - p04b_t07
+    - p04b_t08 
+    - p04b_t09
+    - p04b_t10   
+  p05b:
+    - p05b_t02
+  p06b:
+    - p06b_t03
+    - p06b_t04
+    - p06b_t05
+    - p06b_t06
+    - p06b_t07
+    - p06b_t09
+    - p06b_t10
+    - p06b_t12
+    - p06b_t13
+    - p06b_t14
+    - p06b_t20_f01
+    - p06b_t21_f01
+    - p06b_t23_f02
+    - p06b_t24_f02
+    - p06b_t26_f03
+    - p06b_t27_f03
+  p08b:
+    - p08b_t10_f01
+    - p08b_t11_f01
+    - p08b_t12_f01
+    - p08b_t13_f01
+    - p08b_t14_f01
+    - p08b_t15_f01
+    - p08b_t17_f02
+    - p08b_t18_f02
+    - p08b_t19_f02
+    - p08b_t20_f02
+    - p08b_t21_f02
+    - p08b_t22_f02
+    - p08b_t32_f01
+    - p08b_t33_f01
+    - p08b_t34_f01
+    - p08b_t35_f01
+    - p08b_t36_f01
+    - p08b_t37_f01
+    - p08b_t39_f02
+    - p08b_t40_f02
+    - p08b_t41_f02
+    - p08b_t42_f02
+    - p08b_t43_f02
+    - p08b_t44_f02
+    - p08b_t46_f03
+    - p08b_t47_f03
+    - p08b_t48_f03
+    - p08b_t49_f03
+    - p08b_t50_f03
+    - p08b_t51_f03
+  p09b:
+    - p09b_t02
+    - p09b_t03
+    - p09b_t04
+    - p09b_t05
+    - p09b_t07
+    - p09b_t08
+    - p09b_t09
+    - p09b_t10
+    - p09b_t12
+    - p09b_t13
+    - p09b_t14
+    - p09b_t15
+           
+  p10b:
+    - p10b_t07_f01
+    - p10b_t08_f01
+    - p10b_t09_f01
+    - p10b_t11_f02
+    - p10b_t12_f02
+    - p10b_t13_f02
+    - p10b_t15_f03
+    - p10b_t16_f03
+    - p10b_t17_f03
+    - p10b_t23_f01
+    - p10b_t24_f01
+    - p10b_t26_f02
+    - p10b_t27_f02
+    - p10b_t29_f03
+    - p10b_t30_f03
+    - p10b_t37_f01
+    - p10b_t38_f01
+    - p10b_t39_f01
+    - p10b_t41_f02
+    - p10b_t42_f02
+    - p10b_t43_f02
+    - p10b_t45_f03
+    - p10b_t46_f03
+    - p10b_t47_f03
+    - p10b_t49_f04
+    - p10b_t50_f04
+    - p10b_t51_f04
+    - p10b_t57_f01
+    - p10b_t58_f01
+    
 totalPages: 10  # The final total pages

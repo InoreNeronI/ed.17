@@ -133,30 +133,30 @@ final class PagesHelper extends Security\Authorization
     public function saveData(array $args)
     {
         $sql = 'SELECT count(id) FROM '.$args['target'].' WHERE `id` = "'.$args['studentCode'].'";';
+        $this->getConnection()->beginTransaction();
+        $stmt = $this->getConnection()->prepare($sql);
         try {
-            $this->getConnection()->beginTransaction();
-            $stmt = $this->getConnection()->prepare($sql);
             //$stmt->bindParam(':id', $sessionId, 2);
             $stmt->execute();
             $total = $stmt->fetch(\PDO::FETCH_NUM);
 
             if ($total !== false) {
-                return $this->mergeAndCommit($args['target'], $args['studentCode'], $args['studentDay'], $args['studentMonth'], $args['course'], $args['stage'], $args['code'], $args['lang'], $args['lengua']);
+                return $this->mergeAndCommit($args);
             }
 
             return false;
         } catch (\Exception $e) {
             if (strpos($e->getMessage(), 'Base table or view not found') !== false) {
                 $table = new DBAL\Schema\Table($args['target']);
-                $table->addColumn('id', 'string', ['length' => 11]);
-                $table->addColumn('birthday', 'integer', ['length' => 2]);
-                $table->addColumn('birthmonth', 'integer', ['length' => 2]);
-                $table->addColumn('course', 'integer', ['length' => 4]);
-                $table->addColumn('stage', 'string', ['length' => 4]);
-                $table->addColumn('code', 'string', ['length' => 20]);
-                $table->addColumn('lang', 'string', ['length' => 5]);
-                $table->addColumn('lengua', 'string', ['length' => 3]);
-                $table->addColumn('time', 'string', ['length' => 30]);
+                $table->addColumn('id', DBAL\Types\Type::getType('string'), ['length' => 11, 'notnull' => true]);
+                $table->addColumn('birthday', DBAL\Types\Type::getType('integer'), ['length' => 2, 'notnull' => true]);
+                $table->addColumn('birthmonth', DBAL\Types\Type::getType('integer'), ['length' => 2, 'notnull' => true]);
+                $table->addColumn('course', DBAL\Types\Type::getType('integer'), ['length' => 4, 'notnull' => true]);
+                $table->addColumn('stage', DBAL\Types\Type::getType('string'), ['length' => 4, 'notnull' => true]);
+                $table->addColumn('code', DBAL\Types\Type::getType('string'), ['length' => 20, 'notnull' => true]);
+                $table->addColumn('lang', DBAL\Types\Type::getType('string'), ['length' => 5, 'notnull' => true]);
+                $table->addColumn('lengua', DBAL\Types\Type::getType('string'), ['length' => 3, 'notnull' => true]);
+                $table->addColumn('time', DBAL\Types\Type::getType('string'), ['length' => 30, 'notnull' => true]);
                 $table->setPrimaryKey(['id']);
                 $this->getConnection()->getSchemaManager()->createTable($table);
 
@@ -167,45 +167,55 @@ final class PagesHelper extends Security\Authorization
     }
 
     /**
-     * Returns a merge/upsert (i.e. insert or update) SQL query when supported by the database.
+     * Runs a merge/update (i.e. insert or update) SQL query when supported by the database.
      *
-     * @param string $table
-     *
-     * @return string|null The SQL string or null when not supported
-     */
-    private function zeroSql($table)
-    {
-        return 'INSERT INTO '.$table.' (id, birthday, birthmonth, course, stage, code, lang, lengua, time) VALUES (:id, :birthday, :birthmonth, :course, :stage, :code, :lang, :lengua, :time) '.
-            'ON DUPLICATE KEY UPDATE id = VALUES(id), birthday = VALUES(birthday), birthmonth = VALUES(birthmonth), course = VALUES(course), stage = VALUES(stage), code = VALUES(code), lang = VALUES(lang), lengua = VALUES(lengua), time = VALUES(time)';
-    }
-
-    /**
-     * @param string $table
-     * @param string $id
-     * @param string $birthday
-     * @param string $birthmonth
-     * @param int    $course
-     * @param string $stage
-     * @param string $code
-     * @param string $lang
-     * @param string $lengua
+     * @param array $args
      *
      * @return bool
      */
-    private function mergeAndCommit($table, $id, $birthday, $birthmonth, $course, $stage, $code, $lang, $lengua)
+    private function mergeAndCommit($args)
     {
-        $mergeStmt = $this->getConnection()->prepare($this->zeroSql($table));
-        $mergeStmt->bindValue(':id', $id);
-        $mergeStmt->bindValue(':birthday', $birthday);
-        $mergeStmt->bindValue(':birthmonth', $birthmonth);
-        $mergeStmt->bindValue(':course', $course);
-        $mergeStmt->bindValue(':stage', $stage);
-        $mergeStmt->bindValue(':code', $code);
-        $mergeStmt->bindValue(':lang', $lang);
-        $mergeStmt->bindValue(':lengua', $lengua);
+        $columns = [];
+        $values = [];
+        $itemsStmt = 'INSERT INTO '.$args['target'].' (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s';
+        foreach ($args as $key => $value) {
+            if (preg_match('/p\d+[a|b]_t.+/', $key)) {
+                //echo $key.': '.$value.'<br/>';
+                $columns[] = $key;
+                $values[] = $value;
+                $itemsStmt = sprintf($itemsStmt, $key.', %s', $value.', %s', $key.' = VALUES('.$key.'), %s');
+            }
+        }
+        $itemsStmt = sprintf($itemsStmt, 'id, birthday, birthmonth, course, stage, code, lang, lengua, time', ':id, :birthday, :birthmonth, :course, :stage, :code, :lang, :lengua, :time', 'id = VALUES(id), birthday = VALUES(birthday), birthmonth = VALUES(birthmonth), course = VALUES(course), stage = VALUES(stage), code = VALUES(code), lang = VALUES(lang), lengua = VALUES(lengua), time = VALUES(time)');
+        $mergeStmt = $this->getConnection()->prepare($itemsStmt);
+        $mergeStmt->bindValue(':id', $args['studentCode']);
+        $mergeStmt->bindValue(':birthday', $args['studentDay']);
+        $mergeStmt->bindValue(':birthmonth', $args['studentMonth']);
+        $mergeStmt->bindValue(':course', $args['course']);
+        $mergeStmt->bindValue(':stage', $args['stage']);
+        $mergeStmt->bindValue(':code', $args['code']);
+        $mergeStmt->bindValue(':lang', $args['lang']);
+        $mergeStmt->bindValue(':lengua', $args['lengua']);
         $mergeStmt->bindValue(':time', date(\DateTime::RFC822, time()));
-        $mergeStmt->execute();
-        $this->getConnection()->commit();
+        try {
+            $mergeStmt->execute();
+            $this->getConnection()->commit();
+        } catch (\Exception $e) {
+            $schemaManager = $this->getConnection()->getSchemaManager();
+            if (strpos($e->getMessage(), 'Column not found') !== false) {
+                /** @see http://www.craftitonline.com/2014/09/doctrine-migrations-with-schema-api-without-symfony-symfony-cmf-seobundle-sylius-example */
+                $dbColums = $schemaManager->listTableColumns($args['target']);
+                foreach ($columns as $column) {
+                    if (!array_search($column, array_keys($dbColums))) {
+                        //echo '<br>add '.$column;
+                        $tableDiff = new DBAL\Schema\TableDiff($args['target'], [new DBAL\Schema\Column($column, DBAL\Types\Type::getType('string'), ['length' => 100, 'notnull' => false])]);
+                        $schemaManager->alterTable($tableDiff);
+                    }
+                }
+
+                return $this->saveData($args);
+            }
+        }
 
         return true;
     }
