@@ -9,6 +9,9 @@ radios.each(function() {
         requiredRadios[item[0]] = [];
     }
     requiredRadios[item[0]][item[1]] = $(this).prop('required');
+    if ($(this).prop('checked') !== false) {
+        $(this).attr('oldStatus', 'checked');
+    }
 });
 radios.on('click', function() {
     var oldStatus = $(this).attr('oldStatus');

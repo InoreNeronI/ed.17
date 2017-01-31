@@ -1,6 +1,6 @@
 <div class="dtc mt3 fl w-100 tc">
     <label class="db {{ fontClassX3 }}fw3 lh-copy dib v-mid w-100 w-50-m w-50-ns tc tr-ns pr2-ns" for="studentCode">{{ code }}</label>
-    <input class="b pv1 pv2-l input-reset ba login-brc v-mid w-75 w-30-m w-30-ns tc" type="text" name="studentCode" id="studentCode" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('{{ validation.option['text'] }}')" />
+    <input class="b pv1 pv2-l input-reset ba login-brc v-mid w-75 w-30-m w-30-ns tc" type="text" name="studentCode" id="studentCode" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('{{ validation.option['text'] }}')" autocomplete="off"/>
 </div>
 <div class="dtc mt3 fr w-100">
     <label class="db {{ fontClassX3 }}fw3 lh-copy dib v-mid w-100 w-50-m w-50-ns tc tr-ns" for="studentDay">{{ bdate }}</label>
@@ -36,5 +36,5 @@
 </div>
 <div class="dtc mt3 fl w-100 tc">
     <label class="db {{ fontClassX3 }}fw3 lh-copy dib v-mid w-100 w-60-m w-70-ns tc tr-ns pr2-ns" for="studentPassword">{{ codpro }}</label>
-    <input class="b pv1 pv2-l input-reset ba login-brc v-mid w-75 w-20-m w-10-ns tc" type="text" name="studentPassword" id="studentPassword" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('{{ validation.option['text'] }}')" />
+    <input class="b pv1 pv2-l input-reset ba login-brc v-mid w-75 w-20-m w-10-ns tc" type="text" name="studentPassword" id="studentPassword" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('{{ validation.option['text'] }}')" autocomplete="off"/>
 </div>

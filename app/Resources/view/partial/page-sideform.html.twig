@@ -1,5 +1,5 @@
 
-<form class="b--black-10 ba br2-ns center mv1 mv2-m mv3-l mw7 ph1 ph2-m ph3-l" action="{{ formAction }}" accept-charset="utf-8" method="{{ formMethod|default('post') }}">
+<form class="b--black-10 ba br2-ns center mv1 mv2-m mv3-l mw7 ph1 ph2-m ph3-l" action="{{ formAction }}" accept-charset="utf-8" method="{{ formMethod|default('post') }}" autocomplete="off">
     {% include '@App/partial/fields/hidden.html.twig' %}
     <input name="flabel" type="hidden" value="{{ flabel }}" />
     <input name="referrer" type="hidden" value="{{ page }}" />
