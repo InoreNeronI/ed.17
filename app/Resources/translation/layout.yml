@@ -5,19 +5,23 @@ mainTitle:
   es: 'Evaluación diagnóstica'
   en: ''
 validation:
-  required:
+  option:
     text:
       eu: 'Bete eremu hau'
-      es: 'Rellene este campo'
-      en: ''
+      es: 'Rellena este campo'
+      en-US: 'Please fill out this field'
     checkbox:
       eu: 'Markatu lauki hauetako baten bat edo beste'
-      es: 'Marque alguna(s) casilla(s)'
-      en: ''
+      es: 'Marca alguna(s) casilla(s)'
+      en-US: 'Please check one of these boxes'
     radio:
       eu: 'Hautatu aukera hauetako bat'
-      es: 'Seleccione una de estas opciones'
-      en: ''
+      es: 'Selecciona una de estas opciones'
+      en-US: 'Please select one of these options'
+    select:
+      eu: 'Hautatu zerrendako elementu bat'
+      es: 'Selecciona un elemento de la lista'
+      en-US: 'Please select an item in the list'
 images:
   bgUrl: '/images/ikasleak.jpg'
   logoUrl: '/images/logoed.jpg'

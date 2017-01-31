@@ -12,7 +12,7 @@
 }
 
 body {
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .side-container {
@@ -32,8 +32,7 @@ body {
 .side-splitter {
     background-color: #727272;{#background: url("/images/jquery-resize/vsizegrip.png") center center no-repeat #e2e2e2;#}
     cursor: col-resize;
-    flex: 0 0 auto;{#
-    min-height: 200px;#}
+    flex: 0 0 auto;
     width: .25rem;
 }
 
@@ -63,4 +62,31 @@ body {
 .side-submit:hover {
     border-color: gray;
     {#box-shadow: none;#}
+}
+
+{# @see https://gist.github.com/pom-pom/10255961 #}
+input[type=radio],
+input[type=checkbox] {
+    position: absolute;
+    visibility: hidden;
+}
+input[type=radio] + span:before {
+    content: "\f10c"; /* Radio Unchecked */
+    font-family: 'FontAwesome';
+    font-size: 1.3rem;
+}
+input[type=radio]:checked + span:before {
+    content: "\f05d"; /* Radio Checked */
+    font-family: 'FontAwesome';
+    font-size: 1.3rem;
+}
+input[type="checkbox"] + span:before {
+    content: "\f096"; /* Checkbox Unchecked */
+    font-family: 'FontAwesome';
+    font-size: 1.3rem;
+}
+input[type="checkbox"]:checked + span:before {
+    content: "\f046"; /* Checkbox Checked */
+    font-family: 'FontAwesome';
+    font-size: 1.3rem;
 }

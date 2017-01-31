@@ -67,7 +67,7 @@
     {% if media is not null and media['align'] is same as('cen') and media['since'] == textNum and media['till'] == textNum %}
         {% include '@App/partial/fields/' ~ media['tag'] ~ '.html.twig' with { 'cssClassContent': media['width'], 'src': media['path'] } %}
     {% endif %}
-    {{ text|default }}
+    <span{% if text is not empty %} class="mr2"{% endif %}></span>{{ text|default }}
 {% endset %}
 
 {% include '@App/partial/fields/label.html.twig' %}

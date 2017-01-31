@@ -16,6 +16,7 @@ radios.on('click', function() {
         $(this).prop('checked', false);
         $(this).removeAttr('oldStatus');
     } else {
+        $('input[name="'+ $(this).prop('name')+'"]:radio').attr('oldStatus', false);
         $(this).attr('oldStatus', 'checked');
         {# @url http://stackoverflow.com/a/24392931 #}
         var key, item = this.id.split('-');
@@ -59,19 +60,25 @@ checkboxes.on('click', function() {
     }
 });
 
-{# @url http://stackoverflow.com/a/16966460 #}
 $('form').each(function() {
     var form = $(this);
-    form.find('button.left-button').on('click', function(e) {
-        e.preventDefault();
-        form.attr('action', parseInt({{ page|number_format }})-1).submit();
-    });
-    {% if page|number_format == totalPages|number_format %}
-        form.find('button.right-button').on('click', function(e) {
+    {# @see http://stackoverflow.com/a/16966460 #}
+    form.find('button').on('click', function(e) {
+        if ($(this).hasClass('left-button')) {
             e.preventDefault();
-            form.attr('method', 'get').submit();
-        });
-    {% endif %}
+            form.attr('action', parseInt({{ page|number_format }})-1).submit();
+        }
+        if ($(this).hasClass('right-button')) {
+            form.find('input[type="checkbox"]:invalid+span,input[type="radio"]:invalid+span').each(function() {
+                $(this).css('color', 'red');
+            });
+            {% if page|number_format == totalPages|number_format %}
+                e.preventDefault();
+                form.attr('method', 'get').submit();
+            {% endif %}
+        }
+    });
+    {# @see http://www.the-art-of-web.com/javascript/doublesubmit #}
     form.on('submit', function() {
         $(this).find('button').each(function() {
             this.disabled = true;

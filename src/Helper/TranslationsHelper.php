@@ -16,12 +16,12 @@ class TranslationsHelper
     /**
      * @param array  $messages
      * @param array  $data
-     * @param string $defaultLang
      * @param array  $langISOCodes
+     * @param string $defaultLang
      *
      * @return array
      */
-    public static function localize(array $messages, array $data = [], $defaultLang = 'en', $langISOCodes = ['en'])
+    public static function localize(array $messages, array $data = [], $langISOCodes = ['en'], $defaultLang = 'en')
     {
         static::$langISOCodes = $langISOCodes;
         $messages = static::localizeMessages(array_merge($messages, $data));

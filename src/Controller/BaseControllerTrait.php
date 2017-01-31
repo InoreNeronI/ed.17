@@ -108,16 +108,24 @@ trait BaseControllerTrait
      */
     private function localizeMessages(HttpFoundation\Request $request, $data = [])
     {
-        $messages = Helper\TranslationsHelper::localize($request->get('messages'), $data, $request->getLocale(), $this->langISOCodes);
-        dump($messages);
-        //dump($data);
+        $validation = [];
+        $requestMessages = $request->get('messages');
+        if (isset($requestMessages['validation'])) {
+            foreach ($requestMessages['validation'] as $validationType => $validationMessages) {
+                $validation[$validationType] = Helper\TranslationsHelper::localize($validationMessages, $data, $this->langISOCodes);
+                unset($requestMessages['validation'][$validationType]);
+            }
+            unset($requestMessages['validation']);
+        }
+        $messages = Helper\TranslationsHelper::localize($requestMessages, $data, $this->langISOCodes, $request->getLocale());
+        $messages = array_merge($messages, ['validation' => $validation], ['metric' => $this->metric]);
         if (($session = $request->getSession()) && $session->isStarted() && $session->has('ErrorData')) {
             $messages = array_merge(['ErrorData' => $session->get('ErrorData')], $messages);
         }
 
-        return array_merge(isset($data['table']) ? [
-            'code' => $this->codes[$data['table']],
-            //'origin' => $data['table'],
-            'target' => $this->targets[$data['table']], ] : [], $messages, $data, ['metric' => $this->metric]);
+        return array_merge(
+            isset($data['table']) ? ['code' => $this->codes[$data['table']], 'target' => $this->targets[$data['table']]] : [],
+            $messages,
+            $data);
     }
 }
