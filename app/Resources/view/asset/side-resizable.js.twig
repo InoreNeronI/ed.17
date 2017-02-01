@@ -29,6 +29,7 @@ radios.on('click', function() {
     if (oldStatus === 'checked' || (typeof oldStatus === 'undefined' && $(this).prop('checked') === false)) {
         $(this).prop('checked', false);
         $(this).removeAttr('oldStatus');
+        $('<input type="hidden" name="'+this.name+'" value=""/>').appendTo($(this).parents('form:first'));
     } else {
         $('input[name="'+ $(this).prop('name')+'"]:radio').attr('oldStatus', false);
         $(this).attr('oldStatus', 'checked');
@@ -79,7 +80,6 @@ function fixItemCheckBoxes(code, prefix) {
 var forms = document.getElementsByTagName('form');
 $.each(forms, function(index, elem) {
     var form = $(elem);
-
     {# @see http://stackoverflow.com/a/16966460 #}
     form.find('button').on('click', function(e) {
         if ($(this).hasClass('left-button')) {
@@ -88,6 +88,7 @@ $.each(forms, function(index, elem) {
             form.attr('action', parseInt({{ page|number_format }})-1).submit();
         }
         if ($(this).hasClass('right-button')) {
+            checkboxes.each(function() { fixCheckBoxes(this); });
             form.find('input[type="checkbox"]:invalid+span,input[type="radio"]:invalid+span').each(function() {
                 $(this).css('color', 'red');
             });
@@ -99,6 +100,9 @@ $.each(forms, function(index, elem) {
     });
     {# @see http://www.the-art-of-web.com/javascript/doublesubmit #}
     form.on('submit', function() {
+        $(this).find('input[type="checkbox"]:not(:checked)').each(function() {
+            $('<input type="hidden" name="'+this.name+'" value=""/>').appendTo(form);
+        });
         $(this).find('button').each(function() {
             this.disabled = true;
         });

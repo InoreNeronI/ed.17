@@ -67,8 +67,8 @@ parameters:
     edg051_testuak_dbh_mat:       ed17_dbh_mat
     edg051_testuak_lh_mat:        ed17_lh_mat
     # Zie
-    edg051_testuak_dbh_zie:       ed17_dbh_mat
-    edg051_testuak_lh_zie:        ed17_lh_mat
+    edg051_testuak_dbh_zie:       ed17_dbh_zie
+    edg051_testuak_lh_zie:        ed17_lh_zie
     # G. sortak
     edg051_testuak_dbh_gsorta_a:  ed17_dbh_gso_a
     edg051_testuak_dbh_gsorta_b:  ed17_dbh_gso_b

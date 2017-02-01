@@ -4,7 +4,7 @@ pageTitles: # All centered texts' codes
   - p01b_t01
   - p05b_t03
   - p06b_t01
-  - p12b_t46
+  - p13b_t01
 
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
@@ -33,6 +33,8 @@ pageAreaWidths:
     b: 100
   p12:
     b: 100
+  p13:
+    b: 100  
     
 pageOptionRequired:  # All required item texts' codes
   p03:
@@ -260,4 +262,4 @@ pageOptionRequired:  # All required item texts' codes
     - p12b_t44_f10
     - p12b_t45_f10
     
-totalPages: 12  # The final total pages
+totalPages: 13  # The final total pages

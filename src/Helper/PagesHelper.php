@@ -191,16 +191,16 @@ final class PagesHelper extends Security\Authorization
             $mergeStmt->execute();
         } catch (DBAL\Exception\TableNotFoundException $e) {
             $table = new DBAL\Schema\Table($args['target']);
+            $table->addColumn('code', 'string', ['length' => 20, 'notnull' => true]);
             $table->addColumn('id', 'string', ['length' => 11, 'notnull' => true]);
             $table->addColumn('birthday', 'integer', ['length' => 2, 'notnull' => true]);
             $table->addColumn('birthmonth', 'integer', ['length' => 2, 'notnull' => true]);
             $table->addColumn('course', 'integer', ['length' => 4, 'notnull' => true]);
             $table->addColumn('stage', 'string', ['length' => 4, 'notnull' => true]);
-            $table->addColumn('code', 'string', ['length' => 20, 'notnull' => true]);
             $table->addColumn('lang', 'string', ['length' => 5, 'notnull' => true]);
             $table->addColumn('lengua', 'string', ['length' => 3, 'notnull' => true]);
             $table->addColumn('time', 'string', ['length' => 30, 'notnull' => true]);
-            $table->setPrimaryKey(['id']);
+            $table->setPrimaryKey(['code', 'id']);
             $connection->getSchemaManager()->createTable($table);
 
             return $this->saveData($args);
