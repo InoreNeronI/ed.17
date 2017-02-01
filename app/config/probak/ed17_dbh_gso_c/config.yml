@@ -31,7 +31,7 @@ pageAreaWidths:
     b: 100
 
 pageOptionRequired:  # All required item texts' codes
-  p03b:
+  p03:
     - p03b_t02
     - p03b_t03
     - p03b_t04
@@ -78,14 +78,14 @@ pageOptionRequired:  # All required item texts' codes
     - p03b_t60_f07
     - p03b_t61_f07
     - p03b_t62_f07
-  p04b:
+  p04:
     - p04b_t07
     - p04b_t08 
     - p04b_t09
     - p04b_t10   
-  p05b:
+  p05:
     - p05b_t02
-  p06b:
+  p06:
     - p06b_t03
     - p06b_t04
     - p06b_t05
@@ -102,7 +102,7 @@ pageOptionRequired:  # All required item texts' codes
     - p06b_t24_f02
     - p06b_t26_f03
     - p06b_t27_f03
-  p08b:
+  p08:
     - p08b_t10_f01
     - p08b_t11_f01
     - p08b_t12_f01
@@ -133,7 +133,7 @@ pageOptionRequired:  # All required item texts' codes
     - p08b_t49_f03
     - p08b_t50_f03
     - p08b_t51_f03
-  p09b:
+  p09:
     - p09b_t02
     - p09b_t03
     - p09b_t04
@@ -147,7 +147,7 @@ pageOptionRequired:  # All required item texts' codes
     - p09b_t14
     - p09b_t15
            
-  p10b:
+  p10:
     - p10b_t07_f01
     - p10b_t08_f01
     - p10b_t09_f01
