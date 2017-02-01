@@ -1,7 +1,7 @@
-{# Layout @url https://codepen.io/rstrahl/pen/eJZQej #}
+{# Layout @see https://codepen.io/rstrahl/pen/eJZQej #}
 $('.side-left').resizable({ handleSelector: '.side-splitter', resizeHeight: false });
 
-{# Radios: @url http://jsfiddle.net/dan74/6KYVP #}
+{# Radios: @see http://jsfiddle.net/dan74/6KYVP #}
 var radios = $('input:radio'), requiredRadios = [];
 radios.each(function() {
     var item = this.id.split('-');
@@ -13,6 +13,17 @@ radios.each(function() {
         $(this).attr('oldStatus', 'checked');
     }
 });
+
+{# Checkboxes: @see http://stackoverflow.com/a/7264962 #}
+var checkboxes = $('input:checkbox'), requiredCheckboxes = [];
+checkboxes.each(function() {
+    var item = this.id.split('-');
+    if (!(item[0] in requiredCheckboxes)) {
+        requiredCheckboxes[item[0]] = [];
+    }
+    requiredCheckboxes[item[0]][item[1]] = $(this).prop('required');
+});
+
 radios.on('click', function() {
     var oldStatus = $(this).attr('oldStatus');
     if (oldStatus === 'checked' || (typeof oldStatus === 'undefined' && $(this).prop('checked') === false)) {
@@ -21,47 +32,49 @@ radios.on('click', function() {
     } else {
         $('input[name="'+ $(this).prop('name')+'"]:radio').attr('oldStatus', false);
         $(this).attr('oldStatus', 'checked');
-        {# @url http://stackoverflow.com/a/24392931 #}
+        {# @see http://stackoverflow.com/a/24392931 #}
         var key, item = this.id.split('-');
         for (key in requiredRadios[item[0]]) {
             $('#'+item[0]+'-'+key).get(0).setCustomValidity('');
         }
     }
+    checkboxes.each(function() { fixCheckBoxes(this); });
 });
 
-{# Checkboxes: @url http://stackoverflow.com/a/7264962 #}
-var checkboxes = $('input:checkbox'), requiredCheckboxes = [], realRequiredCheckboxes = [];
-checkboxes.each(function() {
-    var item = this.id.split('-');
-    if (!(item[0] in requiredCheckboxes)) {
-        requiredCheckboxes[item[0]] = [];
-    }
-    requiredCheckboxes[item[0]][item[1]] = $(this).prop('required');
-});
-checkboxes.on('click', function() {
-    var key, item = this.id.split('-');
-    if (item[1] in requiredCheckboxes[item[0]] && $(this).prop('checked') === false) {
-        realRequiredCheckboxes[item[0]] = [];
-        for (key in requiredCheckboxes[item[0]]) {
-            if (requiredCheckboxes[item[0]][key] !== false) {
-                realRequiredCheckboxes[item[0]].push(key);
-            }
-        }
-        var requiredOptions = $('#'+item[0]+'-'+realRequiredCheckboxes[item[0]].join(',#'+item[0]+'-')), requiredOptionsLength = requiredOptions.length;
-        $(requiredOptions).each(function() { this.checked ? requiredOptionsLength-- : null; });
-        for (key in realRequiredCheckboxes[item[0]]) {
-            if (requiredOptionsLength < requiredOptions.length) {
-                $(requiredOptions.eq(key)).removeAttr('required');
-            } else {
-                $(requiredOptions.eq(key)).prop('required', requiredCheckboxes[item[0]][item[1]]);
-            }
-        }
+checkboxes.on('click', function() { fixCheckBoxes(this); });
+
+function fixCheckBoxes(elem) {
+    var key, item = elem.id.split('-');
+
+    if (item[1] in requiredCheckboxes[item[0]] && $(elem).prop('checked') === false) {
+        fixItemCheckBoxes(item[1], item[0]);
     } else {
         for (key in requiredCheckboxes[item[0]]) {
             $('#'+item[0]+'-'+key).removeAttr('required').get(0).setCustomValidity('');
         }
     }
-});
+}
+
+function fixItemCheckBoxes(code, prefix) {
+    var key, realRequiredCheckboxes = [];
+    realRequiredCheckboxes[prefix] = [];
+    for (key in requiredCheckboxes[prefix]) {
+        if (requiredCheckboxes[prefix][key] !== false) {
+            realRequiredCheckboxes[prefix].push(key);
+        }
+    }
+    var requiredOptions = $('#' + prefix + '-' + realRequiredCheckboxes[prefix].join(',#' + prefix + '-')), requiredOptionsLength = requiredOptions.length;
+    $(requiredOptions).each(function () {
+        this.checked ? requiredOptionsLength-- : null;
+    });
+    for (key in realRequiredCheckboxes[prefix]) {
+        if (requiredOptionsLength < requiredOptions.length) {
+            $(requiredOptions.eq(key)).removeAttr('required');
+        } else {
+            $(requiredOptions.eq(key)).prop('required', requiredCheckboxes[prefix][code]);
+        }
+    }
+}
 
 var forms = document.getElementsByTagName('form');
 $.each(forms, function(index, elem) {

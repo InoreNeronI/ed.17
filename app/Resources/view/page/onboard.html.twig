@@ -6,7 +6,7 @@
     {{ parent() }}
     {% set isFirstPage = isFirstPage|default(page|number_format == 0) %}
     {% set isLastPage = isLastPage|default(page|number_format == totalPages|number_format) %}
-    {# @url http://tachyons.io/components/layout/two-column-collapse-one/index.html #}
+    {# @see http://tachyons.io/components/layout/two-column-collapse-one/index.html #}
     <article class="cf side-container">
         {% if pageAreaSkip is not same as('a') %}
             {% set formAction = formActionLeft|default(isFirstPage ? '' : '/' ~ (page|number_format - 1)) %}
