@@ -57,10 +57,10 @@ class Authorization extends Security\Connection\Connection
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
             ->select('u.*')->from($table, 'u')
-            ->where('u.edg020_id_periodo = :course')
-            ->andWhere('u.edg020_libro_escolaridad = :studentCode')
-            ->andWhere('u.edg020_fec_dia = :studentDay')
-            ->andWhere('u.edg020_fec_mes = :studentMonth')
+            ->where('u.id_periodo = :course')
+            ->andWhere('u.libro_escolaridad = :studentCode')
+            ->andWhere('u.fec_dia = :studentDay')
+            ->andWhere('u.fec_mes = :studentMonth')
             ->setParameters($credentials);
 
         /** @var \Doctrine\DBAL\Driver\Statement $query */
@@ -93,9 +93,9 @@ class Authorization extends Security\Connection\Connection
     private function checkCredentialsLocal(array $args, $table)
     {
         //return $this->checkCredentialsDist($args, $table);
-        $data = $this->getConnection()->getSchemaManager()->listTableDetails('edg020_ikasleak');
+        $data = $this->getConnection()->getSchemaManager()->listTableDetails('ikasleak');
         //var_dump($data);exit;
-        var_dump($this->getConnection()->fetchAll('select * from edg020_ikasleak'));
+        var_dump($this->getConnection()->fetchAll('select * from ikasleak'));
         $queryBuilder = $this->getQueryBuilder()
             ->select('u.*')->from($table, 'u');
         /** @var \Doctrine\DBAL\Driver\Statement $query */
@@ -108,7 +108,7 @@ class Authorization extends Security\Connection\Connection
         /** @see http://stackoverflow.com/a/25211533 */
         /** @var \Doctrine\DBAL\Schema\MySqlSchemaManager $sm */
         $sm = $this->getConnection()->getSchemaManager();
-        var_dump($sm->listTableDetails('edg020_ikasleak'));
+        var_dump($sm->listTableDetails('ikasleak'));
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder();
     }
@@ -145,18 +145,18 @@ class Authorization extends Security\Connection\Connection
         if (is_array($args)) {
             foreach ($args as $key => $item) {
                 if (/* Eusk: */(strpos($item, 'eus') !== false &&
-                        (strtolower($key) === strtolower($user['edg020_tipo_eus']) || strpos(strtolower($key), lcfirst($user['edg020_codmodelo'])) !== false) &&
+                        (strtolower($key) === strtolower($user['tipo_eus']) || strpos(strtolower($key), lcfirst($user['codmodelo'])) !== false) &&
                         $mod = 'eus') ||
                     /* Gazte: */
-                    (strpos($item, 'cas') !== false && lcfirst($key) === lcfirst($user['edg020_tipo_cas']) && $mod = 'cas') ||
+                    (strpos($item, 'cas') !== false /*&& lcfirst($key) === lcfirst($user['tipo_cas']) */&& $mod = 'cas') ||
                     /* G. sortak: */
-                    (strpos($item, 'gsorta') !== false && lcfirst($key) === lcfirst($user['edg020_tipo_gso']) && $mod = 'gso') ||
+                    (strpos($item, 'gsorta') !== false && lcfirst($key) === lcfirst($user['tipo_gso']) && $mod = 'gso') ||
                     /* Inge: */
-                    (strpos($item, 'ing') !== false && lcfirst($key) === lcfirst($user['edg020_tipo_ing']) && $mod = 'ing') ||
+                    (strpos($item, 'ing') !== false /*&& lcfirst($key) === lcfirst($user['tipo_ing']) */&& $mod = 'ing') ||
                     /* Mate: */
-                    (strpos($item, 'mat') !== false && lcfirst($key) === lcfirst($user['edg020_tipo_mat']) && $mod = 'mat') ||
+                    (strpos($item, 'mat') !== false /*&& lcfirst($key) === lcfirst($user['tipo_mat']) */&& $mod = 'mat') ||
                     /* Zie: */
-                    (strpos($item, 'zie') !== false && lcfirst($key) === lcfirst($user['edg020_tipo_zie']) && $mod = 'zie')) {
+                    (strpos($item, 'zie') !== false /*&& lcfirst($key) === lcfirst($user['tipo_zie']) */&& $mod = 'zie')) {
                     return ['lengua' => $lengua = static::getLanguage($user, $mod), 'lang' => \def::langCodes()[$lengua], 'table' => $item];
                 }
             }
@@ -173,7 +173,7 @@ class Authorization extends Security\Connection\Connection
             (strpos($args, 'zie') !== false && $mod = 'zie')) {
             return ['lengua' => $lengua = static::getLanguage($user, $mod), 'lang' => \def::langCodes()[$lengua], 'table' => $args];
         } else {
-            throw new \NoticeException(sprintf('Access denied for student \'%s\'', $user['edg020_libro_escolaridad']));
+            throw new \NoticeException(sprintf('Access denied for student \'%s\'', $user['libro_escolaridad']));
         }
     }
 
@@ -188,15 +188,15 @@ class Authorization extends Security\Connection\Connection
      */
     private static function getLanguage($user, $default, $asIs = ['eus', 'cas'])
     {
-        if ($user['edg020_lengua_tipo'] === 'fam') {
-            return $user['edg020_lengua'];
+        if ($user['lengua_tipo'] === 'fam') {
+            return $user['lengua'];
         }
-        if ($user['edg020_lengua_tipo'] === 'ins' && isset($user['edg020_lengua_'.$default])) {
-            return $user['edg020_lengua_'.$default];
+        if ($user['lengua_tipo'] === 'ins' && isset($user['lengua_'.$default])) {
+            return $user['lengua_'.$default];
         }
         if (in_array($default, $asIs)) {
             return $default;
         }
-        throw new \NoticeException(sprintf('No language found for student \'%s\'', $user['edg020_libro_escolaridad']));
+        throw new \NoticeException(sprintf('No language found for student \'%s\'', $user['libro_escolaridad']));
     }
 }

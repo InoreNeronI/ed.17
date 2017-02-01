@@ -17,7 +17,7 @@ parameters:
             path:     '%kernel.root_dir%/Resources/data/data.db3'
     users:
         # Users distribution table
-        dist:         edg020_ikasleak
+        dist:         ikasleak
         # Local in-memory users
         local:
             admin:
