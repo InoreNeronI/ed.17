@@ -7,7 +7,7 @@ define('DEBUG', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' &&   // @see http://s
                 php_sapi_name() !== 'cli-server' &&
                 !isset($_SERVER['HTTP_CLIENT_IP']) &&
                 !isset($_SERVER['HTTP_X_FORWARDED_FOR']) &&
-                in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', 'fe80::1', '::1', '10.212.11.240']) ? true : true);
+                in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', 'fe80::1', '::1', '10.212.11.240']) ? true : false);
 define('TURBO', true);
 
 function includeIfExists($file)

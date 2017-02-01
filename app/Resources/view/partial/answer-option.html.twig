@@ -1,4 +1,10 @@
 
+{% import _self as macro %}
+
+{% macro clickValue(parent, textNum) %}
+    {{ textNum|number_format - parent|split('t')[1]|number_format }}
+{% endmacro %}
+
 {% macro inputClass(inputType, metric) %}
     {% if inputType is same as('simple') or inputType is same as('multiple') %}
         {{ 'bn mt1 pointer' }}
@@ -16,51 +22,46 @@
 {% endmacro %}
 
 {% macro inputTextClass(isLibreOptionLarge, isLibreOptionSmall, isLibreOptionExtraSmall, isLibreOptionExtraLarge, isLibreOption, metric) %}
-    {{ _self.inputClass(isLibreOptionExtraLarge ? 'libre-xl' : isLibreOptionLarge ? 'libre-l' : isLibreOptionExtraSmall ? 'libre-xs' : isLibreOptionSmall ? 'libre-s' : 'libre-m', metric) }}
+    {% import _self as macro %}
+    {{ macro.inputClass(isLibreOptionExtraLarge ? 'libre-xl' : isLibreOptionLarge ? 'libre-l' : isLibreOptionExtraSmall ? 'libre-xs' : isLibreOptionSmall ? 'libre-s' : 'libre-m', metric) }}
 {% endmacro %}
-
-{% macro clickValue(parent, textNum) %}
-    {{ textNum|number_format - parent|split('t')[1]|number_format }}
-{% endmacro %}
-
-{% import _self as answerOption %}
 
 {% if isSimpleOption and tableRowNum is null %}
-    {% set inputClass = answerOption.inputClass('simple', metric) %}
-    {% set value = answerOption.clickValue(parent, textNum)|trim %}
+    {% set inputClass = macro.inputClass('simple', metric) %}
+    {% set value = macro.clickValue(parent, textNum)|trim %}
     {% set name = parent %}
     {% set type = 'radio' %}
     {% set checked = values[name]|default is same as(value) ? 'checked' : null %}
 
 {% elseif isMultipleOption and tableRowNum is null %}
-    {% set inputClass = answerOption.inputClass('multiple', metric) %}
-    {% set value = answerOption.clickValue(parent, textNum)|trim %}
+    {% set inputClass = macro.inputClass('multiple', metric) %}
+    {% set value = macro.clickValue(parent, textNum)|trim %}
     {% set name = parent ~ '_' ~ key %}
     {% set type = 'checkbox' %}
     {% set checked = values[name]|default is same as(value) ? 'checked' : null %}
 
 {% elseif (isLibreOptionLarge or isLibreOptionSmall or isLibreOptionExtraSmall or isLibreOptionExtraLarge or isLibreOption) and tableRowNum is null %}
-    {% set inputClass = answerOption.inputTextClass(isLibreOptionLarge, isLibreOptionSmall, isLibreOptionExtraSmall, isLibreOptionExtraLarge, isLibreOption, metric) %}
+    {% set inputClass = macro.inputTextClass(isLibreOptionLarge, isLibreOptionSmall, isLibreOptionExtraSmall, isLibreOptionExtraLarge, isLibreOption, metric) %}
     {% set name = parent ~ '_' ~ key %}
     {% set type = 'text' %}
     {% set value = values[name]|default is not empty ? values[name] : null %}
 
 {% elseif isSimpleOption %}
-    {% set inputClass = answerOption.inputClass('simple', metric) %}
-    {% set value = tableColNum is null ? answerOption.clickValue(parent, textNum)|trim : tableColNum %}
+    {% set inputClass = macro.inputClass('simple', metric) %}
+    {% set value = tableColNum is null ? macro.clickValue(parent, textNum)|trim : tableColNum %}
     {% set name = tableColNum is null ? tableRowNum is null ? parent : parent ~ '_' ~ tableRowNum : parent ~ '_' ~ column %}
     {% set type = 'radio' %}
     {% set checked = values[name]|default is same as(value) ? 'checked' : null %}
 
 {% elseif isMultipleOption %}
-    {% set inputClass = answerOption.inputClass('multiple', metric) %}
-    {% set value = tableColNum is null ? answerOption.clickValue(parent, textNum)|trim : tableColNum %}
+    {% set inputClass = macro.inputClass('multiple', metric) %}
+    {% set value = tableColNum is null ? macro.clickValue(parent, textNum)|trim : tableColNum %}
     {% set name = parent ~ '_' ~ value %}
     {% set type = 'checkbox' %}
     {% set checked = values[name]|default is same as(value) ? 'checked' : null %}
 
 {% elseif isLibreOptionLarge or isLibreOptionSmall or isLibreOptionExtraSmall or isLibreOptionExtraLarge or isLibreOption %}
-    {% set inputClass = answerOption.inputTextClass(isLibreOptionLarge, isLibreOptionSmall, isLibreOptionExtraSmall, isLibreOptionExtraLarge, isLibreOption, metric) %}
+    {% set inputClass = macro.inputTextClass(isLibreOptionLarge, isLibreOptionSmall, isLibreOptionExtraSmall, isLibreOptionExtraLarge, isLibreOption, metric) %}
     {% set name = parent ~ '_' ~ key %}
     {% set type = 'text' %}
     {% set value = values[name]|default is not empty ? values[name] : null %}
@@ -69,7 +70,7 @@
 {% set id = parent ~ '-' ~ key %}
 {% set text %}
     {% if media is not null and media['align'] is same as('cen') and media['since'] == textNum and media['till'] == textNum %}
-        {% set inputClass = inputClass ~ ' v-top' %}
+        {% set inputClass = macro.inputClass ~ ' v-top' %}
     {% endif %}
     {% if clonekey|default(key) in pageOptionAttributes|keys %}
         {% include '@App/partial/fields/input.html.twig' with pageOptionAttributes[clonekey|default(key)] %}
