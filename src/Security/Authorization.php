@@ -148,15 +148,15 @@ class Authorization extends Security\Connection\Connection
                         (strtolower($key) === strtolower($user['tipo_eus']) || strpos(strtolower($key), lcfirst($user['codmodelo'])) !== false) &&
                         $mod = 'eus') ||
                     /* Gazte: */
-                    (strpos($item, 'cas') !== false /*&& lcfirst($key) === lcfirst($user['tipo_cas']) */&& $mod = 'cas') ||
+                    (strpos($item, 'cas') !== false /*&& lcfirst($key) === lcfirst($user['tipo_cas'])*/ && $mod = 'cas') ||
                     /* G. sortak: */
                     (strpos($item, 'gsorta') !== false && lcfirst($key) === lcfirst($user['tipo_gso']) && $mod = 'gso') ||
                     /* Inge: */
-                    (strpos($item, 'ing') !== false /*&& lcfirst($key) === lcfirst($user['tipo_ing']) */&& $mod = 'ing') ||
+                    (strpos($item, 'ing') !== false /*&& lcfirst($key) === lcfirst($user['tipo_ing'])*/ && $mod = 'ing') ||
                     /* Mate: */
-                    (strpos($item, 'mat') !== false /*&& lcfirst($key) === lcfirst($user['tipo_mat']) */&& $mod = 'mat') ||
+                    (strpos($item, 'mat') !== false /*&& lcfirst($key) === lcfirst($user['tipo_mat'])*/ && $mod = 'mat') ||
                     /* Zie: */
-                    (strpos($item, 'zie') !== false /*&& lcfirst($key) === lcfirst($user['tipo_zie']) */&& $mod = 'zie')) {
+                    (strpos($item, 'zie') !== false /*&& lcfirst($key) === lcfirst($user['tipo_zie'])*/ && $mod = 'zie')) {
                     return ['lengua' => $lengua = static::getLanguage($user, $mod), 'lang' => \def::langCodes()[$lengua], 'table' => $item];
                 }
             }
