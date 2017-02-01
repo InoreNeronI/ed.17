@@ -57,8 +57,8 @@ class Authorization extends Security\Connection\Connection
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
             ->select('u.*')->from($table, 'u')
-            ->where('u.id_periodo = :course')
-            ->andWhere('u.libro_escolaridad = :studentCode')
+            ->where('u.periodo = :course')
+            ->andWhere('u.codalumno = :studentCode')
             ->andWhere('u.fec_dia = :studentDay')
             ->andWhere('u.fec_mes = :studentMonth')
             ->setParameters($credentials);
@@ -173,7 +173,7 @@ class Authorization extends Security\Connection\Connection
             (strpos($args, 'zie') !== false && $mod = 'zie')) {
             return ['lengua' => $lengua = static::getLanguage($user, $mod), 'lang' => \def::langCodes()[$lengua], 'table' => $args];
         } else {
-            throw new \NoticeException(sprintf('Access denied for student \'%s\'', $user['libro_escolaridad']));
+            throw new \NoticeException(sprintf('Access denied for student \'%s\'', $user['codalumno']));
         }
     }
 
@@ -197,6 +197,6 @@ class Authorization extends Security\Connection\Connection
         if (in_array($default, $asIs)) {
             return $default;
         }
-        throw new \NoticeException(sprintf('No language found for student \'%s\'', $user['libro_escolaridad']));
+        throw new \NoticeException(sprintf('No language found for student \'%s\'', $user['codalumno']));
     }
 }
