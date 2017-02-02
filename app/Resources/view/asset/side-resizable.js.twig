@@ -2,8 +2,8 @@
 $('.side-left').resizable({ handleSelector: '.side-splitter', resizeHeight: false });
 
 {# Radios: @see http://jsfiddle.net/dan74/6KYVP #}
-var radios = $('input:radio'), requiredRadios = [];
-radios.each(function() {
+var radiobuttons = $('input:radio'), requiredRadios = [];
+radiobuttons.each(function() {
     var item = this.id.split('-');
     if (!(item[0] in requiredRadios)) {
         requiredRadios[item[0]] = [];
@@ -13,18 +13,14 @@ radios.each(function() {
         $(this).attr('oldStatus', 'checked');
     }
 });
-radios.on('click', function() {
+radiobuttons.on('click', function() {
     var oldStatus = $(this).attr('oldStatus');
     if (oldStatus === 'checked' || (typeof oldStatus === 'undefined' && $(this).prop('checked') === false)) {
         $(this).prop('checked', false);
         $(this).removeAttr('oldStatus');
-        //console.log($('input[name="'+this.name+'"]:checked').length);
-        if ($('input[name="'+this.name+'"]:checked').length === 0) {
-            $('<input type="hidden" name="'+this.name+'" value=""/>').appendTo($(this).parents('form:first'));
-        }
-
+        fixRadioButtons(this);
     } else {
-        $('input[name="'+ $(this).prop('name')+'"]:radio').attr('oldStatus', false);
+        $('input[name="'+$(this).prop('name')+'"]:radio').attr('oldStatus', false);
         $(this).attr('oldStatus', 'checked');
         {# @see http://stackoverflow.com/a/24392931 #}
         var key, item = this.id.split('-');
@@ -34,6 +30,12 @@ radios.on('click', function() {
     }
     checkboxes.each(function() { fixCheckBoxes(this); });
 });
+
+function fixRadioButtons(elem) {
+    if ($('input[name="'+elem.name+'"]:checked').length === 0 && $('input[name="'+elem.name+'"]:required').length === 0) {
+        $('<input type="hidden" name="'+elem.name+'" value=""/>').appendTo($(elem).parents('form:first'));
+    }
+}
 
 {# Checkboxes: @see http://stackoverflow.com/a/7264962 #}
 var checkboxes = $('input:checkbox'), requiredCheckboxes = [];
@@ -79,29 +81,28 @@ function fixItemCheckBoxes(code, prefix) {
     }
 }
 
-var forms = document.getElementsByTagName('form');
+{# Forms #}
+var forms = document.getElementsByTagName('form'), callback = function(form) {
+    form.find('input[type="radio"]').each(function() { fixRadioButtons(this); });
+    form.find('input[type="checkbox"]').each(function() { fixCheckBoxes(this); });
+};
 $.each(forms, function(index, elem) {
     var form = $(elem);
-    {# @see http://stackoverflow.com/a/16966460 #}
-    form.find('button').on('click', function(e) {
+    form.find('button').on('click', function() {
+        form.find('input[type="checkbox"],input[type="radio"]').each(function() {
+            $(this).next('span').css('color', $(this).is(':invalid') ? 'red' : 'inherit');
+        });
         if ($(this).hasClass('left-button')) {
-            e.preventDefault();
             $(forms[1]).not(':submit').find('input').clone().hide().appendTo(form);
-            form.attr('action', parseInt({{ page|number_format }})-1).submit();
-        }
-        if ($(this).hasClass('right-button')) {
-            checkboxes.each(function() { fixCheckBoxes(this); });
-            form.find('input[type="checkbox"]:invalid+span,input[type="radio"]:invalid+span').each(function() {
-                $(this).css('color', 'red');
-            });
+            form.attr('action', parseInt({{ page|number_format }})-1).submit(callback($(this)));
+        } else if ($(this).hasClass('right-button')) {
             {% if page|number_format == totalPages|number_format %}
-                e.preventDefault();
-                form.attr('method', 'get').submit();
+                form.attr('action', '').attr('method', 'get').submit();
             {% endif %}
         }
     });
-    {# @see http://www.the-art-of-web.com/javascript/doublesubmit #}
     form.on('submit', function() {
+        callback($(this));
         $(this).find('input[type="checkbox"]:not(:checked)').each(function() {
             $('<input type="hidden" name="'+this.name+'" value=""/>').appendTo(form);
         });

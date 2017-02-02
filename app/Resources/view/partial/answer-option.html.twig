@@ -35,7 +35,7 @@
 {% elseif isMultipleOption and tableRowNum is null %}
     {% set inputClass = macro.inputClass('multiple', metric) %}
     {% set value = macro.clickValue(parent, textNum)|trim %}
-    {% set name = parent ~ '_' ~ key %}
+    {% set name = parent ~ '_' ~ value %}
     {% set type = 'checkbox' %}
     {% set checked = values[name]|default is same as(value) ? 'checked' : null %}
 
@@ -48,7 +48,7 @@
 {% elseif isSimpleOption %}
     {% set inputClass = macro.inputClass('simple', metric) %}
     {% set value = tableColNum is null ? macro.clickValue(parent, textNum)|trim : tableColNum %}
-    {% set name = tableColNum is null ? tableRowNum is null ? parent : parent ~ '_' ~ tableRowNum : parent ~ '_' ~ column %}
+    {% set name = tableColNum is null ? parent ~ '_' ~ tableRowNum : parent ~ '_' ~ column %}
     {% set type = 'radio' %}
     {% set checked = values[name]|default is same as(value) ? 'checked' : null %}
 
