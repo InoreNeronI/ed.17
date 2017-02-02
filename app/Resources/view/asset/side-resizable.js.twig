@@ -1,7 +1,7 @@
 {# Layout @see https://codepen.io/rstrahl/pen/eJZQej #}
 $('.side-left').resizable({ handleSelector: '.side-splitter', resizeHeight: false });
 
-{# Radios: @see http://jsfiddle.net/dan74/6KYVP #}
+{# RadioButtons: @see http://jsfiddle.net/dan74/6KYVP #}
 var radiobuttons = $('input:radio'), requiredRadios = [];
 radiobuttons.each(function() {
     var item = this.id.split('-');
@@ -28,7 +28,6 @@ radiobuttons.on('click', function() {
             $('#'+item[0]+'-'+key).get(0).setCustomValidity('');
         }
     }
-    checkboxes.each(function() { fixCheckBoxes(this); });
 });
 
 function fixRadioButtons(elem) {
@@ -82,32 +81,94 @@ function fixItemCheckBoxes(code, prefix) {
 }
 
 {# Forms #}
-var forms = document.getElementsByTagName('form'), callback = function(form) {
-    form.find('input[type="radio"]').each(function() { fixRadioButtons(this); });
-    form.find('input[type="checkbox"]').each(function() { fixCheckBoxes(this); });
-};
+var forms = document.getElementsByTagName('form');
 $.each(forms, function(index, elem) {
     var form = $(elem);
-    form.find('button').on('click', function() {
-        form.find('input[type="checkbox"],input[type="radio"]').each(function() {
-            $(this).next('span').css('color', $(this).is(':invalid') ? 'red' : 'inherit');
-        });
-        if ($(this).hasClass('left-button')) {
-            $(forms[1]).not(':submit').find('input').clone().hide().appendTo(form);
-            form.attr('action', parseInt({{ page|number_format }})-1).submit(callback($(this)));
-        } else if ($(this).hasClass('right-button')) {
-            {% if page|number_format == totalPages|number_format %}
-                form.attr('action', '').attr('method', 'get').submit();
-            {% endif %}
-        }
-    });
     form.on('submit', function() {
-        callback($(this));
+        $(this).find('button').each(function() { this.disabled = true; });
         $(this).find('input[type="checkbox"]:not(:checked)').each(function() {
             $('<input type="hidden" name="'+this.name+'" value=""/>').appendTo(form);
         });
-        $(this).find('button').each(function() {
-            this.disabled = true;
+    }).find('button').on('click', function(ev) {
+        form.find('input[type="radio"]').each(function() {
+            fixRadioButtons(this);
+            $(this).next('span').css('color', $(this).is(':invalid') ? 'red' : 'inherit');
+        });
+        form.find('input[type="checkbox"]').each(function() {
+            fixCheckBoxes(this);
+            $(this).next('span').css('color', $(this).is(':invalid') ? 'red' : 'inherit');
+        });
+        if ($(this).hasClass('left-button')) {
+            $(forms[1]).not(':submit').find('input').clone().hide().appendTo(
+                form.attr('action', parseInt({{ page|number_format }})-1)
+            );
+        } else if ($(this).hasClass('right-button')) {
+            {% if page|number_format == totalPages|number_format %}
+                form.attr('action', '/').attr('method', 'get');
+            {% endif %}
+        }
+    });
+});
+
+{# TextBoxes: @see http://jsfiddle.net/dan74/6KYVP #}
+{# @see https://blog.tallan.com/2011/12/27/text-input-length-limit-with-jquery #}
+$.fn.charLimit = function(options) {
+    if (options === undefined || options.init === undefined || typeof options.init !== 'number') {
+        $.error('Option init must be defined and must be a number.');
+    }
+    if (options === undefined || options.limit === undefined || typeof options.limit !== 'number') {
+        $.error('Option limit must be defined and must be a number.');
+    }
+    return this.each(function () {
+        var self = $(this);
+        var charLimit = options.limit;
+        function _truncate(ev) {
+            var caretPos;
+            if (ev.target.selectionStart !== undefined) {
+                caretPos = ev.target.selectionEnd;
+            } else if (document.selection) {
+                ev.target.focus();
+                var range = document.selection.createRange();
+                range.moveStart('character', -ev.target.value.length);
+                caretPos = range.text.length;
+            }
+            self.val(self.val().substring(0, charLimit));
+            _setCaretPos(ev, caretPos);
+        }
+        function _setCaretPos(ev, pos) {
+            if ($(ev.target).get(0).setSelectionRange) {
+                $(ev.target).get(0).setSelectionRange(pos, pos);
+            } else if ($(ev.target).get(0).createTextRange) {
+                var range = $(ev.target).get(0).createTextRange();
+                range.collapse(true);
+                range.moveEnd('character', pos);
+                range.moveStart('character', pos);
+                range.select();
+            }
+        }
+        self.keypress(function (ev) {
+            var charCount = self.val().length;
+            var selected;
+            if (ev.target.selectionStart !== undefined) {
+                selected = !(ev.target.selectionStart == ev.target.selectionEnd);
+            } else if (document.selection) {
+                ev.target.focus();
+                var range = document.selection.createRange();
+                selected = (range.text.length > 0);
+            }
+            if (charCount > charLimit - 1 && !selected) {
+                return false;
+            }
+            setTimeout(function() { _truncate(ev); }, 1);
+        });
+        self.bind('paste', function (ev) {
+            setTimeout(function() { _truncate(ev); }, 1);
         });
     });
+};
+$('input:text').each(function() {
+    var data = $(this).data();
+    $(this).charLimit({
+        init: typeof data.minlength === 'undefined' ? 0 : data.minlength,
+        limit: typeof data.maxlength === 'undefined' ? 100 : data.maxlength});
 });

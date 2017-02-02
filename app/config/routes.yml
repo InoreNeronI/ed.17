@@ -7,4 +7,4 @@ routes:
   - /sample
   - { path: /, methods: [GET] }
   - { path: /boarding, methods: [POST] }
-  - { path: '/{page}', action: 'pageRender', name: onboard, methods: [POST], requirements: { page: \d+ } }
+  - { path: '/{page}', action: pageRender, name: onboard, methods: [POST], requirements: { page: \d+ } }

@@ -58,7 +58,8 @@ trait BaseKernelTrait
         }
         static::$headers = array_merge(static::$headers, ['ErrorData' => [
             'debug' => static::$debug,
-            'file' => $exception->getFile(),
+            'file' => $file = $exception->getFile(),
+            'filename' => basename($file),
             'line' => $exception->getLine(),
             'message' => $exception->getMessage(),
             'status' => $status,

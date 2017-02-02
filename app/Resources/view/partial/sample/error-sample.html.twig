@@ -22,8 +22,8 @@
                     <i class="fa fa-arrow-down"></i>
                 </summary>
                 <code class="dark-blue bg-white ba br-pill lh-solid ph1">
-                    <a title="{{ ErrorData['file'] }}" class="dark-blue link" target="_blank" href="file://{{ ErrorData['file'] }}">
-                        {{ ErrorData['file'] }}
+                    <a title="{{ ErrorData['file'] }}" class="dark-blue link" href="file://{{ ErrorData['file'] }}" ondblclick="var f=this.innerHTML;this.innerHTML=this.title;this.title=f;">
+                        {{ ErrorData['filename'] }}
                     </a>
                 </code>
             </details>

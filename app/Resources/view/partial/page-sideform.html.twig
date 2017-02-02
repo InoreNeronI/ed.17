@@ -151,15 +151,17 @@
     {% if isTable %}</div></div>{% endif %}
 
     <div class="cb pt1 pt2-ns pt3-l tc">
-        {% if rightButtonText is defined and rightButtonText is not empty and leftButtonText is defined and leftButtonText is not empty %}
+        {% if pageAreaSkip is not null and not isFirstPage %}
             <div class="fl tc w-100 w-50-ns">
-                <button class="{{ buttonClass }} left-button">{{ leftButtonText }}</button>
+                <button class="{{ leftButtonClass }}">{{ leftButtonText }}</button>
             </div>
             <div class="dib tc w-100 w-50-ns">
-                <button class="{{ buttonClass }} right-button">{{ rightButtonText }}</button>
+                <button class="{{ rightButtonClass }}">{{ rightButtonText }}</button>
             </div>
-        {% elseif rightButtonText is defined and rightButtonText is not empty %}
-            <button class="{{ buttonClass }} right-button">{{ rightButtonText }}</button>
+        {% elseif not isFirstPage and side is same as('a') %}
+            <button class="{{ leftButtonClass }}">{{ leftButtonText }}</button>
+        {% else %}
+            <button class="{{ rightButtonClass }}">{{ rightButtonText }}</button>
         {% endif %}
     </div>
 </form>
