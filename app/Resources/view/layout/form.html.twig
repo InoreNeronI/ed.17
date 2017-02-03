@@ -3,7 +3,7 @@
 {% block styles %}
     {{ parent() }}
     <style type="text/css">
-        {% include '@App/asset/bg-resize.css.twig' with { 'bgUrl': images.bgUrl } %}
+        {% include '@App/asset/bg-resize.css.twig' with { 'bgUrl': random(images.backgrounds) } %}
     </style>
 {% endblock %}
 

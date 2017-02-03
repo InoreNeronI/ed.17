@@ -23,6 +23,8 @@ validation:
       es: 'Selecciona un elemento de la lista'
       en-US: 'Please select an item in the list'
 images:
-  bgUrl: '/images/ikasleak.jpg'
+  backgrounds:
+    - '/images/ikasleak.jpg'
+    - '/images/ikasleak_bi.jpg'
   logoUrl: '/images/logoed.jpg'
   logoUrlFooter: '/images/logo.png'
