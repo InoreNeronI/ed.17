@@ -22,6 +22,7 @@ public/*
 public/images/*
 !public/images/*.jpg
 !public/images/*.png
+!public/images/ikasleak/
 vendor/
 !vendor-tiny/
 vendor-tiny/*

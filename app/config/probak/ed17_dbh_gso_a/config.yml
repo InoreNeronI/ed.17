@@ -34,7 +34,7 @@ pageAreaWidths:
     
 
 pageOptionRequired:  # All required item texts' codes
-   p03:
+  p03:
     - p03b_t02
     - p03b_t03
     - p03b_t04
@@ -83,9 +83,9 @@ pageOptionRequired:  # All required item texts' codes
     - p03b_t62_f07
   p04:
     - p04b_t07
-    - p04b_t08 
+    - p04b_t08
     - p04b_t09
-    - p04b_t10   
+    - p04b_t10
   p05:
     - p05b_t02
   p06:
@@ -212,8 +212,7 @@ pageOptionRequired:  # All required item texts' codes
     - p09b_t098_f19
     - p09b_t099_f19
     - p09b_t100_f19
-    - p09b_t101_f19
-     
+    - p09b_t101_f19     
   p10:
     - p10b_t02
     - p10b_t03

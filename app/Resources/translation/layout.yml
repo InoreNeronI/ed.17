@@ -24,7 +24,14 @@ validation:
       en-US: 'Please select an item in the list'
 images:
   backgrounds:
-    - '/images/ikasleak.jpg'
-    - '/images/ikasleak_bi.jpg'
+    - '/images/ikasleak/ikasleak_1.jpg'
+    - '/images/ikasleak/ikasleak_2.jpg'
+    - '/images/ikasleak/ikasleak_3.jpg'
+    - '/images/ikasleak/ikasleak_4.jpg'
+    - '/images/ikasleak/ikasleak_5.jpg'
+    - '/images/ikasleak/ikasleak_6.jpg'
+    - '/images/ikasleak/ikasleak_7.jpg'
+    - '/images/ikasleak/ikasleak_8.jpg'
+    - '/images/ikasleak/ikasleak_9.jpg'
   logoUrl: '/images/logoed.jpg'
   logoUrlFooter: '/images/logo.png'

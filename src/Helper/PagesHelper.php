@@ -164,10 +164,11 @@ final class PagesHelper extends Security\Authorization
      */
     public function saveData(array $args)
     {
+        $commonCols = ['id', 'birthday', 'birthmonth', 'course', 'stage', 'code', 'lang', 'lengua', 'time'];
+        $commonValues = ['id' => $args['studentCode'], 'birthday' => $args['studentDay'], 'birthmonth' => $args['studentMonth'], 'course' => $args['course'], 'stage' => $args['stage'], 'code' => $args['code'], 'lang' => $args['lang'], 'lengua' => $args['lengua'], 'time' => date(\DateTime::RFC822, time())];
+        $statement = 'INSERT INTO '.$args['target'].' (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s';
         $columns = [];
         $values = [];
-        $commonCols = ['id', 'birthday', 'birthmonth', 'course', 'stage', 'code', 'lang', 'lengua', 'time'];
-        $statement = 'INSERT INTO '.$args['target'].' (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s';
         $connection = $this->getConnection();
         foreach ($args as $key => $value) {
             if (preg_match('/p\d+[a|b]_t.+/i', $key)) {
@@ -178,17 +179,18 @@ final class PagesHelper extends Security\Authorization
         }
         $statement = sprintf($statement, implode(', ', $commonCols), ':'.implode(', :', $commonCols), 'id = VALUES(id), birthday = VALUES(birthday), birthmonth = VALUES(birthmonth), course = VALUES(course), stage = VALUES(stage), code = VALUES(code), lang = VALUES(lang), lengua = VALUES(lengua), time = VALUES(time)');
         $mergeStmt = $connection->prepare($statement);
-        $mergeStmt->bindValue(':id', $args['studentCode']);
-        $mergeStmt->bindValue(':birthday', $args['studentDay']);
-        $mergeStmt->bindValue(':birthmonth', $args['studentMonth']);
-        $mergeStmt->bindValue(':course', $args['course']);
-        $mergeStmt->bindValue(':stage', $args['stage']);
-        $mergeStmt->bindValue(':code', $args['code']);
-        $mergeStmt->bindValue(':lang', $args['lang']);
-        $mergeStmt->bindValue(':lengua', $args['lengua']);
-        $mergeStmt->bindValue(':time', date(\DateTime::RFC822, time()));
+        foreach ($commonCols as $col) {
+            $mergeStmt->bindValue(':'.$col, $commonValues[$col]);
+        }
         try {
             $mergeStmt->execute();
+            if (!realpath(DATA_CACHE_DIR)) {
+                mkdir(DATA_CACHE_DIR, 0777, true);
+            }
+            $path = DATA_CACHE_DIR.'/'.$args['code'];
+            file_put_contents($path, implode('#', array_merge($commonCols, $columns)).PHP_EOL, FILE_APPEND);
+            file_put_contents($path, implode('#', array_merge($commonValues, $values)).PHP_EOL, FILE_APPEND);
+
         } catch (DBAL\Exception\TableNotFoundException $e) {
             $table = new DBAL\Schema\Table($args['target']);
             $table->addColumn('code', 'string', ['length' => 20, 'notnull' => true]);

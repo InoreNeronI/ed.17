@@ -94,8 +94,8 @@ parameters:
     edg051_testuak_dbh_mat:       erantzunak_dbh_mat
     edg051_testuak_lh_mat:        erantzunak_lh_mat
     # Zie
-    edg051_testuak_dbh_zie:       erantzunak_dbh_mat
-    edg051_testuak_lh_zie:        erantzunak_lh_mat
+    edg051_testuak_dbh_zie:       erantzunak_dbh_zie
+    edg051_testuak_lh_zie:        erantzunak_lh_zie
     # G. sortak
     edg051_testuak_dbh_gsorta_a:  erantzunak_dbh_gsorta_a
     edg051_testuak_dbh_gsorta_b:  erantzunak_dbh_gsorta_b
