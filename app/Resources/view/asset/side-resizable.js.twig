@@ -91,7 +91,7 @@ var forms = document.getElementsByTagName('form');
 $.each(forms, function(index, elem) {
     var form = $(elem);
     form.on('submit', function() {
-        $(this).find('button').each(function() { this.disabled = true; });
+        {#$(this).find('button').each(function() { this.disabled = true; });#}
         $(this).find('input[type="checkbox"]:not(:checked)').each(function() {
             $('<input type="hidden" name="'+this.name+'" value=""/>').appendTo(form);
         });
@@ -114,4 +114,7 @@ $.each(forms, function(index, elem) {
             {% endif %}
         }
     });
+});
+$('form').on('submit', function() {
+    $(this).find('button').each(function() { this.disabled = true; });
 });

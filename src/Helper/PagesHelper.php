@@ -157,12 +157,13 @@ final class PagesHelper extends Security\Authorization
      * Runs a merge/update (i.e. insert or update) SQL query.
      *
      * @param array $args
+     * @param string $dataDir
      *
      * @return bool
      *
      * @throws \Exception
      */
-    public function saveData(array $args)
+    public function saveData(array $args, $dataDir = DATA_CACHE_DIR)
     {
         $commonCols = ['id', 'birthday', 'birthmonth', 'course', 'stage', 'code', 'lang', 'lengua', 'time'];
         $t = microtime(true);
@@ -188,12 +189,10 @@ final class PagesHelper extends Security\Authorization
         }
         try {
             $mergeStmt->execute();
-            if (!realpath(DATA_CACHE_DIR)) {
-                mkdir(DATA_CACHE_DIR, 0777, true);
+            if (realpath($dataDir) || mkdir($dataDir, 0777, true)) {
+                $data = implode('#', array_merge($commonCols, $columns)).PHP_EOL.implode('#', array_merge($commonValues, $values)).PHP_EOL;
+                file_put_contents($dataDir.'/data', $data, FILE_APPEND);
             }
-            $path = DATA_CACHE_DIR.'/'.$args['code'];
-            file_put_contents($path, implode('#', array_merge($commonCols, $columns)).PHP_EOL, FILE_APPEND);
-            file_put_contents($path, implode('#', array_merge($commonValues, $values)).PHP_EOL, FILE_APPEND);
         } catch (DBAL\Exception\TableNotFoundException $e) {
             $table = new DBAL\Schema\Table($args['target']);
             $table->addColumn('code', 'string', ['length' => 20, 'notnull' => true]);
