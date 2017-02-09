@@ -183,13 +183,13 @@ final class PagesHelper extends Security\Authorization
             $mergeStmt->bindValue(':'.$col, $commonValues[$col]);
         }
         try {
-            $mergeStmt->execute();
+            $mergeStmt->execute();/*
             if (!realpath(DATA_CACHE_DIR)) {
                 mkdir(DATA_CACHE_DIR, 0777, true);
             }
             $path = DATA_CACHE_DIR.'/'.$args['code'];
             file_put_contents($path, implode('#', array_merge($commonCols, $columns)).PHP_EOL, FILE_APPEND);
-            file_put_contents($path, implode('#', array_merge($commonValues, $values)).PHP_EOL, FILE_APPEND);
+            file_put_contents($path, implode('#', array_merge($commonValues, $values)).PHP_EOL, FILE_APPEND);*/
 
         } catch (DBAL\Exception\TableNotFoundException $e) {
             $table = new DBAL\Schema\Table($args['target']);

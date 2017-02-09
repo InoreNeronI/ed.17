@@ -95,7 +95,7 @@ $.each(forms, function(index, elem) {
         $(this).find('input[type="checkbox"]:not(:checked)').each(function() {
             $('<input type="hidden" name="'+this.name+'" value=""/>').appendTo(form);
         });
-    }).find('button').on('click', function(ev) {
+    }).find('button').on('click', function() {
         form.find('input[type="radio"]').each(function() {
             fixRadioButtons(this);
             $(this).next('span').css('color', $(this).is(':invalid') ? 'red' : 'inherit');
