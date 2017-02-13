@@ -160,7 +160,7 @@
             </div>
         {% elseif not isFirstPage and side is same as('a') %}
             <button class="{{ leftButtonClass }}">{{ leftButtonText }}</button>
-        {% else %}
+        {% elseif side is same as('b') %}
             <button class="{{ rightButtonClass }}">{{ rightButtonText }}</button>
         {% endif %}
     </div>

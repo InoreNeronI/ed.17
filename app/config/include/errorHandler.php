@@ -23,7 +23,8 @@ register_shutdown_function(function () {
         // fatal error has occured
         //throw new Exception($error['message'], 404);
     }
-});*/
+});
+error_reporting(E_ALL | E_STRICT);
 set_error_handler(function ($id, $msg) {
     throw $id === E_WARNING ? new WarningException($msg, $id) : $id === E_NOTICE ? new NoticeException($msg, $id) : null;
-}, E_ALL);
+}, E_ALL);*/

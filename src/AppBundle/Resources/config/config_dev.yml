@@ -1,4 +1,0 @@
-
-imports:
-  - { resource: config.yml }
-  - { resource: web_profiler.yml }

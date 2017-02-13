@@ -18,3 +18,7 @@ _window.on('debouncedresize', function() {
     //console.log( 'Throttle event fired:'+ (+new Date()) );
 });#}
 bgResize(_window);
+
+$('form').on('submit', function() {
+    $(this).find('button').each(function() { this.disabled = true; });
+});
