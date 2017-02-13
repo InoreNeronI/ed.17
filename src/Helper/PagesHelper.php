@@ -157,15 +157,20 @@ final class PagesHelper extends Security\Authorization
      * Runs a merge/update (i.e. insert or update) SQL query.
      *
      * @param array $args
+     * @param string $dataDir
      *
      * @return bool
      *
      * @throws \Exception
      */
-    public function saveData(array $args)
+    public function saveData(array $args, $dataDir = DATA_CACHE_DIR)
     {
         $commonCols = ['id', 'birthday', 'birthmonth', 'course', 'stage', 'code', 'lang', 'lengua', 'time'];
-        $commonValues = ['id' => $args['studentCode'], 'birthday' => $args['studentDay'], 'birthmonth' => $args['studentMonth'], 'course' => $args['course'], 'stage' => $args['stage'], 'code' => $args['code'], 'lang' => $args['lang'], 'lengua' => $args['lengua'], 'time' => date(\DateTime::RFC822, time())];
+        $t = microtime(true);
+        $micro = sprintf("%06d",($t - floor($t)) * 1000000);
+        $d = new \DateTime( date('Y-m-d H:i:s.'.$micro, $t) );
+        $time = $d->format("Y-m-d H:i:s.u");
+        $commonValues = ['id' => $args['studentCode'], 'birthday' => $args['studentDay'], 'birthmonth' => $args['studentMonth'], 'course' => $args['course'], 'stage' => $args['stage'], 'code' => $args['code'], 'lang' => $args['lang'], 'lengua' => $args['lengua'], 'time' => $time];
         $statement = 'INSERT INTO '.$args['target'].' (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s';
         $columns = [];
         $values = [];
@@ -183,14 +188,11 @@ final class PagesHelper extends Security\Authorization
             $mergeStmt->bindValue(':'.$col, $commonValues[$col]);
         }
         try {
-            $mergeStmt->execute();/*
-            if (!realpath(DATA_CACHE_DIR)) {
-                mkdir(DATA_CACHE_DIR, 0777, true);
+            $mergeStmt->execute();
+            if (realpath($dataDir) || mkdir($dataDir, 0777, true)) {
+                $data = implode('#', array_merge($commonCols, $columns)).PHP_EOL.implode('#', array_merge($commonValues, $values)).PHP_EOL;
+                file_put_contents($dataDir.'/data', $data, FILE_APPEND);
             }
-            $path = DATA_CACHE_DIR.'/'.$args['code'];
-            file_put_contents($path, implode('#', array_merge($commonCols, $columns)).PHP_EOL, FILE_APPEND);
-            file_put_contents($path, implode('#', array_merge($commonValues, $values)).PHP_EOL, FILE_APPEND);*/
-
         } catch (DBAL\Exception\TableNotFoundException $e) {
             $table = new DBAL\Schema\Table($args['target']);
             $table->addColumn('code', 'string', ['length' => 20, 'notnull' => true]);
