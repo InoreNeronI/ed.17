@@ -24,7 +24,6 @@ radiobuttons.on('click', function() {
     if (oldStatus === 'checked' || (typeof oldStatus === 'undefined' && $(this).prop('checked') === false)) {
         $(this).prop('checked', false);
         $(this).removeAttr('oldStatus');
-        fixRadioButtons(this);
     } else {
         $('input[name="'+$(this).prop('name')+'"]:radio').attr('oldStatus', false);
         $(this).attr('oldStatus', 'checked');
@@ -35,12 +34,6 @@ radiobuttons.on('click', function() {
         }
     }
 });
-
-function fixRadioButtons(elem) {
-    if ($('input[name="'+elem.name+'"]:checked').length === 0 && $('input[name="'+elem.name+'"]:required').length === 0) {
-        $('<input type="hidden" name="'+elem.name+'" value=""/>').appendTo($(elem).parents('form:first'));
-    }
-}
 
 {# Checkboxes: @see http://stackoverflow.com/a/7264962 #}
 var checkboxes = $('input:checkbox'), requiredCheckboxes = [];
@@ -91,16 +84,21 @@ var forms = document.getElementsByTagName('form');
 $.each(forms, function(index, elem) {
     var form = $(elem);
     form.on('submit', function() {
-        $(this).find('button').each(function() { this.disabled = true; });
-        $(this).find('input[type="checkbox"]:not(:checked)').each(function() {
-            $('<input type="hidden" name="'+this.name+'" value=""/>').appendTo(form);
+        $(this).find('input:radio:not(:checked)').each(function() {
+            if ($('input[name="'+this.name+'"]:checked').length === 0 &&
+                $('#'+this.id+':required').length === 0 &&
+                $('#'+this.name+'_empty').length === 0) {
+                $('<input id="'+this.name+'_empty" type="hidden" name="'+this.name+'" value=""/>').appendTo($(this));
+            }
+        });
+        $(this).find('input:checkbox:not(:checked)').each(function() {
+            $('<input type="hidden" name="'+this.name+'" value=""/>').appendTo($(this));
         });
     }).find('button').on('click', function() {
-        form.find('input[type="radio"]').each(function() {
-            fixRadioButtons(this);
+        form.find('input:radio').each(function() {
             $(this).next('span').css('color', $(this).is(':invalid') ? 'red' : 'inherit');
         });
-        form.find('input[type="checkbox"]').each(function() {
+        form.find('input:checkbox').each(function() {
             fixCheckBoxes(this);
             $(this).next('span').css('color', $(this).is(':invalid') ? 'red' : 'inherit');
         });
@@ -114,4 +112,7 @@ $.each(forms, function(index, elem) {
             {% endif %}
         }
     });
+});
+$('form').on('submit', function() {
+    $(this).find('button').each(function() { this.disabled = true; });
 });
