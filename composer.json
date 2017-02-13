@@ -1,39 +1,15 @@
 {
-  "autoload": {
-    "psr-4": {"": "src/",
-      "AppBundle\\": "AppBundle/"}
-  },
-  "autoload-dev": {
-    "psr-4": {"": "test/"}
-  },
   "require": {
-    "dunglas/action-bundle": "@stable",
-    "leaseweb/memcache-bundle": "@stable",
-    "lexik/form-filter-bundle": "@stable",
-    "symfony/dotenv": "3.3.x-dev",
-    "wikimedia/composer-merge-plugin": "@dev"
-  },
-  "require-dev": {
-    "elao/web-profiler-extra-bundle": "@dev",
     "incenteev/composer-parameter-handler": "@stable",
     "neronmoon/scriptsdev": "@stable",
-    "symfony/var-dumper": "@stable",
-    "symfony/web-profiler-bundle": "@stable",
-    "symfony/web-server-bundle": "3.3.x-dev"
+    "wikimedia/composer-merge-plugin": "@dev"
   },
   "scripts": {
-    "codefix": "php bin/php-cs.phar fix --config=.php_cs || true",
-    "deptrac": "php bin/deptrac.phar",
     "optimize": "@composer dump-autoload --optimize",
-    "phpunit": "php bin/phpunit.phar",
     "post-install-cmd": ["@composer optimize", "printf \"\\n\\tVendors installed succesfully\\n\\n\""],
     "post-update-cmd": ["@composer optimize", "printf \"\\n\\tVendors updated succesfully\\n\\n\""],
     "pre-install-cmd": "printf \"\\n\\tInstalling dependencies\\n\\n\"",
-    "pre-update-cmd": "printf \"\\n\\tUpdating dependencies\\n\\n\"",
-    "production-install": "@composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader",
-    "production-update": "@composer update --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader",
-    "security-check": "php bin/checker.phar security:check composer.lock",
-    "test": "php bin/phpunit.phar"
+    "pre-update-cmd": "printf \"\\n\\tUpdating dependencies\\n\\n\""
   },
   "scripts-dev": {
     "build": [
@@ -53,33 +29,18 @@
       "[ -d \"public/images/jquery-resize\" ] || mkdir \"public/images/jquery-resize\"",
       "cp -rv ./node_modules/jquery-resizable-dom/assets/* public/images/jquery-resize"
     ],
-    "bin-install": [
-      "[ -d \"bin\" ] || mkdir bin",
-      "[ -e \"bin/checker.phar\" ] || curl -Lo bin/checker.phar http://get.sensiolabs.org/security-checker.phar",
-      "[ -e \"bin/deptrac.phar\" ] || curl -Lo bin/deptrac.phar http://get.sensiolabs.de/deptrac.phar",
-      "[ -e \"bin/php-cs.phar\" ] || curl -Lo bin/php-cs.phar https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.0.0/php-cs-fixer.phar",
-      "[ -e \"bin/phpunit.phar\" ] || curl -Lo bin/phpunit.phar https://phar.phpunit.de/phpunit-old.phar",
-      "printf \"\\n\\tBinaries installed succesfully\\n\\n\"",
-      "printf \"\\n\\tInstalling Node Packaged Modules\\n\\n\"",
-      "npm install"
-    ],
-    "bin-update": [
-      "@bin-install",
-      "php bin/deptrac.phar selfupdate || true",
-      "php bin/php-cs.phar selfupdate || true",
-      "php bin/phpunit.phar --self-update || true",
-      "printf \"\\n\\tBinaries updated succesfully\\n\\n\"",
-      "printf \"\\n\\tUpdating Node Packaged Modules\\n\\n\"",
-      "npm update"
-    ],
     "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
-    "post-install-cmd": ["@bin-install", "@build", "@build-parameters"],
-    "post-update-cmd": ["@bin-update", "@build", "@build-parameters"]
+    "post-install-cmd": ["npm install", "@build", "@build-parameters"],
+    "post-update-cmd": ["npm update", "@build", "@build-parameters"]
   },
   "extra": {
+    "incenteev-parameters": [{
+      "file": "app/config/connection.yml",
+      "dist-file": "app/config/connection.dist.yml"
+    }],
     "merge-plugin": {
       "require": ["vendor-tiny/composer.json"],
-      "recurse": false,
+      "recurse": true,
       "replace": true,
       "merge-dev": true,
       "merge-extra": true,
@@ -88,7 +49,6 @@
   },
   "config": {
     "bin-dir": "bin",
-    "platform": {"php": "5.5.9"},
     "vendor-dir": "vendor"
   }
 }

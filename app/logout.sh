@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 
 /usr/bin/mysqldump -u root -pr00t17 -h localhost ed17probak --no-data > /var/www/probak/app/cache/data-structure.sql
 /usr/bin/mysqldump -u root -pr00t17 -h localhost ed17probak --no-create-info --ignore-table=ed17probak.ikasleak > /var/www/probak/app/cache/data.sql
