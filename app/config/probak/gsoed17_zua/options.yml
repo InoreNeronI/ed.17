@@ -1,7 +1,7 @@
 p00:
   text:
     - p00b_t10_f01
-    - p00b_t16
+    - p00b_t17
   simple:
     - p00b_t11_f01
     - p00b_t12_f01
@@ -15,13 +15,13 @@ p00:
     - p00b_t22
 p01:
   simple:
-    - p01b_t02
     - p01b_t03
     - p01b_t04
     - p01b_t06
     - p01b_t07
     - p01b_t08
     - p01b_t09
+    - p01b_t10
     - p01b_t12
     - p01b_t13
     - p01b_t14

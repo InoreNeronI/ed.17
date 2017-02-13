@@ -6,7 +6,7 @@ pageTitles: # All centered texts' codes
   - p06b_t01
   - p09b_t01
   - p10b_t01
-  - p10b_t24
+  - p11b_t01
 
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
@@ -31,5 +31,6 @@ pageAreaWidths:
     b: 100
   p10:
     b: 100
-
-totalPages: 10  # The final total pages
+  p11:
+    b: 100
+totalPages: 11  # The final total pages

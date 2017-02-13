@@ -14,7 +14,7 @@ p00:
     - p00b_t19
     - p00b_t20
     - p00b_t21
-      multiple:
+   multiple:
     - p00b_t24
     - p00b_t25
     - p00b_t26
