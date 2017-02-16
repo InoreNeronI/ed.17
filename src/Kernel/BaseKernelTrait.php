@@ -76,8 +76,8 @@ trait BaseKernelTrait
      */
     private static function getRequest(HttpFoundation\Request $request)
     {
-        $route = $request->attributes->get('_route');
-        $request->attributes->add(['_route' => is_null($route) ? static::$baseSlug : $route, 'messages' => static::getMessages()]);
+        $slug = $request->attributes->get('_route');
+        $request->attributes->add(['_route' => is_null($slug) ? static::$baseSlug : $slug, 'messages' => static::getMessages($slug)]);
 
         return $request;
     }

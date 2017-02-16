@@ -117,7 +117,7 @@ trait BaseControllerTrait
             }
             unset($requestMessages['validation']);
         }
-        $messages = Helper\TranslationsHelper::localize($requestMessages, $data, $this->langISOCodes, $request->getLocale());
+        $messages = is_null($requestMessages) ? [] : Helper\TranslationsHelper::localize($requestMessages, $data, $this->langISOCodes, $request->getLocale());
         $messages = array_merge($messages, ['validation' => $validation], ['metric' => $this->metric]);
         if (($session = $request->getSession()) && $session->isStarted() && $session->has('ErrorData')) {
             $messages = array_merge(['ErrorData' => $session->get('ErrorData')], $messages);

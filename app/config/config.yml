@@ -49,6 +49,8 @@ parameters:
       a:    edg051_testuak_lh_gsorta_a
       b:    edg051_testuak_lh_gsorta_b
       c:    edg051_testuak_lh_gsorta_c
+    # Simul
+    SB2017: edg051_testuak_dbh_simul
 
   # Database codes' map
   codes:
@@ -76,6 +78,8 @@ parameters:
     edg051_testuak_lh_gsorta_a:   ed17_lh_gso_a
     edg051_testuak_lh_gsorta_b:   ed17_lh_gso_b
     edg051_testuak_lh_gsorta_c:   ed17_lh_gso_c
+    # Simul
+    edg051_testuak_dbh_simul:     ed17_dbh_simul
 
   # Database tables' map
   targets:
@@ -103,3 +107,5 @@ parameters:
     edg051_testuak_lh_gsorta_a:   erantzunak_lh_gsorta_a
     edg051_testuak_lh_gsorta_b:   erantzunak_lh_gsorta_b
     edg051_testuak_lh_gsorta_c:   erantzunak_lh_gsorta_c
+    # Simul
+    edg051_testuak_dbh_simul:     erantzunak_dbh_simul

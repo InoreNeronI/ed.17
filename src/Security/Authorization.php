@@ -91,27 +91,7 @@ class Authorization extends Security\Connection\Connection
      * @throws \NoticeException
      */
     private function checkCredentialsLocal(array $args, $table)
-    {
-        //return $this->checkCredentialsDist($args, $table);
-        $data = $this->getConnection()->getSchemaManager()->listTableDetails('ikasleak');
-        //var_dump($data);exit;
-        var_dump($this->getConnection()->fetchAll('select * from ikasleak'));
-        $queryBuilder = $this->getQueryBuilder()
-            ->select('u.*')->from($table, 'u');
-        /** @var \Doctrine\DBAL\Driver\Statement $query */
-        $query = $queryBuilder->execute();
-
-        /** @var array $user */
-        $user = $query->fetch();
-        var_dump($user);
-
-        /** @see http://stackoverflow.com/a/25211533 */
-        /** @var \Doctrine\DBAL\Schema\MySqlSchemaManager $sm */
-        $sm = $this->getConnection()->getSchemaManager();
-        var_dump($sm->listTableDetails('ikasleak'));
-        /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
-        $queryBuilder = $this->getQueryBuilder();
-    }
+    {}
 
     /**
      * @param array        $user
@@ -170,7 +150,9 @@ class Authorization extends Security\Connection\Connection
             /* Mate: */
             (strpos($args, 'mat') !== false && $mod = 'mat') ||
             /* Zie: */
-            (strpos($args, 'zie') !== false && $mod = 'zie')) {
+            (strpos($args, 'zie') !== false && $mod = 'zie') ||
+            /* Simul: */
+            (strpos($args, 'simul') !== false && $mod = 'mat')) {
             return ['lengua' => $lengua = static::getLanguage($user, $mod), 'lang' => \def::langCodes()[$lengua], 'table' => $args];
         } else {
             throw new \NoticeException(sprintf('Access denied for student \'%s\'', $user['codalumno']));

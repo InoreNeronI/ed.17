@@ -89,7 +89,12 @@ class BaseController
     public function renderAction(HttpFoundation\Request $request, $expiryMinutes = 1)
     {
         $data = $this->getData($request);
-        $view = Handler\ViewHandler::render($request->get('_route'), $data);
+        $route = $request->get('_route');
+        if ($route === 'boarding' && strpos($data['code'], 'simul') !== false) {
+            $request = HttpFoundation\Request::create(null, $request->getMethod(), array_merge($request->query->all(), $request->request->all(), $data, ['_route' => 'onboard', 'flabel' => 'Simul']));
+            return $this->pageRenderAction($request);
+        }
+        $view = Handler\ViewHandler::render($route, $data);
 
         return static::processView($view, $expiryMinutes);
     }
@@ -98,15 +103,14 @@ class BaseController
      * Generates a response from the given request object.
      *
      * @param HttpFoundation\Request $request
-     * @param string|null            $page
+     * @param string|int             $page
      * @param int                    $expiryMinutes
      *
      * @return HttpFoundation\Response
      */
-    public function pageRenderAction(HttpFoundation\Request $request, $page, $expiryMinutes = 1)
+    public function pageRenderAction(HttpFoundation\Request $request, $page = 0, $expiryMinutes = 1)
     {
         $data = $this->getSplitPageData($request, $page);
-        //dump($data);
         $view = Handler\ViewHandler::render($request->get('_route'), $data);
 
         return static::processView($view, $expiryMinutes);

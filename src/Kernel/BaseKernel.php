@@ -49,8 +49,6 @@ class BaseKernel implements HttpKernel\HttpKernelInterface
      */
     private static function getMessages($slug = null)
     {
-        $slug = is_null($slug) ? static::$baseSlug : $slug;
-
         return array_merge(
             parseConfig(ROOT_DIR.\def::paths()['translations_dir'], 'layout'),
             parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', is_null($slug) ? static::$baseSlug : $slug),
