@@ -166,9 +166,9 @@ final class PagesHelper extends Security\Authorization
     {
         $commonCols = ['id', 'birthday', 'birthmonth', 'course', 'stage', 'code', 'lang', 'lengua', 'time'];
         $t = microtime(true);
-        $micro = sprintf("%06d",($t - floor($t)) * 1000000);
-        $d = new \DateTime( date('Y-m-d H:i:s.'.$micro, $t) );
-        $time = $d->format("Y-m-d H:i:s.u");
+        $micro = sprintf('%06d', ($t - floor($t)) * 1000000);
+        $d = new \DateTime(date('Y-m-d H:i:s.'.$micro, $t));
+        $time = $d->format('Y-m-d H:i:s.u');
         $commonValues = ['id' => $args['studentCode'], 'birthday' => $args['studentDay'], 'birthmonth' => $args['studentMonth'], 'course' => $args['course'], 'stage' => $args['stage'], 'code' => $args['code'], 'lang' => $args['lang'], 'lengua' => $args['lengua'], 'time' => $time];
         $statement = 'INSERT INTO '.$args['target'].' (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s';
         $columns = [];

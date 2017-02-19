@@ -66,30 +66,11 @@ pageTitles: # All centered texts' codes
   - p17a_t01
   - p18b_t03
 
-pageTextReplaces:
-  p09:
-    p09b_t03:
-      parameters: {maxLength: 10, minLength: 0}
-      template: 'partial/fields/input.html.twig'
-    p09b_t04:
-      parameters: {maxLength: 10, minLength: 0}
-      template: 'partial/fields/input.html.twig'
-    p09b_t05:
-      parameters: {maxLength: 10, minLength: 0}
-      template: 'partial/fields/input.html.twig'
-    p09b_t06:
-      parameters: {maxLength: 10, minLength: 0}
-      template: 'partial/fields/input.html.twig'
-    p09b_t07:
-      parameters: {maxLength: 10, minLength: 0}
-      template: 'partial/fields/input.html.twig'
-
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage
   p03:
     a: 40
-    b: 60
   p04:
     a: 40
   p09:

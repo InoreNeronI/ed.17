@@ -83,17 +83,6 @@ class Authorization extends Security\Connection\Connection
     }
 
     /**
-     * @param array  $args
-     * @param string $table
-     *
-     * @return array
-     *
-     * @throws \NoticeException
-     */
-    private function checkCredentialsLocal(array $args, $table)
-    {}
-
-    /**
      * @param array        $user
      * @param array|string $args
      *

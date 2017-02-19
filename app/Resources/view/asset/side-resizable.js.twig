@@ -1,25 +1,16 @@
+"use strict";
 
 {# @see http://stackoverflow.com/a/20321530 #}
 window.location.hash="no-back-button";
-window.location.hash="Again-No-back-button";    // again because google chrome don't insert first hash into history
+window.location.hash="Again-No-back-button";
 window.onhashchange=function(){window.location.hash="no-back-button";};
 
 {# Layout @see https://codepen.io/rstrahl/pen/eJZQej #}
 $('.side-left').resizable({ handleSelector: '.side-splitter', resizeHeight: false });
 
 {# RadioButtons: @see http://jsfiddle.net/dan74/6KYVP #}
-var radiobuttons = $('input:radio'), requiredRadios = [];
-radiobuttons.each(function() {
-    var item = this.id.split('-');
-    if (!(item[0] in requiredRadios)) {
-        requiredRadios[item[0]] = [];
-    }
-    requiredRadios[item[0]][item[1]] = $(this).prop('required');
-    if ($(this).prop('checked') !== false) {
-        $(this).attr('oldStatus', 'checked');
-    }
-});
-radiobuttons.on('click', function() {
+var requiredRadioboxes = {};
+$('input:radio').on('click', function() {
     var oldStatus = $(this).attr('oldStatus');
     if (oldStatus === 'checked' || (typeof oldStatus === 'undefined' && $(this).prop('checked') === false)) {
         $(this).prop('checked', false);
@@ -29,64 +20,66 @@ radiobuttons.on('click', function() {
         $(this).attr('oldStatus', 'checked');
         {# @see http://stackoverflow.com/a/24392931 #}
         var key, item = this.id.split('-');
-        for (key in requiredRadios[item[0]]) {
+        for (key in requiredRadioboxes[item[0]]) {
             $('#'+item[0]+'-'+key).get(0).setCustomValidity('');
         }
+    }
+}).each(function() {
+    var item = this.id.split('-');
+    if (!(item[0] in requiredRadioboxes)) {
+        requiredRadioboxes[item[0]] = {};
+    }
+    requiredRadioboxes[item[0]][item[1]] = $(this).prop('required');
+    if ($(this).prop('checked') !== false) {
+        $(this).attr('oldStatus', 'checked');
     }
 });
 
 {# Checkboxes: @see http://stackoverflow.com/a/7264962 #}
-var checkboxes = $('input:checkbox'), requiredCheckboxes = [];
-checkboxes.each(function() {
+var requiredCheckboxes = {}, fixCheckBoxes = function(elem) {
+    var item = elem.id.split('-'), code = item[1], prefix = item[0];
+    if (code in requiredCheckboxes[prefix] && $(elem).prop('checked') === false) {
+        var key, realRequiredCheckboxes = {};
+        realRequiredCheckboxes[prefix] = [];
+        for (key in requiredCheckboxes[prefix]) {
+            if (requiredCheckboxes[prefix][key] !== false) {
+                realRequiredCheckboxes[prefix].push(key);
+            }
+        }
+        var requiredOptions = $('#' + prefix + '-' + realRequiredCheckboxes[prefix].join(',#' + prefix + '-')), requiredOptionsLength = requiredOptions.length;
+        $(requiredOptions).each(function() {
+            this.checked ? requiredOptionsLength-- : null;
+        });
+        for (key in realRequiredCheckboxes[prefix]) {
+            if (requiredOptionsLength < requiredOptions.length) {
+                $(requiredOptions.eq(key)).removeAttr('required').get(0).setCustomValidity('');
+            } else {
+                $(requiredOptions.eq(key)).prop('required', requiredCheckboxes[prefix][code]);
+            }
+        }
+    } else {
+        for (var key in requiredCheckboxes[prefix]) {
+            $('#'+prefix+'-'+key).removeAttr('required').get(0).setCustomValidity('');
+        }
+    }
+    $(elem).next('span').css('color', $(elem).is(':invalid') ? 'red' : 'inherit');
+};
+$('input:checkbox').each(function() {
     var item = this.id.split('-');
     if (!(item[0] in requiredCheckboxes)) {
-        requiredCheckboxes[item[0]] = [];
+        requiredCheckboxes[item[0]] = {};
     }
     requiredCheckboxes[item[0]][item[1]] = $(this).prop('required');
 });
-checkboxes.on('click', function() { fixCheckBoxes(this); });
-
-function fixCheckBoxes(elem) {
-    var key, item = elem.id.split('-');
-
-    if (item[1] in requiredCheckboxes[item[0]] && $(elem).prop('checked') === false) {
-        fixItemCheckBoxes(item[1], item[0]);
-    } else {
-        for (key in requiredCheckboxes[item[0]]) {
-            $('#'+item[0]+'-'+key).removeAttr('required').get(0).setCustomValidity('');
-        }
-    }
-}
-
-function fixItemCheckBoxes(code, prefix) {
-    var key, realRequiredCheckboxes = [];
-    realRequiredCheckboxes[prefix] = [];
-    for (key in requiredCheckboxes[prefix]) {
-        if (requiredCheckboxes[prefix][key] !== false) {
-            realRequiredCheckboxes[prefix].push(key);
-        }
-    }
-    var requiredOptions = $('#' + prefix + '-' + realRequiredCheckboxes[prefix].join(',#' + prefix + '-')), requiredOptionsLength = requiredOptions.length;
-    $(requiredOptions).each(function () {
-        this.checked ? requiredOptionsLength-- : null;
-    });
-    for (key in realRequiredCheckboxes[prefix]) {
-        if (requiredOptionsLength < requiredOptions.length) {
-            $(requiredOptions.eq(key)).removeAttr('required');
-        } else {
-            $(requiredOptions.eq(key)).prop('required', requiredCheckboxes[prefix][code]);
-        }
-    }
-}
 
 {# Forms #}
 var forms = document.getElementsByTagName('form');
 $.each(forms, function(index, elem) {
     var form = $(elem);
     form.on('submit', function() {
+        $(this).find('button').each(function() { this.disabled = true; });
         $(this).find('input:radio:not(:checked)').each(function() {
             if ($('input[name="'+this.name+'"]:checked').length === 0 &&
-                $('#'+this.id+':required').length === 0 &&
                 $('#'+this.name+'_empty').length === 0) {
                 $('<input id="'+this.name+'_empty" type="hidden" name="'+this.name+'" value=""/>').appendTo($(this));
             }
@@ -106,13 +99,11 @@ $.each(forms, function(index, elem) {
             $(forms[1]).not(':submit').find('input').clone().hide().appendTo(
                 form.attr('action', parseInt({{ page|number_format }})-1)
             );
-        } else if ($(this).hasClass('right-button')) {
-            {% if page|number_format == totalPages|number_format %}
-                form.attr('action', '/').attr('method', 'get');
-            {% endif %}
         }
+        {% if page|number_format == totalPages|number_format %}
+            if ($(this).hasClass('right-button')) {
+                form.attr('action', '/').attr('method', 'get');
+            }
+        {% endif %}
     });
-});
-$('form').on('submit', function() {
-    $(this).find('button').each(function() { this.disabled = true; });
 });

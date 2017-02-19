@@ -49,6 +49,7 @@ class DataExtractCommand extends Console\Command\Command
         $connTemporary = DBAL\DriverManager::getConnection($dbTargetParams);
         $connTemporary->getSchemaManager()->createDatabase($dbTemporary);
         $dbTargetParams['dbname'] = $dbTemporary;
+        $dbTargetParams['wrapperClass'] = 'Doctrine\DBAL\PDOConnection';
         $conn = DBAL\DriverManager::getConnection($dbTargetParams);
 
         // @see https://github.com/doctrine/dbal/blob/v2.5.12/lib/Doctrine/DBAL/Tools/Console/Command/ImportCommand.php
@@ -63,11 +64,11 @@ class DataExtractCommand extends Console\Command\Command
                         // Required due to "MySQL has gone away!" issue
                         $stmt->fetch();
                         $stmt->closeCursor();
-                        $lines++;
+                        ++$lines;
                     } while ($stmt->nextRowset());
-                    $output->write(sprintf('%d statements executed!', $lines) . PHP_EOL);
+                    $output->write(sprintf('%d statements executed!', $lines).PHP_EOL);
                 } catch (\PDOException $e) {
-                    $output->write('error!' . PHP_EOL);
+                    $output->writeln('Error!');
                     throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
                 }
             } else {
@@ -75,16 +76,15 @@ class DataExtractCommand extends Console\Command\Command
                 $stmt = $conn->prepare($stmt);
                 $rs = $stmt->execute();
                 if ($rs) {
-                    $output->writeln('OK!' . PHP_EOL);
+                    $output->write('OK! ');
                 } else {
                     $error = $stmt->errorInfo();
-                    $output->write('error!' . PHP_EOL);
+                    $output->writeln('Error!');
                     throw new \RuntimeException($error[2], $error[0]);
                 }
                 $stmt->closeCursor();
             }
         }
-
     }
 
     /**
@@ -100,11 +100,10 @@ class DataExtractCommand extends Console\Command\Command
         $sql = '';
 
         while (!feof($file)) {
-
             $row = fgets($file);
 
-            // 1. ignore empty string and comment row
-            if (trim($row) == '' || strpos($row, 'DROP TABLE') !== false || strpos($row, 'LOCK TABLE') !== false || preg_match('/^\s*(#|--\s|\/\*)/sUi', $row)) {
+            // 1. ignore empty string, drops, locks and comment row
+            if (trim($row) === '' || strpos($row, 'DROP TABLE') !== false || strpos($row, 'LOCK TABLE') !== false || preg_match('/^\s*(#|--\s|\/\*)/sUi', $row)) {
                 continue;
             }
 
@@ -124,7 +123,7 @@ class DataExtractCommand extends Console\Command\Command
                 if (static::isQuoted($delimiterOffset, $row)) {
                     $offset = $delimiterOffset + strlen($delimiter);
                 } else {
-                    $sql = trim($sql . ' ' . trim(substr($row, 0, $delimiterOffset)));
+                    $sql = trim($sql.' '.trim(substr($row, 0, $delimiterOffset)));
                     static::$statements[] = $sql;
 
                     $row = substr($row, $delimiterOffset + strlen($delimiter));
@@ -132,7 +131,7 @@ class DataExtractCommand extends Console\Command\Command
                     $sql = '';
                 }
             }
-            $sql = trim($sql . ' ' . $row);
+            $sql = trim($sql.' '.$row);
         }
         if (strlen($sql) > 0) {
             static::$statements[] = $row;
@@ -145,7 +144,8 @@ class DataExtractCommand extends Console\Command\Command
      * Remove comments from sql
      *
      * @param string $sql
-     * @param boolean $isMultiComment
+     * @param bool   $isMultiComment
+     *
      * @return string
      */
     private static function clearSQL($sql, &$isMultiComment)
@@ -157,7 +157,7 @@ class DataExtractCommand extends Console\Command\Command
             } else {
                 $sql = '';
             }
-            if(trim($sql) == ''){
+            if (trim($sql) === '') {
                 return $sql;
             }
         }
@@ -168,10 +168,10 @@ class DataExtractCommand extends Console\Command\Command
             if (static::isQuoted($foundOn, $sql)) {
                 $offset = $foundOn + strlen($comment);
             } else {
-                if (substr($comment, 0, 2) == '/*') {
+                if (substr($comment, 0, 2) === '/*') {
                     $closedOn = strpos($sql, '*/', $foundOn);
                     if ($closedOn !== false) {
-                        $sql = substr($sql, 0, $foundOn) . substr($sql, $closedOn + 2);
+                        $sql = substr($sql, 0, $foundOn).substr($sql, $closedOn + 2);
                     } else {
                         $sql = substr($sql, 0, $foundOn);
                         $isMultiComment = true;
@@ -182,28 +182,34 @@ class DataExtractCommand extends Console\Command\Command
                 }
             }
         }
+
         return $sql;
     }
 
     /**
      * Check if "offset" position is quoted
      *
-     * @param int $offset
+     * @param int    $offset
      * @param string $text
-     * @return boolean
+     *
+     * @return bool
      */
     private static function isQuoted($offset, $text)
     {
-        if ($offset > strlen($text))
+        if ($offset > strlen($text)) {
             $offset = strlen($text);
+        }
 
         $isQuoted = false;
-        for ($i = 0; $i < $offset; $i++) {
-            if ($text[$i] == "'")
+        for ($i = 0; $i < $offset; ++$i) {
+            if ($text[$i] === "'") {
                 $isQuoted = !$isQuoted;
-            if ($text[$i] == "\\" && $isQuoted)
-                $i++;
+            }
+            if ($text[$i] === '\\' && $isQuoted) {
+                ++$i;
+            }
         }
+
         return $isQuoted;
     }
 }

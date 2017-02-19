@@ -10,7 +10,8 @@ define('ROOT_DIR', dirname(__DIR__));
 define('TURBO', true);
 define('CONFIG_DIR', ROOT_DIR.'/app/config');
 
-function includeIfExists($file) {
+function includeIfExists($file)
+{
     if (file_exists($file)) {
         return include $file;
     }

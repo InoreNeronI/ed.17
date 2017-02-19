@@ -77,11 +77,11 @@ trait BaseControllerTrait
 
     /**
      * @param HttpFoundation\Request $request
-     * @param string                 $page
+     * @param string|int             $page
      *
      * @return array
      */
-    private function getSplitPageData(HttpFoundation\Request $request, $page)
+    private function getSplitPageData(HttpFoundation\Request $request, $page = 0)
     {
         if ($request->getMethod() === 'POST') {
             /** @var array $args */

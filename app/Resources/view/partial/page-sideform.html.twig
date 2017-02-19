@@ -153,15 +153,15 @@
     <div class="cb pt1 pt2-ns pt3-l tc">
         {% if pageAreaSkip is not null and not isFirstPage %}
             <div class="fl tc w-100 w-50-ns">
-                <button class="{{ leftButtonClass }}">{{ leftButtonText }}</button>
+                <button type="submit" class="{{ leftButtonClass }}">{{ leftButtonText }}</button>
             </div>
             <div class="dib tc w-100 w-50-ns">
-                <button class="{{ rightButtonClass }}">{{ rightButtonText }}</button>
+                <button type="submit" class="{{ rightButtonClass }}">{{ rightButtonText }}</button>
             </div>
         {% elseif not isFirstPage and side is same as('a') %}
-            <button class="{{ leftButtonClass }}">{{ leftButtonText }}</button>
+            <button type="submit" class="{{ leftButtonClass }}">{{ leftButtonText }}</button>
         {% elseif side is same as('b') %}
-            <button class="{{ rightButtonClass }}">{{ rightButtonText }}</button>
+            <button type="submit" class="{{ rightButtonClass }}">{{ rightButtonText }}</button>
         {% endif %}
     </div>
 </form>

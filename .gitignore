@@ -23,6 +23,9 @@ public/images/*
 !public/images/*.jpg
 !public/images/*.png
 !public/images/ikasleak/
+!public/media
+public/media/*
+!public/media/*_proba*
 vendor/
 !vendor-tiny/
 vendor-tiny/*

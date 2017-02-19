@@ -2,13 +2,12 @@
 {# @see http://caniuse.com/#search=flexbox #}
 
 *, *:before, *:after {
-    -webkit-box-sizing: border-box;
     box-sizing: border-box;
     {# @see http://stackoverflow.com/a/880518 #}
-    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
-    -khtml-user-select: none; /* webkit (konqueror) browsers */
-    -moz-user-select: none; /* mozilla browsers */
-    -ms-user-select: none; /* IE10+ */
+    -webkit-user-select: none; {# webkit (safari, chrome) browsers #}
+    -khtml-user-select: none; {# webkit (konqueror) browsers #}
+    -moz-user-select: none; {# mozilla browsers #}
+    -ms-user-select: none; {# IE10+ #}
 }
 
 body {
@@ -17,10 +16,12 @@ body {
 
 .side-container {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
     height: 100vh;
     overflow: hidden;
     width: 100%;
@@ -32,7 +33,9 @@ body {
 .side-splitter {
     background-color: #727272;{#background: url("/images/jquery-resize/vsizegrip.png") center center no-repeat #e2e2e2;#}
     cursor: col-resize;
-    flex: 0 0 auto;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
     width: .25rem;
 }
 
@@ -49,12 +52,16 @@ body {
 }
 
 .side-left {
-    flex: 0 0 auto;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
     {#white-space: nowrap;#}{# Expands the text to the right and forces horizontal scroll. #}
 }
 
 .side-right {
-    flex: 1 1 auto;
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
 }
 .side-submit {
     {#box-shadow: -.1rem 0 gray, 0 0 gray, .1rem 0 gray, 0 -.1rem gray;#}
@@ -65,28 +72,25 @@ body {
 }
 
 {# @see https://gist.github.com/pom-pom/10255961 #}
-input[type=radio],
-input[type=checkbox] {
+input[type="radio"],
+input[type="checkbox"] {
     position: absolute;
     visibility: hidden;
 }
-input[type=radio] + span:before {
-    content: "\f10c"; /* Radio Unchecked */
+input[type="radio"] + span,
+input[type="checkbox"] + span {
     font-family: 'FontAwesome';
     font-size: 1.3rem;
 }
-input[type=radio]:checked + span:before {
-    content: "\f05d"; /* Radio Checked */
-    font-family: 'FontAwesome';
-    font-size: 1.3rem;
+input[type="radio"] + span:before {
+    content: "\f10c"; {# Radio Unchecked #}
+}
+input[type="radio"]:checked + span:before {
+    content: "\f05d"; {# Radio Checked #}
 }
 input[type="checkbox"] + span:before {
-    content: "\f096"; /* Checkbox Unchecked */
-    font-family: 'FontAwesome';
-    font-size: 1.3rem;
+    content: "\f096"; {# Checkbox Unchecked #}
 }
 input[type="checkbox"]:checked + span:before {
-    content: "\f046"; /* Checkbox Checked */
-    font-family: 'FontAwesome';
-    font-size: 1.3rem;
+    content: "\f046"; {# Checkbox Checked #}
 }

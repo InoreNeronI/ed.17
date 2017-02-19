@@ -92,7 +92,7 @@ class BaseController
         $route = $request->get('_route');
         if ($route === 'boarding' && strpos($data['code'], 'simul') !== false) {
             $request = HttpFoundation\Request::create(null, $request->getMethod(), array_merge($request->query->all(), $request->request->all(), $data, ['_route' => 'onboard', 'flabel' => 'Simul']));
-            return $this->pageRenderAction($request);
+            $data = $this->getSplitPageData($request);
         }
         $view = Handler\ViewHandler::render($route, $data);
 
