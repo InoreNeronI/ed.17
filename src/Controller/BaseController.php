@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller;
 use App\Handler;
+use App\Helper;
 use Symfony\Component\HttpFoundation;
 
 /**
@@ -91,7 +92,9 @@ class BaseController
         $data = $this->getData($request);
         $route = $request->get('_route');
         if ($route === 'boarding' && strpos($data['code'], 'simul') !== false) {
-            $request = HttpFoundation\Request::create(null, $request->getMethod(), array_merge($request->query->all(), $request->request->all(), $data, ['_route' => 'onboard', 'flabel' => 'Simul']));
+            $route = 'onboard';
+            $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $route), $data, $this->langISOCodes);
+            $request = HttpFoundation\Request::create(null, $request->getMethod(), array_merge($request->request->all(), $messages, ['flabel' => 'Simul']));
             $data = $this->getSplitPageData($request);
         }
         $view = Handler\ViewHandler::render($route, $data);
