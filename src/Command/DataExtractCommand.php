@@ -49,7 +49,7 @@ class DataExtractCommand extends Console\Command\Command
         $connTemporary = DBAL\DriverManager::getConnection($dbTargetParams);
         $connTemporary->getSchemaManager()->createDatabase($dbTemporary);
         $dbTargetParams['dbname'] = $dbTemporary;
-        $dbTargetParams['wrapperClass'] = 'Doctrine\DBAL\PDOConnection';
+        //$dbTargetParams['wrapperClass'] = 'Doctrine\DBAL\PDOConnection';
         $conn = DBAL\DriverManager::getConnection($dbTargetParams);
 
         // @see https://github.com/doctrine/dbal/blob/v2.5.12/lib/Doctrine/DBAL/Tools/Console/Command/ImportCommand.php
