@@ -28,7 +28,7 @@ class ResponseEvent extends EventDispatcher\Event
     {
         $this->response = $response;
         $this->request = $request;
-        $this->handleSession();
+        $this->handleSession('/app/cache/session');
     }
 
     /**
@@ -48,12 +48,12 @@ class ResponseEvent extends EventDispatcher\Event
     }
 
     /**
-     * @param int    $expireTime
      * @param string $savePath
+     * @param int    $expireTime
      */
-    private function handleSession($expireTime = 1, $savePath = '/app/Resources/session')
+    private function handleSession($savePath, $expireTime = 1)
     {
-        $sessionHandler = new Handler\Session\SessionHandler($expireTime, $savePath);
+        $sessionHandler = new Handler\Session\SessionHandler($savePath, $expireTime);
         if ($sessionHandler->startSession()) {
             $session = $sessionHandler->getSession();
             $isError = $this->response->isRedirect() || $this->response->getContent() === '';

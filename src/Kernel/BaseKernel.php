@@ -22,8 +22,8 @@ class BaseKernel implements HttpKernel\HttpKernelInterface
      */
     public function __construct($debug)
     {
-        static::$baseUrl = \def::routes()['home_url_path'];
-        static::$baseSlug = \def::routes()['home_url_slug'];
+        static::$baseUrl = \def::homePath();
+        static::$baseSlug = \def::homeSlug();
         static::$debug = (bool) $debug;
 
         /* @var EventDispatcher\EventDispatcher $dispatcher */
@@ -33,7 +33,7 @@ class BaseKernel implements HttpKernel\HttpKernelInterface
         $this->resolver = new HttpKernel\Controller\ControllerResolver();
 
         /* @var Handler\RouteHandler $routing */
-        $routing = new Handler\RouteHandler(\def::routes()['routes'], ROOT_DIR.\def::paths()['translations_dir'], static::$baseUrl, static::$baseSlug);
+        $routing = new Handler\RouteHandler(\def::routes(), ROOT_DIR.\def::paths()['translations_dir'], static::$baseUrl, static::$baseSlug);
 
         /* @var Routing\RequestContext $context */
         $context = new Routing\RequestContext();

@@ -29,8 +29,8 @@ class SessionHandler
     /**
      * SessionHandler constructor.
      *
-     * @param int    $expireTime
      * @param string $savePath   path to session file itself
+     * @param int    $expireTime
      * @param array  $options    Session configuration options:
      *                           cache_limiter, "" (use "0" to prevent headers from being sent entirely).
      *                           cookie_domain, ""
@@ -60,7 +60,7 @@ class SessionHandler
      *                           url_rewriter.tags, "a=href,area=href,frame=src,form=,fieldset="
      * @param bool   $debug
      */
-    public function __construct($expireTime = 10, $savePath = '/app/Resources/session', array $options = [], $debug = DEBUG)
+    public function __construct($savePath = null, $expireTime = 10, array $options = [], $debug = DEBUG)
     {
         $this->expireTime = $expireTime;
         // Get session save-path.
@@ -69,7 +69,7 @@ class SessionHandler
         } else {
             $savePath = ROOT_DIR.$savePath;
         }
-        if (!is_writable($savePath)) {
+        if (!is_writable($savePath) && mkdir($savePath) === false) {
             throw new \RuntimeException('Couldn\'t save to Sessions\' default path because write access isn\'t granted');
         }
         $this->savePath = $savePath;
@@ -93,7 +93,7 @@ class SessionHandler
      */
     public function startSession()
     {
-        return $this->debug ? $this->doctrineSession('ed_2017_session')->start() : $this->filesystemSession()->start();
+        return /*$this->debug ? $this->doctrineSession('ed_2017_session')->start() : */$this->filesystemSession()->start();
     }
 
     /**

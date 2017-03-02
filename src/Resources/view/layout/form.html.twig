@@ -3,7 +3,7 @@
 {% block styles %}
     {{ parent() }}
     <style type="text/css">
-        {% include '@App/asset/bg-resize.css.twig' with { 'bgUrl': random(images.backgrounds) } %}
+        {% include '@App/asset/bg-resize.css.twig' with { 'bgUrl': bgUrl|default(random(images.backgrounds)) } %}
     </style>
 {% endblock %}
 
@@ -32,6 +32,6 @@
 {% block scripts %}
     {{ parent() }}
     <script src="/scripts/jquery-resize/jquery.debouncedresize.js"></script>
-    {#<script src="/scripts/jquery-resize/jquery.throttledresize.js"></script>#}
+    <script src="/scripts/jquery-resize/jquery.throttledresize.js"></script>
     <script>{% include '@App/asset/bg-resize.js.twig' %}</script>
 {% endblock %}
