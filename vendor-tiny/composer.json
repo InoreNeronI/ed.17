@@ -3,9 +3,10 @@
   "author": "ISEI - IVEI | Irakas Sistema Ebaluatu eta Ikertzeko Erakundea - Instituto Vasco de Evaluación e Investigación Educativa",
   "homepage": "http://ediagnostikoak.net/",
   "require": {
-    "php": "^5.4.0|^7.0",
+    "php": ">=5.4.0 <7.2.0",
     "ext-pdo_mysql": "*",
     "ext-pdo_sqlite": "*",
+    "incenteev/composer-parameter-handler": "@stable",
     "doctrine/dbal": "@stable",
     "symfony/event-dispatcher": "@stable",
     "symfony/http-kernel": "@stable",
@@ -19,8 +20,12 @@
     "symfony/var-dumper": "@stable"
   },
   "scripts": {
-    "post-install-cmd": ["@composer dump-autoload --optimize"],
-    "post-update-cmd": ["@composer dump-autoload --optimize"]
+    "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
+    "optimize": "@composer dump-autoload --optimize",
+    "post-install-cmd": ["@composer optimize", "printf \"\\n\\tVendors installed succesfully\\n\\n\"", "@build-parameters"],
+    "post-update-cmd": ["@composer optimize", "printf \"\\n\\tVendors updated succesfully\\n\\n\"", "@build-parameters"],
+    "pre-install-cmd": "printf \"\\n\\tInstalling dependencies\\n\\n\"",
+    "pre-update-cmd": "printf \"\\n\\tUpdating dependencies\\n\\n\""
   },
   "autoload": {
     "psr-4": {"": "../src/"}
@@ -28,8 +33,9 @@
   "minimum-stability": "stable",
   "extra": {
     "incenteev-parameters": [{
-      "file": "app/config/connection.yml",
-      "dist-file": "app/config/connection.dist.yml"}]
+      "file": "../app/connection.yml",
+      "dist-file": "../app/connection.dist.yml"}
+    ]
   },
   "config": {
     "bin-dir": "../bin",

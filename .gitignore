@@ -5,14 +5,10 @@
 .idea/
 .php_cs.cache
 app/cache/
-app/config/connection.yml
+app/connection.yml
+app/data*
 app/logs/
-!app/Resources/data/
-app/Resources/data/*
-!app/Resources/data/.gitkeep
-!app/Resources/session/
-app/Resources/session/*
-!app/Resources/session/.gitkeep
+app/session/
 bin/
 node_modules/
 !public/

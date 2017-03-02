@@ -1,13 +1,13 @@
 {
   "require": {
-    "incenteev/composer-parameter-handler": "@stable",
     "neronmoon/scriptsdev": "@stable",
     "wikimedia/composer-merge-plugin": "@dev"
   },
   "scripts": {
+    "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
     "optimize": "@composer dump-autoload --optimize",
-    "post-install-cmd": ["@composer optimize", "printf \"\\n\\tVendors installed succesfully\\n\\n\""],
-    "post-update-cmd": ["@composer optimize", "printf \"\\n\\tVendors updated succesfully\\n\\n\""],
+    "post-install-cmd": ["@composer optimize", "printf \"\\n\\tVendors installed succesfully\\n\\n\"", "@build-parameters"],
+    "post-update-cmd": ["@composer optimize", "printf \"\\n\\tVendors updated succesfully\\n\\n\"", "@build-parameters"],
     "pre-install-cmd": "printf \"\\n\\tInstalling dependencies\\n\\n\"",
     "pre-update-cmd": "printf \"\\n\\tUpdating dependencies\\n\\n\""
   },
@@ -22,29 +22,29 @@
       "cp -rv ./node_modules/jquery-debounced-and-throttled-resize/jquery.* public/scripts/jquery-resize",
       "cp -rv ./node_modules/jquery-resizable-dom/dist/jquery-* public/scripts/jquery-resize",
       "[ -d \"public/styles\" ] || cp -rv ./node_modules/tachyons/css public/styles",
-      "cp -rv ./node_modules/font-awesome/fonts public",
-      "cp -rv ./node_modules/font-awesome/css/font-awesome.min.css public/styles",
-      "cp -rv ./app/Resources/public/scripts/* public/scripts || true",
-      "cp -rv ./app/Resources/public/styles/* public/styles || true",
+      "[ -d \"public/fonts\" ] || cp -rv ./node_modules/font-awesome/fonts public",
+      "[ -d \"public/fonts\" ] || cp -rv ./node_modules/font-awesome/css/font-awesome.min.css public/styles",
+      "cp -rv ./src/Resources/public/scripts/* public/scripts || true",
+      "cp -rv ./src/Resources/public/styles/* public/styles || true",
       "[ -d \"public/images/jquery-resize\" ] || mkdir \"public/images/jquery-resize\"",
-      "cp -rv ./node_modules/jquery-resizable-dom/assets/* public/images/jquery-resize"
+      "cp -rv ./node_modules/jquery-resizable-dom/assets/* public/images/jquery-resize",
+      "rm -rf ./vendor"
     ],
-    "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
-    "post-install-cmd": ["npm install", "@build", "@build-parameters"],
-    "post-update-cmd": ["npm update", "@build", "@build-parameters"]
+    "post-install-cmd": ["npm install", "@build"],
+    "post-update-cmd": ["npm update", "@build"]
   },
   "extra": {
     "incenteev-parameters": [{
-      "file": "app/config/connection.yml",
-      "dist-file": "app/config/connection.dist.yml"
-    }],
+      "file": "app/connection.yml",
+      "dist-file": "app/connection.dist.yml"}
+    ],
     "merge-plugin": {
       "require": ["vendor-tiny/composer.json"],
       "recurse": true,
       "replace": true,
       "merge-dev": true,
-      "merge-extra": true,
-      "merge-extra-deep": true
+      "merge-extra": false,
+      "merge-extra-deep": false
     }
   },
   "config": {

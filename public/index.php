@@ -8,14 +8,14 @@ if (PHP_VERSION_ID < 50400) {
 define('ROOT_DIR', dirname(__DIR__));
 
 /* @var Composer\Autoload\ClassLoader */
-require ROOT_DIR.'/app/autoload.php';
+require ROOT_DIR.'/src/Resources/script/loader/autoload.php';
 
 if (DEBUG) {
     Symfony\Component\Debug\Debug::enable();
 }
 
 /** @var App\Kernel\MicroKernel|App\Kernel\BaseKernel $kernel */
-$app = TURBO ? require ROOT_DIR.'/app/config/include/constants.php' : new App\Kernel\MicroKernel(DEBUG);
+$app = TURBO ? require ROOT_DIR.'/src/Resources/script/loader/constants.php' : new App\Kernel\MicroKernel(DEBUG);
 //$app->loadClassCache();
 
 // Handles and sends a Request object based on the current PHP global variables

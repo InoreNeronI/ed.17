@@ -1,7 +1,7 @@
 <?php
 
 /** @author Martin Mozos <martinmozos@gmail.com> */
-includeIfExists(ROOT_DIR.'/app/config/include/errorHandler.php');
+includeIfExists(ROOT_DIR.'/src/Resources/config/errorHandler.php');
 
 define('DEBUG', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' &&   // @see http://stackoverflow.com/a/5879078
                 php_sapi_name() !== 'cli-server' &&

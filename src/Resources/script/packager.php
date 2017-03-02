@@ -1,7 +1,14 @@
+#!/usr/bin/env php
 <?php
 
-/** @see https://gist.github.com/azihassan/3093972 */
-define('USAGE', 'Usage: php '.$argv[0].' --package package_name --path '.__DIR__.' [--dependencies] [--overwrite] [--nocache] [--withdepends] [--help]');
+/** @author Martin Mozos <martinmozos@gmail.com> */
+if (PHP_VERSION_ID < 50400) {
+    /* @throw \Exception */
+    throw new \Exception('At least PHP 5.4 is required; using the latest version is highly recommended.');
+}
+define('ROOT_DIR', dirname(dirname(dirname(__DIR__))));
+/* @see https://gist.github.com/azihassan/3093972 */
+define('USAGE', 'Usage: php '.$argv[0].' --package package_name --path '.ROOT_DIR.'/tazpkg [--dependencies] [--overwrite] [--nocache] [--withdepends] [--help]');
 
 if ($argc === 1) {
     \packager::getUsage(USAGE);

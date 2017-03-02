@@ -6,9 +6,8 @@ if (PHP_VERSION_ID < 50400) {
     /* @throw \Exception */
     throw new \Exception('At least PHP 5.4 is required; using the latest version is highly recommended.');
 }
-define('ROOT_DIR', dirname(__DIR__));
+define('ROOT_DIR', dirname(dirname(dirname(__DIR__))));
 define('TURBO', true);
-define('CONFIG_DIR', ROOT_DIR.'/app/config');
 
 function includeIfExists($file)
 {
@@ -26,7 +25,7 @@ if ((!$loader = includeIfExists(ROOT_DIR.sprintf('/vendor%s/autoload.php', TURBO
     );
     exit(1);
 }
-if ((!$functions = includeIfExists(CONFIG_DIR.'/include/functions.php'))) {
+if ((!$functions = includeIfExists(ROOT_DIR.'/src/Resources/script/loader/functions.php'))) {
     fwrite(STDERR,
         'Missing dependencies'.PHP_EOL
     );

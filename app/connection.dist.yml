@@ -12,9 +12,10 @@ parameters:
             user:     ed17erab
             password: ~
             charset:  utf8mb4
+            #server_version: 5.6
         local:
             driver:   pdo_sqlite
-            path:     '%kernel.root_dir%/Resources/data/data.db3'
+            path:     '%kernel.root_dir%/data.db3'
     users:
         # Users distribution table
         dist:         ikasleak

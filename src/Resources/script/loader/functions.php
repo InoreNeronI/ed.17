@@ -10,6 +10,8 @@ final class def extends defDB
     private static $dbCodes;
     private static $dbSecurity;
     private static $dbTargets;
+    private static $homePath;
+    private static $homeSlug;
     private static $langCodes;
     private static $langISOCodes;
     private static $metric;
@@ -23,7 +25,7 @@ final class def extends defDB
     private static function loadRoutes()
     {
         if (!static::$routesLoaded) {
-            static::$routes = parseConfig(CONFIG_DIR, 'routes');
+            static::$routes = parseConfig(CONFIG_DIR, 'routes')['routes'];
             static::$routesLoaded = true;
         }
     }
@@ -47,10 +49,12 @@ final class def extends defDB
     private static function loadConfig()
     {
         if (!static::$configLoaded) {
-            $config = parseConfig(CONFIG_DIR, 'config');
+            $config = parseConfig(CONFIG_DIR, 'config')['configuration'];
             static::$dbCodes = $config['codes'];
             static::$dbSecurity = $config['security'];
             static::$dbTargets = $config['targets'];
+            static::$homePath = $config['homepage_path'];
+            static::$homeSlug = $config['homepage_slug'];
             static::$langCodes = $config['languages'];
             static::$langISOCodes = array_unique(array_values($config['languages']));
             static::$stages = $config['stages'];
@@ -77,6 +81,20 @@ final class def extends defDB
         static::loadConfig();
 
         return static::$dbTargets;
+    }
+
+    public static function homePath()
+    {
+        static::loadConfig();
+
+        return static::$homePath;
+    }
+
+    public static function homeSlug()
+    {
+        static::loadConfig();
+
+        return static::$homeSlug;
     }
 
     public static function langCodes()
@@ -137,7 +155,7 @@ class defDb
     private static function loadDbConfig()
     {
         if (!static::$initialized) {
-            $connectionConfig = parseConfig(CONFIG_DIR, 'connection');
+            $connectionConfig = parseConfig(ROOT_DIR, 'app/connection');
             $connectionDist = $connectionConfig['default_connection'];
             $connections = $connectionConfig['connections'];
             $localUsers = $connectionConfig['users']['local'];
@@ -192,7 +210,7 @@ class defDb
  * @param string      $path
  * @param string|null $filename
  *
- * @return array
+ * @return array|mixed
  */
 function parseConfig($path, $filename = null)
 {
@@ -200,9 +218,7 @@ function parseConfig($path, $filename = null)
     if (is_file($path)) {
         /** @var array $config */
         $config = \Symfony\Component\Yaml\Yaml::parse(file_get_contents($path));
-    } else {
-        return [];
-    }
 
-    return isset($config['parameters']) ? $config['parameters'] : $config;
+        return isset($config['parameters']) ? $config['parameters'] : $config;
+    }
 }

@@ -4,7 +4,7 @@ paths:
   cache_dir: /app/cache
 
   # Data files' path
-  data_dir: /app/config/probak
+  data_dir: /app/probak
 
   # Logs files' path
   logs_dir: /app/logs
@@ -13,7 +13,7 @@ paths:
   public_dir: /public
 
   # Template files' path
-  template_dir: /app/Resources/view
+  template_dir: /src/Resources/view
 
   # Translation files' path
-  translations_dir: /app/Resources/translation
+  translations_dir: /src/Resources/translation

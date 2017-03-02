@@ -1,10 +1,6 @@
-# Homepage route configuration
-home_url_path: /
-home_url_slug: login
-
 # Routes configuration
 routes:
   - /sample
   - { path: /, methods: [GET] }
-  - { path: /boarding, methods: [POST] }
+  - { path: /go!, name: boarding, methods: [POST] }
   - { path: '/{page}', action: pageRender, name: onboard, methods: [POST], requirements: { page: \d+ } }
