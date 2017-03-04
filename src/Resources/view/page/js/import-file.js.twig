@@ -61,7 +61,7 @@ function handleFiles(event) {
 }
 function handleUpload() {
     let data = new FormData();
-    Array.prototype.forEach.call(newList, function(i, item) { data.append('file-'+i, item); });
+    $.each(newList, function(i, item) { data.append('file-'+i, item); });
     $.ajax({
         url: 'save',
         type: 'POST',
