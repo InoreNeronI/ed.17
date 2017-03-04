@@ -1,8 +1,9 @@
 <a href="" class="playAudio" target="_self" title="{{ audio_file_tip|default(media.tip|default) }}">
-    {% set audio_file_size = audio_file_size is defined ? metric.levels[audio_file_size]|default('5x') : media.size %}
-    <i class="iconAudio dim {{ fontClass ~ cssClassContent|default('w-auto') }} fa fa-play fa-{{ audio_file_size }}">
-        {% set audio_file_path = audio_file_path is defined ? audio_file_path : media.path %}
+    {% set audio_icon_size = audio_file_size is defined ? metric.levels[audio_file_size]|default('5x') : media.size %}
+    {% set audio_icon_class = fontClass ~ 'title-shadow iconAudio dim fa fa-play fa-' ~ audio_icon_size ~ ' ' ~ colorInverse %}
+    <i class="{{ audio_icon_class ~ cssClassContent|default('w-auto') }}">
         <audio class="tagAudio" preload="auto">
+            {% set audio_file_path = audio_file_path is defined ? audio_file_path : media.path %}
             {% if audio_file_path.mp3 is not empty %}
                 <source src="{{ audio_file_path.mp3 }}" type="audio/mpeg">
             {% endif %}

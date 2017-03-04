@@ -7,7 +7,7 @@ window.onhashchange=function(){window.location.hash="no-back-button";};
 let _window = $(window),
     bgResize = function(_window) {
         $('body').css('height', _window.height());
-        $('.login-bg').css('background-position', 'center bottom');
+        $('.form-bg').css('background-position', 'center bottom');
     };
 _window.on('debouncedresize', function() {
     bgResize($(this));

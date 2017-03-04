@@ -3,27 +3,24 @@
 {% block styles %}
     {{ parent() }}
     <style type="text/css">
-        {% include '@App/layout/css/form-resize.css.twig' with { 'bgUrl': bgUrl|default(random(images.backgrounds)) } %}
+        {% include '@App/layout/css/form.css.twig' with { 'bgUrl': bgUrl|default(random(images.backgrounds)) } %}
     </style>
 {% endblock %}
 
 {% block content %}
     {{ parent() }}
     {% block content_header %}
-        <article class="cf ph4 tc">
-            <div class="fl dib-ns fl-m tc w-100 w-50-ns">
+        <article class="cf ph4">
+            <div class="absolute-ns db-ns tc w-25-ns z-0">
                 <img src="{{ images.logoUrl }}" class="dib" title="{{ block('title') }}"/>
             </div>
-            <div class="dn dib-ns dn-m fl tr w-75 w-40-ns">
-                <h3 class="{{ fontClassTitle }}b mb0 mb1-ns"><strong>{{ title }}</strong></h3>
-            </div>
-            <div class="dn dib-ns dn-m fl tr w-25 w-10-ns">
-                <h3 class="login-logo f3 fw8 mh0 ph0 w-100">{{ course }}</h3>
+            <div class="dn dib-l fr tr w-75-ns">
+                <h3 class="f3 fw8 form-logo mh0 ph0">{{ course }}</h3>
             </div>
         </article>
     {% endblock %}
-    <article class="login-bg cf mh1-ns mh1-m mh3-l">
-        <form action="{{ formAction|default }}" accept-charset="utf-8" method="{{ formMethod|default('post') }}">
+    <article class="cf mh1-ns mh1-m mh3-l">
+        <form action="{{ formAction|default }}" accept-charset="utf-8" class="form-bg br3 mt3-ns pv2-ns vh-75" method="{{ formMethod|default('post') }}">
             {% block content_form %}{% endblock %}
         </form>
     </article>
@@ -33,5 +30,5 @@
     {{ parent() }}
     <script src="/scripts/jquery-resize/jquery.debouncedresize.js"></script>
     <script src="/scripts/jquery-resize/jquery.throttledresize.js"></script>
-    <script>{% include '@App/layout/js/form-resize.js.twig' %}</script>
+    <script>{% include '@App/layout/js/form.js.twig' %}</script>
 {% endblock %}

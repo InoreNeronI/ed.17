@@ -1,0 +1,103 @@
+"use strict";
+
+{# @see http://stackoverflow.com/a/11277696 #}
+window.URL = window.URL || window.webkitURL;
+
+{# @see http://jsfiddle.net/46Y45/5 #}
+{# @see https://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way #}
+let inputContainer = document.getElementById('upload'),
+    inputFile = document.getElementById('data-import'),
+    inputIcon = document.createElement('i'),
+    inputLabel = inputFile.nextElementSibling,
+    list = document.createElement('ol'),
+    newList = [],
+    textClass = '{{ colorInverse }}{{ loginFormClass|trim }} title-shadow',
+    regex = /^(.*data.*\.zip)|(version)$/i;
+inputFile.addEventListener('change', handleFiles, false);
+inputFile.addEventListener('focus', function(){ inputFile.classList.add('has-focus'); });
+inputFile.addEventListener('blur', function(){ inputFile.classList.remove('has-focus'); });
+inputIcon.classList = 'fa fa-upload fa-5x';
+inputLabel.appendChild(inputIcon);
+inputLabel.classList = textClass+' ba br-100 dib pa3';
+inputLabel.style = '-webkit-appearance: button; -moz-appearance: button; appearance: button;';
+list.classList = textClass+' br2 cf pv1';
+
+{# @see https://developer.mozilla.org/en-US/docs/Using_files_from_web_applications#Example%3a_Using_object_URLs_to_display_images #}
+function handleFiles(event) {
+    inputIcon.classList.remove('fa-upload');
+    inputIcon.classList.add('fa-circle-o-notch');
+    inputIcon.classList.add('fa-spin');
+    let files = [].slice.call(inputFile.files);
+    Array.prototype.forEach.call(files, function(file) {
+        if (regex.test(file.name)) {
+            let reader = new FileReader();
+            reader.onload = function (event) {
+                let li = document.createElement('li');
+                li.classList = 'list tr w-100 w-75-m w-75-ns';
+                li.innerText = file.webkitRelativePath;
+                list.appendChild(li);
+            };
+            reader.readAsDataURL(file);
+            newList.push(file);
+        }
+    });
+    inputLabel.classList.remove('br-100');
+    inputLabel.classList.add('br3');
+    inputLabel.classList.add('ph4');
+    inputIcon.classList.remove('fa-circle-o-notch');
+    inputIcon.classList.remove('fa-spin');
+    inputIcon.classList.remove(newList.length ? 'fa-times' : 'fa-check');
+    inputIcon.classList.add(newList.length ? 'fa-check' : 'fa-times');
+    let span = document.createElement('span');
+    span.classList = '{{ fontClassX4 }}sanf-serif';
+    span.innerText = (inputFile.getAttribute('data-multiple-caption') || '').replace('{count}', newList.length);
+    span.style = 'font-family: sans-serif; line-height: 1.15; -webkit-text-size-adjust: 100%;';
+    inputIcon.innerHTML = span.outerHTML;
+    inputIcon.style = newList.length ? 'color: green;' : 'color: red;';
+    if (newList.length) {
+        handleUpload();
+        handleSuccessUpload();
+    }
+}
+function handleUpload() {
+    let data = new FormData();
+    Array.prototype.forEach.call(newList, function(i, item) { data.append('file-'+i, item); });
+    $.ajax({
+        url: 'save',
+        type: 'POST',
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        always: function() {
+            //el.disabled = false;
+            inputFile.value = '';
+            inputIcon.classList.remove('fa-circle-o-notch');
+            inputIcon.classList.remove('fa-spin');
+            list.innerHTML = '';
+        },
+        done: handleSuccessUpload,
+        fail: function(jqXHR, textStatus, errorThrown) {
+            inputIcon.classList.add('fa-exclamation-triangle');
+            console.log(errorThrown);
+            alert('Fail.');
+        }
+    });
+}
+function handleSuccessUpload(data, textStatus, jqXHR) {
+    {#let msg = JSON.stringify(data.msg).replace(/\"/g, '');
+    if (msg != 'success') {
+        console.log(msg);
+        document.getElementById('formMsg').textContent = msg;
+        document.getElementById('formMsg').style = 'display: block;';
+    } else {
+        $("#formModal").modal('hide');#}
+        inputFile.disabled = true;
+        inputFile.value = '';
+        inputLabel.classList.remove('{{ loginFormClass|trim }}');
+        inputLabel.classList.add('bn');
+        inputLabel.style = 'cursor: initial;';
+        inputContainer.appendChild(list);
+    {#}#}
+}

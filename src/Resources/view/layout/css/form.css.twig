@@ -5,26 +5,23 @@ body {
     background: linear-gradient(to bottom, rgba(255,255,255,1) 30%, rgba(78, 197, 221, 0.77) 85%, rgba(131, 156, 135, 0.57) 100%); {# W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ #}
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#839C87',GradientType=0 ); {# IE6-9 #}
 }
-.login-bg {
+@media screen and (min-width: 30em) {
+    body {
+        overflow: hidden;
+    }
+}
+.form-bg {
     background: url('{{ bgUrl }}') no-repeat center bottom;
     background-size: cover;
-    border-radius: .5rem;
 }
-.login-logo {
+.form-logo {
     color: #4EC5DD;
 }
-.login-logo-bg {
+.form-logo-bg {
     background-color: #4EC5DD;
     border-color: #5f7161;
 }
-.login-brc {
-    border: .1rem solid navy;
-}
-.login-label {
-    text-shadow: -.05rem 0 white, 0 .05rem white, .05rem 0 white, 0 -.05rem white;
-}
-.login-title {
+.title-shadow {
     text-shadow: -.1rem 0 black, 0 .1rem black, .1rem 0 black, 0 -.1rem black;
-    color: aliceblue;
     opacity: .7;
 }
