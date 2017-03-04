@@ -87,11 +87,11 @@ pageTextReplaces:
   p00:
     p00b_t02:
       #parameters: { width: 30 }
-      template: 'partial/fields/input.html.twig'
+      template: 'field/input.html.twig'
   p05:
     p05b_t09:
       #parameters: { width: 10 }
-      template: 'partial/fields/input.html.twig'
+      template: 'field/input.html.twig'
 
 pageTitles:
   - p00b_t01
