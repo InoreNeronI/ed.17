@@ -1,9 +1,9 @@
 {% if media['align'] is same as('izq') and media['since']|number_format == textNum %}
     <div class="{{ cssClassContainer|default('cb fl pv1 tc ' ~ media['width']|default('w-100')) }}">
-        {% include '@App/partial/fields/' ~ media['tag'] ~ '.html.twig' %}
+        {% include '@App/field/' ~ media['tag'] ~ '.html.twig' %}
     </div>
 {% elseif media['align'] is same as('dch') and media['since']|number_format == textNum %}
     <div class="{{ cssClassContainer|default('cb fr pv1 tc ' ~ media['width']|default('w-100')) }}">
-        {% include '@App/partial/fields/' ~ media['tag'] ~ '.html.twig' %}
+        {% include '@App/field/' ~ media['tag'] ~ '.html.twig' %}
     </div>
 {% endif %}

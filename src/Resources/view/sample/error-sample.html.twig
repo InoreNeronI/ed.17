@@ -22,7 +22,7 @@
                     <i class="fa fa-arrow-down"></i>
                 </summary>
                 <code class="dark-blue bg-white ba br-pill lh-solid ph1">
-                    <a title="{{ ErrorData['file'] }}" class="dark-blue link" href="file://{{ ErrorData['file'] }}" ondblclick="var f=this.innerHTML;this.innerHTML=this.title;this.title=f;">
+                    <a title="{{ ErrorData['file'] }}" class="dark-blue link" href="file://{{ ErrorData['file'] }}" ondblclick="let f=this.innerHTML;this.innerHTML=this.title;this.title=f;">
                         {{ ErrorData['filename'] }}
                     </a>
                 </code>
@@ -34,7 +34,7 @@
     </blockquote>
     {% if not ErrorData['notice'] %}
         <div class="center lh-solid mh0 ph0 w-10">
-            <i class="absolute dark-red fa fa-warning fa-4x" style="right: .5rem; line-height: 0; margin-top: -1.5rem;"></i>
+            <i class="absolute dark-red fa fa-exclamation-triangle fa-4x" style="right: .5rem; line-height: 0; margin-top: -1.5rem;"></i>
             <span class="absolute b dark-red f1" style="right: 0; line-height: 0; margin-top: 2rem;">{{ ErrorData['status'] }}</span>
         </div>
     {% endif %}

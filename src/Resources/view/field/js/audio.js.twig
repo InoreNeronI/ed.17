@@ -1,10 +1,10 @@
-
+"use strict";
 {# @see http://stackoverflow.com/a/15587181 #}
 $('.playAudio').each(function() {
     $(this).on('click', function(event) {
-        var son = $(this).children();
+        let son = $(this).children();
         if (son.hasClass('iconAudio')) {
-            var grandson = son.children();
+            let grandson = son.children();
             if (grandson.hasClass('tagAudio')) {
             {% if type|default is same as('full') %}
                 grandson.on('pause', function() {

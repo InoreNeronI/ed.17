@@ -7,13 +7,11 @@
 
 ini_set('phar.readonly', 0); // Could be done in php.ini
 
-require_once 'bin/php-cs.phar';
-
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
     ->ignoreDotFiles(true)
     ->ignoreVCS(true)
-    ->exclude(['app', 'build', 'vendor', 'vendor-tiny'])
+    ->exclude(['app/cache', 'build', 'vendor', 'vendor-tiny'])
     ->files()
     ->name('*.php');
 

@@ -50,7 +50,7 @@ trait BaseControllerTrait
             $authorization['driver'],
             isset($authorization['options']) ? array_merge($authorization['options'], $options) : $options);
 
-        $manager::setCurrent(static::isAdmin($authorization) ? 'local' : 'dist');
+        $manager::setCurrent(static::isLocalAdmin($authorization) ? 'local' : 'dist');
 
         return $manager;
     }

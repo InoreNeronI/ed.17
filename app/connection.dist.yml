@@ -19,6 +19,8 @@ parameters:
     users:
         # Users distribution table
         dist:         ikasleak
+        # Extra distribution table
+        extra:        aplikatzaileak
         # Local in-memory users
         local:
             admin:

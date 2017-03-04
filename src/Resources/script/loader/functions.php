@@ -150,6 +150,7 @@ class defDb
     private static $dbDist;
     private static $dbLocal;
     private static $userEntity;
+    private static $extraEntity;
     private static $initialized = false;
 
     private static function loadDbConfig()
@@ -164,6 +165,7 @@ class defDb
             static::$dbDist = $connections[$connectionDist];
             static::$dbLocal = $connections['local'];
             static::$userEntity = $connectionConfig['users'][$connectionDist];
+            static::$extraEntity = $connectionConfig['users']['extra'];
             static::$initialized = true;
         }
     }
@@ -201,6 +203,13 @@ class defDb
         static::loadDbConfig();
 
         return static::$userEntity;
+    }
+
+    public static function extraEntity()
+    {
+        static::loadDbConfig();
+
+        return static::$extraEntity;
     }
 }
 

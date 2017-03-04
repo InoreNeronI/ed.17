@@ -34,9 +34,9 @@ class BaseController
      *
      * @return bool
      */
-    private static function isAdmin(array $args)
+    private static function isLocalAdmin(array $args)
     {
-        return isset($args['studentCode']) && $args['studentCode'] === \defDb::adminUsername() && isset($args['code']) && $args['code'] === \defDb::adminPassword();
+        return isset($args['studentCode']) && $args['studentCode'] === \defDb::adminUsername() && isset($args['studentPassword']) && $args['studentPassword'] === \defDb::adminPassword();
     }
 
     /**
@@ -46,7 +46,8 @@ class BaseController
      */
     private static function authorize(array $args)
     {
-        if ($path = static::isAdmin($args) ? str_replace('%kernel.root_dir%', ROOT_DIR.'/app', \defDb::dbLocal()['path']) : false) {
+        $path = static::isLocalAdmin($args) ? str_replace('%kernel.root_dir%', ROOT_DIR.'/app', \defDb::dbLocal()['path']) : false;
+        if ($path && $path = realpath($path)) {
             return array_merge($args, \defDb::dbLocal(), ['path' => $path]);
         }
 
@@ -91,7 +92,12 @@ class BaseController
     {
         $data = $this->getData($request);
         $route = $request->get('_route');
-        if ($route === 'boarding' && strpos($data['code'], 'simul') !== false) {
+        if ($route === 'boarding' && !isset($data['code'])) {
+            $route = 'import';
+            $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $route), [], $this->langISOCodes);
+            $data = array_merge($data, $messages);
+        }
+        elseif ($route === 'boarding' && strpos($data['code'], 'simul') !== false) {
             $route = 'onboard';
             $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $route), $data, $this->langISOCodes);
             $request = HttpFoundation\Request::create(null, $request->getMethod(), array_merge($request->request->all(), $messages, ['flabel' => 'Simul']));

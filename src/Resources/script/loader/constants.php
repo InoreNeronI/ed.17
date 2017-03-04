@@ -10,5 +10,6 @@ define('TEMPLATE_CACHE_DIR', ROOT_DIR.\def::paths()['cache_dir'].'/twig');
 define('TEMPLATE_EXTENSION', 'html.twig');
 define('TEMPLATE_FILES_DIR', ROOT_DIR.\def::paths()['template_dir']);
 define('USER_TABLE', \defDb::userEntity());
+define('EXTRA_TABLE', \defDb::extraEntity());
 
 return new App\Kernel\BaseKernel(DEBUG);

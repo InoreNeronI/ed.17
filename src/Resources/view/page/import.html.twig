@@ -1,0 +1,55 @@
+{% extends '@App/page/boarding.html.twig' %}
+
+{% block styles %}
+    {{ parent() }}
+    <style>
+        .input-file {
+            height: .1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            width: .1px;
+            z-index: -1;
+        }
+        .input-file + label {
+            cursor: pointer;
+        }
+        .input-file + label * {
+            pointer-events: none;
+        }
+        .input-file:focus + label, .input-file + label:hover {
+            background-color: {{ loginFormClass }};
+        }
+        .input-file:focus + label {
+            outline: 1px dotted #000;
+            outline: -webkit-focus-ring-color auto 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block content_header %}{% endblock %}
+
+{% set loginFormClass %}
+    {{ random([
+    'bg-black', 'bg-near-black', 'bg-dark-gray', 'bg-mid-gray', 'bg-gray', 'bg-silver', 'bg-light-silver', 'bg-moon-gray', 'bg-light-gray', 'bg-near-white', 'bg-white', 'bg-transparent', 'bg-dark-red', 'bg-red', 'bg-light-red', 'bg-orange', 'bg-gold', 'bg-yellow', 'bg-light-yellow', 'bg-purple', 'bg-light-purple', 'bg-dark-pink', 'bg-hot-pink', 'bg-pink', 'bg-light-pink', 'bg-dark-green', 'bg-green', 'bg-light-green', 'bg-navy', 'bg-dark-blue', 'bg-blue', 'bg-light-blue', 'bg-lightest-blue', 'bg-washed-blue', 'bg-washed-green', 'bg-washed-yellow', 'bg-washed-red'
+    ]) }}
+{% endset %}
+
+{% block content_actions %}
+    <div class="center pa2">
+        <fieldset class="cf bn ma0 pa0">
+            <legend class="pa0 f5 f4-ns mb3 dt fr {{ colorInverse }} login-title">{{ title }}</legend>
+            <div class="cf">
+                {# @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory #}
+                <input id="data-import" class="f6 f5-l input-reset bn fl pa3 lh-solid dt fr {{ colorInverse }}w-100 w-75-m w-75-ns input-file login-title" type="file" name="data-import" value="" data-multiple-caption=" {count} files sent" webkitdirectory multiple>
+                <label for="data-import"></label>
+                <ul id="listing" class="br2-ns cb o-70"></ul>
+            </div>
+        </fieldset>
+    </div>
+{% endblock %}
+
+{% block jq_ready %}
+    {{ parent() }}
+    {% include '@App/field/js/input-file.js.twig' %}
+{% endblock %}

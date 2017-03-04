@@ -31,6 +31,7 @@ if ((!$functions = includeIfExists(ROOT_DIR.'/src/Resources/script/loader/functi
     );
     exit(1);
 }
+define('CONFIG_DIR', ROOT_DIR.'/src/Resources/config');
 
 $app = new \Symfony\Component\Console\Application('Database extract tool');
 $app->addCommands([new \App\Command\DataExtractCommand()]);

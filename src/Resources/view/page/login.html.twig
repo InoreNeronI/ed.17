@@ -16,12 +16,12 @@
         <h3 class="{{ fontClassX3 }}fw6 mb2 pl4"><strong>{{ title }}</strong></h3>
     </div>
     <div class="dt fr {{ colorInverse }}w-100 w-75-m w-75-ns login-title">
-        {% include '@App/partial/sample/login-sample.html.twig' %}
+        {% include '@App/sample/login-sample.html.twig' %}
     </div>
     <div class="mt4 fl w-100 tc">
         <div class="fl-l tc tr-m tc-ns w-100-s w-25-m w-20-l">
-            <div class="center  w-100">
-                {% include '@App/partial/fields/audio.html.twig' with { 'cssClassContent': 'login-label fa-inverse pb4 w-auto' } %}
+            <div class="center w-100">
+                {% include '@App/field/audio.html.twig' with { 'cssClassContent': 'login-label fa-inverse pb4 w-auto' } %}
             </div></div>
         <div class="dib w-100 w-25-m w-60-l tc mb3-m mb4-l">
             <input name="course" type="hidden" value="{{ course }}"/>
@@ -37,5 +37,5 @@
 
 {% block jq_ready %}
     {{ parent() }}
-    {% include '@App/asset/audio-click.js.twig' with { 'type': 'full' } %}
+    {% include '@App/field/js/audio.js.twig' with { 'type': 'full' } %}
 {% endblock %}

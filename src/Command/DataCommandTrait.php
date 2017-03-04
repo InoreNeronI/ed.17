@@ -54,7 +54,7 @@ trait DataCommandTrait
         $this->config['keep-constraints'] = true;
         $this->config['tables'] = [];
 
-        $tableNames = array_keys(array_merge(\def::dbCodes(), [\defDb::userEntity() => null]));
+        $tableNames = array_keys(array_merge(\def::dbCodes(), [\defDb::userEntity() => null, \defDb::extraEntity() => null]));
         foreach ($tableNames as $tableName) {
             echo sprintf('`%s` discovered', $tableName).PHP_EOL;
             $this->config['tables'][] = ['name' => $tableName, 'mode' => static::MODE_COPY];

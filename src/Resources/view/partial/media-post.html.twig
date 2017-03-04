@@ -1,5 +1,5 @@
 {% if media['align'] is same as('cen') and media['since'] == textNum and media['till']|number_format == textNum %}
     <div class="{{ cssClassContainer|default('cb db pv1 tc w-100') }}">
-        {% include '@App/partial/fields/' ~ media['tag'] ~ '.html.twig' with { 'cssClassContent': media['width'] } %}
+        {% include '@App/field/' ~ media['tag'] ~ '.html.twig' with { 'cssClassContent': media['width'] } %}
     </div>
 {% endif %}

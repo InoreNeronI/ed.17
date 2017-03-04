@@ -1,5 +1,4 @@
 "use strict";
-
 {# @see http://stackoverflow.com/a/20321530 #}
 window.location.hash="no-back-button";
 window.location.hash="Again-No-back-button";
@@ -9,9 +8,9 @@ window.onhashchange=function(){window.location.hash="no-back-button";};
 $('.side-left').resizable({ handleSelector: '.side-splitter', resizeHeight: false });
 
 {# RadioButtons: @see http://jsfiddle.net/dan74/6KYVP #}
-var requiredRadioboxes = {};
+let requiredRadioboxes = {};
 $('input:radio').on('click', function() {
-    var oldStatus = $(this).attr('oldStatus');
+    let oldStatus = $(this).attr('oldStatus');
     if (oldStatus === 'checked' || (typeof oldStatus === 'undefined' && $(this).prop('checked') === false)) {
         $(this).prop('checked', false);
         $(this).removeAttr('oldStatus');
@@ -19,13 +18,13 @@ $('input:radio').on('click', function() {
         $('input[name="'+$(this).prop('name')+'"]:radio').attr('oldStatus', false);
         $(this).attr('oldStatus', 'checked');
         {# @see http://stackoverflow.com/a/24392931 #}
-        var key, item = this.id.split('-');
+        let key, item = this.id.split('-');
         for (key in requiredRadioboxes[item[0]]) {
             $('#'+item[0]+'-'+key).get(0).setCustomValidity('');
         }
     }
 }).each(function() {
-    var item = this.id.split('-');
+    let item = this.id.split('-');
     if (!(item[0] in requiredRadioboxes)) {
         requiredRadioboxes[item[0]] = {};
     }
@@ -36,17 +35,17 @@ $('input:radio').on('click', function() {
 });
 
 {# Checkboxes: @see http://stackoverflow.com/a/7264962 #}
-var requiredCheckboxes = {}, fixCheckBoxes = function(elem) {
-    var item = elem.id.split('-'), code = item[1], prefix = item[0];
+let requiredCheckboxes = {}, fixCheckBoxes = function(elem) {
+    let item = elem.id.split('-'), code = item[1], prefix = item[0];
     if (code in requiredCheckboxes[prefix] && $(elem).prop('checked') === false) {
-        var key, realRequiredCheckboxes = {};
+        let key, realRequiredCheckboxes = {};
         realRequiredCheckboxes[prefix] = [];
         for (key in requiredCheckboxes[prefix]) {
             if (requiredCheckboxes[prefix][key] !== false) {
                 realRequiredCheckboxes[prefix].push(key);
             }
         }
-        var requiredOptions = $('#' + prefix + '-' + realRequiredCheckboxes[prefix].join(',#' + prefix + '-')), requiredOptionsLength = requiredOptions.length;
+        let requiredOptions = $('#' + prefix + '-' + realRequiredCheckboxes[prefix].join(',#' + prefix + '-')), requiredOptionsLength = requiredOptions.length;
         $(requiredOptions).each(function() {
             this.checked ? requiredOptionsLength-- : null;
         });
@@ -58,14 +57,14 @@ var requiredCheckboxes = {}, fixCheckBoxes = function(elem) {
             }
         }
     } else {
-        for (var key in requiredCheckboxes[prefix]) {
+        for (let key in requiredCheckboxes[prefix]) {
             $('#'+prefix+'-'+key).removeAttr('required').get(0).setCustomValidity('');
         }
     }
     $(elem).next('span').css('color', $(elem).is(':invalid') ? 'red' : 'inherit');
 };
 $('input:checkbox').each(function() {
-    var item = this.id.split('-');
+    let item = this.id.split('-');
     if (!(item[0] in requiredCheckboxes)) {
         requiredCheckboxes[item[0]] = {};
     }
@@ -73,9 +72,9 @@ $('input:checkbox').each(function() {
 });
 
 {# Forms #}
-var forms = document.getElementsByTagName('form');
+let forms = document.getElementsByTagName('form');
 $.each(forms, function(index, elem) {
-    var form = $(elem);
+    let form = $(elem);
     form.on('submit', function() {
         $(this).find('button').each(function() { this.disabled = true; });
         $(this).find('input:radio:not(:checked)').each(function() {

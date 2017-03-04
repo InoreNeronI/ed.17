@@ -23,22 +23,22 @@
         {% set fontClassTitle = fontClassX3 ~ color %}
         {% set buttonClass = fontClassItem ~ 'bg-' ~ colorInverse ~ 'side-submit br--top br--top-m br--top-l br1 br2-m br3-l bw1 bw2-l fw6-l link ph2 pointer pv1 tc' %}
         {% if ErrorData|default is not empty %}
-            {% include '@App/partial/sample/error-sample.html.twig' %}
+            {% include '@App/sample/error-sample.html.twig' %}
         {% endif %}
         {% block content %}{% endblock %}
         {% block scripts %}
             <script src="/scripts/jquery/jquery.min.js"></script>
             <script>
                 document.addEventListener('touchmove', function(ev) { ev.preventDefault(); });
-                {#var _gaq = _gaq || [];
+                {#let _gaq = _gaq || [];
                 _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
                 _gaq.push(['_trackPageview']);
                 (function() {
-                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                    let ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
                     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                    let s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
                 })();#}
-                {# @see http://gregfranko.com/blog/jquery-best-practices #}
+                // @see http://gregfranko.com/blog/jquery-best-practices
                 // IIFE - Immediately Invoked Function Expression
                 (function(appCode) {
                     // The global jQuery object is passed as a parameter

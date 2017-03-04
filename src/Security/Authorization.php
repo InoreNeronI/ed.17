@@ -69,7 +69,23 @@ class Authorization extends Security\Connection\Connection
         /** @var array $user */
         $user = $query->fetch();
 
-        if (!empty($user)) {
+        if (empty($user)) {
+            /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
+            $queryBuilder = $this->getQueryBuilder()
+                ->select('u.*')->from(EXTRA_TABLE, 'u')
+                ->where('u.user = :user')
+                ->andWhere('u.password = :pw')
+                ->setParameters(['user' => $args['studentCode'], 'pw' => $args['studentPassword']]);
+
+            /** @var \Doctrine\DBAL\Driver\Statement $query */
+            $query = $queryBuilder->execute();
+
+            /** @var array $user */
+            $user = $query->fetch();
+            if (!empty($user)) {
+                return array_merge($user, $credentials);
+            }
+        } else {
             /** @var array $codes */
             $codes = \def::dbSecurity();
             /** @var string $codPrueba */
@@ -80,6 +96,18 @@ class Authorization extends Security\Connection\Connection
             throw new \NoticeException(sprintf('The code you have entered does not match: \'%s\'', $codPrueba));
         }
         throw new \NoticeException(static::$debug ? sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())) : 'No results found');
+    }
+
+    /**
+     * @param array  $args
+     * @param string $table
+     *
+     * @return array
+     *
+     * @throws \NoticeException
+     */
+    private function checkCredentialsLocal(array $args, $table)
+    {
     }
 
     /**

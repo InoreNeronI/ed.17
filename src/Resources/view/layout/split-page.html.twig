@@ -3,7 +3,7 @@
 {% block styles %}
     {{ parent() }}
     <style type="text/css">
-        {% include '@App/asset/side-resizable.css.twig' %}
+        {% include '@App/layout/css/split-page-resizable.css.twig' %}
     </style>
 {% endblock %}
 
@@ -14,6 +14,6 @@
 
 {% block jq_ready %}
     {{ parent() }}
-    {% include '@App/asset/side-resizable.js.twig' %}
-    {% include '@App/asset/audio-click.js.twig' %}
+    {% include '@App/layout/js/split-page-resizable.js.twig' %}
+    {% include '@App/field/js/audio.js.twig' %}
 {% endblock %}

@@ -72,14 +72,14 @@
         {% set inputClass = macro.inputClass ~ ' v-top' %}
     {% endif %}
     {% if clonekey|default(key) in pageOptionAttributes|keys %}
-        {% include '@App/partial/fields/input.html.twig' with pageOptionAttributes[clonekey|default(key)] %}
+        {% include '@App/field/input.html.twig' with pageOptionAttributes[clonekey|default(key)] %}
     {% else %}
-        {% include '@App/partial/fields/input.html.twig' %}
+        {% include '@App/field/input.html.twig' %}
     {% endif %}
     <span{% if text is not empty %} class="mr2"{% endif %}></span>{{ text|default }}
     {% if media is not null and media['align'] is same as('cen') and media['since'] == textNum and media['till'] == textNum %}
-        {% include '@App/partial/fields/' ~ media['tag'] ~ '.html.twig' with { 'cssClassContent': media['width'], 'src': media['path'] } %}
+        {% include '@App/field/' ~ media['tag'] ~ '.html.twig' with { 'cssClassContent': media['width'], 'src': media['path'] } %}
     {% endif %}
 {% endset %}
 
-{% include '@App/partial/fields/label.html.twig' %}
+{% include '@App/field/label.html.twig' %}
