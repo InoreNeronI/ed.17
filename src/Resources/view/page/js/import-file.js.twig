@@ -33,7 +33,7 @@ function handleFiles(event) {
             let reader = new FileReader();
             reader.onload = function (event) {
                 let li = document.createElement('li');
-                li.classList = 'list tr w-100 w-75-m w-75-ns';
+                li.classList = 'list tr w-100 w-75-ns';
                 li.innerText = file.webkitRelativePath;
                 list.appendChild(li);
             };

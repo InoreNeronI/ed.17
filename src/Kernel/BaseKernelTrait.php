@@ -36,40 +36,6 @@ trait BaseKernelTrait
     private $resolver;
 
     /**
-     * @param \Exception $exception
-     * @param bool       $notice
-     * @param string     $title
-     *
-     * @return HttpFoundation\Request
-     */
-    private static function prepareExceptionRequest(\Exception $exception, $notice = false, $title = 'Error')
-    {
-        if ($exception instanceof Routing\Exception\ResourceNotFoundException ||
-            $exception instanceof Routing\Exception\MethodNotAllowedException) {
-            $title = 'Resource not found';
-            // No such route exception, return a 404 response
-            $status = HttpFoundation\Response::HTTP_NOT_FOUND;
-        } else {
-            if ($exception->getCode() !== 0) {
-                $title .= ' #'.$exception->getCode();
-            }
-            // Something blew up exception, return a 500 response
-            $status = HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
-        }
-        static::$headers = array_merge(static::$headers, ['ErrorData' => [
-            'debug' => static::$debug,
-            'file' => $file = $exception->getFile(),
-            'filename' => basename($file),
-            'line' => $exception->getLine(),
-            'message' => $exception->getMessage(),
-            'status' => $status,
-            'notice' => $notice,
-            'title' => $title, ]]);
-
-        return static::getRequest(HttpFoundation\Request::create(static::$baseUrl));
-    }
-
-    /**
      * @param HttpFoundation\Request $request
      *
      * @return HttpFoundation\Request
@@ -95,21 +61,6 @@ trait BaseKernelTrait
         $response->setStatusCode($status);
 
         return $response;
-    }
-
-    /**
-     * @param \Exception $e
-     * @param bool       $notice
-     *
-     * @return HttpFoundation\Response
-     */
-    private static function getFallbackResponse(\Exception $e, $notice = false)
-    {
-        $controller = new Controller\BaseController();
-        $request = static::prepareExceptionRequest($e, $notice);
-        $response = $controller->renderAction($request);
-
-        return static::getResponse($response, HttpFoundation\Response::HTTP_SEE_OTHER);
     }
 
     /**
@@ -160,5 +111,54 @@ trait BaseKernelTrait
         }
 
         return $response;
+    }
+
+    /**
+     * @param \Exception $e
+     * @param bool       $notice
+     *
+     * @return HttpFoundation\Response
+     */
+    private static function getFallbackResponse(\Exception $e, $notice = false)
+    {
+        $controller = new Controller\BaseController();
+        $request = static::prepareExceptionRequest($e, $notice);
+        $response = $controller->renderAction($request);
+
+        return static::getResponse($response, HttpFoundation\Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @param \Exception $exception
+     * @param bool       $notice
+     * @param string     $title
+     *
+     * @return HttpFoundation\Request
+     */
+    private static function prepareExceptionRequest(\Exception $exception, $notice = false, $title = 'Error')
+    {
+        if ($exception instanceof Routing\Exception\ResourceNotFoundException ||
+            $exception instanceof Routing\Exception\MethodNotAllowedException) {
+            $title = 'Resource not found';
+            // No such route exception, return a 404 response
+            $status = HttpFoundation\Response::HTTP_NOT_FOUND;
+        } else {
+            if ($exception->getCode() !== 0) {
+                $title .= ' #'.$exception->getCode();
+            }
+            // Something blew up exception, return a 500 response
+            $status = HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
+        }
+        static::$headers = array_merge(static::$headers, ['ErrorData' => [
+            'debug' => static::$debug,
+            'file' => $file = $exception->getFile(),
+            'filename' => basename($file),
+            'line' => $exception->getLine(),
+            'message' => $exception->getMessage(),
+            'status' => $status,
+            'notice' => $notice,
+            'title' => $title, ]]);
+
+        return static::getRequest(HttpFoundation\Request::create(static::$baseUrl));
     }
 }

@@ -90,14 +90,24 @@ class BaseController
      */
     public function renderAction(HttpFoundation\Request $request, $expiryMinutes = 1)
     {
+        if ($request->isXmlHttpRequest() && $request->getMethod() === 'POST') {
+            $return = [];
+            foreach ($request->files as $file) {
+                $document = new Handler\Document\Document();
+                $document::setUploadDirectory('C:\Users\Administrator\Downloads\_lana\legacy');
+                $document->setFile($file);
+                $return[] = $document->processFile();
+            }
+
+            return HttpFoundation\JsonResponse::create($return);
+        }
         $data = $this->getData($request);
         $route = $request->get('_route');
         if ($route === 'boarding' && !isset($data['code'])) {
             $route = 'import';
             $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $route), [], $this->langISOCodes);
             $data = array_merge($data, $messages);
-        }
-        elseif ($route === 'boarding' && strpos($data['code'], 'simul') !== false) {
+        } elseif ($route === 'boarding' && strpos($data['code'], 'simul') !== false) {
             $route = 'onboard';
             $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $route), $data, $this->langISOCodes);
             $request = HttpFoundation\Request::create(null, $request->getMethod(), array_merge($request->request->all(), $messages, ['flabel' => 'Simul']));
