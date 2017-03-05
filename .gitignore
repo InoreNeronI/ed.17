@@ -24,3 +24,4 @@ vendor/
 !vendor-tiny/
 vendor-tiny/*
 !vendor-tiny/composer.*
+uploads/

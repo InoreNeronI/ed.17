@@ -19,13 +19,19 @@ class Document
     private $filePersistencePath;
 
     /** @var string */
-    protected static $uploadDirectory = null;
+    protected static $uploadDirectory = UPLOADS_DIR;
 
+    /**
+     * @param $dir
+     */
     public static function setUploadDirectory($dir)
     {
         static::$uploadDirectory = $dir;
     }
 
+    /**
+     * @return string
+     */
     public static function getUploadDirectory()
     {
         if (static::$uploadDirectory === null) {
@@ -36,23 +42,32 @@ class Document
     }
 
     /**
-     * Assumes 'type' => 'file'
+     * @param HttpFoundation\File\File $file
      */
     public function setFile(HttpFoundation\File\File $file)
     {
         $this->file = $file;
     }
 
+    /**
+     * @return HttpFoundation\File\File
+     */
     public function getFile()
     {
-        return new HttpFoundation\File\File(static::getUploadDirectory().'/'.$this->filePersistencePath);
+        return new HttpFoundation\File\File(static::getUploadDirectory().DIRECTORY_SEPARATOR.$this->filePersistencePath);
     }
 
+    /**
+     * @return string
+     */
     public function getFilePersistencePath()
     {
         return $this->filePersistencePath;
     }
 
+    /**
+     * @return bool
+     */
     public function processFile()
     {
         if (!($this->file instanceof HttpFoundation\File\UploadedFile)) {
@@ -61,11 +76,15 @@ class Document
         $this->filePersistencePath = $this->moveUploadedFile($this->file, static::getUploadDirectory());
     }
 
+    /**
+     * @param HttpFoundation\File\UploadedFile $file
+     * @param $uploadBasePath
+     *
+     * @return mixed
+     */
     public function moveUploadedFile(HttpFoundation\File\UploadedFile $file, $uploadBasePath)
     {
         $originalName = $file->getClientOriginalName();
-        /*$originalNameParts = pathinfo($file->getClientOriginalName());
-        $originalName = $originalNameParts['filename'].'_'.uniqid().'.'.$originalNameParts['extension'];*/
 
         // use filemtime() to have a more determenistic way to determine the subpath, otherwise its hard to test.
         $relativePath = date('Y-m', filemtime($this->file->getPath()));
@@ -74,7 +93,7 @@ class Document
         $ext = $this->file->getExtension();
 
         $i = 1;
-        while (file_exists($targetFilePath) && md5_file($file->getPath()) !== md5_file($targetFilePath)) {
+        while (file_exists($targetFilePath) && md5_file($file->getPathName()) !== md5_file($targetFilePath)) {
             if ($ext) {
                 $prev = $i === 1 ? '' : $i;
                 $targetFilePath = $targetFilePath.str_replace($prev.$ext, $i++.$ext, $targetFilePath);

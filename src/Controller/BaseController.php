@@ -92,11 +92,12 @@ class BaseController
     {
         if ($request->isXmlHttpRequest() && $request->getMethod() === 'POST') {
             $return = [];
+            /** @var HttpFoundation\File\File $file */
             foreach ($request->files as $file) {
                 $document = new Handler\Document\Document();
-                $document::setUploadDirectory('C:\Users\Administrator\Downloads\_lana\legacy');
                 $document->setFile($file);
-                $return[] = $document->processFile();
+                $document->processFile();
+                $return[] = $document->getFilePersistencePath();
             }
 
             return HttpFoundation\JsonResponse::create($return);
