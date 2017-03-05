@@ -10,17 +10,22 @@
 {% block content %}
     {{ parent() }}
     {% block content_header %}
-        <article class="cf ph4">
-            <div class="absolute-ns db-ns tc w-25-ns z-0">
+        <article class="cf ph3">
+            <div class="db fl w-100 w-60-ns w-40-m w-20-l">
                 <img src="{{ images.logoUrl }}" class="dib" title="{{ block('title') }}"/>
             </div>
-            <div class="dn dib-l fr tr w-75-ns">
-                <h3 class="f3 fw8 form-logo mh0 ph0">{{ course }}</h3>
+            {% block content_header_title %}
+                <div class="absolute-l dn dib-l tc w-75-l">
+                    <h3 class="{{ fontClassX3 }} calisto navy">{{ title }}</h3>
+                </div>
+            {% endblock %}
+            <div class="absolute-ns dn dib-ns fr tr w-34-ns w-50-m w-75-l">
+                <h3 class="{{ fontClassTitle }}fw6 form-logo lh-solid-l pt1 pt2-m pt0-l">{{ course }}</h3>
             </div>
         </article>
     {% endblock %}
     <article class="cf mh1-ns mh1-m mh3-l">
-        <form action="{{ formAction|default }}" accept-charset="utf-8" class="form-bg br3 mt3-ns pv2-ns vh-75" method="{{ formMethod|default('post') }}">
+        <form action="{{ formAction|default }}" accept-charset="utf-8" class="form-bg br3 pv2-ns vh-75" method="{{ formMethod|default('post') }}">
             {% block content_form %}{% endblock %}
         </form>
     </article>

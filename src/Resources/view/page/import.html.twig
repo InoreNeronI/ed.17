@@ -5,9 +5,7 @@
     <style type="text/css">
         {% include '@App/page/css/import-file.css.twig' %}
     </style>
-{% endblock %}{#
-
-{% block content_header %}{% endblock %}#}
+{% endblock %}
 
 {% block content_actions %}
     <div id="upload" class="cf dtc tc v-mid vh-50">
@@ -15,16 +13,6 @@
         <input id="data-import" class="input-file" type="file" name="data-import" value="" data-multiple-caption=" {count} files" webkitdirectory multiple>
         <label for="data-import"></label>
     </div>
-    {#<div class="center pa2">
-        <fieldset class="cf bn ma0 pa0">
-            <legend class="dt f5 f4-ns fl mb3 pa0 {{ colorInverse }}title-shadow">{{ title }}</legend>
-            <div id="upload" class="cf">
-                #}{# @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory #}{#
-                <input id="data-import" class="input-file" type="file" name="data-import" value="" data-multiple-caption=" {count} files" webkitdirectory multiple>
-                <label for="data-import"></label>
-            </div>
-        </fieldset>
-    </div>#}
 {% endblock %}
 
 {% block jq_ready %}

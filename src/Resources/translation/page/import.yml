@@ -1,10 +1,10 @@
 title:
-  eu: 'Inportatu'
-  es: 'Importar'
+  eu: '`data.zip` igo'
+  es: 'subir `data.zip`'
   en: ''
 formAction: '/import'
 entrance:
-  eu: '`data.zip` igo'
-  es: 'subir `data.zip`'
+  eu: 'Inportatu'
+  es: 'Importar'
   en: ''
 bgUrl: ''

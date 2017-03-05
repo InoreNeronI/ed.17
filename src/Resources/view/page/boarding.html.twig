@@ -3,10 +3,10 @@
 {% block title title ~ ' :: ' ~ course ~ ' :: ' ~ mainTitle|title %}
 
 {% block content_form %}
-    <div class="dn dib-ns dn-m fl pl2  {{ colorInverse }}title-shadow w-100 w-25-m w-25-ns">
+    <div class="absolute-ns {{ colorInverse }}dn dib-ns dn-m fl pl2 title-shadow w-30-ns w-25-m w-20-l">
         <h3 class="{{ fontClassX3 }}fw6 mb2 pl4"><strong>{{ entrance }}</strong></h3>
     </div>
-    <div class="ba b--black-30 bg-black-20 br3 dt fr h-100 mh2-ns mw7-ns w-100 w-80-ns w-75-m w-60-l">
+    <div class="ba b--black-30 bg-black-20 br3 dt fr h-100 mr2-ns w-100 w-70-ns w-75-m w-80-l">
         {% block content_actions %}
             <article class="dtc pa2 tc v-mid">
                 {% for key, value in actions %}

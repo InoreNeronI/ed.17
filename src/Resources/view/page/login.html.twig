@@ -9,11 +9,13 @@
     </style>
 {% endblock %}
 
+{% block content_header_title %}{% endblock %}
+
 {% block content_form %}
-    <div class="dn dib-l fl pl2 {{ colorInverse }}pa0 pt2-m pt3-l w-100 w-25-ns title-shadow">
+    <div class="dn dib-l fl pl2 {{ colorInverse }}pa0 pt1-m pt2-l w-100 w-25-ns title-shadow">
         <h3 class="{{ fontClassX3 }}fw6 mb2 pl4"><strong>{{ title }}</strong></h3>
     </div>
-    <div class="dib-ns fr {{ colorInverse }}pa0 pt2-m pt5-l w-100 w-75-ns title-shadow">
+    <div class="dib-ns fr {{ colorInverse }}pa0 pt2-m pt3-l w-100 w-75-ns title-shadow">
         {% include '@App/field/login-fields.html.twig' %}
     </div>
     <div class="cb fl mt4 tc w-100">
