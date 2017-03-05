@@ -6,9 +6,9 @@ use Symfony\Component\Routing;
 use Symfony\Component\Yaml;
 
 /**
- * Class RouteHandler.
+ * Class Router.
  */
-class RouteHandler
+class Router
 {
     /** @var bool $loaded */
     protected $loaded = false;
@@ -20,7 +20,7 @@ class RouteHandler
     protected $translationsDir;
 
     /**
-     * RouteHandler constructor.
+     * Router constructor.
      *
      * @param array  $parsedRoutes
      * @param string $translationsDir

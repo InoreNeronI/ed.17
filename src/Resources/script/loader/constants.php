@@ -9,7 +9,7 @@ define('PUBLIC_DIR', ROOT_DIR.\def::paths()['public_dir']);
 define('TEMPLATE_CACHE_DIR', ROOT_DIR.\def::paths()['cache_dir'].'/twig');
 define('TEMPLATE_EXTENSION', 'html.twig');
 define('TEMPLATE_FILES_DIR', ROOT_DIR.\def::paths()['template_dir']);
-define('UPLOADS_DIR', ROOT_DIR.'/uploads');
+define('UPLOADS_DIR', ROOT_DIR.'/app/uploads');
 define('USER_TABLE', \defDb::userEntity());
 define('EXTRA_TABLE', \defDb::extraEntity());
 

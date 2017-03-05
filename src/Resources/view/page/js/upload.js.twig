@@ -16,7 +16,7 @@ let inputContainer = document.getElementById('upload'),
 inputFile.addEventListener('change', handleFiles, false);
 inputFile.addEventListener('focus', function(){ inputFile.classList.add('has-focus'); });
 inputFile.addEventListener('blur', function(){ inputFile.classList.remove('has-focus'); });
-inputIcon.classList = 'fa fa-upload fa-5x';
+inputIcon.classList = 'fa fa-upload fa-4x';
 inputLabel.appendChild(inputIcon);
 inputLabel.classList = textClass+' ba br-100 dib pa3';
 inputLabel.style = '-webkit-appearance: button; -moz-appearance: button; appearance: button;';
@@ -49,8 +49,8 @@ function handleFiles(event) {
     inputIcon.classList.remove(newList.length ? 'fa-times' : 'fa-check');
     inputIcon.classList.add(newList.length ? 'fa-check' : 'fa-times');
     let span = document.createElement('span');
-    span.classList = '{{ fontClassX4 }}sanf-serif';
-    span.innerText = (inputFile.getAttribute('data-multiple-caption') || '').replace('{count}', newList.length);
+    span.classList = 'cf {{ fontClassX3 }}sanf-serif';
+    span.innerText = (inputFile.getAttribute('data-multiple-caption') || '').replace(/{count}/g, newList.length);
     span.style = 'font-family: sans-serif; line-height: 1.15; -webkit-text-size-adjust: 100%;';
     inputIcon.innerHTML = span.outerHTML;
     inputIcon.style = newList.length ? 'color: green;' : 'color: red;';

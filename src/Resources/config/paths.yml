@@ -4,7 +4,7 @@ paths:
   cache_dir: /app/cache
 
   # Data files' path
-  data_dir: /app/probak
+  data_dir: /app/config
 
   # Logs files' path
   logs_dir: /app/logs

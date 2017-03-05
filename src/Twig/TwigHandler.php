@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Handler;
+namespace App\Twig;
 
-//use RuntimeException;
+use App\Twig;
+use Assetic\Filter;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
 
 /**
- * Class ViewHandler.
+ * Class TwigHandler
  */
-class ViewHandler
+class TwigHandler
 {
     /** @var Twig_Loader_Filesystem */
     private static $loader;
@@ -56,6 +57,9 @@ class ViewHandler
             'debug' => $debug,
             'strict_variables' => $strictVariables,
         ]);
+        static::$twig->addExtension(new Twig\Extension\UglifyExtension(
+            new Twig\Uglifier(new Filter\UglifyJs2Filter(ROOT_DIR.'/node_modules/.bin/uglifyjs'), true)
+        ));
         if ($debug) {
             static::$twig->addExtension(new Twig_Extension_Debug());
         }

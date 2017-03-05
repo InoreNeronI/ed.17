@@ -12,24 +12,7 @@
     "pre-update-cmd": "printf \"\\n\\tUpdating dependencies\\n\\n\""
   },
   "scripts-dev": {
-    "build": [
-      "printf \"\\n\\tCopying Assets\\n\\n\"",
-      "[ -d \"public\" ] || mkdir public",
-      "[ -d \"public/scripts\" ] || mkdir \"public/scripts\"",
-      "[ -d \"public/scripts/jquery\" ] || mkdir \"public/scripts/jquery\"",
-      "cp -rv ./node_modules/jquery/dist/jquery.* public/scripts/jquery",
-      "[ -d \"public/scripts/jquery-resize\" ] || mkdir \"public/scripts/jquery-resize\"",
-      "cp -rv ./node_modules/jquery-debounced-and-throttled-resize/jquery.* public/scripts/jquery-resize",
-      "cp -rv ./node_modules/jquery-resizable-dom/dist/jquery-* public/scripts/jquery-resize",
-      "[ -d \"public/styles\" ] || cp -rv ./node_modules/tachyons/css public/styles",
-      "[ -d \"public/fonts\" ] || cp -rv ./node_modules/font-awesome/fonts public",
-      "[ -d \"public/fonts\" ] || cp -rv ./node_modules/font-awesome/css/font-awesome.min.css public/styles",
-      "cp -rv ./src/Resources/public/scripts/* public/scripts || true",
-      "cp -rv ./src/Resources/public/styles/* public/styles || true",
-      "[ -d \"public/images/jquery-resize\" ] || mkdir \"public/images/jquery-resize\"",
-      "cp -rv ./node_modules/jquery-resizable-dom/assets/* public/images/jquery-resize",
-      "rm -rf ./vendor"
-    ],
+    "build": ["bash -c ./app/shell/publish.sh"],
     "post-install-cmd": ["npm install", "@build"],
     "post-update-cmd": ["npm update", "@build"]
   },

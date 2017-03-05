@@ -6,7 +6,6 @@
         <meta name="description" content="{{ mainTitle|title ~ ' - ' ~ course|title ~ ' - ' ~ title|default|title }}"/>
         <meta name="author" content="ISEI - IVEI | Irakas Sistema Ebaluatu eta Ikertzeko Erakundea - Instituto Vasco de Evaluación e Investigación Educativa"/>
         <meta name="viewport" content="width=device-width,initial-scale=1"/>
-
         <title>{% block title mainTitle|title %}</title>
         <link rel="stylesheet" href="/styles/tachyons.min.css" type="text/css" />
         <link rel="stylesheet" href="/styles/font-awesome.min.css" type="text/css" />
@@ -18,7 +17,7 @@
         {% set fontClass = 'f6 f6-m f5-l ' %}
         {% set fontClassX2 = 'f5 f5-m f4-l ' %}
         {% set fontClassX3 = 'f4 f4-m f3-l ' %}
-        {% set fontClassX4 = 'f3 f3-m f2-l ' %}
+        {#{% set fontClassX4 = 'f3 f3-m f2-l ' %}#}
         {% set fontClassDefault = fontClass ~ color %}
         {% set fontClassItem = fontClassX2 ~ color %}
         {% set fontClassTitle = fontClassX3 ~ color %}
@@ -29,8 +28,12 @@
         {% block content %}{% endblock %}
         {% block scripts %}
             <script src="/scripts/jquery/jquery.min.js"></script>
-            <script>
+            <script>{% uglify %}
                 document.addEventListener('touchmove', function(ev) { ev.preventDefault(); });
+                {# @see http://stackoverflow.com/a/20321530 #}
+                window.location.hash="no-back-button";
+                window.location.hash="Again-No-back-button";//again because google chrome don't insert first hash into history
+                window.onhashchange=function(){window.location.hash="no-back-button";};
                 {#let _gaq = _gaq || [];
                 _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
                 _gaq.push(['_trackPageview']);
@@ -39,21 +42,21 @@
                     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
                     let s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
                 })();#}
-                // @see http://gregfranko.com/blog/jquery-best-practices
-                // IIFE - Immediately Invoked Function Expression
+                {# @see http://gregfranko.com/blog/jquery-best-practices #}
+                {# IIFE - Immediately Invoked Function Expression #}
                 (function(appCode) {
-                    // The global jQuery object is passed as a parameter
+                    {# The global jQuery object is passed as a parameter #}
                     appCode(window.jQuery, window, document);
 
                 }(function($, window, document) {
-                    // The $ is now locally scoped
+                    {# The $ is now locally scoped #}
                     $(function() {
-                        // The DOM is ready!
+                        {# The DOM is ready! #}
                         {% block jq_ready %}{% endblock %}
                     });
-                    // The rest of your code goes here!
+                    {# The rest of your code goes here! #}
                 }));
-            </script>
+            {% enduglify %}</script>
         {% endblock %}
     </body>
 </html>{% endspaceless %}

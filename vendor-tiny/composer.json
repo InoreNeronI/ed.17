@@ -8,11 +8,13 @@
     "ext-pdo_sqlite": "*",
     "incenteev/composer-parameter-handler": "@stable",
     "doctrine/dbal": "@stable",
+    "kriswallsmith/assetic": "@stable",
     "symfony/event-dispatcher": "@stable",
     "symfony/http-kernel": "@stable",
     "symfony/http-foundation": "@stable",
     "symfony/routing": "@stable",
     "symfony/yaml": "@stable",
+    "tholu/php-packer": "@stable",
     "twig/twig": "@stable"
   },
   "require-dev": {

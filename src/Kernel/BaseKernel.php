@@ -32,8 +32,8 @@ class BaseKernel implements HttpKernel\HttpKernelInterface
         /* @var HttpKernel\Controller\ControllerResolver $resolver */
         $this->resolver = new HttpKernel\Controller\ControllerResolver();
 
-        /* @var Handler\RouteHandler $routing */
-        $routing = new Handler\RouteHandler(\def::routes(), ROOT_DIR.\def::paths()['translations_dir'], static::$baseUrl, static::$baseSlug);
+        /* @var Handler\Router $routing */
+        $routing = new Handler\Router(\def::routes(), ROOT_DIR.\def::paths()['translations_dir'], static::$baseUrl, static::$baseSlug);
 
         /* @var Routing\RequestContext $context */
         $context = new Routing\RequestContext();

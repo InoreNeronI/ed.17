@@ -16,7 +16,7 @@
             </div>
             {% block content_header_title %}
                 <div class="absolute-l dn dib-l tc w-75-l">
-                    <h3 class="{{ fontClassX3 }} calisto navy">{{ title }}</h3>
+                    <h3 class="{{ fontClassX3 }}calisto navy">{{ title }}</h3>
                 </div>
             {% endblock %}
             <div class="absolute-ns dn dib-ns fr tr w-34-ns w-50-m w-75-l">
@@ -35,5 +35,6 @@
     {{ parent() }}
     <script src="/scripts/jquery-resize/jquery.debouncedresize.js"></script>
     <script src="/scripts/jquery-resize/jquery.throttledresize.js"></script>
-    <script>{% include '@App/layout/js/form.js.twig' %}</script>
+    <script src="/scripts/form.js"></script>{#
+    <script>{% uglify %}{% enduglify %}</script>#}
 {% endblock %}

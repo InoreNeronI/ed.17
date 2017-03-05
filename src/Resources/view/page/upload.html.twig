@@ -3,21 +3,21 @@
 {% block styles %}
     {{ parent() }}
     <style type="text/css">
-        {% include '@App/page/css/import-file.css.twig' %}
+        {% include '@App/page/css/upload.css.twig' %}
     </style>
 {% endblock %}
 
 {% block content_actions %}
     <div id="upload" class="cf dtc tc v-mid vh-50">
         {# @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory #}
-        <input id="data-import" class="input-file" type="file" name="data-import" value="" data-multiple-caption=" {count} files" webkitdirectory multiple>
+        <input id="data-import" class="input-file" type="file" name="data-import" value="" data-multiple-caption="{{ uploadMsg }}" webkitdirectory multiple/>
         <label for="data-import"></label>
     </div>
 {% endblock %}
 
 {% block jq_ready %}
     {{ parent() }}
-    {% include '@App/page/js/import-file.js.twig' with { 'loginFormClass': random([
+    {% include '@App/page/js/upload.js.twig' with { 'loginFormClass': random([
         'bg-dark-gray', 'bg-mid-gray', 'bg-gray', 'bg-silver', 'bg-light-silver', 'bg-moon-gray', 'bg-light-gray', 'bg-dark-red', 'bg-light-red', 'bg-orange', 'bg-gold', 'bg-yellow', 'bg-light-yellow', 'bg-purple', 'bg-light-purple', 'bg-dark-pink', 'bg-hot-pink', 'bg-pink', 'bg-light-pink', 'bg-dark-green', 'bg-light-green', 'bg-navy', 'bg-dark-blue', 'bg-blue', 'bg-light-blue', 'bg-lightest-blue', 'bg-washed-blue', 'bg-washed-green', 'bg-washed-yellow', 'bg-washed-red'
     ]) } %}
 {% endblock %}

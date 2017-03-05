@@ -9,11 +9,11 @@ app/connection.yml
 app/data*
 app/logs/
 app/session/
+app/uploads/
 bin/
 node_modules/
 !public/
 public/*
-!public/index.php
 !public/images
 public/images/*
 !public/images/*.jpg
@@ -24,4 +24,3 @@ vendor/
 !vendor-tiny/
 vendor-tiny/*
 !vendor-tiny/composer.*
-uploads/

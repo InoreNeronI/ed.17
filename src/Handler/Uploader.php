@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Handler\Document;
+namespace App\Handler;
 
 use Symfony\Component\HttpFoundation;
 
 /**
- * Class Document
+ * Class Uploader
  *
  * @see https://gist.github.com/beberlei/978346
  */
-class Document
+class Uploader
 {
     /** @var HttpFoundation\File\File - not a persistent field! */
     private $file;
@@ -73,7 +73,7 @@ class Document
         if (!($this->file instanceof HttpFoundation\File\UploadedFile)) {
             return false;
         }
-        $this->filePersistencePath = $this->moveUploadedFile($this->file, static::getUploadDirectory());
+        $this->filePersistencePath = $this->moveUploadedFile($this->file, realpath(static::getUploadDirectory()));
     }
 
     /**
@@ -85,32 +85,19 @@ class Document
     public function moveUploadedFile(HttpFoundation\File\UploadedFile $file, $uploadBasePath)
     {
         $originalName = $file->getClientOriginalName();
-
         // use filemtime() to have a more determenistic way to determine the subpath, otherwise its hard to test.
         $relativePath = date('Y-m', filemtime($this->file->getPath()));
-        $targetFileName = $relativePath.DIRECTORY_SEPARATOR.$originalName;
-        $targetFilePath = $uploadBasePath.DIRECTORY_SEPARATOR.$targetFileName;
-        $ext = $this->file->getExtension();
-
-        $i = 1;
-        while (file_exists($targetFilePath) && md5_file($file->getPathName()) !== md5_file($targetFilePath)) {
-            if ($ext) {
-                $prev = $i === 1 ? '' : $i;
-                $targetFilePath = $targetFilePath.str_replace($prev.$ext, $i++.$ext, $targetFilePath);
-            } else {
-                $targetFilePath = $targetFilePath.$i++;
-            }
-        }
-
         $targetDir = $uploadBasePath.DIRECTORY_SEPARATOR.$relativePath;
-        if (!is_dir($targetDir)) {
-            $ret = mkdir($targetDir, umask(), true);
-            if (!$ret) {
-                throw new \RuntimeException('Could not create target directory to move temporary file into.');
-            }
+        $targetFilePath = $targetDir.DIRECTORY_SEPARATOR.$originalName;
+        if (!is_dir($targetDir) && !mkdir($targetDir, umask(), true)) {
+            throw new \RuntimeException('Could not create target directory to move temporary file into.');
+        } elseif (file_exists($targetFilePath) && md5_file($file->getPathName()) !== md5_file($targetFilePath)) {
+            $newFilename = basename($originalName).'_'.uniqid();
+            $fileExtension = pathinfo($originalName, PATHINFO_EXTENSION);
+            $originalName = empty($fileExtension) ? $newFilename : $newFilename.'.'.$fileExtension;
         }
-        $file->move($targetDir, basename($targetFilePath));
+        $file->move($targetDir, $originalName);
 
-        return str_replace($uploadBasePath.DIRECTORY_SEPARATOR, '', $targetFilePath);
+        return $relativePath.DIRECTORY_SEPARATOR.$originalName;
     }
 }

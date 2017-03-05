@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Controller;
 use App\Handler;
 use App\Helper;
+use App\Twig;
 use Symfony\Component\HttpFoundation;
 
 /**
@@ -94,7 +95,8 @@ class BaseController
             $return = [];
             /** @var HttpFoundation\File\File $file */
             foreach ($request->files as $file) {
-                $document = new Handler\Document\Document();
+                /** @var Handler\Uploader $document */
+                $document = new Handler\Uploader();
                 $document->setFile($file);
                 $document->processFile();
                 $return[] = $document->getFilePersistencePath();
@@ -103,18 +105,18 @@ class BaseController
             return HttpFoundation\JsonResponse::create($return);
         }
         $data = $this->getData($request);
-        $route = $request->get('_route');
-        if ($route === 'boarding' && !isset($data['code'])) {
-            $route = 'import';
-            $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $route), [], $this->langISOCodes);
+        $template = $request->get('_route');
+        if ($template === 'boarding' && !isset($data['code'])) {
+            $template = 'upload';
+            $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $template), [], $this->langISOCodes);
             $data = array_merge($data, $messages);
-        } elseif ($route === 'boarding' && strpos($data['code'], 'simul') !== false) {
-            $route = 'onboard';
-            $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $route), $data, $this->langISOCodes);
+        } elseif ($template === 'boarding' && strpos($data['code'], 'simul') !== false) {
+            $template = 'onboard';
+            $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $template), $data, $this->langISOCodes);
             $request = HttpFoundation\Request::create(null, $request->getMethod(), array_merge($request->request->all(), $messages, ['flabel' => 'Simul']));
             $data = $this->getSplitPageData($request);
         }
-        $view = Handler\ViewHandler::render($route, $data);
+        $view = Twig\TwigHandler::render($template, $data);
 
         return static::processView($view, $expiryMinutes);
     }
@@ -131,7 +133,7 @@ class BaseController
     public function pageRenderAction(HttpFoundation\Request $request, $page = 0, $expiryMinutes = 1)
     {
         $data = $this->getSplitPageData($request, $page);
-        $view = Handler\ViewHandler::render($request->get('_route'), $data);
+        $view = Twig\TwigHandler::render($request->get('_route'), $data);
 
         return static::processView($view, $expiryMinutes);
     }
