@@ -60,8 +60,8 @@ function handleUpload(count) {
         type: 'POST',
         data: data,
         beforeSend: function({#xhr#}) {
-            {#xhr.overrideMimeType("text/plain; charset=x-user-defined");#}
-            inputLabel.classList.remove('{{ loginFormClass|trim }}');
+            {#xhr.overrideMimeType("text/plain; charset=x-user-defined");
+            inputLabel.classList.remove('{{ loginFormClass|trim }}');#}
             inputIcon.innerHTML = '';
         },
         processData: false,

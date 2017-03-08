@@ -245,6 +245,10 @@ class Uploader
 
         $total = 0;
         foreach ($files as $name => $file) {
+            $path = realpath($srcDir);
+            if (empty($path)) {
+                continue;
+            }
             // Skip directories (they would be added automatically)
             if (!$file->isDir()) {
                 // Get real and relative path for current file
