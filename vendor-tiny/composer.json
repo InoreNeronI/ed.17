@@ -41,6 +41,7 @@
   },
   "config": {
     "bin-dir": "../bin",
+    "platform": {"php": "7.0"},
     "preferred-install": "dist",
     "vendor-dir": "./"
   }

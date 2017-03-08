@@ -13,5 +13,5 @@ interface CacheInterface
      *
      * @return string
      */
-    public static function uglify($content, $options);
+    public static function minify($content, $options);
 }

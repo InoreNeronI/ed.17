@@ -3,7 +3,6 @@
 namespace App\Cache;
 
 use App\Cache;
-use Tholu\Packer;
 
 /**
  * Class CachedMinifier.
@@ -28,11 +27,8 @@ class CachedMinifier implements Cache\CacheInterface
     /**
      * {@inheritdoc}
      */
-    public static function uglify($content/*, $options*/)
+    public static function minify($content/*, $options*/)
     {
-        /** @var Packer\Packer $packer */
-        $packer = new Packer\Packer($content, 'Normal', true, false, true);
-        $content = $packer->pack();
         if (static::$cacheDir) {
             if (!file_exists(static::$cacheDir)) {
                 mkdir(static::$cacheDir, 0777, true);
@@ -40,12 +36,12 @@ class CachedMinifier implements Cache\CacheInterface
             $hash = md5($content);
             $file = implode(DIRECTORY_SEPARATOR, [static::$cacheDir, $hash]);
             if (!file_exists($file)) {
-                file_put_contents($file, $content/*\JShrink\Minifier::uglify($content, $options)*/);
+                file_put_contents($file, $content/*\JShrink\Minifier::minify($content, $options)*/);
             }
 
             return file_get_contents($file);
         }
 
-        return $content/*\JShrink\Minifier::uglify($content, $options)*/;
+        return $content/*\JShrink\Minifier::minify($content, $options)*/;
     }
 }
