@@ -28,5 +28,5 @@ printf "\\n\\tSyncing Public Files\\n\\n"
 [ -d "${RESOURCES_SRC}/scripts" ] && cp -rv ${RESOURCES_SRC}/scripts/* ${PUBLIC_SRC}/scripts
 [ -d "${PUBLIC_SRC}/styles" ] || mkdir -pv "${PUBLIC_SRC}/styles"
 [ -d "${RESOURCES_SRC}/styles" ] && cp -rv ${RESOURCES_SRC}/styles/* ${PUBLIC_SRC}/styles
-#printf "\\n\\tPurging BackOffice Vendors\\n\\n"
-#[ -d "./vendor" ] && rm -rf ./vendor && printf "\\tOk!\\n" || printf "\\tNothing to do.\\n"
+printf "\\n\\tPurging BackOffice Vendors\\n\\n"
+rm -rv ./vendor && printf "\\tOk!\\n" || printf "\\tNothing to do.\\n"
