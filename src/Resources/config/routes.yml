@@ -2,6 +2,7 @@
 routes:
   - /sample
   - { path: /, methods: [GET] }
-  - { path: /save, methods: [POST] }
+  - { path: /getdata, methods: [GET] }
   - { path: /go!, name: boarding, methods: [POST] }
   - { path: '/{page}', action: pageRender, name: onboard, methods: [POST], requirements: { page: \d+ } }
+  - { path: /save, methods: [POST] }

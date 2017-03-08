@@ -80,11 +80,11 @@ trait BaseKernelTrait
         // Feed the RequestContext
         $this->matcher->getContext()->fromRequest($request);
 
-        try {
+        //try {
             // Next we take our HTTP request object and see if our Request contains a routing match (see our routes class below for a match)
             /** @var array $parameters */
             $parameters = $this->matcher->match($request->getPathInfo());
-            $request->attributes->add($parameters);
+        $request->attributes->add($parameters);
 
             // Our request found a match so let's use the Controller Resolver to resolve our controller.
             /** @var callable|false $controller */
@@ -102,13 +102,13 @@ trait BaseKernelTrait
             // The dispatcher, the central object of the event dispatcher system, notifies listeners of an event dispatched to it.
             // Put another way: your code dispatches an event to the dispatcher, the dispatcher notifies all registered listeners for the event, and each listener do whatever it wants with the event.
             $this->dispatcher->dispatch('response', new Event\ResponseEvent($response, $request));
-        } catch (\NoticeException $e) {
+        /*} catch (\NoticeException $e) {
             return static::getFallbackResponse($e, true);
         } catch (\WarningException $e) {
             return static::getFallbackResponse($e, true);
         } catch (\Exception $e) {
             return static::getFallbackResponse($e);
-        }
+        }*/
 
         return $response;
     }

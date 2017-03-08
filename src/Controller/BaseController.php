@@ -67,16 +67,12 @@ class BaseController
     {
         /** @var HttpFoundation\Response $response */
         $response = new HttpFoundation\Response($content, 200);
-
         // avoid one of the most widespread Internet security issue, XSS (Cross-Site Scripting)
         $response->headers->set('Content-Type', 'text/html');
-
         // compression
         $response->headers->set('Accept-Encoding', 'gzip, deflate');
-
         // configure the HTTP cache headers
         $response->setMaxAge($expiryMinutes * 60);
-
         // return response object back
         return $response;
     }
@@ -92,21 +88,32 @@ class BaseController
     public function renderAction(HttpFoundation\Request $request, $expiryMinutes = 1)
     {
         if ($request->isXmlHttpRequest() && $request->getMethod() === 'POST') {
-            $return = [];
-            /** @var HttpFoundation\File\File $file */
+            /** @var string $clientIp */
+            $clientIp = $request->getClientIp();
+            /** @var string $user */
+            $user = $request->request->get('user');
+            /** @var Handler\Uploader $doc */
+            $doc = new Handler\Uploader();
+            /** @var int $time */
+            $time = time();
+            /** @var string $token */
+            $token = uniqid();
+            /** @var HttpFoundation\File\UploadedFile $file */
             foreach ($request->files as $file) {
-                /** @var Handler\Uploader $document */
-                $document = new Handler\Uploader();
-                $document->setFile($file);
-                $document->processFile();
-                $return[] = $document->getFilePersistencePath();
+                $doc->setFile($file);
+                $result = $doc->processFile($clientIp, $user, $time, $token);
+                if (!ctype_digit($result)) {
+                    $doc->processFile($clientIp, $user, $time, $token = $result);
+                }
             }
 
-            return HttpFoundation\JsonResponse::create($return);
+            return HttpFoundation\JsonResponse::create($doc->doPurge());
         }
         $data = $this->getData($request);
         $template = $request->get('_route');
-        if ($template === 'boarding' && !isset($data['code'])) {
+        if ($template === 'getdata') {
+            return new HttpFoundation\Response(Handler\Uploader::publishUploadDirectory());
+        } elseif ($template === 'boarding' && !isset($data['code'])) {
             $template = 'upload';
             $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $template), [], $this->langISOCodes);
             $data = array_merge($data, $messages);
