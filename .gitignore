@@ -13,7 +13,8 @@ app/uploads/
 bin/
 node_modules/
 !public/
-public/*
+public/
+!public/favicon.ico
 !public/images
 public/images/*
 !public/images/*.jpg
