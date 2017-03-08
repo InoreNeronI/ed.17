@@ -54,6 +54,9 @@ class Authorization extends Security\Connection\Connection
             'studentDay' => $args['studentDay'],
             'studentMonth' => $args['studentMonth'],
         ];
+        if ($this->checkUploaders($args)) {
+            return $args;
+        }
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
             ->select('u.*')->from($table, 'u')
@@ -70,21 +73,21 @@ class Authorization extends Security\Connection\Connection
         $user = $query->fetch();
 
         if (empty($user)) {
-            /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
-            $queryBuilder = $this->getQueryBuilder()
+            /* @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
+            /*$queryBuilder = $this->getQueryBuilder()
                 ->select('u.*')->from(EXTRA_TABLE, 'u')
                 ->where('u.user = :user')
                 ->andWhere('u.password = :pw')
-                ->setParameters(['user' => $args['studentCode'], 'pw' => $args['studentPassword']]);
+                ->setParameters(['user' => $args['studentCode'], 'pw' => $args['studentPassword']]);*/
 
-            /** @var \Doctrine\DBAL\Driver\Statement $query */
-            $query = $queryBuilder->execute();
+            /* @var \Doctrine\DBAL\Driver\Statement $query */
+            //$query = $queryBuilder->execute();
 
-            /** @var array $user */
-            $user = $query->fetch();
+            /* @var array $user */
+            /*$user = $query->fetch();
             if (!empty($user)) {
                 return array_merge($user, $credentials);
-            }
+            }*/
         } else {
             /** @var array $codes */
             $codes = \def::dbSecurity();
@@ -96,6 +99,22 @@ class Authorization extends Security\Connection\Connection
             throw new \NoticeException(sprintf('The code you have entered does not match: \'%s\'', $codPrueba));
         }
         throw new \NoticeException(static::$debug ? sprintf('No results found for query: %s, with the following parameter values: [%s]', $queryBuilder->getSQL(), implode(', ', $queryBuilder->getParameters())) : 'No results found');
+    }
+
+    /**
+     * @param array $args
+     *
+     * @return bool|int|string
+     */
+    public function checkUploaders(array $args)
+    {
+        foreach (\def::uploaders() as $user => $password) {
+            if (strtolower($args['studentCode']) === $user && $args['studentPassword'] === $password) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

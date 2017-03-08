@@ -253,7 +253,7 @@ class Uploader
 
                 // Add current file to archive
                 if ($zip->addFile($filePath, $relativePath)) {
-                    $total++;
+                    ++$total;
                 }
             }
         }
@@ -263,6 +263,6 @@ class Uploader
         }
         $zip->close();
 
-        return $total ? ($set ? 'si' : 'no'). '-'.$filename : '';
+        return $total ? $filename : '';
     }
 }

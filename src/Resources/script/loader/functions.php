@@ -21,6 +21,16 @@ final class def extends defDB
     private static $stages;
     private static $routesLoaded = false;
     private static $routes;
+    private static $uploadersLoaded = false;
+    private static $uploaders;
+
+    private static function loadUploaders()
+    {
+        if (!static::$uploadersLoaded) {
+            static::$uploaders = parseConfig(CONFIG_DIR, 'uploaders')['uploaders'];
+            static::$uploadersLoaded = true;
+        }
+    }
 
     private static function loadRoutes()
     {
@@ -137,6 +147,13 @@ final class def extends defDB
         static::loadRoutes();
 
         return static::$routes;
+    }
+
+    public static function uploaders()
+    {
+        static::loadUploaders();
+
+        return static::$uploaders;
     }
 }
 
