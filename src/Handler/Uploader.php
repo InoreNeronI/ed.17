@@ -215,7 +215,7 @@ class Uploader
      */
     public static function publishUploadDirectory()
     {
-        $filename = static::zipUploadDirectory(static::$uploadDirectory);
+        $filename = static::zipUploadDirectory(static::getUploadDirectory());
 
         return '<a target="_blank" href="'.$filename.'">'.$filename.'</a>';
     }
