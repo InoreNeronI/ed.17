@@ -31,7 +31,8 @@ printf "\\n\\tSyncing Public Files\\n\\n"
 [ -d "${PUBLIC_DIR}/styles" ] || mkdir -pv "${PUBLIC_DIR}/styles"
 [ -d "${RESOURCES_DIR}/styles" ] && cp -rv ${RESOURCES_DIR}/styles/* ${PUBLIC_DIR}/styles
 [ -d "${UPLOAD_DIR}" ] || mkdir -pv "${UPLOAD_DIR}"
-chmod -v 755 ${UPLOAD_DIR}
+printf "\\n\\tSetting Permissions Files\\n\\n"
+chmod -Rv g+rw ${UPLOAD_DIR}
 chown -Rv www-data.www-data ${UPLOAD_DIR}
 #printf "\\n\\tPurging BackOffice Vendors\\n\\n"
 #rm -rv ./vendor && printf "\\tOk!\\n" || printf "\\tNothing to do.\\n"
