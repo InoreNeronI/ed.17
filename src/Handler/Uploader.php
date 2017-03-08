@@ -36,7 +36,7 @@ class Uploader
      */
     public function getUploadDirectory()
     {
-        die(static::$uploadDirectory);
+        echo(static::$uploadDirectory);
         if (!is_dir(static::$uploadDirectory) && !mkdir(static::$uploadDirectory, umask(), true)) {
             throw new \RuntimeException('Trying to access to invalid upload directory path');
         }
