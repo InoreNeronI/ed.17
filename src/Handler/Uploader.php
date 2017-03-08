@@ -21,7 +21,7 @@ class Uploader
     private $filePersistencePath = [];
 
     /** @var string */
-    protected static $uploadDirectory = UPLOADS_DIR.DIRECTORY_SEPARATOR.'/tmp';
+    protected static $uploadDirectory = UPLOADS_DIR.DIRECTORY_SEPARATOR.'tmp';
 
     /** @param $dir */
     public function setUploadDirectory($dir)
@@ -36,7 +36,6 @@ class Uploader
      */
     public function getUploadDirectory()
     {
-        die(static::$uploadDirectory);
         if (!is_dir(static::$uploadDirectory) && !mkdir(static::$uploadDirectory, umask(), true)) {
             throw new \RuntimeException('Trying to access to invalid upload directory path');
         }
