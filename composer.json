@@ -12,7 +12,7 @@
     "pre-update-cmd": "printf \"\\n\\tUpdating dependencies\\n\\n\""
   },
   "scripts-dev": {
-    "build": ["bash -c ./app/shell/publish.sh"],
+    "build": ["chmod -v +x ./app/shell/publish.sh", "bash -c ./app/shell/publish.sh"],
     "post-install-cmd": ["npm install", "@build"],
     "post-update-cmd": ["npm update", "@build"]
   },
