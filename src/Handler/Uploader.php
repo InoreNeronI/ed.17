@@ -21,7 +21,10 @@ class Uploader
     private $filePersistencePath = [];
 
     /** @var string */
-    protected static $uploadDirectory = UPLOADS_DIR.DIRECTORY_SEPARATOR.'tmp';
+    protected static $uploadDirectory = UPLOADS_DIR;
+
+    /** @var string */
+    protected static $zipSubDirectory = 'zip';
 
     /** @param $dir */
     public function setUploadDirectory($dir)
@@ -34,15 +37,16 @@ class Uploader
      *
      * @throws \RuntimeException
      */
-    public function getUploadDirectory()
+    public static function getUploadDirectory()
     {
-        error_log('upload dir: '.print_r(static::$uploadDirectory,1));
-        error_log('is dir '.(is_dir(static::$uploadDirectory) ? 'yes' : 'no'));
+        error_log('Upload dir: '.print_r(static::$uploadDirectory,1));
+        error_log('Is upload dir permission ok? '.(is_dir(static::$uploadDirectory) ? 'yes' : 'no'));
         if (!is_dir(static::$uploadDirectory) && !mkdir(static::$uploadDirectory, 0755, true)) {
             throw new \RuntimeException('Trying to access to invalid upload directory path');
         }
+        static::setUploadDirectory(static::$uploadDirectory.DIRECTORY_SEPARATOR.static::$zipSubDirectory);
 
-        return static::$uploadDirectory;
+        return static::getUploadDirectory();
     }
 
     /**
@@ -84,7 +88,7 @@ class Uploader
         if (!($this->file instanceof HttpFoundation\File\UploadedFile)) {
             throw new HttpFoundation\File\Exception\FileException($this->file);
         }
-        $targetDir = $this->getUploadDirectory();
+        $targetDir = static::getUploadDirectory();
         if (!is_dir($targetDir) && !mkdir($targetDir, umask(), true)) {
             throw new \RuntimeException('Could not create target directory to move temporary file into.');
         }
@@ -105,7 +109,7 @@ class Uploader
             return true;
         } elseif ($mimeType === 'application/zip') {
             $count = 0;
-            foreach (static::getTargetDirs($this->getUploadDirectory()) as $dir) {
+            foreach (static::getTargetDirs(static::getUploadDirectory()) as $dir) {
                 $files = static::getTargetFiles($dir);
                 $count += count($files);
                 foreach ($files as $file) {
