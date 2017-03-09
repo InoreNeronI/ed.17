@@ -103,22 +103,21 @@ class Uploader
     }
 
     /**
-     * @param HttpFoundation\File\UploadedFile $file
-     *
      * @return bool
      */
-    private function isNewFile(HttpFoundation\File\UploadedFile $file)
+    private function isNewFile()
     {
         $mimeType = $this->file->getMimeType();
         if ($mimeType === 'text/plain') {
             return true;
         } elseif ($mimeType === 'application/zip') {
             $count = 0;
+            $md5 = md5_file($this->file->getPathname());
             foreach (static::getTargetDirs(static::getUploadDirectory()) as $dir) {
                 $files = static::getTargetFiles($dir);
                 $count += count($files);
                 foreach ($files as $file) {
-                    if (md5_file($this->file->getPathname()) === md5_file($file)) {
+                    if ($md5 === md5_file($file)) {
                         $this->fileDuplicatePath[] = [md5($file) => realpath($file)];
                     } else {
                         --$count;
@@ -147,7 +146,7 @@ class Uploader
         $targetDir .= DIRECTORY_SEPARATOR.date('Y-m-d+H-i-s', $time).'+'.$clientIp.'+'.$user.'+'.$token;
         $originalName = $uploadedFile->getClientOriginalName();
         $file = $targetDir.DIRECTORY_SEPARATOR.$originalName;
-        if ($this->isNewFile($uploadedFile) && !in_array(md5($file), array_keys($this->fileDuplicatePath))) {
+        if ($this->isNewFile() && !in_array(md5($file), array_keys($this->fileDuplicatePath))) {
             if (is_file($file)) {
                 return uniqid();
             }
