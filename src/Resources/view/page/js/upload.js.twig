@@ -85,7 +85,7 @@ function handleUpload(count) {
         uploadContainer.appendChild(list);
         handleField(count);
     }).fail(function(jqXHR, textStatus, errorThrown) {
-        handleField(count);
+        handleField(0);
     });
 }
 function handleField(count) {
