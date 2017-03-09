@@ -125,7 +125,6 @@ class Uploader
                     }
                 }
             }
-            //dump($count);
 
             return $count === 0 ? true : false;
         }
@@ -148,7 +147,6 @@ class Uploader
         $targetDir .= DIRECTORY_SEPARATOR.date('Y-m-d+H-i-s', $time).'+'.$clientIp.'+'.$user.'+'.$token;
         $originalName = $uploadedFile->getClientOriginalName();
         $file = $targetDir.DIRECTORY_SEPARATOR.$originalName;
-        //dump($file);
         if ($this->isNewFile($uploadedFile) && !in_array(md5($file), array_keys($this->fileDuplicatePath))) {
             if (is_file($file)) {
                 return uniqid();
@@ -171,7 +169,6 @@ class Uploader
         $purges = [];
         foreach (static::getTargetDirs(static::getUploadDirectory()) as $dir) {
             $files = static::getTargetFiles($dir);
-            //dump(count($files));
             if (count($files) === 1 && ($file = realpath($files[0])) && mime_content_type($file) === 'text/plain' && unlink($file) && $folder = dirname($file)) {
                 $exists = false;
                 foreach ($this->getFilePersistencePath() as $key => $fresh) {
@@ -182,11 +179,7 @@ class Uploader
                 }
                 if (!$exists) {
                     foreach ($this->getFileDuplicatePath() as $key => $dupe) {
-                        //dump(array_pop($fresh));
-                        /*dump($fresh);
-                        dump(array_pop($fresh));
-                        dump($folder);*/
-                        if (!empty($fresh) && strpos(array_pop($fresh), $folder)) {
+                        if (strpos(array_pop($fresh), $folder)) {
                             unset($this->fileDuplicatePath[$key]);
                             $exists = true;
                         }
@@ -198,7 +191,8 @@ class Uploader
             }
         }
 
-        return ['fresh' => $this->getFilePersistencePath(), 'dupe' => $this->getFileDuplicatePath(), 'garb' => $purges];
+        //return ['fresh' => $this->getFilePersistencePath(), 'dupe' => $this->getFileDuplicatePath(), 'garb' => $purges];
+        return [];
     }
 
     /**
