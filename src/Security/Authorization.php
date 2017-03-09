@@ -55,7 +55,8 @@ class Authorization extends Security\Connection\Connection
             'studentMonth' => $args['studentMonth'],
         ];
         if ($this->checkUploaders($args)) {
-            return $args;
+
+            return array_merge($args, ['is_admin' => strtolower($args['studentCode']) === 'ed17-100']);
         }
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()

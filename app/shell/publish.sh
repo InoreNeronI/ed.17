@@ -12,6 +12,7 @@ printf "\\n\\tSyncing Public Vendors\\n\\n"
 [ -d "${PUBLIC_DIR}" ] || mkdir ${PUBLIC_DIR}
 [ -d "${PUBLIC_DIR}/scripts/jquery" ] || mkdir -pv "${PUBLIC_DIR}/scripts/jquery"
 cp -rv ./node_modules/jquery/dist/jquery.* ${PUBLIC_DIR}/scripts/jquery
+cp -rv ./node_modules/jquery-file-download/src/Scripts/jquery.fileDownload.js ${PUBLIC_DIR}/scripts
 [ -d "${PUBLIC_DIR}/scripts/jquery-resize" ] || mkdir -pv "${PUBLIC_DIR}/scripts/jquery-resize"
 cp -rv ./node_modules/jquery-debounced-and-throttled-resize/jquery.* ${PUBLIC_DIR}/scripts/jquery-resize
 cp -rv ./node_modules/jquery-resizable-dom/dist/jquery-* ${PUBLIC_DIR}/scripts/jquery-resize

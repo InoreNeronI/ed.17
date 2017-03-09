@@ -57,9 +57,20 @@ class TwigHandler
             'debug' => $debug,
             'strict_variables' => $strictVariables,
         ]);
-        static::$twig->addExtension(new Twig\Extension\UglifyExtension(
-            new Twig\Uglifier(new Filter\UglifyJs2Filter(ROOT_DIR.'/node_modules/.bin/uglifyjs'), true)
-        ));
+        $filter = new Filter\UglifyJs2Filter(ROOT_DIR.'/node_modules/.bin/uglifyjs');
+        $filter->setMangle(true);
+        $filter->setCompress([
+            'sequences' => true,
+            'dead_code' => true,
+            'mangle' => true,
+            'conditionals' => true,
+            'booleans' => true,
+            'unused' => true,
+            'if_return' => true,
+            'join_vars' => true,
+            'drop_console' => true
+        ]);
+        static::$twig->addExtension(new Twig\Extension\UglifyExtension(new Twig\Uglifier($filter, true)));
         if ($debug) {
             static::$twig->addExtension(new Twig_Extension_Debug());
         }

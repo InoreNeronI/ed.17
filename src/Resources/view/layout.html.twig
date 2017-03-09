@@ -27,13 +27,15 @@
         {% endif %}
         {% block content %}{% endblock %}
         {% block scripts %}
-            <script src="/scripts/jquery/jquery.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+            <script>window.jQuery || document.write('<script src="scripts/jquery/jquery.min.js"><\/script>')</script>
             <script>{% uglify %}
                 document.addEventListener('touchmove', function(ev) { ev.preventDefault(); });
                 {# @see http://stackoverflow.com/a/20321530 #}
                 window.location.hash="no-back-button";
                 window.location.hash="Again-No-back-button";//again because google chrome don't insert first hash into history
                 window.onhashchange=function(){window.location.hash="no-back-button";};
+                {# Google Analytics: change UA-XXXXX-Y to be your site's ID. #}
                 {#let _gaq = _gaq || [];
                 _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
                 _gaq.push(['_trackPageview']);

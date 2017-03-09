@@ -7,6 +7,10 @@ entrance:
   eu: 'Inportatu'
   es: 'Importar'
   en: ''
+downloadMsg:
+  eu: ' {count} deskargatu d(it)uzu'
+  es: ' has descargado {count}(s)'
+  en: ''
 uploadMsg:
   eu: ' {count} fitxategi igo d(it)uzu'
   es: ' has subido {count} fichero(s)'

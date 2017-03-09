@@ -5,30 +5,30 @@ window.URL = window.URL || window.webkitURL;
 
 {# @see http://jsfiddle.net/46Y45/5 #}
 {# @see https://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way #}
-let inputContainer = document.getElementById('upload'),
-    inputFile = document.getElementById('data-import'),
-    inputIcon = document.createElement('i'),
-    inputLabel = inputFile.nextElementSibling,
+let uploadContainer = document.getElementById('upload'),
+    uploadFile = document.getElementById('data-import'),
+    uploadIcon = document.createElement('i'),
+    uploadLabel = uploadFile.nextElementSibling,
     list = document.createElement('ol'),
     newList = [],
     textClass = '{{ colorInverse }}{{ loginFormClass|trim }} title-shadow',
     regex = /^(.*data.*\.zip)|(version)$/i;
-inputFile.addEventListener('change', handleFiles, false);
-inputFile.addEventListener('focus', function(){ inputFile.classList.add('has-focus'); });
-inputFile.addEventListener('blur', function(){ inputFile.classList.remove('has-focus'); });
-inputIcon.classList = 'fa fa-upload fa-4x';
-inputLabel.appendChild(inputIcon);
-inputLabel.classList = textClass+' ba br-100 dib pa3';
-inputLabel.style = '-webkit-appearance: button; -moz-appearance: button; appearance: button;';
+uploadFile.addEventListener('change', uploadFiles, false);
+uploadFile.addEventListener('focus', function(){ uploadFile.classList.add('has-focus'); });
+uploadFile.addEventListener('blur', function(){ uploadFile.classList.remove('has-focus'); });
+uploadIcon.classList = 'fa fa-upload fa-4x';
+uploadLabel.appendChild(uploadIcon);
+uploadLabel.classList = textClass+' ba br-100 dib pa3';
+uploadLabel.style = '-webkit-appearance: button; -moz-appearance: button; appearance: button;';
 list.classList = textClass+' br2 cf mh1 mh2-ns mh3-m mh4-l ph2 pv1';
 
 {# @see https://developer.mozilla.org/en-US/docs/Using_files_from_web_applications#Example%3a_Using_object_URLs_to_display_images #}
-function handleFiles(event) {
-    inputIcon.innerHTML = '';
-    inputIcon.classList.remove('fa-upload');
-    inputIcon.classList.add('fa-circle-o-notch');
-    inputIcon.classList.add('fa-spin');
-    let files = [].slice.call(inputFile.files);
+function uploadFiles(event) {
+    uploadIcon.innerHTML = '';
+    uploadIcon.classList.remove('fa-upload');
+    uploadIcon.classList.add('fa-circle-o-notch');
+    uploadIcon.classList.add('fa-spin');
+    let files = [].slice.call(uploadFile.files);
     Array.prototype.forEach.call(files, function(file) {
         if (regex.test(file.name)) {
             let reader = new FileReader();
@@ -42,9 +42,9 @@ function handleFiles(event) {
             newList.push(file);
         }
     });
-    inputLabel.classList.remove('br-100');
-    inputLabel.classList.add('br3');
-    inputLabel.classList.add('ph4');
+    uploadLabel.classList.remove('br-100');
+    uploadLabel.classList.add('br3');
+    uploadLabel.classList.add('ph4');
     if (newList.length) {
         handleUpload(newList.length);
     } else {
@@ -61,8 +61,8 @@ function handleUpload(count) {
         data: data,
         beforeSend: function({#xhr#}) {
             {#xhr.overrideMimeType("text/plain; charset=x-user-defined");
-            inputLabel.classList.remove('{{ loginFormClass|trim }}');#}
-            inputIcon.innerHTML = '';
+            uploadLabel.classList.remove('{{ loginFormClass|trim }}');#}
+            uploadIcon.innerHTML = '';
         },
         processData: false,
         contentType: false,
@@ -70,19 +70,19 @@ function handleUpload(count) {
         dataType: 'json'{#
     }).always(function() {
         el.disabled = false;
-        inputFile.value = '';
-        inputIcon.classList.remove('fa-circle-o-notch');
-        inputIcon.classList.remove('fa-spin');
+        uploadFile.value = '';
+        uploadIcon.classList.remove('fa-circle-o-notch');
+        uploadIcon.classList.remove('fa-spin');
         list.innerHTML = '';#}
     }).done(function(data, textStatus, jqXHR) {
         {#console.log(data.fresh);
         console.log(data.dupe);
         console.log(data.garb);#}
         {# File
-        inputFile.disabled = true;
-        inputFile.value = '';#}
+        uploadFile.disabled = true;
+        uploadFile.value = '';#}
         {# Label #}
-        inputContainer.appendChild(list);
+        uploadContainer.appendChild(list);
         handleField(count);
     }).fail(function(jqXHR, textStatus, errorThrown) {
         handleField(count);
@@ -91,13 +91,37 @@ function handleUpload(count) {
 function handleField(count) {
     let span = document.createElement('span'),
         colorStyle = count ? 'color: {{ colorInverse }};' : 'color: red;';
-    inputLabel.classList.add('bn');
-    {#inputLabel.style = 'cursor: initial;';#}
-    inputIcon.classList.remove('fa-circle-o-notch');
-    inputIcon.classList.remove('fa-spin');
-    inputIcon.classList.add('fa-upload');
+    uploadLabel.classList.add('bn');
+    {#uploadLabel.style = 'cursor: initial;';#}
+    uploadIcon.classList.remove('fa-circle-o-notch');
+    uploadIcon.classList.remove('fa-spin');
+    uploadIcon.classList.add('fa-upload');
     span.classList = 'cf {{ fontClassX3 }}sanf-serif';
-    span.innerText = (inputFile.getAttribute('data-multiple-caption') || '').replace(/{count}/g, count.toString());
+    span.innerText = (uploadFile.getAttribute('data-multiple-caption') || '').replace(/{count}/g, count.toString());
     span.style = 'font-family: sans-serif; line-height: 1.15; -webkit-text-size-adjust: 100%;' + colorStyle;
-    inputIcon.innerHTML = span.outerHTML;
+    uploadIcon.innerHTML = span.outerHTML;
 }
+{% if is_admin is same as (true) %}
+    let downloadFile = document.getElementById('data-export');
+    downloadFile.addEventListener('click', downloadFiles, false);
+    function downloadFiles(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        $.fileDownload('getdata', {
+            httpMethod: 'POST',
+            prepareCallback: function() {
+                console.log('We are preparing your report, please wait...');
+            },
+            successCallback: function() {
+                console.log('OK');
+            },
+            abortCallback: function() {
+                console.log('KO: aborted.');
+            },
+            failCallback: function() {
+                console.log('KO: failed, please try again.');
+            }
+        });
+        return false;
+    }
+{% endif %}

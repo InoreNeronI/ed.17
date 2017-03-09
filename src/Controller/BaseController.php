@@ -87,11 +87,9 @@ class BaseController
      */
     public function renderAction(HttpFoundation\Request $request, $expiryMinutes = 1)
     {
-        if ($request->isXmlHttpRequest() && $request->getMethod() === 'POST') {
+        if ($request->isXmlHttpRequest() && $request->getMethod() === 'POST' && $user = $request->request->get('user')) {
             /** @var string $clientIp */
             $clientIp = $request->getClientIp();
-            /** @var string $user */
-            $user = $request->request->get('user');
             /** @var Handler\Uploader $doc */
             $doc = new Handler\Uploader();
             /** @var int $time */

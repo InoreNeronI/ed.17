@@ -170,7 +170,7 @@ class Uploader
         foreach (static::getTargetDirs(static::getUploadDirectory()) as $dir) {
             $files = static::getTargetFiles($dir);
             if (count($files) === 1 && ($file = realpath($files[0])) && mime_content_type($file) === 'text/plain' && unlink($file) && $folder = dirname($file)) {
-                $exists = false;
+                /*$exists = false;
                 foreach ($this->getFilePersistencePath() as $key => $fresh) {
                     if (strpos(array_pop($fresh), $folder)) {
                         unset($this->filePersistencePath[$key]);
@@ -187,7 +187,7 @@ class Uploader
                     if (!$exists) {
                         array_push($purges, $file);
                     }
-                }
+                }*/
             }
         }
 

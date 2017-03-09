@@ -2,9 +2,7 @@
 
 {% block styles %}
     {{ parent() }}
-    <style type="text/css">
-        {% include '@App/page/css/upload.css.twig' %}
-    </style>
+    <style type="text/css">{% include '@App/page/css/upload.css.twig' %}</style>
 {% endblock %}
 
 {% block content_actions %}
@@ -12,8 +10,20 @@
         {# @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory #}
         <input id="data-import" class="input-file" type="file" name="data-import" value="" data-multiple-caption="{{ uploadMsg }}" webkitdirectory multiple/>
         <label for="data-import"></label>
+        {% if is_admin is same as(true) %}
+            <div id="download" class="cf dtc tc v-mid vh-25 w-100">
+                <button id="data-export" type="button" class="br4 pointer"><i class="fa fa-download fa-4x pt2"></i></button>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
+
+{% if is_admin is same as(true) %}
+    {% block scripts %}
+        {{ parent() }}
+        <script src="scripts/jquery.fileDownload.js"></script>
+    {% endblock %}
+{% endif %}
 
 {% block jq_ready %}
     {{ parent() }}
