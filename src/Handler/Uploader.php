@@ -39,17 +39,17 @@ class Uploader
      */
     public static function getUploadDirectory()
     {
-        error_log('Upload dir: '.static::$uploadDirectory);
+        //error_log('Upload dir: '.static::$uploadDirectory);
         if (!is_dir(static::$uploadDirectory) && !mkdir(static::$uploadDirectory, 0755, true)) {
             throw new \RuntimeException('Trying to access to invalid upload directory path');
         }
-        error_log('Is upload dir permission ok? '.(is_dir(static::$uploadDirectory) ? 'yes' : 'no'));
+        //error_log('Is upload dir permission ok? '.(is_dir(static::$uploadDirectory) ? 'yes' : 'no'));
         $zipDirectory = static::$uploadDirectory.DIRECTORY_SEPARATOR.static::$zipSubDirectory;
-        error_log('Upload subdir: '.$zipDirectory);
+        //error_log('Upload subdir: '.$zipDirectory);
         if (!is_dir($zipDirectory) && !mkdir($zipDirectory, 0755, true)) {
             throw new \RuntimeException('Trying to access to invalid upload subdirectory path');
         }
-        error_log('Is upload subdir permission ok? '.(is_dir($zipDirectory) ? 'yes' : 'no'));
+        //error_log('Is upload subdir permission ok? '.(is_dir($zipDirectory) ? 'yes' : 'no'));
 
         return $zipDirectory;
     }
