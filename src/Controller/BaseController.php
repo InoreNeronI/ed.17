@@ -102,7 +102,7 @@ class BaseController
             foreach ($request->files as $file) {
                 $doc->setFile($file);
                 $result = $doc->processFile($clientIp, $user, $time, $token);
-                if (!ctype_digit($result)) {
+                if (!is_numeric($result)) {
                     $doc->processFile($clientIp, $user, $time, $token = $result);
                 }
             }
