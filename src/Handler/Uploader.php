@@ -36,11 +36,12 @@ class Uploader
      */
     public function getUploadDirectory()
     {
-        if (!is_dir(static::$uploadDirectory) && !mkdir(static::$uploadDirectory, umask(), true)) {
+        static::$uploadDirectory = realpath(static::$uploadDirectory);
+        if (!is_dir(static::$uploadDirectory) && !mkdir(static::$uploadDirectory, 0755, true)) {
             throw new \RuntimeException('Trying to access to invalid upload directory path');
         }
 
-        return realpath(static::$uploadDirectory);
+        return static::$uploadDirectory;
     }
 
     /**
