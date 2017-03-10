@@ -12,17 +12,17 @@
 {% block content_header_title %}{% endblock %}
 
 {% block content_form %}
-    <div class="dn dib-l fl pl2 {{ colorInverse }}pa0 pt1-m pt2-l w-100 w-25-ns title-shadow">
+    <div class="dn dib-l {{ colorInverse }}fl pl2 pt1-m pt2-l title-shadow w-100 w-25-ns">
         <h3 class="{{ fontClassX3 }}fw6 mb2 pl4"><strong>{{ title }}</strong></h3>
     </div>
-    <div class="dib-ns fr {{ colorInverse }}pa0 pt2-m pt3-l w-100 w-75-ns title-shadow">
+    <div class="dib-ns {{ colorInverse }}fr pt2-m pt3-l w-100 w-75-ns title-shadow">
         {% include '@App/partial/fields/login-fields.html.twig' %}
     </div>
-    <div class="cb fl mt4 tc w-100">
+    <div class="cb fl mt3 mt4-ns mt5-m mt5-l tc w-100">
         <div class="dib tc w-50 w-20-ns w-50-m">
             {% include '@App/field/audio.html.twig' with { 'cssClassContent': 'fa-inverse pb3 w-auto' } %}
         </div>
-        <div class="dib tc pt4 v-top w-50 w-60-ns w-50-m">
+        <div class="dib pt4 tc v-top w-50 w-60-ns w-50-m">
             <input name="course" type="hidden" value="{{ course }}"/>
             <button class="{{ fontClass }}{{ colorInverse }}bg-navy b--blue br2 link mb2 ph3 pointer pv1 pv2-l">{{ submit_text }}</button>
         </div>
