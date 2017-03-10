@@ -68,7 +68,7 @@ class TwigHandler
             'unused' => true,
             'if_return' => true,
             'join_vars' => true,
-            'drop_console' => true
+            'drop_console' => true,
         ]);
         static::$twig->addExtension(new Twig\Extension\UglifyExtension(new Twig\Uglifier($filter, true)));
         if ($debug) {

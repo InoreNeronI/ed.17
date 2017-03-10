@@ -69,7 +69,7 @@ class SessionHandler
         } else {
             $savePath = ROOT_DIR.$savePath;
         }
-        if (!is_writable($savePath) && mkdir($savePath) === false) {
+        if (!is_writable($savePath) && !mkdir($savePath, umask(), true)) {
             throw new \RuntimeException('Couldn\'t save to Sessions\' default path because write access isn\'t granted');
         }
         $this->savePath = $savePath;
@@ -213,11 +213,10 @@ class SessionHandler
     private function doctrineSession($entity, $id = 'session_id', $data = 'session_value', $time = 'session_time')
     {
         /** @var Handler\Session\DoctrineSessionHandler $storage */
-        $storage = new HttpFoundation\Session\Storage\NativeSessionStorage($this->options, new Handler\Session\DoctrineSessionHandler([
-            'entity' => $entity,
-            'id' => $id,
-            'data' => $data,
-            'time' => $time,
+        $storage = new HttpFoundation\Session\Storage\NativeSessionStorage(
+            $this->options,
+            new Handler\Session\DoctrineSessionHandler([
+            'entity' => $entity, 'id' => $id, 'data' => $data, 'time' => $time,
         ]));
         $this->session = new HttpFoundation\Session\Session($storage);
 
