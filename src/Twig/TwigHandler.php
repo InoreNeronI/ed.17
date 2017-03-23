@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Twig;
+namespace Twig;
 
-use App\Twig;
 use Assetic\Filter;
+use Twig;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;

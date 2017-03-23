@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export UPLOAD_DIR
-UPLOAD_DIR=./app/uploads/tmp
+UPLOAD_DIR=./app/uploads
 export PUBLIC_DIR
 PUBLIC_DIR=./public
 export RESOURCES_DIR
@@ -34,6 +34,6 @@ printf "\\n\\tSyncing Public Files\\n\\n"
 [ -d "${UPLOAD_DIR}" ] || mkdir -pv "${UPLOAD_DIR}"
 printf "\\n\\tSetting Permissions Files\\n\\n"
 chmod -Rv g+rw ${UPLOAD_DIR}
-chown -Rv www-data.www-data ${UPLOAD_DIR}
+chown -Rv www-data.www-data ${UPLOAD_DIR} || true
 #printf "\\n\\tPurging BackOffice Vendors\\n\\n"
 #rm -rv ./vendor && printf "\\tOk!\\n" || printf "\\tNothing to do.\\n"

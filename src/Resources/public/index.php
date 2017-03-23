@@ -14,8 +14,9 @@ if (DEBUG) {
     Symfony\Component\Debug\Debug::enable();
 }
 
-/** @var App\Kernel\MicroKernel|App\Kernel\BaseKernel $kernel */
-$app = TURBO ? require ROOT_DIR.'/src/Resources/script/loader/constants.php' : new App\Kernel\MicroKernel(DEBUG);
+/** @var Kernel\MicroKernel|Kernel\BaseKernel $kernel */
+//$app = TURBO ? require ROOT_DIR.'/src/Resources/script/loader/constants.php' : new Kernel\MicroKernel(DEBUG);
+$app = require ROOT_DIR.'/src/Resources/script/loader/constants.php';
 //$app->loadClassCache();
 
 // Handles and sends a Request object based on the current PHP global variables

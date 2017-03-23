@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Helper;
+namespace Helper;
 
-use App\Helper;
-use App\Security;
 use Doctrine\DBAL;
+use Helper;
+use Security;
 
 /**
  * Class PagesHelper.

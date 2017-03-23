@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Handler;
+namespace Handler;
 
 use Symfony\Component\Routing;
 use Symfony\Component\Yaml;
@@ -134,9 +134,9 @@ class Router
             if (isset($route['controller']) && !isset($route['action'])) {
                 $defaults['_controller'] = $route['controller'];
             } elseif (TURBO && isset($route['action'])) {
-                $defaults['_controller'] = 'App\\Controller\\BaseController::'.$route['action'].'Action';
-            } elseif (!TURBO && isset($route['action'])) {
-                $defaults['_controller'] = 'AppBundle\\Action\\'.ucfirst($route['action'].'Action');
+                $defaults['_controller'] = 'Controller\\BaseController::'.$route['action'].'Action';
+            /*} elseif (!TURBO && isset($route['action'])) {
+                $defaults['_controller'] = 'AppBundle\\Action\\'.ucfirst($route['action'].'Action');*/
             }
             // Merge defaults with common messages
             $defaults['messages'] = empty($defaults['messages']) ? $this->translations() : array_unique(array_merge($this->translations(), $defaults['messages']));

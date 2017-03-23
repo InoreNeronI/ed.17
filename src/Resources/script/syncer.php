@@ -34,5 +34,5 @@ if ((!$functions = includeIfExists(ROOT_DIR.'/src/Resources/script/loader/functi
 define('CONFIG_DIR', ROOT_DIR.'/src/Resources/config');
 
 $app = new \DatabaseCopy\ConsoleApplication('Database sync tool');
-$app->addCommands([new \App\Command\DataSchemaCommand(), new \App\Command\DataSyncCommand()]);
+$app->addCommands([new Command\DataSchemaCommand(), new Command\DataSyncCommand()]);
 $app->run();

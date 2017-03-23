@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Assetic\Asset;
+namespace Assetic\Asset;
 
 use Assetic\Asset;
 use Assetic\Filter;

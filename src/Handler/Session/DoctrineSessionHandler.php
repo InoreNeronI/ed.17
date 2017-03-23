@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Handler\Session;
+namespace Handler\Session;
 
 use Doctrine\DBAL;
 

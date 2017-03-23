@@ -1,48 +1,57 @@
 {
   "name": "isei-ivei/probak-pruebas",
   "author": "ISEI - IVEI | Irakas Sistema Ebaluatu eta Ikertzeko Erakundea - Instituto Vasco de Evaluación e Investigación Educativa",
-  "homepage": "http://ediagnostikoak.net/",
+  "homepage": "http://ediagnostikoak.net",
   "require": {
-    "php": ">=5.4.0 <7.2.0",
+    "php": ">=5.5.9 <7.2.0",
     "ext-pdo_mysql": "*",
     "ext-pdo_sqlite": "*",
-    "incenteev/composer-parameter-handler": "@stable",
     "doctrine/dbal": "@stable",
     "kriswallsmith/assetic": "@stable",
+    "symfony/dotenv": "^3.3",
     "symfony/event-dispatcher": "@stable",
     "symfony/http-kernel": "@stable",
     "symfony/http-foundation": "@stable",
     "symfony/routing": "@stable",
     "symfony/yaml": "@stable",
-    "tholu/php-packer": "@stable",
     "twig/twig": "@stable"
   },
   "require-dev": {
     "andig/dbcopy": "@dev",
-    "symfony/var-dumper": "@stable"
+    "incenteev/composer-parameter-handler": "@stable",
+    "neronmoon/scriptsdev": "@stable",
+    "phpstan/phpstan": "@stable",
+    "symfony/var-dumper": "@stable",
+    "tholu/php-packer": "@stable"
   },
   "scripts": {
-    "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
-    "optimize": "@composer dump-autoload --optimize",
-    "post-install-cmd": ["@composer optimize", "printf \"\\n\\tVendors installed succesfully\\n\\n\"", "@build-parameters"],
-    "post-update-cmd": ["@composer optimize", "printf \"\\n\\tVendors updated succesfully\\n\\n\"", "@build-parameters"],
-    "pre-install-cmd": "printf \"\\n\\tInstalling dependencies\\n\\n\"",
-    "pre-update-cmd": "printf \"\\n\\tUpdating dependencies\\n\\n\""
+    "post-install-cmd": ["printf \"\\n\\tVendors has been installed succesfully\\n\""],
+    "post-update-cmd": ["printf \"\\n\\tVendors has been updated succesfully\\n\""],
+    "pre-install-cmd": "printf \"\\n\\tInstalling vendors\\n\\n\"",
+    "pre-update-cmd": "printf \"\\n\\tUpdating vendors\\n\\n\"",
+    "production-install": "@install --no-ansi --no-dev --no-interaction --no-progress --no-scripts",
+    "production-update": "@update --no-ansi --no-dev --no-interaction --no-progress --no-scripts"
   },
   "autoload": {
-    "psr-4": {"": "../src/"}
+    "psr-4": {"App\\": "../src"}
   },
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "extra": {
     "incenteev-parameters": [{
       "file": "../app/connection.yml",
       "dist-file": "../app/connection.dist.yml"}
-    ]
+    ],
+    "scripts-dev": {
+      "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
+      "post-install-cmd": ["@build-parameters"],
+      "post-update-cmd": ["@build-parameters"]
+    }
   },
   "config": {
     "bin-dir": "../bin",
-    "platform": {"php": "7.0"},
+    "optimize-autoloader": true,
     "preferred-install": "dist",
-    "vendor-dir": "./"
+    "vendor-dir": "."
   }
 }

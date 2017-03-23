@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Cache;
+namespace Cache;
 
-use App\Cache;
+use Cache;
 
 /**
  * Class CachedMinifier.
@@ -27,7 +27,7 @@ class CachedMinifier implements Cache\CacheInterface
     /**
      * {@inheritdoc}
      */
-    public static function minify($content/*, $options*/)
+    public static function minify($content, $options)
     {
         if (static::$cacheDir) {
             if (!file_exists(static::$cacheDir)) {

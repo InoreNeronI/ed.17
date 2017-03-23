@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Twig\Node;
+namespace Twig\Node;
 
 use Twig_Compiler;
 use Twig_Node;

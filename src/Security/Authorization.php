@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Security;
+namespace Security;
 
-use App\Security;
+use Security;
 
 /**
  * Class Authorization.

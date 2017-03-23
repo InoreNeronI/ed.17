@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Handler\Session;
+namespace Handler\Session;
 
-use App\Handler;
+use Handler;
 use Symfony\Component\HttpFoundation;
 
 /**

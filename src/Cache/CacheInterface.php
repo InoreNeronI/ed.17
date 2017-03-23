@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Cache;
+namespace Cache;
 
 /**
  * Interface CacheInterface

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Twig;
+namespace Twig;
 
-use App\Assetic;
+use Assetic;
 use Assetic\Filter;
 use Tholu\Packer;
 

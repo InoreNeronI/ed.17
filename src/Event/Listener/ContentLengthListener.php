@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Event\Listener;
+namespace Event\Listener;
 
-use App\Event;
+use Event;
 use Symfony\Component\EventDispatcher;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security\Connection;
+namespace Security\Connection;
 
 use Doctrine\DBAL;
 

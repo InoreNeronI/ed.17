@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Twig\Extension;
+namespace Twig\Extension;
 
-use App\Twig;
+use Twig;
 use Twig_Extension;
 use Twig_Extension_GlobalsInterface;
 

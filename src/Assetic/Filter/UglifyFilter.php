@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Assetic\Filter;
+namespace Assetic\Filter;
 
-use App\Cache;
 use Assetic\Asset;
 use Assetic\Filter;
+use Cache;
 
 class UglifyFilter implements Filter\FilterInterface
 {
@@ -36,6 +36,6 @@ class UglifyFilter implements Filter\FilterInterface
     public function filterDump(Asset\AssetInterface $asset)
     {
         //$asset->setContent(Minifier::minify($asset->getContent(), $this->options));
-        $asset->setContent(Cache\CachedMinifier::uglify($asset->getContent(), $this->options));
+        $asset->setContent(Cache\CachedMinifier::minify($asset->getContent(), $this->options));
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controller;
+namespace Controller;
 
-use App\Controller;
-use App\Handler;
-use App\Helper;
-use App\Twig;
+use Controller;
+use Handler;
+use Helper;
 use Symfony\Component\HttpFoundation;
+use Twig;
 
 /**
  * Class BaseController.

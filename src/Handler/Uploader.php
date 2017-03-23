@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Handler;
+namespace Handler;
 
 use Symfony\Component\HttpFoundation;
 
@@ -141,7 +141,7 @@ class Uploader
      *
      * @return string|false
      */
-    private function doMove(HttpFoundation\File\UploadedFile $uploadedFile, $targetDir, $clientIp, $user, $time, $token): string
+    private function doMove(HttpFoundation\File\UploadedFile $uploadedFile, $targetDir, $clientIp, $user, $time, $token)
     {
         $targetDir .= DIRECTORY_SEPARATOR.date('Y-m-d+H-i-s', $time).'+'.$clientIp.'+'.$user.'+'.$token;
         $originalName = $uploadedFile->getClientOriginalName();
@@ -162,7 +162,7 @@ class Uploader
     /**
      * @return array
      */
-    public function doPurge(): array
+    public function doPurge()
     {
         /** @var array $result */
         $purges = [];
@@ -199,7 +199,7 @@ class Uploader
      *
      * @return array
      */
-    private function getTargetDirs($dir): array
+    private function getTargetDirs($dir)
     {
         return array_merge([$dir], glob($dir.'/*', GLOB_ONLYDIR));
     }

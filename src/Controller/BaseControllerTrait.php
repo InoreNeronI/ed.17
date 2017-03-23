@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace Controller;
 
-use App\Helper;
-use App\Security;
+use Helper;
+use Security;
 use Symfony\Component\HttpFoundation;
 
 /**

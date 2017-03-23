@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace Command;
 
 use Doctrine\DBAL;
 use Symfony\Component\Console;

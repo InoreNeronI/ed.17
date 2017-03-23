@@ -11,7 +11,7 @@
  * @author Maurits van der Schee <m.vanderschee@leaseweb.com>
  */
 
-namespace App\Handler\Session;
+namespace Handler\Session;
 
 use Symfony\Component\HttpFoundation;
 

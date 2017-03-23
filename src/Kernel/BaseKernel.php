@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Kernel;
+namespace Kernel;
 
-use App\Handler;
-use App\Kernel;
+use Handler;
+use Kernel;
 use Symfony\Component\EventDispatcher;
 use Symfony\Component\HttpKernel;
 use Symfony\Component\Routing;
 
 /**
- * Class Kernel\Base.
+ * Class BaseKernel
  */
 class BaseKernel implements HttpKernel\HttpKernelInterface
 {
     use Kernel\BaseKernelTrait;
 
     /**
-     * Kernel\Base constructor.
+     * BaseKernel constructor.
      *
      * @param bool|string $debug
      */

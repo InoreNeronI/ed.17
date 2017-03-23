@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Command;
+namespace Command;
 
-use App\Command;
+use Command;
 use DatabaseCopy\Command\BackupCommand;
 use Symfony\Component\Console;
 

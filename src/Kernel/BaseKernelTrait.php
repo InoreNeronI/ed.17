@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Kernel;
+namespace Kernel;
 
-use App\Controller;
-use App\Event;
+use Controller;
+use Event;
 use Symfony\Component\EventDispatcher;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpKernel;

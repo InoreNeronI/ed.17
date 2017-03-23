@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Twig\TokenParser;
+namespace Twig\TokenParser;
 
-use App\Twig;
+use Twig;
 use Twig_Token;
 use Twig_TokenParser;
 
