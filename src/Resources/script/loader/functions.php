@@ -8,8 +8,13 @@ final class def extends defDB
 {
     private static $configLoaded = false;
     private static $dbCodes;
-    private static $dbSecurity;
+    private static $dbCodesLoaded;
+    private static $dbCredentials;
+    private static $dbCredentialsLoaded;
     private static $dbTargets;
+    private static $dbTargetsLoaded;
+    private static $dbUploadersLoaded = false;
+    private static $dbUploaders;
     private static $homePath;
     private static $homeSlug;
     private static $langCodes;
@@ -21,14 +26,36 @@ final class def extends defDB
     private static $stages;
     private static $routesLoaded = false;
     private static $routes;
-    private static $uploadersLoaded = false;
-    private static $uploaders;
+
+    private static function loadCodes()
+    {
+        if (!static::$dbCodesLoaded) {
+            static::$dbCodes = parseConfig(CONFIG_DIR.'/security', 'codes')['codes'];
+            static::$dbCodesLoaded = true;
+        }
+    }
+
+    private static function loadCredentials()
+    {
+        if (!static::$dbCredentialsLoaded) {
+            static::$dbCredentials = parseConfig(CONFIG_DIR.'/security', 'credentials')['credentials'];
+            static::$dbCredentialsLoaded = true;
+        }
+    }
+
+    private static function loadTargets()
+    {
+        if (!static::$dbTargetsLoaded) {
+            static::$dbTargets = parseConfig(CONFIG_DIR.'/security', 'targets')['targets'];
+            static::$dbTargetsLoaded = true;
+        }
+    }
 
     private static function loadUploaders()
     {
-        if (!static::$uploadersLoaded) {
-            static::$uploaders = parseConfig(CONFIG_DIR, 'uploaders')['uploaders'];
-            static::$uploadersLoaded = true;
+        if (!static::$dbUploadersLoaded) {
+            static::$dbUploaders = parseConfig(CONFIG_DIR.'/security', 'uploaders')['uploaders'];
+            static::$dbUploadersLoaded = true;
         }
     }
 
@@ -60,9 +87,6 @@ final class def extends defDB
     {
         if (!static::$configLoaded) {
             $config = parseConfig(CONFIG_DIR, 'config')['configuration'];
-            static::$dbCodes = $config['codes'];
-            static::$dbSecurity = $config['security'];
-            static::$dbTargets = $config['targets'];
             static::$homePath = $config['homepage_path'];
             static::$homeSlug = $config['homepage_slug'];
             static::$langCodes = $config['languages'];
@@ -74,23 +98,30 @@ final class def extends defDB
 
     public static function dbCodes()
     {
-        static::loadConfig();
+        static::loadCodes();
 
         return static::$dbCodes;
     }
 
-    public static function dbSecurity()
+    public static function dbCredentials()
     {
-        static::loadConfig();
+        static::loadCredentials();
 
-        return static::$dbSecurity;
+        return static::$dbCredentials;
     }
 
     public static function dbTargets()
     {
-        static::loadConfig();
+        static::loadTargets();
 
         return static::$dbTargets;
+    }
+
+    public static function dbUploaders()
+    {
+        static::loadUploaders();
+
+        return static::$dbUploaders;
     }
 
     public static function homePath()
@@ -147,13 +178,6 @@ final class def extends defDB
         static::loadRoutes();
 
         return static::$routes;
-    }
-
-    public static function uploaders()
-    {
-        static::loadUploaders();
-
-        return static::$uploaders;
     }
 }
 

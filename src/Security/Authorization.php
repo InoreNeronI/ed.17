@@ -73,12 +73,12 @@ class Authorization extends Security\Connection\Connection
         $user = $query->fetch();
 
         if (!empty($user)) {
-            /** @var array $codes */
-            $codes = \def::dbSecurity();
+            /** @var array $pws */
+            $pws = \def::dbCredentials();
             /** @var string $codPrueba */
             $codPrueba = $args['studentPassword'];
-            if (isset($codes[$codPrueba])) {
-                return array_merge(static::requestAccess($user, $codes[$codPrueba]), $credentials);
+            if (isset($pws[$codPrueba])) {
+                return array_merge(static::requestAccess($user, $pws[$codPrueba]), $credentials);
             }
             throw new \NoticeException(sprintf('The code you have entered does not match: \'%s\'', $codPrueba));
         }
@@ -92,7 +92,7 @@ class Authorization extends Security\Connection\Connection
      */
     public function checkUploaders(array $args)
     {
-        foreach (\def::uploaders() as $user => $password) {
+        foreach (\def::dbUploaders() as $user => $password) {
             if (strtolower($args['studentCode']) === $user && $args['studentPassword'] === $password) {
                 return true;
             }
