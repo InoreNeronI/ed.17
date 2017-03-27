@@ -1,7 +1,7 @@
 {
   "name": "isei-ivei/probak-pruebas",
   "author": "ISEI - IVEI | Irakas Sistema Ebaluatu eta Ikertzeko Erakundea - Instituto Vasco de Evaluación e Investigación Educativa",
-  "homepage": "http://ediagnostikoak.net",
+  "homepage": "http://ediagnostikoak.eus",
   "require": {
     "php": ">=5.5.9 <7.2.0",
     "ext-pdo_mysql": "*",

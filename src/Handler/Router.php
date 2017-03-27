@@ -133,9 +133,9 @@ class Router
             }
             if (isset($route['controller']) && !isset($route['action'])) {
                 $defaults['_controller'] = $route['controller'];
-            } elseif (TURBO && isset($route['action'])) {
-                $defaults['_controller'] = 'Controller\\BaseController::'.$route['action'].'Action';
-            /*} elseif (!TURBO && isset($route['action'])) {
+            } elseif (isset($route['action'])) {
+                $defaults['_controller'] = 'Controller\\ControllerBase::'.$route['action'].'Action';
+            /*} elseif (isset($route['action'])) {
                 $defaults['_controller'] = 'AppBundle\\Action\\'.ucfirst($route['action'].'Action');*/
             }
             // Merge defaults with common messages

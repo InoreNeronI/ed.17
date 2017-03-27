@@ -1,0 +1,20 @@
+# Example for mysql
+  parameters:
+    database_host: mysql
+    database_port: 3306
+    database_name: sf
+    database_user: root
+    database_password: root
+
+  # Example for pgsql
+  parameters:
+    database_host: pgsql
+    database_port: 5433
+    database_name: sf
+    database_user: postgres
+    database_password: postgres
+
+  # Example for redis
+  parameters:
+    database_host: redis
+    database_port: 6379

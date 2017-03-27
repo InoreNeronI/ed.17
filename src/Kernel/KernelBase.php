@@ -9,14 +9,14 @@ use Symfony\Component\HttpKernel;
 use Symfony\Component\Routing;
 
 /**
- * Class BaseKernel
+ * Class KernelBase
  */
-class BaseKernel implements HttpKernel\HttpKernelInterface
+class KernelBase implements HttpKernel\HttpKernelInterface
 {
-    use Kernel\BaseKernelTrait;
+    use Kernel\KernelTrait;
 
     /**
-     * BaseKernel constructor.
+     * KernelBase constructor.
      *
      * @param bool|string $debug
      */

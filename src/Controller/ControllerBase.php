@@ -9,14 +9,14 @@ use Symfony\Component\HttpFoundation;
 use Twig;
 
 /**
- * Class BaseController.
+ * Class ControllerBase.
  */
-class BaseController
+class ControllerBase
 {
-    use Controller\BaseControllerTrait;
+    use Controller\ControllerTrait;
 
     /**
-     * BaseController constructor.
+     * ControllerBase constructor.
      */
     public function __construct()
     {

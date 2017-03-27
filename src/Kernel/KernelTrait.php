@@ -10,9 +10,9 @@ use Symfony\Component\HttpKernel;
 use Symfony\Component\Routing;
 
 /**
- * Trait BaseKernelTrait
+ * Trait KernelTrait
  */
-trait BaseKernelTrait
+trait KernelTrait
 {
     /** @var string $baseSlug */
     private static $baseSlug = 'index';
@@ -121,7 +121,7 @@ trait BaseKernelTrait
      */
     private static function getFallbackResponse(\Exception $e, $notice = false)
     {
-        $controller = new Controller\BaseController();
+        $controller = new Controller\ControllerBase();
         $request = static::prepareExceptionRequest($e, $notice);
         $response = $controller->renderAction($request);
 

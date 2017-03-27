@@ -7,9 +7,9 @@ use Security;
 use Symfony\Component\HttpFoundation;
 
 /**
- * Trait BaseControllerTrait.
+ * Trait ControllerTrait.
  */
-trait BaseControllerTrait
+trait ControllerTrait
 {
     /* @var array codes */
     private $codes;
@@ -67,7 +67,7 @@ trait BaseControllerTrait
             /** @var array $args */
             $args = $request->request->all();
             /** @var Security\Authorization $manager */
-            $manager = $this->getAuthManager('App\Security\Authorization', static::authorize($args));
+            $manager = $this->getAuthManager('Security\Authorization', static::authorize($args));
             /** @var array $data */
             $data = $manager->checkCredentials($args);
         }
@@ -88,7 +88,7 @@ trait BaseControllerTrait
             $args = $request->request->all();
 
             /** @var Helper\PagesHelper $manager */
-            $manager = $this->getAuthManager('App\Helper\PagesHelper', static::authorize($args));
+            $manager = $this->getAuthManager('Helper\PagesHelper', static::authorize($args));
             $manager->saveData($args);
 
             /** @var array $messages */

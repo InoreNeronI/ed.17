@@ -13,4 +13,4 @@ define('UPLOADS_DIR', ROOT_DIR.'/app/uploads');
 define('USER_TABLE', \defDb::userEntity());
 define('EXTRA_TABLE', \defDb::extraEntity());
 
-return new Kernel\BaseKernel(DEBUG);
+return new Kernel\KernelBase(DEBUG);

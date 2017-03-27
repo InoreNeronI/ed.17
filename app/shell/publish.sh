@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 export UPLOAD_DIR
-UPLOAD_DIR=./app/uploads
+UPLOAD_DIR=./uploads
 export PUBLIC_DIR
-PUBLIC_DIR=./public
+PUBLIC_DIR=./web
 export RESOURCES_DIR
 RESOURCES_DIR=./src/Resources/public
 export VENDOR_DIR

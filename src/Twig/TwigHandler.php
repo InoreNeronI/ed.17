@@ -57,7 +57,7 @@ class TwigHandler
             'debug' => $debug,
             'strict_variables' => $strictVariables,
         ]);
-        $filter = new Filter\UglifyJs2Filter(ROOT_DIR.'/node_modules/.bin/uglifyjs');
+        $filter = new Filter\UglifyJs2Filter();
         $filter->setMangle(true);
         $filter->setCompress([
             'sequences' => true,

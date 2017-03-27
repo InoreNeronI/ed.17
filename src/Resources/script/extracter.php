@@ -7,7 +7,6 @@ if (PHP_VERSION_ID < 50400) {
     throw new \Exception('At least PHP 5.4 is required; using the latest version is highly recommended.');
 }
 define('ROOT_DIR', dirname(dirname(dirname(__DIR__))));
-define('TURBO', true);
 
 function includeIfExists($file)
 {
@@ -17,7 +16,7 @@ function includeIfExists($file)
 }
 
 // find autoloader, borrowed from github.com/behat/behat
-if ((!$loader = includeIfExists(ROOT_DIR.sprintf('/vendor%s/autoload.php', TURBO ? '-tiny' : '')))) {
+if (!$loader = includeIfExists(ROOT_DIR.'/vendor/autoload.php')) {
     fwrite(STDERR,
         'You must set up the project dependencies, run the following commands:'.PHP_EOL.
         'curl -s http://getcomposer.org/installer | php'.PHP_EOL.
@@ -25,7 +24,7 @@ if ((!$loader = includeIfExists(ROOT_DIR.sprintf('/vendor%s/autoload.php', TURBO
     );
     exit(1);
 }
-if ((!$functions = includeIfExists(ROOT_DIR.'/src/Resources/script/loader/functions.php'))) {
+if (!$functions = includeIfExists(ROOT_DIR.'/src/Resources/script/loader/functions.php')) {
     fwrite(STDERR,
         'Missing dependencies'.PHP_EOL
     );
