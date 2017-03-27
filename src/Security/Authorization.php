@@ -72,23 +72,7 @@ class Authorization extends Security\Connection\Connection
         /** @var array $user */
         $user = $query->fetch();
 
-        if (empty($user)) {
-            /* @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
-            /*$queryBuilder = $this->getQueryBuilder()
-                ->select('u.*')->from(EXTRA_TABLE, 'u')
-                ->where('u.user = :user')
-                ->andWhere('u.password = :pw')
-                ->setParameters(['user' => $args['studentCode'], 'pw' => $args['studentPassword']]);*/
-
-            /* @var \Doctrine\DBAL\Driver\Statement $query */
-            //$query = $queryBuilder->execute();
-
-            /* @var array $user */
-            /*$user = $query->fetch();
-            if (!empty($user)) {
-                return array_merge($user, $credentials);
-            }*/
-        } else {
+        if (!empty($user)) {
             /** @var array $codes */
             $codes = \def::dbSecurity();
             /** @var string $codPrueba */

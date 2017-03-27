@@ -22,6 +22,9 @@ class TwigHandler
     /** @var bool */
     private static $loaded = false;
 
+    /** @var string */
+    private static $uglifyJsWindowsPath = '%APPDATA%\npm\uglifyjs.cmd';
+
     /**
      * Construct won't be called inside this class and is uncallable from the outside. This prevents instantiating this class.
      *
@@ -57,7 +60,7 @@ class TwigHandler
             'debug' => $debug,
             'strict_variables' => $strictVariables,
         ]);
-        $filter = new Filter\UglifyJs2Filter();
+        $filter = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? new Filter\UglifyJs2Filter(static::$uglifyJsWindowsPath) : new Filter\UglifyJs2Filter();
         $filter->setMangle(true);
         $filter->setCompress([
             'sequences' => true,

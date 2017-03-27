@@ -108,20 +108,20 @@ class ControllerBase
             return HttpFoundation\JsonResponse::create($doc->doPurge());
         }
         $data = $this->getData($request);
-        $template = $request->get('_route');
-        if ($template === 'getdata') {
-            return new HttpFoundation\Response(Handler\Uploader::publishUploadDirectory());
-        } elseif ($template === 'boarding' && !isset($data['code'])) {
-            $template = 'upload';
-            $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $template), [], $this->langISOCodes);
-            $data = array_merge($data, $messages);
-        } elseif ($template === 'boarding' && strpos($data['code'], 'simul') !== false) {
-            $template = 'onboard';
-            $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $template), $data, $this->langISOCodes);
+        $route = $request->get('_route');
+        if ($route === 'boarding' && (strpos($data['code'], 'simul') !== false || strpos($data['code'], 'lh617') !== false)) {
+            $route = 'onboard';
+            $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $route), $data, $this->langISOCodes);
             $request = HttpFoundation\Request::create(null, $request->getMethod(), array_merge($request->request->all(), $messages, ['flabel' => 'Simul']));
             $data = $this->getSplitPageData($request);
+
+        } elseif ($route === 'boarding' && !isset($data['code'])) {
+            $route = 'upload';
+            $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $route), [], $this->langISOCodes);
+            $data = array_merge($data, $messages);
+
         }
-        $view = Twig\TwigHandler::render($template, $data);
+        $view = Twig\TwigHandler::render($route, $data);
 
         return static::processView($view, $expiryMinutes);
     }
