@@ -44,6 +44,8 @@ trait DataCommandTrait
      * @param Console\Input\InputInterface $input
      * @param string                       $source
      * @param string                       $target
+     *
+     * @return string
      */
     private function init(Console\Input\InputInterface $input, $source = 'source', $target = 'target')
     {
@@ -53,16 +55,23 @@ trait DataCommandTrait
         $this->config[$target] = $this->fixPath($input, $target);
         $this->config['keep-constraints'] = true;
         $this->config['tables'] = [];
-
-        $tableNames = array_keys(array_merge(\def::dbCodes(), [\defDb::userEntity() => null, \defDb::extraEntity() => null]));
-        foreach ($tableNames as $tableName) {
-            echo sprintf('`%s` discovered', $tableName).PHP_EOL;
-            $this->config['tables'][] = ['name' => $tableName, 'mode' => static::MODE_COPY];
+        $result = '';
+        $dbNames = array_keys(\def::dbCodes());
+        foreach ($dbNames as $db) {
+            $result .= "\t".sprintf('`%s`:', $db).PHP_EOL;
+            $this->config['tables'][$db] = [];
+            foreach (array_keys(array_merge(\def::dbCodes()[$db], [\defDb::userEntity() => null, \defDb::extraEntity() => null])) as $table) {
+                $result .= "\t\t".sprintf('`%s`', $table).PHP_EOL;
+                $this->config['tables'][$db][] = ['name' => $table, 'mode' => static::MODE_COPY];
+            }
         }
+
         /* @var \Doctrine\DBAL\Connection $sc */
         $this->sc = DBAL\DriverManager::getConnection($this->getConfig('source'));
         /* @var \Doctrine\DBAL\Connection $tc */
         $this->tc = DBAL\DriverManager::getConnection($this->getConfig('target'));
+
+        return sprintf('%s tables discovered on %s databases', count($this->config['tables']), count($dbNames)).PHP_EOL.$result;
     }
 
     /**
@@ -88,27 +97,31 @@ trait DataCommandTrait
         try {
             if ($this->tc->getDatabasePlatform()->getName() === 'mysql') {
                 $this->tc->executeQuery('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;');
-                $dbs = $this->tc->fetchArray("SHOW DATABASES LIKE '$dbTarget';");
-                if (in_array($dbTarget, $dbs)) {
+                $exists = //$this->tc->executeQuery("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbTarget';")->rowCount() > 0;
+                    in_array($dbTarget, $this->tc->getSchemaManager()->listDatabases());
+                if ($exists || $this->tc->connect() || $this->tc->isConnected()) {
                     throw new \Exception(sprintf('Target database `%s` already exists.', $dbTarget));
                 }
             } elseif ($this->tc->getDatabasePlatform()->getName() === 'sqlite' && $file = realpath($this->getConfig('target.path'))) {
-                $this->output->writeln(PHP_EOL.sprintf('Database `%s` already exists.', $dbTarget));
+                $this->output->writeln(sprintf('Database `%s` already exists.', $dbTarget).PHP_EOL);
                 $path = dirname($file).DIRECTORY_SEPARATOR;
                 $oldFilename = str_replace($path, '', $file);
                 $newFilename = basename($oldFilename, '.db3').'#'.(new \DateTime())->format('Y-m-d#H.i.s').'.db3';
-                $this->output->writeln(PHP_EOL.sprintf('Backing up previous database: `%s` -> `%s`', $oldFilename, $newFilename));
-                if (!rename($file, $path.$newFilename)) {
+                $this->output->writeln(sprintf('Backing up previous database: `%s` -> `%s`', $oldFilename, $newFilename).PHP_EOL);
+                $targetPath = $path.'../backup';
+                $parent = is_dir($targetPath) || mkdir($targetPath, 0755);
+                $target = realpath($targetPath).'/'.$newFilename;
+                if (!$parent || !rename($file, $target)) {
                     throw new \Exception(error_get_last()['message']);
                 }
-                $this->output->writeln(PHP_EOL.sprintf('Creating database: `%s`...', $oldFilename).PHP_EOL);
+                $this->output->writeln(sprintf('Creating database: `%s`...', $oldFilename).PHP_EOL);
             }
         } catch (\Exception $e) {
             if (strpos($e->getMessage(), 'No connection')) {
                 throw new \Exception('Target database connection is down.');
             } elseif (strpos($e->getMessage(), 'Unknown database')) {
-                $this->output->writeln(PHP_EOL.sprintf('Unknown target database: `%s`', $dbTarget));
-                $this->output->writeln(PHP_EOL.sprintf('Creating target database `%s`...', $dbTarget).PHP_EOL);
+                $this->output->writeln(sprintf('Unknown target database: `%s`', $dbTarget).PHP_EOL);
+                $this->output->writeln(sprintf('Creating target database `%s`...', $dbTarget).PHP_EOL);
                 // @see https://github.com/doctrine/DoctrineBundle/blob/v1.5.2/Command/CreateDatabaseDoctrineCommand.php
                 $dbTargetParams = $this->getConfig('target');
                 // Need to get rid of _every_ occurrence of dbname from connection configuration and we have already extracted all relevant info from url

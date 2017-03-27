@@ -24,20 +24,24 @@ class DataSchemaCommand extends CreateCommand
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
         $this->init($input);
-        $output->writeln(PHP_EOL.'Creating target tables...');
+        if ($this->sc->getDatabasePlatform()->getName() === 'sqlite') {
+            $dbName = basename($this->sc->getDatabase(), '.'.pathinfo($this->sc->getDatabase(), PATHINFO_EXTENSION));
+        } else {
+            $dbName = $this->sc->getDatabase();
+        }
+        $output->writeln('Creating target tables...');
         /** @var DBAL\Schema\AbstractSchemaManager $sm */
         $sm = $this->sc->getSchemaManager();
         /** @var DBAL\Schema\Schema $schema */
         $schema = $sm->createSchema();
         try {
             // sync configured tables only
-            if ($tables = $this->getOptionalConfig('tables')) {
-                // extract target table names
-                $tables = array_column($tables, 'name');
-                foreach ($schema->getTables() as $table) {
-                    if (!in_array($table->getName(), $tables)) {
-                        $schema->dropTable($table->getName());
-                    }
+            /** @var array $tables */
+            $tables = array_column($this->getOptionalConfig('tables')[$dbName], 'name');
+            // extract target table names
+            foreach ($schema->getTables() as $table) {
+                if (!in_array($table->getName(), $tables)) {
+                    $schema->dropTable($table->getName());
                 }
             }
             // make sure schema is free of conflicts for target platform

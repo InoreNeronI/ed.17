@@ -114,12 +114,10 @@ class ControllerBase
             $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $route), $data, $this->langISOCodes);
             $request = HttpFoundation\Request::create(null, $request->getMethod(), array_merge($request->request->all(), $messages, ['flabel' => 'Simul']));
             $data = $this->getSplitPageData($request);
-
         } elseif ($route === 'boarding' && !isset($data['code'])) {
             $route = 'upload';
             $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $route), [], $this->langISOCodes);
             $data = array_merge($data, $messages);
-
         }
         $view = Twig\TwigHandler::render($route, $data);
 

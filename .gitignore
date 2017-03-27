@@ -4,9 +4,10 @@
 *-error.log
 /.idea/
 /.php_cs.cache
+/backup/
 /app/cache/
 /app/connection.yml
-/app/data*
+/app/*.db3
 /app/logs/
 /app/session/
 /bin/
