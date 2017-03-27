@@ -42,6 +42,8 @@ configuration:
       c:    edg051_testuak_lh_gsorta_c
     # Simul
     SB2017: edg051_testuak_dbh_simul
+    # LH6 Gazte A
+    LH6K17: lh617_testuak_gaz_a
 
   # Database codes' map
   codes:
@@ -71,6 +73,8 @@ configuration:
     edg051_testuak_lh_gsorta_c:   ed17_lh_gso_c
     # Simul
     edg051_testuak_dbh_simul:     ed17_dbh_simul
+    # LH6 Gazte A
+    lh617_testuak_gaz_a:          lh617_gaz_a
 
   # Database tables' map
   targets:

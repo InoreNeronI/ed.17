@@ -7,6 +7,7 @@ if (PHP_VERSION_ID < 50400) {
     throw new \Exception('At least PHP 5.4 is required; using the latest version is highly recommended.');
 }
 define('ROOT_DIR', dirname(dirname(dirname(__DIR__))));
+
 /* @see https://gist.github.com/azihassan/3093972 */
 define('USAGE', 'Usage: php '.$argv[0].' --package package_name --path '.ROOT_DIR.'/tazpkg [--dependencies] [--overwrite] [--nocache] [--withdepends] [--help]');
 
