@@ -54,7 +54,7 @@
       "deptrac": "php bin/deptrac.phar",
       "post-install-cmd": ["@bin-install", "@build-parameters", "@security-check"],
       "post-update-cmd": ["@bin-update", "@build-parameters", "@security-check"],
-      "security-check": "php bin/checker.phar security:check composer.lock",
+      "security-check": "php bin/checker.phar security:check composer.lock || true",
       "test": "php bin/phpunit.phar"
     }
   }

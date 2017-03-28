@@ -32,7 +32,7 @@ trait DataCommandTrait
         }
         $data = \defDb::$method();
         if (isset($data['path'])) {
-            $path = str_replace('%kernel.root_dir%', ROOT_DIR.'/app', $data['path']);
+            $path = str_replace('%kernel.root_dir%', getenv('ROOT_DIR').'/app', $data['path']);
 
             return array_merge($data, ['path' => $path]);
         }

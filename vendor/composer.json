@@ -13,6 +13,7 @@
     "symfony/http-kernel": "@stable",
     "symfony/http-foundation": "@stable",
     "symfony/routing": "@stable",
+    "symfony/security": "@stable",
     "symfony/yaml": "@stable",
     "twig/twig": "@stable"
   },
@@ -25,8 +26,8 @@
     "tholu/php-packer": "@stable"
   },
   "scripts": {
-    "post-install-cmd": ["printf \"\\n\\tVendors has been installed succesfully\\n\""],
-    "post-update-cmd": ["printf \"\\n\\tVendors has been updated succesfully\\n\""],
+    "post-install-cmd": "printf \"\\n\\tVendors has been installed succesfully\\n\"",
+    "post-update-cmd": "printf \"\\n\\tVendors has been updated succesfully\\n\"",
     "pre-install-cmd": "printf \"\\n\\tInstalling vendors\\n\\n\"",
     "pre-update-cmd": "printf \"\\n\\tUpdating vendors\\n\\n\"",
     "production-install": "@install --no-ansi --no-dev --no-interaction --no-progress --no-scripts",

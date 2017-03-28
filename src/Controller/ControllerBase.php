@@ -47,7 +47,7 @@ class ControllerBase
      */
     private static function authorize(array $args)
     {
-        $path = static::isLocalAdmin($args) ? str_replace('%kernel.root_dir%', ROOT_DIR.'/app', \defDb::dbLocal()['path']) : false;
+        $path = static::isLocalAdmin($args) ? str_replace('%kernel.root_dir%', getenv('ROOT_DIR').'/app', \defDb::dbLocal()['path']) : false;
         if ($path && $path = realpath($path)) {
             return array_merge($args, \defDb::dbLocal(), ['path' => $path]);
         }
@@ -111,12 +111,12 @@ class ControllerBase
         $route = $request->get('_route');
         if ($route === 'boarding' && (strpos($data['code'], 'simul') !== false || strpos($data['code'], 'lh617') !== false)) {
             $route = 'onboard';
-            $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $route), $data, $this->langISOCodes);
+            $messages = Helper\TranslationsHelper::localize(parseConfig(getenv('TRANSLATIONS_DIR').'/page', $route), $data, $this->langISOCodes);
             $request = HttpFoundation\Request::create(null, $request->getMethod(), array_merge($request->request->all(), $messages, ['flabel' => 'Simul']));
             $data = $this->getSplitPageData($request);
         } elseif ($route === 'boarding' && !isset($data['code'])) {
             $route = 'upload';
-            $messages = Helper\TranslationsHelper::localize(parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', $route), [], $this->langISOCodes);
+            $messages = Helper\TranslationsHelper::localize(parseConfig(getenv('TRANSLATIONS_DIR').'/page', $route), [], $this->langISOCodes);
             $data = array_merge($data, $messages);
         }
         $view = Twig\TwigHandler::render($route, $data);

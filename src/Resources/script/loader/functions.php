@@ -30,7 +30,7 @@ final class def extends defDB
     private static function loadCodes()
     {
         if (!static::$dbCodesLoaded) {
-            static::$dbCodes = parseConfig(CONFIG_DIR.'/security', 'codes')['codes'];
+            static::$dbCodes = parseConfig(getenv('CONFIG_DIR').'/security', 'codes')['codes'];
             static::$dbCodesLoaded = true;
         }
     }
@@ -38,7 +38,7 @@ final class def extends defDB
     private static function loadCredentials()
     {
         if (!static::$dbCredentialsLoaded) {
-            static::$dbCredentials = parseConfig(CONFIG_DIR.'/security', 'credentials')['credentials'];
+            static::$dbCredentials = parseConfig(getenv('CONFIG_DIR').'/security', 'credentials')['credentials'];
             static::$dbCredentialsLoaded = true;
         }
     }
@@ -46,7 +46,7 @@ final class def extends defDB
     private static function loadTargets()
     {
         if (!static::$dbTargetsLoaded) {
-            static::$dbTargets = parseConfig(CONFIG_DIR.'/security', 'targets')['targets'];
+            static::$dbTargets = parseConfig(getenv('CONFIG_DIR').'/security', 'targets')['targets'];
             static::$dbTargetsLoaded = true;
         }
     }
@@ -54,7 +54,7 @@ final class def extends defDB
     private static function loadUploaders()
     {
         if (!static::$dbUploadersLoaded) {
-            static::$dbUploaders = parseConfig(CONFIG_DIR.'/security', 'uploaders')['uploaders'];
+            static::$dbUploaders = parseConfig(getenv('CONFIG_DIR').'/security', 'uploaders')['uploaders'];
             static::$dbUploadersLoaded = true;
         }
     }
@@ -62,7 +62,7 @@ final class def extends defDB
     private static function loadRoutes()
     {
         if (!static::$routesLoaded) {
-            static::$routes = parseConfig(CONFIG_DIR, 'routes')['routes'];
+            static::$routes = parseConfig(getenv('CONFIG_DIR'), 'routes')['routes'];
             static::$routesLoaded = true;
         }
     }
@@ -70,7 +70,7 @@ final class def extends defDB
     private static function loadPaths()
     {
         if (!static::$pathsLoaded) {
-            static::$paths = parseConfig(CONFIG_DIR, 'paths')['paths'];
+            static::$paths = parseConfig(getenv('CONFIG_DIR'), 'paths')['paths'];
             static::$pathsLoaded = true;
         }
     }
@@ -78,7 +78,7 @@ final class def extends defDB
     private static function loadMetric()
     {
         if (!static::$metricLoaded) {
-            static::$metric = parseConfig(CONFIG_DIR, 'metric')['metric'];
+            static::$metric = parseConfig(getenv('CONFIG_DIR'), 'metric')['metric'];
             static::$metricLoaded = true;
         }
     }
@@ -86,7 +86,7 @@ final class def extends defDB
     private static function loadConfig()
     {
         if (!static::$configLoaded) {
-            $config = parseConfig(CONFIG_DIR, 'config')['configuration'];
+            $config = parseConfig(getenv('CONFIG_DIR'), 'config')['configuration'];
             static::$homePath = $config['homepage_path'];
             static::$homeSlug = $config['homepage_slug'];
             static::$langCodes = $config['languages'];
@@ -197,7 +197,7 @@ class defDb
     private static function loadDbConfig()
     {
         if (!static::$initialized) {
-            $connectionConfig = parseConfig(ROOT_DIR, 'app/connection');
+            $connectionConfig = parseConfig(getenv('ROOT_DIR'), 'app/connection');
             $connectionDist = $connectionConfig['default_connection'];
             $connections = $connectionConfig['connections'];
             $localUsers = $connectionConfig['users']['local'];

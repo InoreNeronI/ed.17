@@ -67,7 +67,7 @@ class SessionHandler
         if (is_null($savePath)) {
             $savePath = ini_get('session.save_path');
         } else {
-            $savePath = ROOT_DIR.$savePath;
+            $savePath = getenv('ROOT_DIR').$savePath;
         }
         if (!is_writable($savePath) && !mkdir($savePath, 0775, true)) {
             throw new \RuntimeException('Couldn\'t save to Sessions\' default path because write access isn\'t granted');

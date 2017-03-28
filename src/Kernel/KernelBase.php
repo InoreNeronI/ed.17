@@ -33,7 +33,7 @@ class KernelBase implements HttpKernel\HttpKernelInterface
         $this->resolver = new HttpKernel\Controller\ControllerResolver();
 
         /* @var Handler\Router $routing */
-        $routing = new Handler\Router(\def::routes(), ROOT_DIR.\def::paths()['translations_dir'], static::$baseUrl, static::$baseSlug);
+        $routing = new Handler\Router(\def::routes(), getenv('TRANSLATIONS_DIR'), static::$baseUrl, static::$baseSlug);
 
         /* @var Routing\RequestContext $context */
         $context = new Routing\RequestContext();
@@ -50,8 +50,8 @@ class KernelBase implements HttpKernel\HttpKernelInterface
     private static function getMessages($slug = null)
     {
         return array_merge(
-            parseConfig(ROOT_DIR.\def::paths()['translations_dir'], 'layout'),
-            parseConfig(ROOT_DIR.\def::paths()['translations_dir'].'/page', is_null($slug) ? static::$baseSlug : $slug),
+            parseConfig(getenv('TRANSLATIONS_DIR'), 'layout'),
+            parseConfig(getenv('TRANSLATIONS_DIR').'/page', is_null($slug) ? static::$baseSlug : $slug),
             isset(static::$headers['ErrorData']) ? ['ErrorData' => static::$headers['ErrorData']] : []
         );
     }

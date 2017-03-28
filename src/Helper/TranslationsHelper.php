@@ -97,7 +97,7 @@ class TranslationsHelper
     private static function parseFields(array $items, $filename = 'index', $break_table = null, $prefix = null)
     {
         $fields = [];
-        $config = parseConfig(CONFIG_DIR, $filename);
+        $config = parseConfig(getenv('CONFIG_DIR'), $filename);
         foreach ($items as $name => $value) {
             if (array_key_exists($name, $config)) {
                 $fields[$name] = static::mapFields($config[$name], $break_table, $prefix);

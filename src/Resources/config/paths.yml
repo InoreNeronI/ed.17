@@ -3,17 +3,26 @@ paths:
   # Cache's path
   cache_dir: /app/cache
 
+  # Config files' path
+  config_dir: /src/Resources/config
+
   # Data files' path
   data_dir: /app/config
+
+  # Document root files' path
+  htdocs_dir: /web
 
   # Logs files' path
   logs_dir: /app/logs
 
-  # Public files' path
-  public_dir: /public
+  # Public resource files' path
+  public_resources_dir: /src/Resources/public
 
   # Template files' path
-  template_dir: /src/Resources/view
+  templates_dir: /src/Resources/view
 
   # Translation files' path
   translations_dir: /src/Resources/translation
+
+  # Uploaded files' path
+  uploads_dir: /uploads
