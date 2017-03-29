@@ -1,0 +1,48 @@
+
+pageImages:
+  p00:
+    - p00b_cen_t06_t06_40_img.png
+  p01:
+    - P01a_cen_t02_t02_60_img.png
+  p02:
+    - P02a_cen_t02_t02_20_img.png
+  p03:
+    - P03b_cen_t02_t02_40_img.png
+  p04:
+    - p04a_cen_t02_t02_80_img.png
+  p05:
+    - P05a_izq_t07_t07_30_img.png
+  p06:
+    - P06a_izq_t03_t05_30_img_png
+  
+pageAudios:
+  p01:
+    - p01a_cen_t07_t07_x2_eus.mp3
+    - p01a_cen_t07_t07_x2_eus.ogg
+  p02:
+    - p02a_cen_t05_t05_x2_img.mp3
+    - p02a_cen_t05_t05_x2_img.ogg
+
+pageTitles:
+  - p00b_t01
+  - p01a_t01
+  - p01a_t05
+  - p01b_t01
+  - p02a_t01
+  - p02a_t05
+  - p03b_t01
+  - p04a_t02
+  - p04b_t00
+  - p05a_t02
+  - p05b_t00
+  - p06a_t02
+  - p06b_t00
+  - p06b_t41
+
+pageAreaWidths:
+  p00:
+    b: 100
+  p03:
+    b: 100
+    
+totalPages: 7

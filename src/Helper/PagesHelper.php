@@ -104,10 +104,10 @@ final class PagesHelper extends Security\Authorization
      *
      * @throws \Exception
      */
-    public function loadPageData(array $args, $page, $dataDir = DATA_DIR)
+    public function loadPageData(array $args, $page, $dataDir)
     {
         /** @var string $target */
-        $target = $dataDir.'/'.$args['code'];
+        $target = $dataDir.'/'.$args['dbname'].'/'.$args['code'];
 
         /** @var array $config */
         $config = parseConfig($target, 'config');

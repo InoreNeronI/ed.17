@@ -1,0 +1,98 @@
+
+pageAudios:
+  p01:
+    - p01a_cen_t06_t06_x3_cas.mp3
+    - p01a_cen_t06_t06_x3_eus.mp3     
+  p02:
+    - p02a_cen_t06_t06_x3_cas.mp3
+    - p02a_cen_t06_t06_x3_eus.mp3
+  p03:
+    - p03a_cen_t06_t06_x3_cas.mp3
+    - p03a_cen_t06_t06_x3_eus.mp3
+  p04:
+    - p04a_cen_t06_t06_x3_cas.mp3
+    - p04a_cen_t06_t06_x3_eus.mp3
+ 
+pageImages:
+  p01:
+    - p01a_cen_t01_t01_30_img.jpg
+    - p01b_cen_t03_t03_50_img.png
+    - p01b_cen_t04_t04_50_img.png
+    - p01b_cen_t05_t05_50_img.png
+    - p01b_cen_t06_t06_50_img.png
+    - p01b_cen_t15_t15_50_img.png
+    - p01b_cen_t16_t16_50_img.png
+    - p01b_cen_t17_t17_50_img.png
+    - p01b_cen_t18_t18_50_img.png
+    - p01b_cen_t21_t21_100_img.png
+    - p01b_cen_t22_t22_100_img.png
+    - p01b_cen_t23_t23_100_img.png
+    - p01b_cen_t24_t24_100_img.png
+    - p01b_cen_t27_t27_50_img.jpg
+    - p01b_cen_t28_t28_50_img.jpg
+    - p01b_cen_t29_t29_50_img.jpg
+    - p01b_cen_t30_t30_50_img.jpg
+  p02:
+    - p02a_cen_t01_t01_30_img.png
+  p03:
+    - p03a_cen_t01_t01_50_img.png
+    - p03b_cen_t22_t22_50_img.png
+    - p03b_cen_t23_t23_50_img.png
+    - p03b_cen_t24_t24_50_img.png
+    - p03b_cen_t25_t25_50_img.png
+    - p03b_cen_t33_t33_f0_100.img.jpg
+  p04:
+    - p04a_cen_t01_t01_100_img.png
+  p05:
+    - p05b_cen_t01_t01_30_img.jpg
+  p06:
+    - p06a_cen_t03_t03_100_img.png
+    - p06b_cen_t17_t17_50_img.png
+    - p06b_cen_t18_t18_50_img.png
+    - p06b_cen_t19_t19_50_img.jpg
+    - p06b_cen_t20_t20_50_img.jpg
+  p07:
+    - p07a_cen_t02_t02_30_img.png
+    - p07b_cen_t22_t22_50_img.png
+    - p07b_cen_t23_t23_50_img.png
+    - p07b_cen_t24_t24_50_img.png
+    - p07b_cen_t25_t25_50_img.png
+  p08:
+    - p07a_cen_t02_t02_30_img.png
+    - p07b_cen_t22_t22_50_img.png
+    - p07b_cen_t23_t23_50_img.png
+    - p07b_cen_t24_t24_50_img.png
+    - p07b_cen_t25_t25_50_img.png
+  p09:
+    - p09a_cen_t02_t02_50_img.png
+    - p09b_cen_t17_t17_50_img.png
+    - p09b_cen_t18_t18_50_img.png
+    - p09b_cen_t19_t19_50_img.png
+    - p09b_cen_t20_t20_50_img.png
+    
+pageTitles:
+  - p00a_t01
+  - p00a_t02
+  - p01a_t01
+  - p01a_t06
+  - p02a_t01
+  - p02a_t06
+  - p03a_t01
+  - p03a_t06
+  - p04a_t01
+  - p04a_t06
+  - p05b_t01
+  - p06a_t02
+  - p07a_t02
+  - p09a_t02
+  - p10a_t01
+
+pageAreaWidths:
+  p05:
+    b: 100
+  p08:
+    a: 60
+    b: 40
+  p10:
+    b: 100
+totalPages: 10

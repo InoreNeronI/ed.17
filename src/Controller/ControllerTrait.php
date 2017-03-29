@@ -68,8 +68,14 @@ trait ControllerTrait
             $args = $request->request->all();
             /** @var Security\Authorization $manager */
             $manager = $this->getAuthManager('Security\Authorization', static::authorize($args));
+
+            if ($manager->getConnection()->getDatabasePlatform()->getName() === 'sqlite') {
+                $dbName = basename($manager->getConnection()->getDatabase(), '.'.pathinfo($manager->getConnection()->getDatabase(), PATHINFO_EXTENSION));
+            } else {
+                $dbName = $manager->getConnection()->getDatabase();
+            }
             /** @var array $data */
-            $data = $manager->checkCredentials($args);
+            $data = $manager->checkCredentials($args, $dbName, getenv('USER_TABLE'));
         }
 
         return $this->localizeMessages($request, $data);
@@ -94,7 +100,7 @@ trait ControllerTrait
             /** @var array $messages */
             $messages = $this->localizeMessages($request, $args);
 
-            return $manager->loadPageData($messages, sprintf('%02d', intval($page)));
+            return $manager->loadPageData($messages, sprintf('%02d', intval($page)), getenv('DATA_DIR'));
         }
 
         return [];
@@ -122,9 +128,10 @@ trait ControllerTrait
         if (($session = $request->getSession()) && $session->isStarted() && $session->has('ErrorData')) {
             $messages = array_merge(['ErrorData' => $session->get('ErrorData')], $messages);
         }
+        $hasDbData = isset($data['dbname']) && isset($data['table']);
 
         return array_merge(
-            isset($data['table']) ? ['code' => $this->codes[$data['table']], 'target' => $this->targets[$data['table']]] : [],
+            $hasDbData ? ['code' => $this->codes[$data['dbname']][$data['table']], 'target' => $this->targets[$data['dbname']][$data['table']]] : [],
             $messages,
             $data);
     }

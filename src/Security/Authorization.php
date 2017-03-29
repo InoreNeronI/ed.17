@@ -26,26 +26,28 @@ class Authorization extends Security\Connection\Connection
 
     /**
      * @param array  $args
-     * @param string $table
+     * @param string $dbName
+     * @param string $userTable
      *
      * @return array
      *
      * @throws \NoticeException
      */
-    public function checkCredentials(array $args, $table = USER_TABLE)
+    public function checkCredentials(array $args, $dbName, $userTable)
     {
-        return call_user_func(__METHOD__.static::$current, $args, $table);
+        return call_user_func(__METHOD__.static::$current, $args, $dbName, $userTable);
     }
 
     /**
      * @param array  $args
-     * @param string $table
+     * @param string $dbName
+     * @param string $userTable
      *
      * @return array
      *
      * @throws \NoticeException
      */
-    private function checkCredentialsDist(array $args, $table)
+    private function checkCredentialsDist(array $args, $dbName, $userTable)
     {   //$fields = static::parseFields($args, static::getFilename($slug), $table);
         /** @var array $credentials */
         $credentials = [
@@ -59,7 +61,7 @@ class Authorization extends Security\Connection\Connection
         }
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
-            ->select('u.*')->from($table, 'u')
+            ->select('u.*')->from($userTable, 'u')
             ->where('u.periodo = :course')
             ->andWhere('u.codalumno = :studentCode')
             ->andWhere('u.fec_dia = :studentDay')
@@ -74,11 +76,11 @@ class Authorization extends Security\Connection\Connection
 
         if (!empty($user)) {
             /** @var array $pws */
-            $pws = \def::dbCredentials();
+            $pws = \def::dbCredentials()[$dbName];
             /** @var string $codPrueba */
             $codPrueba = $args['studentPassword'];
             if (isset($pws[$codPrueba])) {
-                return array_merge(static::requestAccess($user, $pws[$codPrueba]), $credentials);
+                return array_merge(['dbname' => $dbName], static::requestAccess($user, $pws[$codPrueba]), $credentials);
             }
             throw new \NoticeException(sprintf('The code you have entered does not match: \'%s\'', $codPrueba));
         }
@@ -148,7 +150,7 @@ class Authorization extends Security\Connection\Connection
                         (strtolower($key) === strtolower($user['tipo_eus']) || strpos(strtolower($key), lcfirst($user['codmodelo'])) !== false) &&
                         $mod = 'eus') ||
                     /* Gazte: */
-                    (strpos($item, 'cas') !== false /*&& lcfirst($key) === lcfirst($user['tipo_cas'])*/ && $mod = 'cas') ||
+                    (strpos($item, 'gaz') !== false /*&& lcfirst($key) === lcfirst($user['tipo_cas'])*/ && $mod = 'cas') ||
                     /* G. sortak: */
                     (strpos($item, 'gsorta') !== false && lcfirst($key) === lcfirst($user['tipo_gso']) && $mod = 'gso') ||
                     /* Inge: */
@@ -162,7 +164,7 @@ class Authorization extends Security\Connection\Connection
             }
         } elseif (/* Eusk: */(strpos($args, 'eus') !== false && $mod = 'eus') ||
             /* Gazte: */
-            ((strpos($args, 'cas') !== false || strpos($args, 'gaz') !== false) && $mod = 'cas') ||
+            ((strpos($args, 'gaz') !== false) && $mod = 'cas') ||
             /* G. sortak: */
             (strpos($args, 'gsorta') !== false && $mod = 'gso') ||
             /* Inge: */

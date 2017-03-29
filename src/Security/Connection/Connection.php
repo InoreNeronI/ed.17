@@ -24,7 +24,7 @@ class Connection implements ConnectionInterface
     /**
      * @var bool
      */
-    protected static $debug = DEBUG;
+    protected static $debug;
 
     /**
      * Constructor to collect required database credentials.
@@ -46,6 +46,7 @@ class Connection implements ConnectionInterface
             'driver' => $driver,
             'driverOptions' => $options,
         ];
+        static::$debug = getenv('DEBUG');
     }
 
     /**

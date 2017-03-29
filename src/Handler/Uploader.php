@@ -21,7 +21,7 @@ class Uploader
     private $filePersistencePath = [];
 
     /** @var string */
-    protected static $uploadDirectory = UPLOADS_DIR;
+    protected static $uploadDirectory;
 
     /** @var string */
     protected static $zipSubDirectory = 'Zips';
@@ -40,6 +40,9 @@ class Uploader
     public static function getUploadDirectory()
     {
         //error_log('Upload dir: '.static::$uploadDirectory);
+        if (empty(static::$uploadDirectory)) {
+            static::$uploadDirectory = getenv('UPLOADS_DIR');
+        }
         if (!is_dir(static::$uploadDirectory) && !mkdir(static::$uploadDirectory, 0755, true)) {
             throw new \RuntimeException('Trying to access to invalid upload directory path');
         }

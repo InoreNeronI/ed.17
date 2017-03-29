@@ -3,12 +3,25 @@
 targets:
   lh617probak:
     # Eusk
+    lh617_testuak_eus_a:          erantzunak_eus_a
+    lh617_testuak_eus_b:          erantzunak_eus_b
+    lh617_testuak_eus_c:          erantzunak_eus_c
     # Gazte
     lh617_testuak_gaz_a:          erantzunak_gaz_a
+    lh617_testuak_gaz_b:          erantzunak_gaz_b
+    lh617_testuak_gaz_c:          erantzunak_gaz_c
     # Inge
+    lh617_testuak_ing_a:          erantzunak_ing_a
+    lh617_testuak_ing_b:          erantzunak_ing_b
+    lh617_testuak_ing_c:          erantzunak_ing_c
     # Mate
+    lh617_testuak_mat_a:          erantzunak_mat_a
+    lh617_testuak_mat_b:          erantzunak_mat_b
+    lh617_testuak_mat_c:          erantzunak_mat_c
     # Zie
-    # G. sortak
+    lh617_testuak_zie_a:          erantzunak_zie_a
+    lh617_testuak_zie_b:          erantzunak_zie_b
+    lh617_testuak_zie_c:          erantzunak_zie_c
   ed17probak:
     # Eusk
     edg051_testuak_dbh_eusa:      erantzunak_dbh_eusa

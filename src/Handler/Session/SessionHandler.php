@@ -58,9 +58,8 @@ class SessionHandler
      *                           upload_progress.freq, "1%"
      *                           upload_progress.min-freq, "1"
      *                           url_rewriter.tags, "a=href,area=href,frame=src,form=,fieldset="
-     * @param bool   $debug
      */
-    public function __construct($savePath = null, $expireTime = 10, array $options = [], $debug = DEBUG)
+    public function __construct($savePath = null, $expireTime = 10, array $options = [])
     {
         $this->expireTime = $expireTime;
         // Get session save-path.
@@ -74,7 +73,7 @@ class SessionHandler
         }
         $this->savePath = $savePath;
         $this->options = $options;
-        $this->debug = $debug;
+        $this->debug = getenv('DEBUG');
         $this->session = null;
     }
 

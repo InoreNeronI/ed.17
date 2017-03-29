@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+export HTDOCS_DIR
+HTDOCS_DIR=./web
+export PUBLIC_DIR
+PUBLIC_DIR=./src/Resources/public
+export UPLOADS_DIR
+UPLOADS_DIR=./uploads
+
 printf "\\n\\tSyncing Public Vendors\\n\\n"
 [ -d "${HTDOCS_DIR}" ] || mkdir ${HTDOCS_DIR}
 [ -d "${HTDOCS_DIR}/scripts/jquery" ] || mkdir -pv "${HTDOCS_DIR}/scripts/jquery"

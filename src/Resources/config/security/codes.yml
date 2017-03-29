@@ -3,16 +3,25 @@
 codes:
   lh617probak:
     # Eusk
-    lh617_testuak_lh_eusa:        lh617_eusa
-    lh617_testuak_lh_eusbd:       lh617_eusbd
+    lh617_testuak_eus_a:          lh617_eus_a
+    lh617_testuak_eus_b:          lh617_eus_b
+    lh617_testuak_eus_c:          lh617_eus_c
     # Gazte
     lh617_testuak_gaz_a:          lh617_gaz_a
     lh617_testuak_gaz_b:          lh617_gaz_b
     lh617_testuak_gaz_c:          lh617_gaz_c
     # Inge
+    lh617_testuak_ing_a:          lh617_ing_a
+    lh617_testuak_ing_b:          lh617_ing_b
+    lh617_testuak_ing_c:          lh617_ing_c
     # Mate
+    lh617_testuak_mat_a:          lh617_mat_a
+    lh617_testuak_mat_b:          lh617_mat_b
+    lh617_testuak_mat_c:          lh617_mat_c
     # Zie
-    # G. sortak
+    lh617_testuak_zie_a:          lh617_zie_a
+    lh617_testuak_zie_b:          lh617_zie_b
+    lh617_testuak_zie_c:          lh617_zie_c
   ed17probak:
     # Eusk
     edg051_testuak_dbh_eusa:      ed17_dbh_eusa
