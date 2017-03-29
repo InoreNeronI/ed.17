@@ -85,10 +85,7 @@ class TwigHandler
      *
      * @param string       $slug
      * @param array        $context
-     * @param array|string $loaderDir
-     * @param string       $cacheDir
      * @param bool         $autoescape
-     * @param bool         $debug
      * @param bool         $strictVariables
      *
      * @return string
@@ -96,13 +93,10 @@ class TwigHandler
     public static function render(
         $slug = 'index',
         $context = [],
-        $loaderDir = TEMPLATE_FILES_DIR,
-        $cacheDir = TEMPLATE_CACHE_DIR,
         $autoescape = false,
-        $debug = DEBUG,
         $strictVariables = true)
     {
-        static::load($loaderDir, $cacheDir, $autoescape, $debug, $strictVariables);
+        static::load(getenv('TEMPLATE_FILES_DIR'), getenv('TEMPLATE_CACHE_DIR'), $autoescape, getenv('DEBUG'), $strictVariables);
 
         return static::$twig->render(static::getTemplatePath($slug), $context);
     }
@@ -110,16 +104,15 @@ class TwigHandler
     /**
      * Returns the path of a template.
      *
-     * @param $slug
-     * @param $ext
+     * @param string    $slug
      *
      * @return string
      */
-    public static function getTemplatePath($slug, $ext = TEMPLATE_EXTENSION)
+    public static function getTemplatePath($slug)
     {
         /** @var string $path */
         $path = $slug === 'index' ? '' : '/page';
 
-        return "$path/$slug.$ext";  // path + slug + extension
+        return "$path/$slug.html.twig"; // path + slug + extension
     }
 }

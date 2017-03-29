@@ -8,7 +8,7 @@ if (!getenv('DEBUG')) {
         php_sapi_name() !== 'cli-server' &&
         !isset($_SERVER['HTTP_CLIENT_IP']) &&
         !isset($_SERVER['HTTP_X_FORWARDED_FOR']) &&
-        in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', 'fe80::1', '::1', '10.212.11.240'/*, '51.15.133.83'*/]) ? true : false;
+        in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', 'fe80::1', '::1', '10.212.11.240', '172.18.0.1'/*, '51.15.133.83'*/]) ? true : false;
     putenv('DEBUG='.$debug);
 }
 

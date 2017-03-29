@@ -5,11 +5,12 @@
 /.idea/
 /.php_cs.cache
 /backup/
+/composer.lock
+/composer.phar
+/app/*.db3
 /app/cache/
 /app/connection.yml
-/app/*.db3
 /app/logs/
-/app/session/
 /bin/
 /node_modules/
 /uploads/

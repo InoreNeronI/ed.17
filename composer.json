@@ -21,8 +21,8 @@
   "extra": {
     "incenteev-parameters": [{
       "file": "app/connection.yml",
-      "dist-file": "app/connection.dist.yml"}
-    ],
+      "dist-file": "app/connection.dist.yml"
+    }],
     "merge-plugin": {
       "require": ["vendor/composer.json"],
       "recurse": false,
@@ -50,7 +50,7 @@
         "printf \"\\n\\tBinaries has been updated succesfully\\n\\n\""
       ],
       "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
-      "codefix": "php bin/php-cs.phar fix --config=.php_cs && bash bin/phpstan analyse src || true",
+      "codefix": "php bin/php-cs.phar fix --config=.php_cs && bash bin/ s analyse src || true",
       "deptrac": "php bin/deptrac.phar",
       "post-install-cmd": ["@bin-install", "@build-parameters", "@security-check"],
       "post-update-cmd": ["@bin-update", "@build-parameters", "@security-check"],

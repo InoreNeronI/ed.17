@@ -3,9 +3,6 @@ paths:
   # Cache's path
   cache_dir: /app/cache
 
-  # Config files' path
-  config_dir: /src/Resources/config
-
   # Data files' path
   data_dir: /app/config
 

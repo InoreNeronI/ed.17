@@ -17,7 +17,7 @@ use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 /**
  * Class Authenticator
  *
- * @see http://activelamp.com/blog/development/shibboleth-authentication-in-symfony/
+ * @see http://activelamp.com/blog/development/shibboleth-authentication-in-symfony
  */
 class Authenticator extends AbstractGuardAuthenticator implements LogoutSuccessHandlerInterface
 {
