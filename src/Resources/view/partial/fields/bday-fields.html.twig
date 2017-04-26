@@ -1,9 +1,9 @@
 
-<label class="dib {{ fontClassX3 }}fw3 lh-copy tc tr-ns v-mid w-100 w-50-m w-50-ns" for="studentDay">{{ bdate }}</label>
+<label class="dib {{ fontClassX3 }}fw3 lh-copy tc tr-ns v-mid w-100 w-50-ns" for="studentDay">{{ bdate }}</label>
 <div class="dib tc tr-m v-mid w-100 w-40-m w-40-ns">
     <div class="dib tc pb1 w-100">
-        <label for="studentDay" class="dib {{ fontClass }}fw3 v-mid w-100 w-40-m w-50-ns">{{ bday }}</label>
-        <select class="b ba dib input-reset login-field no-underline pa1-l tc v-mid w-75 w-50-m w-40-ns" name="studentDay" id="studentDay" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('{{ validation.option['select'] }}')" autocomplete="off">
+        <label for="studentDay" class="dib {{ fontClass }}fw3 v-mid w-100 w-50-ns">{{ bday }}</label>
+        <select class="b ba dib input-reset login-field no-underline pa1-l tc v-mid w-70 w-40-ns" name="studentDay" id="studentDay" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('{{ validation.option['select'] }}')" autocomplete="off">
             <option class="black" value="" selected="selected">&nbsp;</option>
             {% for i in 1..31 %}
                 <option class="black" value="{{ (1 == loop.index|length ? '0' : '') ~ loop.index }}">{{ loop.index }}</option>
@@ -11,8 +11,8 @@
         </select>
     </div>
     <div class="dib w-100 tc">
-        <label for="studentMonth" class="dib {{ fontClass }}fw3 v-mid w-100 w-40-m w-50-ns">{{ bmonth }}</label>
-        <select class="b ba dib input-reset login-field no-underline pa1-l tc v-mid w-75 w-50-m w-40-ns" name="studentMonth" id="studentMonth" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('{{ validation.option['select'] }}')" autocomplete="off">
+        <label for="studentMonth" class="dib {{ fontClass }}fw3 v-mid w-100 w-50-ns">{{ bmonth }}</label>
+        <select class="b ba dib input-reset login-field no-underline pa1-l tc v-mid w-70 w-40-ns" name="studentMonth" id="studentMonth" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('{{ validation.option['select'] }}')" autocomplete="off">
             <option class="black" value="" selected="selected">&nbsp;</option>
             <option class="black" value="01">{{ jan }}</option>
             <option class="black" value="02">{{ feb }}</option>

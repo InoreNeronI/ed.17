@@ -12,7 +12,7 @@ parameters:
             user:     ed17erab
             password: ~
             charset:  utf8mb4
-            #server_version: 5.6
+            server_version: 5.7
         local:
             driver:   pdo_sqlite
             path:     '%kernel.root_dir%/ed17probak.db3'

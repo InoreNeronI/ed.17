@@ -3,9 +3,10 @@
   "author": "ISEI - IVEI | Irakas Sistema Ebaluatu eta Ikertzeko Erakundea - Instituto Vasco de Evaluación e Investigación Educativa",
   "homepage": "http://ediagnostikoak.eus",
   "require": {
-    "php": "^5.4",
+    "php": ">=5.4",
     "ext-pdo_mysql": "*",
     "ext-pdo_sqlite": "*",
+    "ext-zip": "*",
     "doctrine/dbal": "@stable",
     "kriswallsmith/assetic": "@stable",
     "symfony/event-dispatcher": "@stable",
@@ -14,6 +15,7 @@
     "symfony/routing": "@stable",
     "symfony/security": "@stable",
     "symfony/yaml": "@stable",
+    "tholu/php-packer": "@stable",
     "twig/twig": "@stable",
     "vlucas/phpdotenv": "@stable"
   },
@@ -22,8 +24,7 @@
     "incenteev/composer-parameter-handler": "@stable",
     "neronmoon/scriptsdev": "@stable",
     "sensiolabs/security-checker": "@stable",
-    "symfony/var-dumper": "@stable",
-    "tholu/php-packer": "@stable"
+    "symfony/var-dumper": "@stable"
   },
   "scripts": {
     "post-install-cmd": "printf \"\\n\\tVendors has been installed succesfully\\n\"",

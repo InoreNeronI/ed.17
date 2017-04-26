@@ -1,6 +1,6 @@
 <div class="dtc mt3 mt4-ns mt5-l fl tc w-100">
-    <label class="dib {{ fontClassX3 }}fw3 lh-copy pr2-ns tc tr-ns v-mid w-100 w-50-m w-50-ns" for="studentCode">{{ code }}</label>
-    <input class="b pv1 pv2-l input-reset ba login-field tc v-mid w-75 w-30-m w-30-ns" type="text" name="studentCode" id="studentCode" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('{{ validation.option['text'] }}')" autocomplete="off"/>
+    <label class="dib {{ fontClassX3 }}fw3 lh-copy pr2-ns tc tr-ns v-mid w-100 w-50-ns" for="studentCode">{{ code }}</label>
+    <input class="b pv1 pv2-l input-reset ba login-field tc v-mid w-75 w-30-ns" type="text" name="studentCode" id="studentCode" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('{{ validation.option['text'] }}')" autocomplete="off"/>
 </div>
 <div class="dtc mt3 mt4-ns mt5-l fr w-100">
     {% include '@App/partial/fields/bday-fields.html.twig' %}
@@ -8,6 +8,6 @@
 <input type="hidden" name="studentDay" value="1"/>
 <input type="hidden" name="studentMonth" value="1"/>
 <div class="dtc mt4 mt5-ns fl w-100 tc">
-    <label class="dib {{ fontClassX3 }}fw3 lh-copy tc tr-ns pr2-ns v-mid w-100 w-60-m w-70-ns" for="studentPassword">{{ codpro }}</label>
-    <input class="b ba dib input-reset login-field pv1 pv2-l tc v-mid w-75 w-20-m w-10-ns" type="password" name="studentPassword" id="studentPassword" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('{{ validation.option['text'] }}')" autocomplete="off"/>
+    <label class="dib {{ fontClassX3 }}fw3 lh-copy tc tr-ns pr2-ns v-mid w-100 w-60-ns" for="studentPassword">{{ codpro }}</label>
+    <input class="b ba dib input-reset login-field pv1 pv2-l tc v-mid w-60 w-20-ns" type="password" name="studentPassword" id="studentPassword" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('{{ validation.option['text'] }}')" autocomplete="off"/>
 </div>

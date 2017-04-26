@@ -1,30 +1,8 @@
 <?php
 
 /** @author Martin Mozos <martinmozos@gmail.com> */
-if (PHP_VERSION_ID < 50400) {
-    /* @throw \Exception */
-    throw new \Exception('At least PHP 5.4 is required; using the latest version is highly recommended.');
-}
+require '../src/Resources/script/loader/autoload.php';
 
-if (!getenv('ROOT_DIR')) {
-    putenv('ROOT_DIR='.dirname(__DIR__));
-}
-
-/* @var Composer\Autoload\ClassLoader */
-require getenv('ROOT_DIR').'/src/Resources/script/loader/autoload.php';
-
-if (getenv('DEBUG')) {
-    Symfony\Component\Debug\Debug::enable();
-}
-
-if (is_file(getenv('ROOT_DIR').'/.env')) {
-    //(new \Symfony\Component\Dotenv\Dotenv())->load(getenv('ROOT_DIR').'/.env');
-    (new \Dotenv\Dotenv(getenv('ROOT_DIR').'/.env'))->load();
-}
-require getenv('ROOT_DIR').'/src/Resources/script/loader/functions.php';
-
-// Config files' path
-putenv('CONFIG_DIR='.getenv('ROOT_DIR').'/src/Resources/config');
 // Other files' path and variables
 putenv('DATA_DIR='.getenv('ROOT_DIR').\def::paths()['data_dir']);
 putenv('HTDOCS_DIR='.getenv('ROOT_DIR').\def::paths()['htdocs_dir']);

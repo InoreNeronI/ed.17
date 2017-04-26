@@ -100,7 +100,7 @@ function handleField(count) {
     span.innerText = (uploadFile.getAttribute('data-multiple-caption') || '').replace(/{count}/g, count.toString());
     span.style = 'font-family: sans-serif; line-height: 1.15; -webkit-text-size-adjust: 100%;' + colorStyle;
     uploadIcon.innerHTML = span.outerHTML;
-}
+}{#
 {% if is_admin is same as (true) %}
     let downloadFile = document.getElementById('data-export');
     downloadFile.addEventListener('click', downloadFiles, false);
@@ -124,4 +124,4 @@ function handleField(count) {
         });
         return false;
     }
-{% endif %}
+{% endif %}#}

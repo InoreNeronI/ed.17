@@ -2,6 +2,7 @@
 
 /**
  * @author Martin Mozos <martinmozos@gmail.com>
+ *
  * Class def.
  */
 final class def extends defDB

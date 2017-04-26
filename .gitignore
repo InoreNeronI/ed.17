@@ -5,7 +5,6 @@
 /.idea/
 /.php_cs.cache
 /backup/
-/composer.lock
 /composer.phar
 /app/*.db3
 /app/cache/
@@ -16,5 +15,5 @@
 /uploads/
 !/vendor/
 /vendor/*
-!/vendor/composer.json
+!/vendor/composer.*
 /web/

@@ -18,15 +18,18 @@ metric:
       s: 10
       m: 20
       l: 25
-  # @see https://github.com/tachyons-css/tachyons/blob/v4.6.2/css/tachyons.css#L1772-L1777
+  # @see https://github.com/tachyons-css/tachyons/blob/v4.7.1/css/tachyons.css#L1775-L1784
   fonts:
-    x1: f6
-    x2: f5
-    x3: f4
-    x4: f3
-    x5: f2
-    x6: f1
-  # @see https://github.com/tachyons-css/tachyons/blob/v4.6.2/css/tachyons.css#L868-L887
+    x1: f7
+    x2: f6
+    x3: f5
+    x4: f4
+    x5: f3
+    x6: f2
+    x7: f1
+    xl: f-5
+    xxl: f-6
+  # @see https://github.com/tachyons-css/tachyons/blob/v4.7.1/css/tachyons.css#L868-L888
   heights:
     # String Properties
     auto: h-auto
@@ -43,7 +46,7 @@ metric:
     75: h-75
     100: h-100
     min-100: min-h-100
-  # @see https://github.com/tachyons-css/tachyons/blob/v4.6.2/css/tachyons.css#L1020-L1041
+  # @see https://github.com/tachyons-css/tachyons/blob/v4.7.1/css/tachyons.css#L1020-L1042
   widths:
     # String Properties
     tercio: w-third

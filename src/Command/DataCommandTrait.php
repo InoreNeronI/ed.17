@@ -65,7 +65,7 @@ trait DataCommandTrait
             foreach (array_keys(array_merge(\def::dbCodes()[$db], [\defDb::userEntity() => null])) as $table) {
                 $result .= "\t\t".sprintf('`%s`', $table).PHP_EOL;
                 $this->config['tables'][$db][] = ['name' => $table, 'mode' => static::MODE_COPY];
-                $totalTables++;
+                ++$totalTables;
             }
         }
 
@@ -73,6 +73,7 @@ trait DataCommandTrait
         $this->sc = DBAL\DriverManager::getConnection($this->getConfig('source'));
         /* @var \Doctrine\DBAL\Connection $tc */
         $this->tc = DBAL\DriverManager::getConnection($this->getConfig('target'));
+
         return sprintf('%s tables discovered on %s databases', $totalTables, $totalDbs).PHP_EOL.$result;
     }
 
