@@ -15,7 +15,7 @@ parameters:
             #server_version: 5.6
         local:
             driver:   pdo_sqlite
-            path:     '%kernel.root_dir%/data.db3'
+            path:     '%kernel.root_dir%/ed17probak.db3'
     users:
         # Users distribution table
         dist:         ikasleak

@@ -3,50 +3,49 @@ pageImages:
   p00:
     - p00b_cen_t04_t04_40_img.png
   p07:
-    - p07a_cen_t06_t06_60_img.png
+    - p07b_cen_t07_t07_60_img.png
   p08:
-    - p08a_cen_t02_t02_80_eus.png
-    - p08a_cen_t02_t02_80_cas.png
-    - p08b_cen_t01_t01_70_eus.png
-    - p08b_cen_t01_t01_70_cas.png
+    - p08a_cen_t02_t02_100_eus.png
+    - p08a_cen_t02_t02_100_cas.png
+    - p08b_cen_t01_t01_80_img.png
   p09:
-    - p09a_cen_t02_t02_80_eus.png
-    - p09a_cen_t02_t02_80_cas.png
+    - p09a_cen_t02_t02_100_eus.png
+    - p09a_cen_t02_t02_100_cas.png
     - p09b_cen_t02_t02_90_img.png
   p10:
-    - p10a_cen_t02_t02_80_eus.png
-    - p10a_cen_t02_t02_80_cas.png
-    - p10b_cen_t02_t02_40_img.png
+    - p10a_cen_t02_t02_100_eus.png
+    - p10a_cen_t02_t02_100_cas.png
+    - p10b_cen_t02_t02_50_img.png
   p11:
-    - p11a_cen_t02_t02_80_cas.png
-    - p11b_cen_t02_t02_40_img.png
+    - p11a_cen_t02_t02_100_cas.png
+    - p11a_cen_t02_t02_100_eus.png
   p12:
-    - p12a_cen_t02_t02_80_eus.png
-    - p12a_cen_t02_t02_80_cas.png
-    - p12b_cen_t03_t03_40_img.png
+    - p12a_cen_t02_t02_100_eus.png
+    - p12a_cen_t02_t02_100_cas.png
+    - p12b_cen_t06_t06_50_img.png
   p13:
     - p13a_izq_t02_t02_40_img.png
-    - p13a_cen_t02_t02_80_img.png
-    - p13b_cen_t02_t02_60_img.png
+    - p13a_cen_t03_t03_60_img.png
+    - p13b_cen_t02_t02_50_img.png
   p14:
+    - p14a_cen_t03_t03_60_img.png
     - p14a_izq_t02_t02_40_img.png
-    - p14a_cen_t02_t02_80_img.png
-    - p14b_cen_t01_t01_60_eus.png
-    - p14b_cen_t01_t01_60_cas.png
-    - p14b_cen_t02_t02_60_eus.png
-    - p14b_cen_t02_t02_60_cas.png
+    - p14b_cen_t01_t01_30_eus.png
+    - p14b_cen_t01_t01_30_cas.png
+    - p14b_cen_t02_t02_95_eus.png
+    - p14b_cen_t02_t02_95_cas.png
   p15:
+    - p15a_cen_t03_t03_60_img.png
     - p15a_izq_t02_t02_40_img.png
-    - p15a_cen_t02_t02_80_img.png
-    - p15b_cen_t01_t01_40_img.png
+    - p15b_cen_t01_t01_30_img.png
   p16:
+    - p16a_cen_t03_t03_60_img.png
     - p16a_izq_t02_t02_40_img.png
-    - p16a_cen_t02_t02_80_img.png
     - p16b_cen_t01_t01_80_img.png
   p17:
     - p17a_izq_t02_t02_40_img.png
-    - p17a_cen_t02_t02_80_img.png
-    - p17b_cen_t01_t01_80_img.png
+    - p17a_cen_t03_t03_60_img.png
+    - p17b_cen_t01_t01_50_img.png
   p18:
     - p18a_cen_t02_t02_100_img.png
   p19:
@@ -81,23 +80,28 @@ pageImages:
     - p27a_cen_t03_t03_90_cas.png
   p28:
     - p28a_cen_t01_t01_60_img.png
-    - p28a_cen_t03_t03_90_img.png
+    - p28a_cen_t03_t03_90_eus.png
+    - p28a_cen_t03_t03_90_cas.png
   p29:
     - p29a_cen_t01_t01_60_img.png
-    - p29a_cen_t03_t03_90_img.png
+    - p29a_cen_t03_t03_90_eus.png
+    - p29a_cen_t03_t03_90_cas.png
   p30:
     - p30a_cen_t01_t01_60_img.png
-    - p30a_cen_t03_t03_90_img.png
-    - p30a_cen_t02_t02_90_eus.png
-    - p30a_cen_t02_t02_90_cas.png
+    - p30a_cen_t03_t03_90_eus.png
+    - p30a_cen_t03_t03_90_cas.png
+    - p30b_cen_t02_t02_90_eus.png
+    - p30b_cen_t02_t02_90_cas.png
   p31:
     - p31a_cen_t02_t02_70_img.png
   p32:
     - p32a_cen_t02_t02_70_img.png
   p33:
     - p33a_cen_t02_t02_70_img.png
-    - p33b_cen_t01_t01_50_img.png 
-  
+    - p33b_cen_t01_t01_50_img.png
+  p34:
+    - p34b_cen_t01_t01_60_img.jpg
+
 pageTitles:
   - p00b_t01
   - p01b_t01
@@ -128,7 +132,7 @@ pageTitles:
   - p31a_t01
   - p32a_t01
   - p33a_t01
-  - p34b_t01
+  - p34b_t03
 
 pageAreaWidths:
   p00:
@@ -150,4 +154,4 @@ pageAreaWidths:
   p34:
     b: 100
 
-totalPages: 35
+totalPages: 34

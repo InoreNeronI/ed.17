@@ -30,6 +30,18 @@ p01:
     - p01b_t33
     - p01b_t34
     - p01b_t35
+    - p01b_t37
+    - p01b_t38
+    - p01b_t39
+    - p01b_t40
+    - p01b_t42
+    - p01b_t43
+    - p01b_t44
+    - p01b_t45
+    - p01b_t47
+    - p01b_t48
+    - p01b_t49
+    - p01b_t50
 p02:
   text:
   simple:
@@ -107,8 +119,7 @@ p04:
     - p04b_t35
 p05:
   text:
-    - p05a_t07
-simple:
+  simple:
     - p05b_t02
     - p05b_t03
     - p05b_t04
@@ -152,8 +163,6 @@ simple:
 p06:
   text:
     - p06a_t03
-    - p06a_t04
-    - p06a_t05
   simple:
     - p06b_t02
     - p06b_t03

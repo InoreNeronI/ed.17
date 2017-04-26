@@ -38,7 +38,7 @@
         "[ -d \"bin\" ] || mkdir -v bin",
         "[ -e \"bin/checker.phar\" ] || curl -Lo bin/checker.phar http://get.sensiolabs.org/security-checker.phar",
         "[ -e \"bin/deptrac.phar\" ] || curl -Lo bin/deptrac.phar http://get.sensiolabs.de/deptrac.phar",
-        "[ -e \"bin/php-cs.phar\" ] || curl -Lo bin/php-cs.phar https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.1.2/php-cs-fixer.phar",
+        "[ -e \"bin/php-cs.phar\" ] || curl -Lo bin/php-cs.phar https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.3.1/php-cs-fixer.phar",
         "[ -e \"bin/phpunit.phar\" ] || curl -Lo bin/phpunit.phar https://phar.phpunit.de/phpunit-old.phar",
         "printf \"\\n\\tBinaries has been installed succesfully\\n\\n\""
       ],
@@ -54,7 +54,7 @@
       "deptrac": "php bin/deptrac.phar",
       "post-install-cmd": ["@bin-install", "@build-parameters", "@security-check"],
       "post-update-cmd": ["@bin-update", "@build-parameters", "@security-check"],
-      "security-check": "php bin/checker.phar security:check composer.lock || true",
+      "security-check": "php bin/checker.phar security:check composer.lock && php bin/checker.phar security:check vendor/composer.lock || sh -c \"bin/security-checker security:check composer.lock\" && sh -c \"bin/security-checker security:check vendor/composer.lock\" || true",
       "test": "php bin/phpunit.phar"
     }
   }

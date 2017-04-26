@@ -43,10 +43,6 @@ p02:
     - p02b_t03
     - p02b_t04
     - p02b_t05
-    - p02b_t07
-    - p02b_t08
-    - p02b_t09
-    - p02b_t10
     - p02b_t12
     - p02b_t13
     - p02b_t14
@@ -71,6 +67,11 @@ p02:
     - p02b_t38
     - p02b_t39
     - p02b_t40
+  multiple:
+    - p02b_t07
+    - p02b_t08
+    - p02b_t09
+    - p02b_t10
 p04:
   simple:
     - p04b_t02

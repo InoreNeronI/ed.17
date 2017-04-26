@@ -18,7 +18,8 @@ if (getenv('DEBUG')) {
 }
 
 if (is_file(getenv('ROOT_DIR').'/.env')) {
-    (new \Symfony\Component\Dotenv\Dotenv())->load(getenv('ROOT_DIR').'/.env');
+    //(new \Symfony\Component\Dotenv\Dotenv())->load(getenv('ROOT_DIR').'/.env');
+    (new \Dotenv\Dotenv(getenv('ROOT_DIR').'/.env'))->load();
 }
 require getenv('ROOT_DIR').'/src/Resources/script/loader/functions.php';
 

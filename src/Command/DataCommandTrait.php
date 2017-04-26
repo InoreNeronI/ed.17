@@ -57,12 +57,15 @@ trait DataCommandTrait
         $this->config['tables'] = [];
         $result = '';
         $dbNames = array_keys(\def::dbCodes());
+        $totalDbs = count($dbNames);
+        $totalTables = 0;
         foreach ($dbNames as $db) {
             $result .= "\t".sprintf('`%s`:', $db).PHP_EOL;
             $this->config['tables'][$db] = [];
-            foreach (array_keys(array_merge(\def::dbCodes()[$db], [\defDb::userEntity() => null, \defDb::extraEntity() => null])) as $table) {
+            foreach (array_keys(array_merge(\def::dbCodes()[$db], [\defDb::userEntity() => null])) as $table) {
                 $result .= "\t\t".sprintf('`%s`', $table).PHP_EOL;
                 $this->config['tables'][$db][] = ['name' => $table, 'mode' => static::MODE_COPY];
+                $totalTables++;
             }
         }
 
@@ -70,8 +73,7 @@ trait DataCommandTrait
         $this->sc = DBAL\DriverManager::getConnection($this->getConfig('source'));
         /* @var \Doctrine\DBAL\Connection $tc */
         $this->tc = DBAL\DriverManager::getConnection($this->getConfig('target'));
-
-        return sprintf('%s tables discovered on %s databases', count($this->config['tables']), count($dbNames)).PHP_EOL.$result;
+        return sprintf('%s tables discovered on %s databases', $totalTables, $totalDbs).PHP_EOL.$result;
     }
 
     /**

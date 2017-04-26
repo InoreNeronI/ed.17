@@ -3,25 +3,25 @@
   "author": "ISEI - IVEI | Irakas Sistema Ebaluatu eta Ikertzeko Erakundea - Instituto Vasco de Evaluación e Investigación Educativa",
   "homepage": "http://ediagnostikoak.eus",
   "require": {
-    "php": ">=5.5.9 <7.2.0",
+    "php": "^5.4",
     "ext-pdo_mysql": "*",
     "ext-pdo_sqlite": "*",
     "doctrine/dbal": "@stable",
     "kriswallsmith/assetic": "@stable",
-    "symfony/dotenv": "^3.3",
     "symfony/event-dispatcher": "@stable",
     "symfony/http-kernel": "@stable",
     "symfony/http-foundation": "@stable",
     "symfony/routing": "@stable",
     "symfony/security": "@stable",
     "symfony/yaml": "@stable",
-    "twig/twig": "@stable"
+    "twig/twig": "@stable",
+    "vlucas/phpdotenv": "@stable"
   },
   "require-dev": {
     "andig/dbcopy": "@dev",
     "incenteev/composer-parameter-handler": "@stable",
     "neronmoon/scriptsdev": "@stable",
-    "phpstan/phpstan": "@stable",
+    "sensiolabs/security-checker": "@stable",
     "symfony/var-dumper": "@stable",
     "tholu/php-packer": "@stable"
   },

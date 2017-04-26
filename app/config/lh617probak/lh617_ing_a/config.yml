@@ -1,18 +1,18 @@
 
 pageAudios:
   p01:
-    - p01a_cen_t06_t06_x3_cas.mp3
-    - p01a_cen_t06_t06_x3_eus.mp3     
+    - p01a_cen_t06_t06_x3_eus.mp3
+    - p01a_cen_t06_t06_x3_eus.ogg
   p02:
-    - p02a_cen_t06_t06_x3_cas.mp3
     - p02a_cen_t06_t06_x3_eus.mp3
+    - p02a_cen_t06_t06_x3_eus.ogg
   p03:
-    - p03a_cen_t06_t06_x3_cas.mp3
     - p03a_cen_t06_t06_x3_eus.mp3
+    - p03a_cen_t06_t06_x3_eus.ogg
   p04:
-    - p04a_cen_t06_t06_x3_cas.mp3
     - p04a_cen_t06_t06_x3_eus.mp3
- 
+    - p04a_cen_t06_t06_x3_eus.ogg
+
 pageImages:
   p01:
     - p01a_cen_t01_t01_30_img.jpg
@@ -40,7 +40,7 @@ pageImages:
     - p03b_cen_t23_t23_50_img.png
     - p03b_cen_t24_t24_50_img.png
     - p03b_cen_t25_t25_50_img.png
-    - p03b_cen_t33_t33_f0_100.img.jpg
+    - p03b_cen_t32_t32_15_img.jpg
   p04:
     - p04a_cen_t01_t01_100_img.png
   p05:
@@ -58,21 +58,19 @@ pageImages:
     - p07b_cen_t24_t24_50_img.png
     - p07b_cen_t25_t25_50_img.png
   p08:
-    - p07a_cen_t02_t02_30_img.png
-    - p07b_cen_t22_t22_50_img.png
-    - p07b_cen_t23_t23_50_img.png
-    - p07b_cen_t24_t24_50_img.png
-    - p07b_cen_t25_t25_50_img.png
+    - p08a_cen_t01_t01_100_img.jpg
   p09:
     - p09a_cen_t02_t02_50_img.png
     - p09b_cen_t17_t17_50_img.png
     - p09b_cen_t18_t18_50_img.png
     - p09b_cen_t19_t19_50_img.png
     - p09b_cen_t20_t20_50_img.png
-    
+  p10:
+    - p10b_cen_t01_t01_60_img.jpg
+
 pageTitles:
-  - p00a_t01
-  - p00a_t02
+  - p00b_t01
+  - p00b_t02
   - p01a_t01
   - p01a_t06
   - p02a_t01
@@ -85,9 +83,11 @@ pageTitles:
   - p06a_t02
   - p07a_t02
   - p09a_t02
-  - p10a_t01
+  - p10b_t03
 
 pageAreaWidths:
+  p00:
+    b: 100
   p05:
     b: 100
   p08:

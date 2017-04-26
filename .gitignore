@@ -16,5 +16,5 @@
 /uploads/
 !/vendor/
 /vendor/*
-!/vendor/composer.*
+!/vendor/composer.json
 /web/
