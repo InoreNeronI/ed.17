@@ -15,5 +15,6 @@
 {% block jq_ready %}
     {{ parent() }}
     {% include '@App/layout/js/split-page.js.twig' %}
-    {% include '@App/field/js/audio.js.twig' %}
+    {% include '@App/field/js/media.js.twig' with { 'tag': 'audio' } %}
+    {% include '@App/field/js/media.js.twig' with { 'tag': 'video' } %}
 {% endblock %}

@@ -36,5 +36,5 @@
 
 {% block jq_ready %}
     {{ parent() }}
-    {% include '@App/field/js/audio.js.twig' with { 'type': 'full' } %}
+    {% include '@App/field/js/media.js.twig' with { 'tag': 'audio', 'type': 'full' } %}
 {% endblock %}
