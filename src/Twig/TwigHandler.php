@@ -83,10 +83,10 @@ class TwigHandler
     /**
      * Renders a template.
      *
-     * @param string       $slug
-     * @param array        $context
-     * @param bool         $autoescape
-     * @param bool         $strictVariables
+     * @param string $slug
+     * @param array  $context
+     * @param bool   $autoescape
+     * @param bool   $strictVariables
      *
      * @return string
      */
@@ -104,7 +104,7 @@ class TwigHandler
     /**
      * Returns the path of a template.
      *
-     * @param string    $slug
+     * @param string $slug
      *
      * @return string
      */
