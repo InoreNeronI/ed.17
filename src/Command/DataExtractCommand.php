@@ -7,6 +7,8 @@ use Symfony\Component\Console;
 
 class DataExtractCommand extends Console\Command\Command
 {
+    private static $baseVersion = '0.5';
+
     private static $statements = [];
 
     protected function configure()
@@ -14,7 +16,8 @@ class DataExtractCommand extends Console\Command\Command
         $this->setName('extract-db')
             ->setDescription('Extract encrypted zip and import `data.sql` and `data-structure.sql` to database')
             ->addOption('file', 'f', Console\Input\InputOption::VALUE_REQUIRED, 'Zip archive path')
-            ->addOption('password', 'p', Console\Input\InputOption::VALUE_REQUIRED, 'Zip archive password');
+            ->addOption('password', 'p', Console\Input\InputOption::VALUE_REQUIRED, 'Zip archive password')
+            ->addOption('version', 'v', Console\Input\InputOption::VALUE_OPTIONAL, 'Zip archive version', static::$baseVersion);
     }
 
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
@@ -22,14 +25,13 @@ class DataExtractCommand extends Console\Command\Command
         $zip = new \ZipArchive();
         $file = $input->getOption('file');
         $pw = $input->getOption('password');
+        $v = $input->getOption('version');
         $zipStatus = $zip->open($file);
         $extractPath = sys_get_temp_dir();
 
         if ($zipStatus === true) {
-            if ($zip->setPassword($pw)) {
-                if (!$zip->extractTo($extractPath)) {
-                    throw new \Exception(sprintf('Error, extraction of `%s` failed (wrong `%s` password?).', $file, $pw));
-                }
+            if ($zip->setPassword($pw) && !$zip->extractTo($extractPath)) {
+                throw new \Exception(sprintf('Error, extraction of `%s` failed (wrong `%s` password?).', $file, $pw));
             }
             $zip->close();
         } else {
@@ -39,10 +41,9 @@ class DataExtractCommand extends Console\Command\Command
         static::sqlImport($extractPath.'/data-structure.sql');
         static::sqlImport($extractPath.'/data.sql');
 
-        $dbTargetParams = \defDb::dbDist();
         // @see https://github.com/doctrine/DoctrineBundle/blob/v1.5.2/Command/CreateDatabaseDoctrineCommand.php
-        $dbTemporary = $dbTargetParams['dbname'].'_'.uniqid();
-
+        $dbTargetParams = \defDb::dbDist();
+        $dbTemporary = $dbTargetParams['dbname'].'_'.$v.'_'.md5($file);
         $output->writeln(PHP_EOL.sprintf('Creating temporary database `%s`...', $dbTemporary).PHP_EOL);
         // Need to get rid of _every_ occurrence of dbname from connection configuration and we have already extracted all relevant info from url
         unset($dbTargetParams['dbname'], $dbTargetParams['path'], $dbTargetParams['url']);

@@ -24,6 +24,7 @@
     "incenteev/composer-parameter-handler": "@stable",
     "neronmoon/scriptsdev": "@stable",
     "sensiolabs/security-checker": "@stable",
+    "symfony/finder": "@stable",
     "symfony/var-dumper": "@stable"
   },
   "scripts": {
