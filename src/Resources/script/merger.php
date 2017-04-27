@@ -11,7 +11,7 @@ $application = new \Command\DataMergeCommand('Database merge tool');
 
 // see: http://symfony.com/doc/current/console/command_in_controller.html
 $input = new \Symfony\Component\Console\Input\ArrayInput([
-    '--folder' => $argv[1]
+    '--folder' => $argv[1],
 ]);
 // You can use NullOutput() if you don't need the output
 $output = new \Symfony\Component\Console\Output\BufferedOutput();
