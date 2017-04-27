@@ -11,7 +11,7 @@ final class PagesTranslationHelper
     private static $library = [
         'audio' => ['ext' => ['mp3', 'ogg']],
         'img' => ['ext' => ['jpg', 'png']],
-        'video' => ['ext' => ['3gp', 'mp4', 'ogg', 'webm']], ];
+        'video' => ['ext' => ['3gp', 'mp4', 'ogg', 'ogv', 'webm']], ];
 
     /** @var array */
     public static $widthStyle = [];

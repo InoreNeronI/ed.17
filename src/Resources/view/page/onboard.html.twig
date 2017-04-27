@@ -1,6 +1,8 @@
 {% extends '@App/layout/split-page.html.twig' %}
 
-{% block title flabel ~ ' :: ' ~ title ~ ' :: ' ~ course ~ ' :: ' ~ mainTitle|title %}
+{% set label = flabel is empty ? null : flabel ~ ' :: ' %}
+
+{% block title label ~ title ~ ' :: ' ~ course ~ ' :: ' ~ mainTitle|title %}
 
 {% block content %}
     {{ parent() }}

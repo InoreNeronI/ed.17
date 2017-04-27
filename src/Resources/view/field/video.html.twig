@@ -1,0 +1,22 @@
+<video class="{{ cssClassContent|default('w-100') }}" preload="auto">
+    {% if media.path['3gp'] is not empty %}
+        <source src="{{ media.path['3gp'] }}" type="video/3gpp">
+    {% endif %}
+    {% if media.path.mp4 is not empty %}
+        <source src="{{ media.path.mp4 }}" type="video/mp4">
+    {% endif %}
+    {% if media.path.ogg is not empty %}
+        <source src="{{ media.path.ogg }}" type="video/ogg">
+    {% endif %}
+    {% if media.path.ogv is not empty %}
+        <source src="{{ media.path.ogv }}" type="video/ogg">
+    {% endif %}
+    {% if media.path.webm is not empty %}
+        <source src="{{ media.path.webm }}" type="video/webm">
+    {% endif %}
+    Your browser doesn't support the HTML video tag. Be sad.
+</video>
+
+<a href="" class="playVideo" target="_self" title="{{ media.tip|default }}">
+    <i class="dim {{ fontClass ~ cssClassContent|default('w-100') }} fa fa-play fa-3x"></i>
+</a>

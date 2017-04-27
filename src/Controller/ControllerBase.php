@@ -109,10 +109,10 @@ class ControllerBase
         }
         $data = $this->getData($request);
         $route = $request->get('_route');
-        if ($route === 'boarding' && (strpos($data['code'], 'simul') !== false || strpos($data['code'], 'lh617') !== false)) {
+        if ($route === 'boarding' && (strpos($data['code'], 'simul') !== false || strpos($data['code'], 'dbh417') !== false || strpos($data['code'], 'lh617') !== false)) {
             $route = 'onboard';
             $messages = Helper\TranslationsHelper::localize(parseConfig(getenv('TRANSLATIONS_DIR').'/page', $route), $data, $this->langISOCodes);
-            $request = HttpFoundation\Request::create(null, $request->getMethod(), array_merge($request->request->all(), $messages, ['flabel' => 'Simul']));
+            $request = HttpFoundation\Request::create(null, $request->getMethod(), array_merge($request->request->all(), $messages/*, ['flabel' => null]*/));
             $data = $this->getSplitPageData($request);
         } elseif ($route === 'boarding' && !isset($data['code'])) {
             $route = 'upload';

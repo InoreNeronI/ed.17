@@ -150,7 +150,7 @@ class Authorization extends Security\Connection\Connection
                         (strtolower($key) === strtolower($user['tipo_eus']) || strpos(strtolower($key), lcfirst($user['codmodelo'])) !== false) &&
                         $mod = 'eus') ||
                     /* Gazte: */
-                    (strpos($item, 'gaz') !== false /*&& lcfirst($key) === lcfirst($user['tipo_cas'])*/ && $mod = 'cas') ||
+                    ((strpos($item, 'cas') !== false || strpos($item, 'gaz') !== false) /*&& lcfirst($key) === lcfirst($user['tipo_cas'])*/ && $mod = 'cas') ||
                     /* G. sortak: */
                     (strpos($item, 'gsorta') !== false && lcfirst($key) === lcfirst($user['tipo_gso']) && $mod = 'gso') ||
                     /* Inge: */
@@ -164,7 +164,7 @@ class Authorization extends Security\Connection\Connection
             }
         } elseif (/* Eusk: */(strpos($args, 'eus') !== false && $mod = 'eus') ||
             /* Gazte: */
-            ((strpos($args, 'gaz') !== false) && $mod = 'cas') ||
+            ((strpos($args, 'cas') !== false || strpos($args, 'gaz') !== false) && $mod = 'cas') ||
             /* G. sortak: */
             (strpos($args, 'gsorta') !== false && $mod = 'gso') ||
             /* Inge: */
