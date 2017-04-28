@@ -14,7 +14,8 @@ $input = new \Symfony\Component\Console\Input\ArrayInput([
     '--folder' => $argv[1],
 ]);
 // You can use NullOutput() if you don't need the output
-$output = new \Symfony\Component\Console\Output\BufferedOutput();
+//$output = new \Symfony\Component\Console\Output\BufferedOutput();
+$output = new \Symfony\Component\Console\Output\ConsoleOutput();
 $application->run($input, $output);
 
 // return the output, don't use if you used NullOutput()

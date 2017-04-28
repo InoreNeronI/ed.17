@@ -30,18 +30,22 @@ class DataMergeCommand extends Console\Command\Command
      */
     private static function parseFiles($folder, $pattern)
     {
+        // See: http://stackoverflow.com/a/27956187
         $dir = new RecursiveDirectoryIterator($folder, \FilesystemIterator::CURRENT_AS_FILEINFO);
-        $ite = new \RecursiveIteratorIterator($dir);
-        $files = new \RegexIterator($ite, $pattern, \RegexIterator::GET_MATCH);
-        foreach ((array) $files as $key => $file) {
+        $iterator = new \RecursiveIteratorIterator($dir);
+        $iterator->setFlags(\FilesystemIterator::SKIP_DOTS);
+        $iterator->setFlags(\RecursiveIteratorIterator::SELF_FIRST);
+        $files = new \RegexIterator($iterator, $pattern, \RegexIterator::GET_MATCH);
+        foreach ($files as $key => $file) {
             $parent = dirname($key);
             $vPath = $parent.DIRECTORY_SEPARATOR.'version';
-            $uploadParams = explode('_', basename($parent));
+            $v = is_file($vPath) ? file_get_contents($vPath) ?: static::$baseVersion : static::$baseVersion;
+            $uploadParams = explode('+', basename($parent));
             static::$files[$key] = [
-                'version' => is_file($vPath) ? file_get_contents($vPath) ?: static::$baseVersion : static::$baseVersion,
-                'when' => $uploadParams[1],
+                'version' => trim($v),
+                'when' => $uploadParams[0].' '.str_replace('-', ':', $uploadParams[1]),
                 'where' => $uploadParams[2],
-                'who' => $uploadParams[0]
+                'who' => $uploadParams[3]
             ];
         }
     }
@@ -83,11 +87,13 @@ class DataMergeCommand extends Console\Command\Command
         $application = new DataExtractCommand('Database extract tool');
         foreach (static::$files as $path => $uploadParams) {
             $output->writeln(PHP_EOL.sprintf('Working on `%s#%s` file...', $path, $uploadParams['version']));
-            $application->run(new Console\Input\ArrayInput(['--file' => $path, '--password' => getenv('ZIPS_PW'), '--version' => $uploadParams['version']]), $output);
+            $application->run(new Console\Input\ArrayInput(['--file' => $path, '--password' => getenv('ZIPS_PW')]), $output);
 
             static::getDatabases($input->getOption('prefix'));
             $output->writeln(PHP_EOL.sprintf('Database `%s` created successfully', implode(PHP_EOL, static::$databases)));
+            dump($path);
             dump($uploadParams);
+            dump('--------------------------');
         }
 
     }

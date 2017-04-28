@@ -35,7 +35,7 @@ putenv('DEBUG='.$debug);
 // Load `.env` files environment-variables
 if (is_file(getenv('ROOT_DIR').'/.env')) {
     //(new \Symfony\Component\Dotenv\Dotenv())->load(getenv('ROOT_DIR').'/.env');
-    (new \Dotenv\Dotenv(getenv('ROOT_DIR').'/.env'))->load();
+    (new \Dotenv\Dotenv(getenv('ROOT_DIR')))->load();
 }
 
 // Require classes and functions

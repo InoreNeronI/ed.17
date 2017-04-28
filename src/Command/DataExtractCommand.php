@@ -16,8 +16,7 @@ class DataExtractCommand extends Console\Command\Command
         $this->setName('extract-db')
             ->setDescription('Extract encrypted zip and import `data.sql` and `data-structure.sql` to database')
             ->addOption('file', 'f', Console\Input\InputOption::VALUE_REQUIRED, 'Zip archive path')
-            ->addOption('password', 'p', Console\Input\InputOption::VALUE_REQUIRED, 'Zip archive password')
-            ->addOption('version', 'v', Console\Input\InputOption::VALUE_OPTIONAL, 'Zip archive version', static::$baseVersion);
+            ->addOption('password', 'p', Console\Input\InputOption::VALUE_REQUIRED, 'Zip archive password');
     }
 
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
@@ -25,26 +24,41 @@ class DataExtractCommand extends Console\Command\Command
         $zip = new \ZipArchive();
         $file = $input->getOption('file');
         $pw = $input->getOption('password');
-        $v = $input->getOption('version');
         $zipStatus = $zip->open($file);
-        $extractPath = sys_get_temp_dir();
+        $extractPath = sys_get_temp_dir().DIRECTORY_SEPARATOR.'extraction';
 
         if ($zipStatus === true) {
-            if ($zip->setPassword($pw) && !$zip->extractTo($extractPath)) {
+            if (!$zip->setPassword($pw) || !$zip->extractTo($extractPath)) {
                 throw new \Exception(sprintf('Error, extraction of `%s` failed (wrong `%s` password?).', $file, $pw));
             }
             $zip->close();
         } else {
             throw new \Exception(sprintf('Error, failed opening archive `%s` (code: %s).', @$zip->getStatusString(), $zipStatus));
         }
+        $structure = $extractPath.DIRECTORY_SEPARATOR.'data-structure.sql';
+        $data = $extractPath.DIRECTORY_SEPARATOR.'data.sql';
+        if (realpath($structure) && realpath($data)) {
+            static::parseSql($structure, $data, $file, $output);
+        } else {
+            $output->writeln(PHP_EOL.sprintf('Cannot parse files in `%s`', $extractPath));
+        }
+    }
 
-        static::sqlImport($extractPath.'/data-structure.sql');
-        static::sqlImport($extractPath.'/data.sql');
+    /**
+     * @param string $structure
+     * @param string $data
+     * @param string $file
+     * @param Console\Output\OutputInterface $output
+     */
+    private static function parseSql($structure, $data, $file, Console\Output\OutputInterface $output)
+    {
+        static::sqlImport($structure);
+        static::sqlImport($data);
 
         // @see https://github.com/doctrine/DoctrineBundle/blob/v1.5.2/Command/CreateDatabaseDoctrineCommand.php
         $dbTargetParams = \defDb::dbDist();
-        $dbTemporary = $dbTargetParams['dbname'].'_'.$v.'_'.md5($file);
-        $output->writeln(PHP_EOL.sprintf('Creating temporary database `%s`...', $dbTemporary).PHP_EOL);
+        $dbTemporary = $dbTargetParams['dbname'] . '_' . md5($file);
+        $output->writeln(PHP_EOL . sprintf('Creating temporary database `%s`...', $dbTemporary) . PHP_EOL);
         // Need to get rid of _every_ occurrence of dbname from connection configuration and we have already extracted all relevant info from url
         unset($dbTargetParams['dbname'], $dbTargetParams['path'], $dbTargetParams['url']);
         $connTemporary = DBAL\DriverManager::getConnection($dbTargetParams);
@@ -54,7 +68,7 @@ class DataExtractCommand extends Console\Command\Command
         $conn = DBAL\DriverManager::getConnection($dbTargetParams);
 
         // @see https://github.com/doctrine/dbal/blob/v2.5.12/lib/Doctrine/DBAL/Tools/Console/Command/ImportCommand.php
-        foreach ((array) static::$statements as $stmt) {
+        foreach ((array)static::$statements as $stmt) {
             if ($conn instanceof \Doctrine\DBAL\Driver\PDOConnection) {
                 // PDO Drivers
                 try {
@@ -67,7 +81,7 @@ class DataExtractCommand extends Console\Command\Command
                         $stmt->closeCursor();
                         ++$lines;
                     } while ($stmt->nextRowset());
-                    $output->write(sprintf('%d statements executed!', $lines).PHP_EOL);
+                    $output->write(sprintf('%d statements executed!', $lines) . PHP_EOL);
                 } catch (\PDOException $e) {
                     $output->writeln('Error!');
                     throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
