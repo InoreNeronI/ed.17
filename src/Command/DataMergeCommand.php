@@ -51,23 +51,42 @@ class DataMergeCommand extends Console\Command\Command
     }
 
     /**
-     * @param string $prefix
+     * @return DBAL\Connection
      */
-    private static function getDatabases($prefix)
+    private static function getConnection()
     {
-        $connection = DBAL\DriverManager::getConnection(\defDb::dbDist());
+        return DBAL\DriverManager::getConnection(\defDb::dbDist());
+    }
+
+    /**
+     * @param Console\Output\OutputInterface $output
+     * @param string|null $prefix
+     */
+    private static function clearDatabases(Console\Output\OutputInterface $output, $prefix = null)
+    {
+        static::getDatabases($prefix);
+        $output->writeln(PHP_EOL.sprintf('Purging %s databases...', count(static::$databases)));
+        foreach (static::$databases as $temporaryDb) {
+            static::getConnection()->getSchemaManager()->dropDatabase($temporaryDb);
+            $output->write(' ...`'.$temporaryDb.'`');
+        }
+    }
+
+    /**
+     * @param string|null $prefix
+     */
+    private static function getDatabases($prefix = null)
+    {
+        $connection = static::getConnection();
         if (empty($prefix)) {
             $prefix = $connection->getDatabase();
         }
 
-        /*if ($connection->getDatabasePlatform()->getName() === 'mysql') {
-            $connection->executeQuery('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;');*/
-            foreach ($connection->getSchemaManager()->listDatabases() as $database) {
-                if ($database !== $prefix && strpos($database, $prefix) === 0) {
-                    static::$databases[] = $database;
-                }
+        foreach ($connection->getSchemaManager()->listDatabases() as $database) {
+            if ($database !== $prefix && strpos($database, $prefix) === 0) {
+                static::$databases[] = $database;
             }
-        /*}*/
+        }
     }
 
     /**
@@ -77,6 +96,9 @@ class DataMergeCommand extends Console\Command\Command
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
         $path = $input->getOption('folder');
+        if ($path === 'clear') {
+            return static::clearDatabases($output);
+        }
         if (!realpath($path)) {
             throw new \Exception(sprintf('Cannot read `%s` path', $path));
         }
@@ -87,13 +109,13 @@ class DataMergeCommand extends Console\Command\Command
         $application = new DataExtractCommand('Database extract tool');
         foreach (static::$files as $path => $uploadParams) {
             $output->writeln(PHP_EOL.sprintf('Working on `%s#%s` file...', $path, $uploadParams['version']));
-            $application->run(new Console\Input\ArrayInput(['--file' => $path, '--password' => getenv('ZIPS_PW')]), $output);
+            $application->run(new Console\Input\ArrayInput(['--file' => $path, '--password' => getenv('ZIPS_PW'), '--version' => $uploadParams['version']]), $output);
 
             static::getDatabases($input->getOption('prefix'));
             $output->writeln(PHP_EOL.sprintf('Database `%s` created successfully', implode(PHP_EOL, static::$databases)));
-            dump($path);
+            /*dump($path);
             dump($uploadParams);
-            dump('--------------------------');
+            dump('--------------------------');*/
         }
 
     }

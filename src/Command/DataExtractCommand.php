@@ -7,7 +7,17 @@ use Symfony\Component\Console;
 
 class DataExtractCommand extends Console\Command\Command
 {
-    private static $baseVersion = '0.5';
+    private static $baseBuild = '0.5';
+
+    private static $buildColumnOptions = ['length' => 10, 'notnull' => true];
+
+    private static $versioningTablePrefix = 'erantzunak_';
+
+    private static $versioningTableIndexPrimary = ['build', 'code', 'id'];
+
+    private static $ignoreTablePrefix = 'edg051_testuak_';
+
+    private static $skipFailedStatementIfExceptionContainsAny = ['Base table or view already exists'];
 
     private static $statements = [];
 
@@ -16,7 +26,8 @@ class DataExtractCommand extends Console\Command\Command
         $this->setName('extract-db')
             ->setDescription('Extract encrypted zip and import `data.sql` and `data-structure.sql` to database')
             ->addOption('file', 'f', Console\Input\InputOption::VALUE_REQUIRED, 'Zip archive path')
-            ->addOption('password', 'p', Console\Input\InputOption::VALUE_REQUIRED, 'Zip archive password');
+            ->addOption('password', 'p', Console\Input\InputOption::VALUE_REQUIRED, 'Zip archive password')
+            ->addOption('version', 'v', Console\Input\InputOption::VALUE_OPTIONAL, 'Zip archive version', static::$baseBuild);
     }
 
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
@@ -24,8 +35,9 @@ class DataExtractCommand extends Console\Command\Command
         $zip = new \ZipArchive();
         $file = $input->getOption('file');
         $pw = $input->getOption('password');
+        $v = $input->getOption('version');
         $zipStatus = $zip->open($file);
-        $extractPath = sys_get_temp_dir().DIRECTORY_SEPARATOR.'extraction';
+        $extractPath = sys_get_temp_dir().DIRECTORY_SEPARATOR.'extracted';
 
         if ($zipStatus === true) {
             if (!$zip->setPassword($pw) || !$zip->extractTo($extractPath)) {
@@ -38,66 +50,193 @@ class DataExtractCommand extends Console\Command\Command
         $structure = $extractPath.DIRECTORY_SEPARATOR.'data-structure.sql';
         $data = $extractPath.DIRECTORY_SEPARATOR.'data.sql';
         if (realpath($structure) && realpath($data)) {
-            static::parseSql($structure, $data, $file, $output);
+            static::parseSql($structure, $data, md5_file($file), $v, $output);
         } else {
             $output->writeln(PHP_EOL.sprintf('Cannot parse files in `%s`', $extractPath));
         }
     }
 
     /**
+     * @param string $sql
+     * @return bool
+     */
+    private static function isCreateTableStatement($sql)
+    {
+        if (strpos($sql, 'CREATE TABLE `'.static::$versioningTablePrefix) !== false) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $sql
+     * @return bool
+     */
+    private static function ignoreCreateTableStatement($sql)
+    {
+        if (strpos($sql, 'CREATE TABLE `'.static::$ignoreTablePrefix) !== false) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $sql
+     * @return bool
+     */
+    private static function isInsertTableStatement($sql)
+    {
+        if (strpos($sql, 'INSERT INTO `'.static::$versioningTablePrefix) !== false) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $sql
+     * @return bool
+     */
+    private static function ignoreInsertTableStatement($sql)
+    {
+        if (strpos($sql, 'INSERT INTO `'.static::$ignoreTablePrefix) !== false) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param DBAL\Connection $cn
+     * @param string $sql
+     * @param string $msg
+     * @param string|null $table
+     * @return array|false
+     */
+    private static function diffInsertTableStatement(DBAL\Connection $cn, $sql, $msg, $table = null)
+    {
+        if ($table && strpos($msg, 'Duplicate entry') !== false && preg_match('/Duplicate entry \'(.+)\' for key \'PRIMARY\'/', $msg, $matches) !== false) {
+            $pk = explode('-', $matches[1], count(static::$versioningTableIndexPrimary));
+            $format = 'SELECT * FROM `'.$table.'` WHERE %s = \''.implode('\' AND %s = \'', $pk).'\'';
+            $result = $cn->fetchAssoc(call_user_func_array('sprintf', array_merge([$format], static::$versioningTableIndexPrimary)));
+            preg_match('/VALUES \((.+)\)/', $sql, $matches);
+            $newValues = array_map(function($_) { return trim($_, '\''); }, explode(',', $matches[1]));
+            if (count($diff = array_diff($newValues, array_values($result))) > 0) {
+                return $diff;
+            }
+
+            return false;
+        }
+    }
+
+    /**
+     * @param string $sql
+     * @param string $msg
+     * @return bool
+     */
+    private static function ignoreStatement($sql, $msg)
+    {
+        if (static::ignoreCreateTableStatement($sql) || static::ignoreInsertTableStatement($sql)) {
+
+            return true;
+        }
+        foreach (static::$skipFailedStatementIfExceptionContainsAny as $ignoredSqlExceptionContain) {
+            if (strpos($msg, $ignoredSqlExceptionContain) !== false) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @param string $structure
      * @param string $data
-     * @param string $file
+     * @param string $hash
+     * @param string $build
      * @param Console\Output\OutputInterface $output
      */
-    private static function parseSql($structure, $data, $file, Console\Output\OutputInterface $output)
+    private static function parseSql($structure, $data, $hash, $build, Console\Output\OutputInterface $output)
     {
         static::sqlImport($structure);
         static::sqlImport($data);
 
         // @see https://github.com/doctrine/DoctrineBundle/blob/v1.5.2/Command/CreateDatabaseDoctrineCommand.php
         $dbTargetParams = \defDb::dbDist();
-        $dbTemporary = $dbTargetParams['dbname'] . '_' . md5($file);
-        $output->writeln(PHP_EOL . sprintf('Creating temporary database `%s`...', $dbTemporary) . PHP_EOL);
-        // Need to get rid of _every_ occurrence of dbname from connection configuration and we have already extracted all relevant info from url
-        unset($dbTargetParams['dbname'], $dbTargetParams['path'], $dbTargetParams['url']);
         $connTemporary = DBAL\DriverManager::getConnection($dbTargetParams);
-        $connTemporary->getSchemaManager()->createDatabase($dbTemporary);
-        $dbTargetParams['dbname'] = $dbTemporary;
-        //$dbTargetParams['wrapperClass'] = 'Doctrine\DBAL\PDOConnection';
-        $conn = DBAL\DriverManager::getConnection($dbTargetParams);
+        $dbTemporary = $dbTargetParams['dbname'] . '_' . $hash . '_' . str_replace('.', '_', $build);
 
-        // @see https://github.com/doctrine/dbal/blob/v2.5.12/lib/Doctrine/DBAL/Tools/Console/Command/ImportCommand.php
-        foreach ((array)static::$statements as $stmt) {
-            if ($conn instanceof \Doctrine\DBAL\Driver\PDOConnection) {
-                // PDO Drivers
+        if (!in_array($dbTemporary, $connTemporary->getSchemaManager()->listDatabases())) {
+            $output->writeln(PHP_EOL . sprintf('Creating temporary database `%s`...', $dbTemporary) . PHP_EOL);
+            // Need to get rid of _every_ occurrence of dbname from connection configuration and we have already extracted all relevant info from url
+            unset($dbTargetParams['dbname'], $dbTargetParams['path'], $dbTargetParams['url']);
+            $connTemporary->getSchemaManager()->createDatabase($dbTemporary);
+        } else {
+            $output->writeln(PHP_EOL . sprintf('Using already created temporary database `%s`...', $dbTemporary) . PHP_EOL);
+        }
+
+        $dbTargetParams['dbname'] = $dbTemporary;
+        static::injectStatements($dbTargetParams, $build, $output);
+    }
+
+    /**
+     * @param array $dbParams
+     * @param string $build
+     * @param Console\Output\OutputInterface $output
+     */
+    private static function injectStatements($dbParams, $build, Console\Output\OutputInterface $output)
+    {
+        //$dbParams['wrapperClass'] = 'Doctrine\DBAL\Driver\PDOConnection';
+        $connection = DBAL\DriverManager::getConnection($dbParams);
+        $output->writeln(sprintf('Executing %s statements...', count(static::$statements)));
+        if ($connection->getDatabasePlatform()->getName() === 'mysql') {
+            $connection->executeQuery('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;');
+            $sm = $connection->getSchemaManager();
+            foreach (static::$statements as $sql) {
+                $hasItemName = preg_match('/`(\w+)`/', $sql, $matches) !== false;
+                $name = $hasItemName ? $matches[1] : null;
+                if (static::isInsertTableStatement($sql) && $hasItemName) {
+                    $sql = preg_replace('/^(INSERT INTO `' . static::$versioningTablePrefix . '\w+` VALUES \()/', '\\1\'' . $build . '\',', $sql, 1);
+                }
                 try {
-                    $lines = 0;
-                    $stmt = $conn->prepare($stmt);
+                    // @see https://github.com/doctrine/dbal/blob/v2.5.12/lib/Doctrine/DBAL/Tools/Console/Command/ImportCommand.php
+                    $stmt = $connection->prepare($sql);
                     $stmt->execute();
-                    do {
-                        // Required due to "MySQL has gone away!" issue
-                        $stmt->fetch();
-                        $stmt->closeCursor();
-                        ++$lines;
-                    } while ($stmt->nextRowset());
-                    $output->write(sprintf('%d statements executed!', $lines) . PHP_EOL);
-                } catch (\PDOException $e) {
-                    $output->writeln('Error!');
-                    throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
+                    $output->write(' ...ok!');
+                    $stmt->closeCursor();
+                    if (static::isCreateTableStatement($sql) && $hasItemName) {
+                        $columns = $sm->listTableColumns($name);
+                        $sm->dropTable($name);
+                        $buildColumn = new DBAL\Schema\Column('build', DBAL\Types\Type::getType('string'), array_merge(static::$buildColumnOptions, ['default' => $build]));
+                        $pkIndex = new DBAL\Schema\Index('pk', static::$versioningTableIndexPrimary, false, true);
+                        $sm->createTable(new DBAL\Schema\Table($name, array_merge([$buildColumn], $columns), [$pkIndex]));
+                    }
+                } catch (\Exception $e) {
+                    if (static::ignoreStatement($sql, $e->getMessage())) {
+                        $output->write(' ...exists');
+                        continue;
+                    } elseif (is_array($diff = static::diffInsertTableStatement($connection, $sql, $e->getMessage(), $name))) {
+                        $output->write(' ...weird');
+                        dump($diff);
+                        continue;
+                    } elseif (!$diff) {
+                        $output->write(' ...exists');
+                        continue;
+                    }
+                    //dump(strpos($sql, 'INSERT INTO `edg051_testuak_') === false);
+                    $output->write(' ...error!');
+                    dump($sql);
+                    dump($connection->getDatabase());
+                    dump($name);
+                    throw new \RuntimeException($e);
                 }
-            } else {
-                // Non-PDO Drivers (ie. OCI8 driver)
-                $stmt = $conn->prepare($stmt);
-                $rs = $stmt->execute();
-                if ($rs) {
-                    $output->write('OK! ');
-                } else {
-                    $error = $stmt->errorInfo();
-                    $output->writeln('Error!');
-                    throw new \RuntimeException($error[2], $error[0]);
-                }
-                $stmt->closeCursor();
             }
         }
     }
