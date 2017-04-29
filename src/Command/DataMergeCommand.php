@@ -45,7 +45,7 @@ class DataMergeCommand extends Console\Command\Command
                 'version' => trim($v),
                 'when' => $uploadParams[0].' '.str_replace('-', ':', $uploadParams[1]),
                 'where' => $uploadParams[2],
-                'who' => $uploadParams[3]
+                'who' => $uploadParams[3],
             ];
         }
     }
@@ -60,16 +60,18 @@ class DataMergeCommand extends Console\Command\Command
 
     /**
      * @param Console\Output\OutputInterface $output
-     * @param string|null $prefix
+     * @param string|null                    $prefix
      */
     private static function clearDatabases(Console\Output\OutputInterface $output, $prefix = null)
     {
         static::getDatabases($prefix);
         $output->writeln(PHP_EOL.sprintf('Purging %s databases...', count(static::$databases)));
+        $conn = static::getConnection();
         foreach (static::$databases as $temporaryDb) {
-            static::getConnection()->getSchemaManager()->dropDatabase($temporaryDb);
+            $conn->getSchemaManager()->dropDatabase($temporaryDb);
             $output->write(' ...`'.$temporaryDb.'`');
         }
+        $conn->close();
     }
 
     /**
@@ -77,20 +79,21 @@ class DataMergeCommand extends Console\Command\Command
      */
     private static function getDatabases($prefix = null)
     {
-        $connection = static::getConnection();
+        $conn = static::getConnection();
         if (empty($prefix)) {
-            $prefix = $connection->getDatabase();
+            $prefix = $conn->getDatabase();
         }
 
-        foreach ($connection->getSchemaManager()->listDatabases() as $database) {
+        foreach ($conn->getSchemaManager()->listDatabases() as $database) {
             if ($database !== $prefix && strpos($database, $prefix) === 0) {
                 static::$databases[] = $database;
             }
         }
+        $conn->close();
     }
 
     /**
-     * @param Console\Input\InputInterface $input
+     * @param Console\Input\InputInterface   $input
      * @param Console\Output\OutputInterface $output
      */
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
@@ -107,16 +110,21 @@ class DataMergeCommand extends Console\Command\Command
         $output->writeln(PHP_EOL.sprintf('...Ok! Found %s files', count(static::$files)));
 
         $application = new DataExtractCommand('Database extract tool');
+        $conn = static::getConnection();
         foreach (static::$files as $path => $uploadParams) {
+            $output->writeln(PHP_EOL.sprintf('##################################################################################################'));
             $output->writeln(PHP_EOL.sprintf('Working on `%s#%s` file...', $path, $uploadParams['version']));
             $application->run(new Console\Input\ArrayInput(['--file' => $path, '--password' => getenv('ZIPS_PW'), '--version' => $uploadParams['version']]), $output);
-
-            static::getDatabases($input->getOption('prefix'));
-            $output->writeln(PHP_EOL.sprintf('Database `%s` created successfully', implode(PHP_EOL, static::$databases)));
+            $lastCreatedDb = $conn->executeQuery('SELECT DISTINCT table_schema
+                                                                            FROM INFORMATION_SCHEMA.TABLES
+                                                                            WHERE table_schema NOT IN(\'information_schema\', \'mysql\', \'performance_schema\')
+                                                                            ORDER BY create_time DESC LIMIT 1')->fetch()['table_schema'];
+            $conn->close();
+            $output->writeln(PHP_EOL.sprintf('Database `%s` created successfully', $lastCreatedDb));
             /*dump($path);
             dump($uploadParams);
             dump('--------------------------');*/
         }
-
+        //static::getDatabases($input->getOption('prefix'));
     }
 }
