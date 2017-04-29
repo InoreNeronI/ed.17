@@ -92,10 +92,6 @@ class DataMergeCommand extends Console\Command\Command
         $conn->close();
     }
 
-    /**
-     * @param Console\Input\InputInterface   $input
-     * @param Console\Output\OutputInterface $output
-     */
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
         $path = $input->getOption('folder');
@@ -115,16 +111,13 @@ class DataMergeCommand extends Console\Command\Command
             $output->writeln(PHP_EOL.sprintf('##################################################################################################'));
             $output->writeln(PHP_EOL.sprintf('Working on `%s#%s` file...', $path, $uploadParams['version']));
             $application->run(new Console\Input\ArrayInput(['--file' => $path, '--password' => getenv('ZIPS_PW'), '--version' => $uploadParams['version']]), $output);
-            $lastCreatedDb = $conn->executeQuery('SELECT DISTINCT table_schema
+            /*$lastCreatedDb = $conn->executeQuery('SELECT DISTINCT table_schema
                                                                             FROM INFORMATION_SCHEMA.TABLES
                                                                             WHERE table_schema NOT IN(\'information_schema\', \'mysql\', \'performance_schema\')
                                                                             ORDER BY create_time DESC LIMIT 1')->fetch()['table_schema'];
-            $conn->close();
-            $output->writeln(PHP_EOL.sprintf('Database `%s` created successfully', $lastCreatedDb));
-            /*dump($path);
-            dump($uploadParams);
-            dump('--------------------------');*/
+            $output->writeln(PHP_EOL.sprintf('Database `%s` created successfully', $lastCreatedDb));*/
         }
+        $conn->close();
         //static::getDatabases($input->getOption('prefix'));
     }
 }

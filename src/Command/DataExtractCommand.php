@@ -9,15 +9,17 @@ class DataExtractCommand extends Console\Command\Command
 {
     private static $baseBuild = '0.5';
 
-    private static $buildColumnOptions = ['length' => 10, 'notnull' => true];
+    private static $commonColumnOptions = ['length' => 40, 'notnull' => true];
 
     private static $versioningTablePrefix = 'erantzunak_';
 
-    private static $versioningTableIndexPrimary = ['build', 'code', 'id'];
+    private static $versioningTableIndexPrimary = ['token', 'build', 'code', 'id'];
 
-    private static $ignoreTablePrefix = 'edg051_testuak_';
+    private static $ignoredTables = ['edg051_testuak_dbh_simul', 'erantzunak_dbh_simul'];
 
-    private static $skipFailedStatementIfExceptionContainsAny = ['Base table or view already exists'];
+    private static $ignoredTablesByPrefix = ['edg051_testuak_'];
+
+    private static $ignoredExceptionMessages = ['Base table or view already exists'];
 
     private static $statements = [];
 
@@ -85,8 +87,10 @@ class DataExtractCommand extends Console\Command\Command
      */
     private static function ignoreCreateTableStatement($sql)
     {
-        if (strpos($sql, 'CREATE TABLE `'.static::$ignoreTablePrefix) !== false) {
-            return true;
+        foreach (static::$ignoredTablesByPrefix as $ignoredTableByPrefix) {
+            if (strpos($sql, 'CREATE TABLE `'.$ignoredTableByPrefix) !== false) {
+                return true;
+            }
         }
 
         return false;
@@ -113,8 +117,10 @@ class DataExtractCommand extends Console\Command\Command
      */
     private static function ignoreInsertTableStatement($sql)
     {
-        if (strpos($sql, 'INSERT INTO `'.static::$ignoreTablePrefix) !== false) {
-            return true;
+        foreach (static::$ignoredTablesByPrefix as $ignoredTableByPrefix) {
+            if (strpos($sql, 'INSERT INTO `'.$ignoredTableByPrefix) !== false) {
+                return true;
+            }
         }
 
         return false;
@@ -136,7 +142,9 @@ class DataExtractCommand extends Console\Command\Command
             $result = $cn->fetchAssoc(call_user_func_array('sprintf', array_merge([$format], static::$versioningTableIndexPrimary)));
             preg_match('/VALUES \((.+)\)/', $sql, $matches);
             $newValues = array_map(function ($_) { return trim($_, '\''); }, explode(',', $matches[1]));
-            if (count($diff = array_diff($newValues, array_values($result))) > 0) {
+            if (count($diff = array_diff($newValues, array_values($result))) === 1 && date_create_from_format('Y-m-d H:i:s.u', array_pop($diff)) !== false) {
+                return false;
+            } elseif (count($diff) > 0) {
                 return $diff;
             }
 
@@ -145,17 +153,18 @@ class DataExtractCommand extends Console\Command\Command
     }
 
     /**
-     * @param string $sql
-     * @param string $msg
+     * @param string      $sql
+     * @param string      $msg
+     * @param string|null $table
      *
      * @return bool
      */
-    private static function ignoreStatement($sql, $msg)
+    private static function ignoreStatement($sql, $msg, $table = null)
     {
-        if (static::ignoreCreateTableStatement($sql) || static::ignoreInsertTableStatement($sql)) {
+        if (static::ignoreCreateTableStatement($sql) || static::ignoreInsertTableStatement($sql) || $table && in_array($table, static::$ignoredTables)) {
             return true;
         }
-        foreach (static::$skipFailedStatementIfExceptionContainsAny as $ignoredSqlExceptionContain) {
+        foreach (static::$ignoredExceptionMessages as $ignoredSqlExceptionContain) {
             if (strpos($msg, $ignoredSqlExceptionContain) !== false) {
                 return true;
             }
@@ -165,16 +174,16 @@ class DataExtractCommand extends Console\Command\Command
     }
 
     /**
-     * @param string                         $hash
+     * @param string                         $token
      * @param string                         $build
      * @param Console\Output\OutputInterface $output
      */
-    private static function create($hash, $build, Console\Output\OutputInterface $output)
+    private static function create($token, $build, Console\Output\OutputInterface $output)
     {
         // @see https://github.com/doctrine/DoctrineBundle/blob/v1.5.2/Command/CreateDatabaseDoctrineCommand.php
         $dbTargetParams = \defDb::dbDist();
-        $connTemporary = DBAL\DriverManager::getConnection($dbTargetParams);
-        $dbTemporary = $dbTargetParams['dbname'].'_'.$hash.'_'.str_replace('.', '_', $build);
+        /*$connTemporary = DBAL\DriverManager::getConnection($dbTargetParams);
+        $dbTemporary = $dbTargetParams['dbname'].'_'.$token.'_'.str_replace('.', '_', $build);
 
         if (!in_array($dbTemporary, $connTemporary->getSchemaManager()->listDatabases())) {
             $output->writeln(PHP_EOL.sprintf('Creating temporary database `%s`...', $dbTemporary).PHP_EOL);
@@ -186,18 +195,19 @@ class DataExtractCommand extends Console\Command\Command
         }
 
         $dbTargetParams['dbname'] = $dbTemporary;
-        $connTemporary->close();
+        $connTemporary->close();*/
         //$dbTargetParams['wrapperClass'] = 'Doctrine\DBAL\Driver\PDOConnection';
-        static::injectStatements($conn = DBAL\DriverManager::getConnection($dbTargetParams), $build, $output);
+        static::injectStatements($conn = DBAL\DriverManager::getConnection($dbTargetParams), $token, $build, $output);
         $conn->close();
     }
 
     /**
      * @param DBAL\Connection                $connection
+     * @param string                         $token
      * @param string                         $build
      * @param Console\Output\OutputInterface $output
      */
-    private static function injectStatements(DBAL\Connection $connection, $build, Console\Output\OutputInterface $output)
+    private static function injectStatements(DBAL\Connection $connection, $token, $build, Console\Output\OutputInterface $output)
     {
         $output->writeln(sprintf('Executing %s statements...', count(static::$statements)));
         if ($connection->getDatabasePlatform()->getName() === 'mysql') {
@@ -210,9 +220,9 @@ class DataExtractCommand extends Console\Command\Command
                 $hasItemName = preg_match('/`(\w+)`/', $sql, $matches) !== false;
                 $name = $hasItemName ? $matches[1] : null;
                 if (static::isInsertTableStatement($sql) && $hasItemName) {
-                    //$sql = preg_replace('/^(INSERT INTO `'.static::$versioningTablePrefix.'\w+` VALUES \()(\'\w+\',)(\'\w+\-\w+\')(.+)/', '\\1\''.$build.'\',\\2LOWER(\\3)\\4', $sql, 1);
+                    //$sql = preg_replace('/^(INSERT INTO `'.static::$versioningTablePrefix.'\w+` VALUES \()(\'\w+\',)(\'\w+\-\w+\')(.+)/', '\\1\''.$token.'\',\''.$build.'\',\\2LOWER(\\3)\\4', $sql, 1);
                     preg_match('/^(INSERT INTO `'.static::$versioningTablePrefix.'\w+` VALUES \()(\'\w+\',)(\'\w+-\w+\')(.+)/', $sql, $matches);
-                    $sql = $matches[1].'\''.$build.'\','.$matches[2].strtolower($matches[3]).$matches[4];
+                    $sql = $matches[1].'\''.$token.'\','.'\''.$build.'\','.$matches[2].strtolower($matches[3]).$matches[4];
                 }
                 try {
                     // @see https://github.com/doctrine/dbal/blob/v2.5.12/lib/Doctrine/DBAL/Tools/Console/Command/ImportCommand.php
@@ -222,13 +232,14 @@ class DataExtractCommand extends Console\Command\Command
                     if (static::isCreateTableStatement($sql) && $hasItemName) {
                         $columns = $sm->listTableColumns($name);
                         $sm->dropTable($name);
-                        $buildColumn = new DBAL\Schema\Column('build', DBAL\Types\Type::getType('string'), array_merge(static::$buildColumnOptions, ['default' => $build]));
+                        $tokenColumn = new DBAL\Schema\Column('token', DBAL\Types\Type::getType('string'), static::$commonColumnOptions);
+                        $buildColumn = new DBAL\Schema\Column('build', DBAL\Types\Type::getType('string'), static::$commonColumnOptions);
                         $pkIndex = new DBAL\Schema\Index('pk', static::$versioningTableIndexPrimary, false, true);
-                        $sm->createTable(new DBAL\Schema\Table($name, array_merge([$buildColumn], $columns), [$pkIndex]));
+                        $sm->createTable(new DBAL\Schema\Table($name, array_merge([$tokenColumn, $buildColumn], $columns), [$pkIndex]));
                     }
                     ++$totalInjected;
                 } catch (\Exception $e) {
-                    if (static::ignoreStatement($sql, $e->getMessage())) {
+                    if (static::ignoreStatement($sql, $e->getMessage(), $name)) {
                         ++$totalIgnored;
                         continue;
                     } elseif (is_array($diff = static::diffInsertTableStatement($connection, $sql, $e->getMessage(), $name))) {
