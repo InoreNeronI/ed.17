@@ -35,7 +35,8 @@ class DataMergeCommand extends Console\Command\Command
         $iterator = new \RecursiveIteratorIterator($dir);
         $iterator->setFlags(\FilesystemIterator::SKIP_DOTS);
         $iterator->setFlags(\RecursiveIteratorIterator::SELF_FIRST);
-        $files = new \RegexIterator($iterator, $pattern, \RegexIterator::GET_MATCH);
+        // See: http://stackoverflow.com/a/15055295
+        $files = array_reverse(iterator_to_array(new \RegexIterator($iterator, $pattern, \RegexIterator::GET_MATCH)), true);
         foreach ($files as $key => $file) {
             $parent = dirname($key);
             $vPath = $parent.DIRECTORY_SEPARATOR.'version';
@@ -65,13 +66,16 @@ class DataMergeCommand extends Console\Command\Command
     private static function clearDatabases(Console\Output\OutputInterface $output, $prefix = null)
     {
         static::getDatabases($prefix);
-        $output->writeln(PHP_EOL.sprintf('Purging %s databases...', count(static::$databases)));
-        $conn = static::getConnection();
-        foreach (static::$databases as $temporaryDb) {
-            $conn->getSchemaManager()->dropDatabase($temporaryDb);
-            $output->write(' ...`'.$temporaryDb.'`');
+        $total = count(static::$databases);
+        if ($total > 0) {
+            $output->writeln(PHP_EOL.sprintf('Purging %s databases...', $total));
+            $conn = static::getConnection();
+            foreach (static::$databases as $temporaryDb) {
+                $conn->getSchemaManager()->dropDatabase($temporaryDb);
+                $output->write(' ...`'.$temporaryDb.'`');
+            }
+            $conn->close();
         }
-        $conn->close();
     }
 
     /**
@@ -94,6 +98,8 @@ class DataMergeCommand extends Console\Command\Command
 
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
+        $startTime = time();
+        $output->writeln(PHP_EOL.sprintf('Started at %s...', date('Y-m-d H:i:s', $startTime)));
         $path = $input->getOption('folder');
         if ($path === 'clear') {
             return static::clearDatabases($output);
@@ -118,6 +124,8 @@ class DataMergeCommand extends Console\Command\Command
             $output->writeln(PHP_EOL.sprintf('Database `%s` created successfully', $lastCreatedDb));*/
         }
         $conn->close();
+        $endTime = time();
+        $output->writeln(PHP_EOL.sprintf('Ended at %s, takes %s hours', date('Y-m-d H:i:s', $endTime), ($endTime - $startTime) / 60 / 60));
         //static::getDatabases($input->getOption('prefix'));
     }
 }

@@ -32,12 +32,6 @@ class DataExtractCommand extends Console\Command\Command
             ->addOption('version', 'v', Console\Input\InputOption::VALUE_OPTIONAL, 'Zip archive version', static::$baseBuild);
     }
 
-    /**
-     * @param Console\Input\InputInterface   $input
-     * @param Console\Output\OutputInterface $output
-     *
-     * @throws \Exception
-     */
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
         $zip = new \ZipArchive();
@@ -52,17 +46,20 @@ class DataExtractCommand extends Console\Command\Command
                 throw new \Exception(sprintf('Error, extraction of `%s` failed (wrong `%s` password?).', $file, $pw));
             }
             $zip->close();
+            $structure = $extractPath.DIRECTORY_SEPARATOR.'data-structure.sql';
+            $data = $extractPath.DIRECTORY_SEPARATOR.'data.sql';
+            if (realpath($structure) && realpath($data)) {
+                static::$statements = [];
+                static::sqlImport($structure);
+                static::sqlImport($data);
+                static::create(md5_file($file), $v, $output);
+                unlink($structure);
+                unlink($data);
+            } else {
+                $output->writeln(PHP_EOL.sprintf('Error, cannot parse files in `%s` (file: `%s`)', $extractPath, $file));
+            }
         } else {
-            throw new \Exception(sprintf('Error, failed opening archive `%s` (code: %s).', @$zip->getStatusString(), $zipStatus));
-        }
-        $structure = $extractPath.DIRECTORY_SEPARATOR.'data-structure.sql';
-        $data = $extractPath.DIRECTORY_SEPARATOR.'data.sql';
-        if (realpath($structure) && realpath($data)) {
-            static::sqlImport($structure);
-            static::sqlImport($data);
-            static::create(md5_file($file), $v, $output);
-        } else {
-            $output->writeln(PHP_EOL.sprintf('Cannot parse files in `%s`', $extractPath));
+            $output->writeln(PHP_EOL.sprintf('Error %s opening archive `%s`', $zipStatus, $file));
         }
     }
 
@@ -85,42 +82,10 @@ class DataExtractCommand extends Console\Command\Command
      *
      * @return bool
      */
-    private static function ignoreCreateTableStatement($sql)
-    {
-        foreach (static::$ignoredTablesByPrefix as $ignoredTableByPrefix) {
-            if (strpos($sql, 'CREATE TABLE `'.$ignoredTableByPrefix) !== false) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param string $sql
-     *
-     * @return bool
-     */
     private static function isInsertTableStatement($sql)
     {
         if (strpos($sql, 'INSERT INTO `'.static::$versioningTablePrefix) !== false) {
             return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param string $sql
-     *
-     * @return bool
-     */
-    private static function ignoreInsertTableStatement($sql)
-    {
-        foreach (static::$ignoredTablesByPrefix as $ignoredTableByPrefix) {
-            if (strpos($sql, 'INSERT INTO `'.$ignoredTableByPrefix) !== false) {
-                return true;
-            }
         }
 
         return false;
@@ -161,8 +126,13 @@ class DataExtractCommand extends Console\Command\Command
      */
     private static function ignoreStatement($sql, $msg, $table = null)
     {
-        if (static::ignoreCreateTableStatement($sql) || static::ignoreInsertTableStatement($sql) || $table && in_array($table, static::$ignoredTables)) {
+        if ($table && in_array($table, static::$ignoredTables)) {
             return true;
+        }
+        foreach (static::$ignoredTablesByPrefix as $ignoredTableByPrefix) {
+            if (strpos($sql, 'CREATE TABLE `'.$ignoredTableByPrefix) !== false || strpos($sql, 'INSERT INTO `'.$ignoredTableByPrefix) !== false) {
+                return true;
+            }
         }
         foreach (static::$ignoredExceptionMessages as $ignoredSqlExceptionContain) {
             if (strpos($msg, $ignoredSqlExceptionContain) !== false) {
@@ -195,8 +165,8 @@ class DataExtractCommand extends Console\Command\Command
         }
 
         $dbTargetParams['dbname'] = $dbTemporary;
-        $connTemporary->close();*/
-        //$dbTargetParams['wrapperClass'] = 'Doctrine\DBAL\Driver\PDOConnection';
+        $connTemporary->close();
+        //$dbTargetParams['wrapperClass'] = 'Doctrine\DBAL\Driver\PDOConnection';*/
         static::injectStatements($conn = DBAL\DriverManager::getConnection($dbTargetParams), $token, $build, $output);
         $conn->close();
     }
@@ -243,14 +213,8 @@ class DataExtractCommand extends Console\Command\Command
                         ++$totalIgnored;
                         continue;
                     } elseif (is_array($diff = static::diffInsertTableStatement($connection, $sql, $e->getMessage(), $name))) {
-                        if (count($diff) > 1) {
-                            dump($diff);
-                            dump($connection->getDatabase());
-                            dump($name);
-                            ++$totalWeird;
-                        } else {
-                            ++$totalIgnored;
-                        }
+                        $output->writeln(PHP_EOL.sprintf('Something weird found in `%s.%s`, new data-diff: %s, sql: %s', $connection->getDatabase(), $name, print_r($diff, true), $sql));
+                        ++$totalWeird;
                         continue;
                     } elseif (!$diff) {
                         ++$totalIgnored;
