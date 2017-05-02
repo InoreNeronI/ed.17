@@ -125,7 +125,7 @@ class DataMergeCommand extends Console\Command\Command
         //$conn->close();
         $endTime = time();
         $output->writeln(sprintf('Ended at %s, %s hours elapsed.', date('Y-m-d H:i:s', $endTime), round(($endTime - $startTime) / 60 / 60, 2)));
-        $output->writeln("\t".sprintf('%s injects, %s skips, %s updates & %s errors', DataExtractCommand::$totalInjected, DataExtractCommand::$totalIgnored, DataExtractCommand::$totalWeird, DataExtractCommand::$totalErrors).PHP_EOL);
+        $output->writeln("\t".sprintf('%s inserts, %s creates, %s skips, %s updates & %s errors', DataExtractCommand::$totalInserted, DataExtractCommand::$totalCreated, DataExtractCommand::$totalIgnored, DataExtractCommand::$totalWeird, DataExtractCommand::$totalErrors).PHP_EOL);
         //static::getDatabases($input->getOption('prefix'));
     }
 }
