@@ -23,6 +23,7 @@
     "andig/dbcopy": "@dev",
     "incenteev/composer-parameter-handler": "@stable",
     "neronmoon/scriptsdev": "@stable",
+    "nikic/php-parser": "~1.4",
     "sensiolabs/security-checker": "@stable",
     "symfony/finder": "@stable",
     "symfony/var-dumper": "@stable"

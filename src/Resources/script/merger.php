@@ -5,7 +5,7 @@ if ($argc !== 2) {
     throw new Exception('Please, provide path to the folder containing archives');
 }
 
-ini_set('memory_limit', '2G');
+//ini_set('memory_limit', '2G');
 require 'loader/autoload.php';
 
 $application = new \Command\DataMergeCommand('Database merge tool');

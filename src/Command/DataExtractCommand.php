@@ -147,10 +147,10 @@ class DataExtractCommand extends Console\Command\Command
             $format = 'SELECT * FROM `'.$table.'` WHERE %s = \''.implode('\' AND %s = \'', $pk).'\'';
             $result = $cn->fetchAssoc(call_user_func_array('sprintf', array_merge([$format], static::$versioningTablePrimaryIndex)));
             $diff = array_diff($values, array_values($result));
-            $hasTimestamp = isset($diff[10]) && date_create_from_format('Y-m-d H:i:s.u', array_pop($diff)) !== false;
-            if (count($diff) === 1 && $hasTimestamp) {
+            $popsTimestamp = isset($diff[10]) && date_create_from_format('Y-m-d H:i:s.u', array_pop($diff)) !== false;
+            if (count($diff) === 1 && $popsTimestamp) {
                 return false;
-            } elseif (count($diff) === 2 && isset($diff[3]) && $hasTimestamp) {
+            } elseif (count($diff) === 2 && isset($diff[3]) && $popsTimestamp) {
                 return false;
             } elseif (count($diff) > 0) {
                 return ['inserts' => static::insertDupe($cn, $table, $result[$field], $values, array_flip($result)), 'diff' => print_r($diff, true)];
