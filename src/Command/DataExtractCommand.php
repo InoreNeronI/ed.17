@@ -11,17 +11,26 @@ class DataExtractCommand extends Console\Command\Command
 
     private static $commonColumnOptions = ['length' => 40, 'notnull' => true];
 
-    private static $versioningTablePrefix = 'erantzunak_';
-
-    private static $versioningTableIndexPrimary = ['token', 'build', 'code', 'id'];
-
-    private static $ignoredTables = ['edg051_testuak_dbh_simul', 'erantzunak_dbh_simul'];
-
-    private static $ignoredTablesByPrefix = ['edg051_testuak_'];
-
     private static $ignoredExceptionMessages = ['Base table or view already exists'];
 
+    private static $ignoredTables = ['edg051_testuak_dbh_simul', 'erantzunak_dbh_simul']; /*
+
+    private static $ignoredTableSqlConditionFields = ['build', 'code', 'id', 'time'];
+    private static $ignoredTableSqlConditionValues = [' <> null', ' <> null', ' <> "ed17-10030"', ' <> "2017-02-04 19:37:43.832881"'];*/
+
+    private static $ignoredTablePrefixes = ['05_', '10_', '20_', '30_'];
+
     private static $statements = [];
+    public static $totalInjected = 0;
+    public static $totalIgnored = 0;
+    public static $totalWeird = 0;
+    public static $totalErrors = 0;
+
+    private static $versioningTableNamePrefix = 'edg051_testuak_';
+
+    private static $versioningTablePrefix = 'erantzunak_';
+
+    private static $versioningTablePrimaryIndex = ['build', 'code', 'id'];
 
     protected function configure()
     {
@@ -40,7 +49,6 @@ class DataExtractCommand extends Console\Command\Command
         $v = $input->getOption('version');
         $zipStatus = $zip->open($file);
         $extractPath = sys_get_temp_dir().DIRECTORY_SEPARATOR.'extracted';
-
         if ($zipStatus === true) {
             if (!$zip->setPassword($pw) || !$zip->extractTo($extractPath)) {
                 throw new \Exception(sprintf('Error, extraction of `%s` failed (wrong `%s` password?).', $file, $pw));
@@ -56,7 +64,9 @@ class DataExtractCommand extends Console\Command\Command
                 unlink($structure);
                 unlink($data);
             } else {
-                $output->writeln(PHP_EOL.sprintf('Error, cannot parse files in `%s` (file: `%s`)', $extractPath, $file));
+                $output->writeln(PHP_EOL.sprintf('Error, cannot parse files in `%s` (file: `%s`), going deeper', $extractPath, $file));
+                $application = new DataMergeCommand('Database merge tool');
+                $application->run(new Console\Input\ArrayInput(['--folder' => $extractPath]), $output);
             }
         } else {
             $output->writeln(PHP_EOL.sprintf('Error %s opening archive `%s`', $zipStatus, $file));
@@ -68,9 +78,9 @@ class DataExtractCommand extends Console\Command\Command
      *
      * @return bool
      */
-    private static function isCreateTableStatement($sql)
+    private static function isVersioningCreateStatement($sql)
     {
-        if (strpos($sql, 'CREATE TABLE `'.static::$versioningTablePrefix) !== false) {
+        if (strpos($sql, 'CREATE TABLE `'.static::$versioningTablePrefix) === 0) {
             return true;
         }
 
@@ -82,9 +92,9 @@ class DataExtractCommand extends Console\Command\Command
      *
      * @return bool
      */
-    private static function isInsertTableStatement($sql)
+    private static function isVersioningInsertStatement($sql)
     {
-        if (strpos($sql, 'INSERT INTO `'.static::$versioningTablePrefix) !== false) {
+        if (strpos($sql, 'INSERT INTO `'.static::$versioningTablePrefix) === 0) {
             return true;
         }
 
@@ -93,24 +103,57 @@ class DataExtractCommand extends Console\Command\Command
 
     /**
      * @param DBAL\Connection $cn
+     * @param string          $table
+     * @param string          $id
+     * @param array           $values
+     * @param array           $keys
+     * @param string          $field
+     *
+     * @return int
+     *
+     * @throws \Exception
+     */
+    private static function insertDupe(DBAL\Connection $cn, $table, $id, $values, $keys, $field = 'id')
+    {
+        $key = isset($values[$field]) ? $field : isset($keys[$field], $values[$keys[$field]]) ? $keys[$field] : null;
+        $values[$key] = $id.chr(rand(97, 122));
+        try {
+            return $cn->insert($table, $values);
+        } catch (\Exception $e) {
+            if (preg_match('/Duplicate entry \'(.+)\' for key \'PRIMARY\'/', $e->getMessage(), $matches) !== false) {
+                return static::insertDupe($cn, $table, $id, $values, $keys);
+            }
+            throw new \Exception($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * @param DBAL\Connection $cn
      * @param string          $sql
      * @param string          $msg
-     * @param string|null     $table
+     * @param string          $table
+     * @param string          $field
      *
      * @return array|false
      */
-    private static function diffInsertTableStatement(DBAL\Connection $cn, $sql, $msg, $table = null)
+    private static function diffInsertTableStatement(DBAL\Connection $cn, $sql, $msg, $table, $field = 'id')
     {
         if ($table && strpos($msg, 'Duplicate entry') !== false && preg_match('/Duplicate entry \'(.+)\' for key \'PRIMARY\'/', $msg, $matches) !== false) {
-            $pk = explode('-', $matches[1], count(static::$versioningTableIndexPrimary));
-            $format = 'SELECT * FROM `'.$table.'` WHERE %s = \''.implode('\' AND %s = \'', $pk).'\'';
-            $result = $cn->fetchAssoc(call_user_func_array('sprintf', array_merge([$format], static::$versioningTableIndexPrimary)));
+            $pk = explode('-', $matches[1], count(static::$versioningTablePrimaryIndex));
             preg_match('/VALUES \((.+)\)/', $sql, $matches);
-            $newValues = array_map(function ($_) { return trim($_, '\''); }, explode(',', $matches[1]));
-            if (count($diff = array_diff($newValues, array_values($result))) === 1 && date_create_from_format('Y-m-d H:i:s.u', array_pop($diff)) !== false) {
+            $values = array_map(function ($_) {
+                return trim($_, '\'');
+            }, explode(',', $matches[1]));
+            $format = 'SELECT * FROM `'.$table.'` WHERE %s = \''.implode('\' AND %s = \'', $pk).'\'';
+            $result = $cn->fetchAssoc(call_user_func_array('sprintf', array_merge([$format], static::$versioningTablePrimaryIndex)));
+            $diff = array_diff($values, array_values($result));
+            $hasTimestamp = isset($diff[10]) && date_create_from_format('Y-m-d H:i:s.u', array_pop($diff)) !== false;
+            if (count($diff) === 1 && $hasTimestamp) {
+                return false;
+            } elseif (count($diff) === 2 && isset($diff[3]) && $hasTimestamp) {
                 return false;
             } elseif (count($diff) > 0) {
-                return $diff;
+                return ['inserts' => static::insertDupe($cn, $table, $result[$field], $values, array_flip($result)), 'diff' => print_r($diff, true)];
             }
 
             return false;
@@ -124,13 +167,13 @@ class DataExtractCommand extends Console\Command\Command
      *
      * @return bool
      */
-    private static function ignoreStatement($sql, $msg, $table = null)
+    private static function isSkipableStatement($sql, $msg, $table = null)
     {
         if ($table && in_array($table, static::$ignoredTables)) {
             return true;
         }
-        foreach (static::$ignoredTablesByPrefix as $ignoredTableByPrefix) {
-            if (strpos($sql, 'CREATE TABLE `'.$ignoredTableByPrefix) !== false || strpos($sql, 'INSERT INTO `'.$ignoredTableByPrefix) !== false) {
+        foreach (static::$ignoredTablePrefixes as $ignoredTablePrefix) {
+            if (strpos($sql, 'CREATE TABLE `'.$ignoredTablePrefix) === 0 || strpos($sql, 'INSERT INTO `'.$ignoredTablePrefix) === 0) {
                 return true;
             }
         }
@@ -179,56 +222,61 @@ class DataExtractCommand extends Console\Command\Command
      */
     private static function injectStatements(DBAL\Connection $connection, $token, $build, Console\Output\OutputInterface $output)
     {
-        $output->writeln(sprintf('Executing %s statements...', count(static::$statements)));
+        $output->write(PHP_EOL.sprintf('Executing %s statements...', count(static::$statements))."\t");
         if ($connection->getDatabasePlatform()->getName() === 'mysql') {
             $connection->executeQuery('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;');
             $sm = $connection->getSchemaManager();
-            $totalInjected = 0;
-            $totalIgnored = 0;
-            $totalWeird = 0;
+            $injected = 0;
+            $ignored = 0;
+            $weird = 0;
+            $errors = 0;
             foreach (static::$statements as $sql) {
                 $hasItemName = preg_match('/`(\w+)`/', $sql, $matches) !== false;
                 $name = $hasItemName ? $matches[1] : null;
-                if (static::isInsertTableStatement($sql) && $hasItemName) {
-                    //$sql = preg_replace('/^(INSERT INTO `'.static::$versioningTablePrefix.'\w+` VALUES \()(\'\w+\',)(\'\w+\-\w+\')(.+)/', '\\1\''.$token.'\',\''.$build.'\',\\2LOWER(\\3)\\4', $sql, 1);
-                    preg_match('/^(INSERT INTO `'.static::$versioningTablePrefix.'\w+` VALUES \()(\'\w+\',)(\'\w+-\w+\')(.+)/', $sql, $matches);
-                    $sql = $matches[1].'\''.$token.'\','.'\''.$build.'\','.$matches[2].strtolower($matches[3]).$matches[4];
-                }
                 try {
+                    if (strpos($name, static::$versioningTableNamePrefix) === 0) {
+                        $oldName = $name;
+                        $name = str_replace(static::$versioningTableNamePrefix, str_replace('.', '', $build, $count = 1).'_', $oldName, $count);
+                        $sql = str_replace($oldName, $name, $sql, $count);
+                    } elseif (static::isVersioningInsertStatement($sql)) {
+                        //$sql = preg_replace('/^(INSERT INTO `'.static::$versioningTablePrefix.'\w+` VALUES \()(\'\w+\',)(\'\w+\-\w+\')(.+)/', '\\1\''.$token.'\',\''.$build.'\',\\2LOWER(\\3)\\4', $sql, 1);
+                        preg_match('/^(INSERT INTO `'.static::$versioningTablePrefix.'\w+` VALUES \()(\'\w+\',)(\'\w+-\w+\')(.+)/', $sql, $matches);
+                        $sql = $matches[1].'\''.$build.'\','.$matches[2].strtolower($matches[3]).',\''.$token.'\''.$matches[4];
+                    }
                     // @see https://github.com/doctrine/dbal/blob/v2.5.12/lib/Doctrine/DBAL/Tools/Console/Command/ImportCommand.php
                     $stmt = $connection->prepare($sql);
                     $stmt->execute();
                     $stmt->closeCursor();
-                    if (static::isCreateTableStatement($sql) && $hasItemName) {
-                        $columns = $sm->listTableColumns($name);
-                        $sm->dropTable($name);
+                    if (static::isVersioningCreateStatement($sql)) {
                         $tokenColumn = new DBAL\Schema\Column('token', DBAL\Types\Type::getType('string'), static::$commonColumnOptions);
                         $buildColumn = new DBAL\Schema\Column('build', DBAL\Types\Type::getType('string'), static::$commonColumnOptions);
-                        $pkIndex = new DBAL\Schema\Index('pk', static::$versioningTableIndexPrimary, false, true);
+                        $columns = $sm->listTableColumns($name);
+                        $pkIndex = new DBAL\Schema\Index('pk', static::$versioningTablePrimaryIndex, false, true);
+                        $sm->dropTable($name);
                         $sm->createTable(new DBAL\Schema\Table($name, array_merge([$tokenColumn, $buildColumn], $columns), [$pkIndex]));
                     }
-                    ++$totalInjected;
+                    ++$injected;
+                    ++static::$totalInjected;
                 } catch (\Exception $e) {
-                    if (static::ignoreStatement($sql, $e->getMessage(), $name)) {
-                        ++$totalIgnored;
-                        continue;
+                    if (static::isSkipableStatement($sql, $e->getMessage(), $name)) {
+                        ++$ignored;
+                        ++static::$totalIgnored;
                     } elseif (is_array($diff = static::diffInsertTableStatement($connection, $sql, $e->getMessage(), $name))) {
-                        $output->writeln(PHP_EOL.sprintf('Something weird found in `%s.%s`, new data-diff: %s, sql: %s', $connection->getDatabase(), $name, print_r($diff, true), $sql));
-                        ++$totalWeird;
-                        continue;
+                        $output->writeln(PHP_EOL.sprintf('Something weird found in `%s.%s`%sNew data-diff: %s%sInserts: %s%sLast ID: %s%sSQL: %s%s', $connection->getDatabase(), $name, PHP_EOL, $diff['diff'], PHP_EOL, $diff['inserts'], PHP_EOL, $connection->lastInsertId(), PHP_EOL, $sql, PHP_EOL."\t"));
+                        ++$weird;
+                        ++static::$totalWeird;
                     } elseif (!$diff) {
-                        ++$totalIgnored;
-                        continue;
+                        ++$ignored;
+                        ++static::$totalIgnored;
+                    } else {
+                        $output->writeln(PHP_EOL.sprintf('Error found in `%s.%s`%sSQL: %s%sMessage: %s%s', $connection->getDatabase(), $name, PHP_EOL, substr($sql, 0, 450), PHP_EOL, $e->getMessage(), PHP_EOL."\t"));
+                        ++$errors;
+                        ++static::$totalErrors;
                     }
-                    //dump(strpos($sql, 'INSERT INTO `edg051_testuak_') === false);
-                    $output->write(' ...error!');
-                    dump($sql);
-                    dump($connection->getDatabase());
-                    dump($name);
-                    throw new \RuntimeException($e);
+                    continue;
                 }
             }
-            $output->writeln(PHP_EOL.sprintf('%s injects, %s skips and %s updates', $totalInjected, $totalIgnored, $totalWeird));
+            $output->write(sprintf('%s/%s injects, %s/%s skips, %s/%s updates & %s/%s errors', $injected, static::$totalInjected, $ignored, static::$totalIgnored, $weird, static::$totalWeird, $errors, static::$totalErrors).PHP_EOL);
         }
     }
 
@@ -246,21 +294,17 @@ class DataExtractCommand extends Console\Command\Command
 
         while (!feof($file)) {
             $row = fgets($file);
-
             // 1. ignore empty string, drops, locks and comment row
             if (trim($row) === '' || strpos($row, 'DROP TABLE') !== false || strpos($row, 'LOCK TABLE') !== false || preg_match('/^\s*(#|--\s|\/\*)/sUi', $row)) {
                 continue;
             }
-
             // 2. clear comments
             $row = trim(static::clearSQL($row, $isMultiLineComment));
-
             // 3. parse delimiter row
             if (preg_match('/^DELIMITER\s+[^ ]+/sUi', $row)) {
                 $delimiter = preg_replace('/^DELIMITER\s+([^ ]+)$/sUi', '$1', $row);
                 continue;
             }
-
             // 4. separate sql queries by delimiter
             $offset = 0;
             while (strpos($row, $delimiter, $offset) !== false) {

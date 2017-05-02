@@ -9,10 +9,8 @@ use Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator;
 class DataMergeCommand extends Console\Command\Command
 {
     private static $baseVersion = '0.5';
-
-    private static $files = [];
-
     private static $databases = [];
+    private static $files = [];
 
     protected function configure()
     {
@@ -112,10 +110,10 @@ class DataMergeCommand extends Console\Command\Command
         $output->writeln(PHP_EOL.sprintf('...Ok! Found %s files', count(static::$files)));
 
         $application = new DataExtractCommand('Database extract tool');
-        $conn = static::getConnection();
+        //$conn = static::getConnection();
         foreach (static::$files as $path => $uploadParams) {
-            $output->writeln(PHP_EOL.sprintf('##################################################################################################'));
-            $output->writeln(PHP_EOL.sprintf('Working on `%s#%s` file...', $path, $uploadParams['version']));
+            $output->writeln(PHP_EOL.sprintf('##################################################################################################################'));
+            $output->writeln(sprintf('Working on `%s#%s` file...', $path, $uploadParams['version']));
             $application->run(new Console\Input\ArrayInput(['--file' => $path, '--password' => getenv('ZIPS_PW'), '--version' => $uploadParams['version']]), $output);
             /*$lastCreatedDb = $conn->executeQuery('SELECT DISTINCT table_schema
                                                                             FROM INFORMATION_SCHEMA.TABLES
@@ -123,9 +121,11 @@ class DataMergeCommand extends Console\Command\Command
                                                                             ORDER BY create_time DESC LIMIT 1')->fetch()['table_schema'];
             $output->writeln(PHP_EOL.sprintf('Database `%s` created successfully', $lastCreatedDb));*/
         }
-        $conn->close();
+        $output->writeln(PHP_EOL.sprintf('##################################################################################################################'));
+        //$conn->close();
         $endTime = time();
-        $output->writeln(PHP_EOL.sprintf('Ended at %s, takes %s hours', date('Y-m-d H:i:s', $endTime), ($endTime - $startTime) / 60 / 60));
+        $output->writeln(sprintf('Ended at %s, %s hours elapsed.', date('Y-m-d H:i:s', $endTime), round(($endTime - $startTime) / 60 / 60, 2)));
+        $output->writeln("\t".sprintf('%s injects, %s skips, %s updates & %s errors', DataExtractCommand::$totalInjected, DataExtractCommand::$totalIgnored, DataExtractCommand::$totalWeird, DataExtractCommand::$totalErrors).PHP_EOL);
         //static::getDatabases($input->getOption('prefix'));
     }
 }
