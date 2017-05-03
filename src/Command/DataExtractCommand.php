@@ -13,7 +13,7 @@ class DataExtractCommand extends Console\Command\Command
 
     private static $ignoredTables = ['edg051_testuak_dbh_simul', 'erantzunak_dbh_simul'];
 
-    private static $ignoredTablePrefixes = ['05_', '10_', '20_', '30_'];
+    private static $ignoredTablePrefixes = ['05_', '10_', '20_', '30_', 'ikasleak'];
 
     private static $pregDupe = '/Duplicate entry \'(.+)\' for key \'PRIMARY\'/';
     private static $statements = [];
@@ -136,12 +136,12 @@ class DataExtractCommand extends Console\Command\Command
      */
     private static function diffInsertTableStatement(DBAL\Connection $cn, $sql, $msg, $table, $field = 'id')
     {
-        if (preg_match(static::$pregDupe, $msg, $matches)) {
-            $pk = explode('-', $matches[1], count(static::$versioningTablePrimaryIndex));
-            preg_match('/VALUES \((.+)\)/', $sql, $matches);
+        if (preg_match(static::$pregDupe, $msg, $_matches)) {
+            $pk = explode('-', $_matches[1], count(static::$versioningTablePrimaryIndex));
+            preg_match('/VALUES \((.+)\)/', $sql, $_matches);
             $values = array_map(function ($_) {
                 return trim($_, 'NULL');
-            }, str_getcsv($matches[1], ',', '\''));
+            }, str_getcsv($_matches[1], ',', '\''));
 
             $format = 'SELECT * FROM `'.$table.'` WHERE `%s` = \''.implode('\' AND `%s` = \'', $pk).'\'';
             $result = $cn->fetchAssoc(call_user_func_array('sprintf', array_merge([$format], static::$versioningTablePrimaryIndex)));
@@ -174,11 +174,7 @@ class DataExtractCommand extends Console\Command\Command
      */
     private static function isSkipableStatement($sql, $msg, $table = null)
     {
-        /*if ($table && strpos($msg, '1136 Column count') !== false) {
-            static::mergeColumns($cn, $table)
-                        dump($e->getMessage());
-                        dump($diff);
-        } else*/if ($table && in_array($table, static::$ignoredTables)) {
+        if ($table && in_array($table, static::$ignoredTables)) {
             return true;
         }
         foreach (static::$ignoredTablePrefixes as $ignoredTablePrefix) {
@@ -267,15 +263,24 @@ class DataExtractCommand extends Console\Command\Command
             $inserted = 0;
             $weird = 0;
             foreach (static::$statements as $sql) {
-                preg_match('/`(\w+)`/', $sql, $matches);
-                $name = $matches[1];
+                preg_match('/`(\w+)`/', $sql, $_matches);
+                $name = $_matches[1];
                 try {
                     if (strpos($name, static::$versioningTableNamePrefix) === 0) {
                         $oldName = $name;
                         $name = str_replace(static::$versioningTableNamePrefix, str_replace('.', '', $build, $count = 1).'_', $oldName, $count);
                         $sql = str_replace($oldName, $name, $sql, $count);
                     }
-                    /*if (strpos($sql, 'CREATE TABLE `'.static::$versioningTablePrefix) === 0) {
+                    if (strpos($sql, 'CREATE TABLE `'.static::$versioningTablePrefix) === 0) {
+                        // GUARDAR CADA CREATE EN UN ARRAY POR NOMBRE DE TABLA, CUANDO FALLE POR NUMERO DE COLUMNAS DIFERENTES, RENOMBR LA CREADA, DESPUES CREAR LA NUEVA Y HACER EL TABLEDIFF
+                        //preg_match_all("/`(.+)` (\w+)\(? ?(\d*) ?\)?/", $sql, $_matches);
+                        dump('·······························································································································', $sql);
+                        dump('VAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+                        //dump($_matches);
+                        dump($cn->prepare('SHOW '.$sql)->execute());
+                        dump('VAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+                        exit(0);
+                    }/*if (strpos($sql, 'CREATE TABLE `'.static::$versioningTablePrefix) === 0) {
                         $cn->getSchemaManager()->createSchemaConfig()->setDefaultTableOptions()
                         $newSequence = new DBAL\Schema\Sequence()
                         $newSchema = new DBAL\Schema\Schema()
@@ -285,11 +290,11 @@ class DataExtractCommand extends Console\Command\Command
                         ++$created;
                         ++static::$totalCreated;
                     } elseif (strpos($sql, 'INSERT INTO `'.static::$versioningTablePrefix) === 0) {
-                        preg_match('/^(INSERT INTO `\w+` VALUES )(.+)$/', $sql, $matches);
-                        preg_match_all('/\(([^\)]+)\)/', $matches[2], $sonMatches);
+                        preg_match('/^(INSERT INTO `\w+` VALUES )(.+)$/', $sql, $_matches);
+                        preg_match_all('/\(([^\)]+)\)/', $_matches[2], $sonMatches);
                         for ($i = 1; $i < count($sonMatches[1]); $i++) {
                             preg_match('/^(\'\w+\',)(\'\w+-\w+\')(.+)$/', $sonMatches[1][$i], $grandSonMatches);
-                            $sql = $matches[1].'(\''.$build.'\','.$grandSonMatches[1].strtolower($grandSonMatches[2]).',\''.$token.'\''.$grandSonMatches[3].')';
+                            $sql = $_matches[1].'(\''.$build.'\','.$grandSonMatches[1].strtolower($grandSonMatches[2]).',\''.$token.'\''.$grandSonMatches[3].')';
                             static::runStatement($cn, $sql);
                             ++$inserted;
                             ++static::$totalInserted;
@@ -316,7 +321,7 @@ class DataExtractCommand extends Console\Command\Command
                         ++$ignored;
                         ++static::$totalIgnored;
                     } elseif (is_array($diff = static::diffInsertTableStatement($cn, $sql, $e->getMessage(), $name))) {
-                        $output->writeln(PHP_EOL.PHP_EOL.sprintf('Something weird found in `%s.%s`%sInserted %s rows, diff: %s%sSQL:%s', $cn->getDatabase(), $name, PHP_EOL.PHP_EOL, $diff['inserts'], $diff['diff'], PHP_EOL, PHP_EOL."\t".$sql.PHP_EOL.PHP_EOL."\t"));
+                        $output->writeln(PHP_EOL.PHP_EOL.sprintf('Something weird found in `%s.%s`%sInserted %s row(s), diff: %s%sSQL:%s', $cn->getDatabase(), $name, PHP_EOL.PHP_EOL, $diff['inserts'], $diff['diff'], PHP_EOL, PHP_EOL."\t".$sql.PHP_EOL.PHP_EOL."\t"));
                         ++$weird;
                         ++static::$totalWeird;
                     } elseif ($diff === false) {
