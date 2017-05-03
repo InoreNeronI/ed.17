@@ -257,7 +257,8 @@ class DataExtractCommand extends Console\Command\Command
     private static function injectStatements(DBAL\Connection $cn, $token, $build, Console\Output\OutputInterface $output)
     {
         $output->write(PHP_EOL.sprintf('Executing %s statements...', count(static::$statements))."\t");
-        if ($cn->getDatabasePlatform()->getName() === 'mysql') {
+        $platform = $cn->getDatabasePlatform();
+        if ($platform->getName() === 'mysql') {
             $cn->executeQuery('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;');
             $sm = $cn->getSchemaManager();
             $created = 0;
@@ -274,7 +275,12 @@ class DataExtractCommand extends Console\Command\Command
                         $name = str_replace(static::$versioningTableNamePrefix, str_replace('.', '', $build, $count = 1).'_', $oldName, $count);
                         $sql = str_replace($oldName, $name, $sql, $count);
                     }
-                    if (strpos($sql, 'CREATE TABLE `') === 0) {
+                    /*if (strpos($sql, 'CREATE TABLE `'.static::$versioningTablePrefix) === 0) {
+                        $cn->getSchemaManager()->createSchemaConfig()->setDefaultTableOptions()
+                        $newSequence = new DBAL\Schema\Sequence()
+                        $newSchema = new DBAL\Schema\Schema()
+                        DBAL\Schema\Comparator::compareSchemas()
+                    } else*/if (strpos($sql, 'CREATE TABLE `') === 0) {
                         static::runStatement($cn, $sql);
                         ++$created;
                         ++static::$totalCreated;
