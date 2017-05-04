@@ -206,13 +206,13 @@ final class PagesHelper extends Security\Authorization
         } catch (DBAL\Exception\InvalidFieldNameException $e) {
             $schemaManager = $connection->getSchemaManager();
             // @see http://www.craftitonline.com/2014/09/doctrine-migrations-with-schema-api-without-symfony-symfony-cmf-seobundle-sylius-example
-            $tableDiffColumns = [];
+            $columnsDiff = [];
             foreach ($columns as $column) {
                 if (!array_search($column, array_keys($schemaManager->listTableColumns($args['target'])))) {
-                    $tableDiffColumns[] = new DBAL\Schema\Column($column, DBAL\Types\Type::getType('string'), ['length' => 100, 'notnull' => false]);
+                    $columnsDiff[] = new DBAL\Schema\Column($column, DBAL\Types\Type::getType('string'), ['length' => 100, 'notnull' => false]);
                 }
             }
-            $schemaManager->alterTable(new DBAL\Schema\TableDiff($args['target'], $tableDiffColumns));
+            $schemaManager->alterTable(new DBAL\Schema\TableDiff($args['target'], $columnsDiff));
 
             return $this->saveData($args);
         } catch (\Exception $e) {
