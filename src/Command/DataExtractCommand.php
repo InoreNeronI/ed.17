@@ -8,13 +8,10 @@ use Symfony\Component\Console;
 class DataExtractCommand extends Console\Command\Command
 {
     private static $baseBuild = '0.5';
-
     private static $ignoredExceptionMessages = ['Base table or view already exists'];
-
+    private static $ignoredIdPrefix = 'ed17-900';
     private static $ignoredTables = ['edg051_testuak_dbh_simul', 'erantzunak_dbh_simul'];
-
     private static $ignoredTablePrefixes = ['05_', '10_', '20_', '30_', 'ikasleak'];
-
     private static $pregDupe = '/Duplicate entry \'(.+)\' for key \'PRIMARY\'/';
     private static $statementsStructure = [];
     private static $statements = [];
@@ -23,11 +20,8 @@ class DataExtractCommand extends Console\Command\Command
     public static $totalIgnored = 0;
     public static $totalInserted = 0;
     public static $totalUpdated = 0;
-
     private static $versioningTableNamePrefix = 'edg051_testuak_';
-
     private static $versioningTablePrefix = 'erantzunak_';
-
     private static $versioningTablePrimaryIndex = ['build', 'code', 'id'];
 
     /**
@@ -35,7 +29,7 @@ class DataExtractCommand extends Console\Command\Command
      *
      * @return mixed
      */
-    private static function beautifyArray($arr)
+    private static function printArray($arr)
     {
         return str_replace('Array', '', str_replace('(', '[', str_replace(')', ']', print_r($arr, true))));
     }
@@ -227,13 +221,12 @@ class DataExtractCommand extends Console\Command\Command
     private static function diffColumnTable(DBAL\Connection $cn, $sql, $msg, $name, $field = 'id')
     {
         if (preg_match(static::$pregDupe, $msg, $_matches)) {
-            //dump('""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""');
             list($values, $result, $diff) = static::diffInsert($cn, $sql, $name, $_matches[1]);
-            $popsTimestamp = isset($diff[10]) && date_create_from_format('Y-m-d H:i:s.u', array_pop($diff)) !== false;
+            $popsTimestamp = isset($diff[10]) && date_create_from_format('Y-m-d H:i:s.u', $diff[10]) instanceof \DateTime;
 
-            if (count($diff) === 1 && isset($diff[3]) || $popsTimestamp) {
+            if (count($diff) === 2 && isset($diff[3]) && $popsTimestamp) {
                 return false;
-            } elseif (count($diff) === 2 && isset($diff[3]) && $popsTimestamp) {
+            } elseif (count($diff) === 1 && isset($diff[3]) || $popsTimestamp) {
                 return false;
             } elseif (count($diff) > 0 && $popsTimestamp && is_int($inserts = static::insertDupe($cn, $name, $result[$field], $values, array_flip($keys = array_keys($result))))) {
                 foreach ($d = $diff as $k => $field) {
@@ -241,8 +234,8 @@ class DataExtractCommand extends Console\Command\Command
                     $diff[$keys[$k]] = $field;
                 }
 
-                return ['diff' => $diff = static::beautifyArray($diff), 'output' => PHP_EOL.PHP_EOL.sprintf(
-                'Something weird found in `%s.%s`%sInserted %s row(s), diff: %s',
+                return ['diff' => $diff = static::printArray($diff), 'output' => PHP_EOL.PHP_EOL.sprintf(
+                'Diff found in `%s.%s`%sInserted %s row(s), diff: %s',
                         $cn->getDatabase(),
                         $name,
                         PHP_EOL.PHP_EOL,
@@ -405,32 +398,20 @@ class DataExtractCommand extends Console\Command\Command
                     $sm->createTable($table);
                 }
                 ++static::$totalCreated;
-            } elseif (strpos($sql, 'INSERT INTO `'.static::$versioningTablePrefix) === 0) {
-                //dump('#########################################################');
-                preg_match('/^(INSERT INTO `\w+` VALUES )(.+)$/', $sql, $_matches);
-                //dump('################## inserts ', count($_matches[2]), $_matches[2]);
-                //preg_match_all('/\(([^\)]+\)?[\s]*\'?)\)/', $_matches[2], $__matches);
-                preg_match_all('/\(([^\)]+\)?[^\(]*)\)/', $_matches[2], $__matches);
-                //dump('################## partes ', ($__matches[1]));
-                for ($i = 0; $i < /*$total = */count($__matches[1]); ++$i) {
-                    //dump($sql);
-                    if (preg_match('/^(\'\w+\',)(\'\w+-\w+\')(.+)/', $__matches[1][$i], $___matches)) {
-                        $sql = $_matches[1].'(\''.$build.'\','.$___matches[1].strtolower($___matches[2]).',\''.$token.'\''.$___matches[3].')';
-                        //dump('corregidooo');
-                        //dump($sql);
+            } elseif (preg_match('/^(INSERT INTO `'.static::$versioningTablePrefix.'\w+` VALUES )(.+)$/', $sql, $_matches) !== false) {
+                $curatedSql = preg_replace('/(\)\s*,\s*\()/', '{#}', substr($_matches[2], 1, -1));
+                $curatedInserts = explode('{#}', $curatedSql);
+                foreach ($curatedInserts as $insert) {
+                    if (preg_match('/^(\'\w+\',)(\'\w+-\w+\')(.+)/', $insert, $__matches)) {
+                        if (strpos($id = strtolower($__matches[2]), '\''.static::$ignoredIdPrefix) === 0) {
+                            ++static::$totalIgnored;
+                            continue;
+                        }
+                        $sql = $_matches[1].'(\''.$build.'\','.$__matches[1].$id.',\''.$token.'\''.$__matches[3].');';
                     }
-                    //dump('#########################################################', $sql);
-                    //if ($total === 1) {
-                        //dump('es unoooooooooooooooooooooooooo');
-                        static::runStatement($cn, $sql);
-                        ++static::$totalInserted;
-                    /*} else {
-                        //dump('Vueltaaaaaaaaaaaaa');
-                        static::injectStatement($cn, $sql, $token, $build, $output);
-                    }*/
+                    static::runStatement($cn, $sql);
+                    ++static::$totalInserted;
                 }
-                //dump('#########################################################');
-                //dump('#########################################################');
             } elseif (strpos($sql, 'INSERT INTO `') === 0) {
                 static::runStatement($cn, $sql);
                 ++static::$totalInserted;
