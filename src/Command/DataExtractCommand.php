@@ -135,8 +135,6 @@ class DataExtractCommand extends Console\Command\Command
      */
     private static function diffInsert(DBAL\Connection $cn, $sql, $name, $msg)
     {
-        echo 'ppoooooooooooooooooooooooo';
-        dump($sql);
         preg_match('/VALUES \((.+)\)/', $sql, $_matches);
         $pk = explode('-', $msg, count(static::$versioningTablePrimaryIndex));
         $format = 'SELECT * FROM `'.$name.'` WHERE `%s` = \''.implode('\' AND `%s` = \'', $pk).'\'';
@@ -144,9 +142,6 @@ class DataExtractCommand extends Console\Command\Command
         $values = array_map(function ($_) {
             return trim($_, 'NULL');
         }, str_getcsv($_matches[1], ',', '\''));
-        dump('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-        dump(array_diff(array_values($result), $values));
-        dump('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
         return [$values, $result, array_diff($values, array_values($result))];
     }
 
@@ -161,7 +156,6 @@ class DataExtractCommand extends Console\Command\Command
      */
     private static function diffInsertColumnsStatement(DBAL\Connection $cn, $sql, $msg, $name, Console\Output\OutputInterface $output)
     {
-        dump('es column ', strpos($msg, '1136 Column count') !== false);
         if (strpos($msg, '1136 Column count') !== false) {
             static::runStatement($cn, str_replace($name, $tmpName = $name.'_'.uniqid(), static::$statementsStructure[$name]));
             $sm = $cn->getSchemaManager();
@@ -172,35 +166,24 @@ class DataExtractCommand extends Console\Command\Command
             }
             $oldColumns = $sm->listTableColumns($name);
             $newColumns = $sm->listTableColumns($tmpName);
-            $columns = [];
-            foreach ($columnsDiff = array_diff(array_keys($newColumns), array_keys($oldColumns)) as $diff) {
-                array_push($columns, new DBAL\Schema\Column($diff, $newColumns[$diff]->getType(), $newColumns[$diff]->toArray()));
-            }
-            if (!empty($columnsDiff)) {
-                $output->write(sprintf('Adding %s columns in `%s.%s` -> %s', count($columnsDiff), $cn->getDatabase(), $name, PHP_EOL.PHP_EOL."\t".implode(', ', $columnsDiff).PHP_EOL.PHP_EOL."\t\t\t\t"));
-                dump('ALTERED ', $name);
-                dump('antes ', count($sm->listTableColumns($name)));
-                $sm->alterTable(new DBAL\Schema\TableDiff($name, $columns));
-                dump('despues ', count($sm->listTableColumns($name)));
-            }
-            dump('drrrrrrrrrrrrrrrrrrrrrrrrrrrrrop');
             $sm->dropTable($tmpName);
-            try {
-                dump('rrrrrrrrrrrrrrrrrrrrrrrun');
-                //dump($columnsDiff);
-                static::runStatement($cn, $sql);
-                dump('errorRRRRRRRRRRRRRRRRRRRRRRRRRRRR ');
-                ++static::$totalInserted;
+
+            if (count($newColumns) > count($oldColumns)) {
+                $columns = [];
+                foreach ($columnsDiff = array_diff(array_keys($newColumns), array_keys($oldColumns)) as $diff) {
+                    array_push($columns, new DBAL\Schema\Column($diff, $newColumns[$diff]->getType(), $newColumns[$diff]->toArray()));
+                }
+                if (!empty($columnsDiff)) {
+                    $output->write(sprintf('Adding %s columns in `%s.%s` -> %s', count($columnsDiff), $cn->getDatabase(), $name, PHP_EOL.PHP_EOL."\t".implode(', ', $columnsDiff).PHP_EOL.PHP_EOL."\t\t\t\t"));
+                    $sm->alterTable(new DBAL\Schema\TableDiff($name, $columns));
+                    try {
+                        static::runStatement($cn, $sql);
+                    } catch (\Exception $e) {
+                        return static::diffInsertTableStatement($cn, $sql, $e->getMessage(), $name, $output);
+                    }
+                }
+            } else {
                 return true;
-            } catch (\Exception $e) {
-                dump('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-                dump($name);
-                dump($msg);
-                dump($sql);
-                exit(0);
-                //return static::diffInsertTableStatement($cn, $sql, $msg, $name, $output);
-                //return static::injectStatement($cn, $sql, $msg, $name, $output);
-                //return false;
             }
         }
         return false;
@@ -218,10 +201,7 @@ class DataExtractCommand extends Console\Command\Command
     private static function diffInsertTableStatement(DBAL\Connection $cn, $sql, $msg, $name, Console\Output\OutputInterface $output)
     {
         if (strpos($name, static::$versioningTablePrefix) === 0) {
-            dump($sql);
-            dump($name);
             $diff = static::diffColumnTable($cn, $sql, $msg, $name);
-            dump($diff);
             if (is_array($diff)) {
                 $output->writeln($diff['output']);
                 ++static::$totalUpdated;
@@ -232,8 +212,7 @@ class DataExtractCommand extends Console\Command\Command
             }
         }
 
-        //return static::diffInsertColumnsStatement($cn, $sql, $msg, $name, $output);
-        return false;
+        return static::diffInsertColumnsStatement($cn, $sql, $msg, $name, $output);
     }
 
     /**
@@ -248,7 +227,7 @@ class DataExtractCommand extends Console\Command\Command
     private static function diffColumnTable(DBAL\Connection $cn, $sql, $msg, $name, $field = 'id')
     {
         if (preg_match(static::$pregDupe, $msg, $_matches)) {
-            dump('""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""');
+            //dump('""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""');
             list($values, $result, $diff) = static::diffInsert($cn, $sql, $name, $_matches[1]);
             $popsTimestamp = isset($diff[10]) && date_create_from_format('Y-m-d H:i:s.u', array_pop($diff)) !== false;
 
@@ -404,6 +383,8 @@ class DataExtractCommand extends Console\Command\Command
      * @param Console\Output\OutputInterface $output
      *
      * @return bool
+     *
+     * @throws \Exception
      */
     private static function injectStatement(DBAL\Connection $cn, $sql, $token, $build, Console\Output\OutputInterface $output)
     {
@@ -427,17 +408,18 @@ class DataExtractCommand extends Console\Command\Command
             } elseif (strpos($sql, 'INSERT INTO `'.static::$versioningTablePrefix) === 0) {
                 //dump('#########################################################');
                 preg_match('/^(INSERT INTO `\w+` VALUES )(.+)$/', $sql, $_matches);
-                dump('################## inserts ', count($_matches[2]), $_matches[2]);
-                preg_match_all('/\(([^\)]+\)?[\s]*\'?)\)/', $_matches[2], $__matches);
-                dump('################## partes ', ($__matches[1]));
+                //dump('################## inserts ', count($_matches[2]), $_matches[2]);
+                //preg_match_all('/\(([^\)]+\)?[\s]*\'?)\)/', $_matches[2], $__matches);
+                preg_match_all('/\(([^\)]+\)?[^\(]*)\)/', $_matches[2], $__matches);
+                //dump('################## partes ', ($__matches[1]));
                 for ($i = 0; $i < /*$total = */count($__matches[1]); ++$i) {
-                    dump($sql);
+                    //dump($sql);
                     if (preg_match('/^(\'\w+\',)(\'\w+-\w+\')(.+)/', $__matches[1][$i], $___matches)) {
                         $sql = $_matches[1].'(\''.$build.'\','.$___matches[1].strtolower($___matches[2]).',\''.$token.'\''.$___matches[3].')';
-                        dump('corregidooo');
-                        dump($sql);
+                        //dump('corregidooo');
+                        //dump($sql);
                     }
-                    //dump('#########################################################');
+                    //dump('#########################################################', $sql);
                     //if ($total === 1) {
                         //dump('es unoooooooooooooooooooooooooo');
                         static::runStatement($cn, $sql);
@@ -470,8 +452,8 @@ class DataExtractCommand extends Console\Command\Command
                 dump($sql);
                 throw $e;
             }
-            return false;
         }
+        return false;
     }
 
     /**
