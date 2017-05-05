@@ -130,11 +130,11 @@ class DataMergeCommand extends Console\Command\Command
 
         $application = new DataExtractCommand('Database extract tool');
         //$conn = static::getConnection();
-        $banner = '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~';
+        $banner = '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~';
         $legend = '~~~~~~~~~~~~~~~';
         foreach (static::$files as $filepath => $uploadParams) {
             $output->writeln(PHP_EOL.$banner);
-            $output->writeln(sprintf('%s Working on `%s` folder, version: %s %s', $legend, basename(dirname($filepath)), $uploadParams['version'], $legend));
+            $output->writeln(sprintf('%s Working on `%s`, version: %s %s', $legend, basename(dirname($filepath)), $uploadParams['version'], $legend));
             $output->writeln($banner);
             $application->run(new Console\Input\ArrayInput(['--file' => $filepath, '--password' => getenv('ZIPS_PW'), '--version' => $uploadParams['version']]), $output);
             /*$lastCreatedDb = $conn->executeQuery('SELECT DISTINCT table_schema
@@ -148,7 +148,7 @@ class DataMergeCommand extends Console\Command\Command
         //$conn->close();
         $endTime = time();
         $output->writeln(sprintf('Ended at %s, %s hours elapsed.', date('Y-m-d H:i:s', $endTime), round(($endTime - $startTime) / 60 / 60, 2)));
-        $output->writeln("\t".sprintf('With %s inserts, %s creates, %s skips, %s updates and %s errors', DataExtractCommand::$totalInserted, DataExtractCommand::$totalCreated, DataExtractCommand::$totalIgnored, DataExtractCommand::$totalUpdated, DataExtractCommand::$totalErrors).PHP_EOL);
+        $output->writeln("\t".sprintf('With %s creates, %s inserts, %s skips, %s updates and %s errors', DataExtractCommand::$totalCreated, DataExtractCommand::$totalInserted, DataExtractCommand::$totalIgnored, DataExtractCommand::$totalUpdated, DataExtractCommand::$totalErrors).PHP_EOL);
         //static::getDatabases($input->getOption('prefix'));
     }
 }
