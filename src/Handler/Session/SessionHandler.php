@@ -114,7 +114,7 @@ class SessionHandler
         ini_set('session.save_handler', $handler);
         ini_set('session.save_path', $this->savePath);
         // Set session lifetime.
-        /* @see http://stackoverflow.com/a/19597247 */
+        /* @link http://stackoverflow.com/a/19597247 */
         ini_set('session.cookie_lifetime', $this->expireTime);
         ini_set('session.gc_maxlifetime', $this->expireTime / 2);
     }

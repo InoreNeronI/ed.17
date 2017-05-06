@@ -8,7 +8,7 @@ if (PHP_VERSION_ID < 50400) {
 }
 define('ROOT_DIR', dirname(dirname(dirname(dirname(__DIR__)))));
 
-/* @see https://gist.github.com/azihassan/3093972 */
+/* @link https://gist.github.com/azihassan/3093972 */
 define('USAGE', 'Usage: php '.$argv[0].' --package package_name --path '.ROOT_DIR.DIRECTORY_SEPARATOR.'tazpkgs [--dependencies] [--overwrite] [--nocache] [--withdepends] [--help]');
 
 if ($argc === 1) {
@@ -105,7 +105,7 @@ class packager
         }
 
         if (($key = array_search('--package', static::$arguments)) !== false) {
-            /* @see http://stackoverflow.com/a/3766319 */
+            /* @link http://stackoverflow.com/a/3766319 */
             list($package_name) = explode(' ', trim(static::$arguments[$key + 1]));
         } else {
             throw new \Exception(sprintf('%s%sERROR: Argument `--package` is mandatory. Type --help for usage.', PHP_EOL, "\t"));
@@ -280,7 +280,7 @@ class packager
         /** @var float $microtime */
         $microtime = microtime(true) * 1000;
         curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, function (
-            /* @see http://stackoverflow.com/a/13668885 */
+            /* @link http://stackoverflow.com/a/13668885 */
             $clientp,       // this is an unchanged pointer as set with CURLOPT_PROGRESSDATA
             $dlnowdltotal,  // the total bytes to be downloaded (or 0 if not downloading)
             $dlnowdlnow,    // the current download bytecount (or 0 if not downloading)

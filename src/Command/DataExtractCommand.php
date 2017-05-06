@@ -7,11 +7,10 @@ use Symfony\Component\Console;
 
 class DataExtractCommand extends Console\Command\Command
 {
-    private static $baseBuild = '0.5';
-    private static $ignoredExceptionMessages = ['Base table or view already exists'];
+    public static $baseBuild = '0.5';
+    public static $extractedPath = null;
     private static $ignoredIdColumnPrefixes = ['ed17-900'];
-    private static $ignoredTables = ['edg051_testuak_dbh_simul', 'erantzunak_dbh_simul'];
-    private static $ignoredTablePrefixes = ['05_', '10_', '20_', '30_', 'ikasleak'];
+    private static $pdoErrors = [];
     private static $pregDupe = '/Duplicate entry \'(.`+)\' for key \'PRIMARY\'/';
     private static $statementsStructure = [];
     private static $statements = [];
@@ -22,17 +21,7 @@ class DataExtractCommand extends Console\Command\Command
     public static $totalUpdated = 0;
     private static $versioningTableNamePrefix = 'edg051_testuak_';
     private static $versioningTablePrefix = 'erantzunak_';
-    private static $versioningTablePrimaryIndex = ['build', 'code', 'id'];
-
-    /**
-     * @param array $arr
-     *
-     * @return mixed
-     */
-    private static function printArray($arr)
-    {
-        return str_replace('Array', '', str_replace('(', '[', str_replace(')', ']', print_r($arr, true))));
-    }
+    public static $versioningTablePrimaryIndex = ['build', 'code', 'id'];
 
     protected function configure()
     {
@@ -50,45 +39,29 @@ class DataExtractCommand extends Console\Command\Command
         $pw = $input->getOption('password');
         $build = $input->getOption('version');
         $zipStatus = $zip->open($file);
-        $extractPath = sys_get_temp_dir().DIRECTORY_SEPARATOR.'extracted';
+        static::$extractedPath = sys_get_temp_dir().DIRECTORY_SEPARATOR;
+        static::$extractedPath .= DataMergeCommand::$filesCurrentFolder ? basename(DataMergeCommand::$filesCurrentFolder) : 'extracted';
         if ($zipStatus === true) {
-            if (!$zip->setPassword($pw) || !$zip->extractTo($extractPath)) {
+            if (!$zip->setPassword($pw) || !$zip->extractTo(static::$extractedPath)) {
                 throw new \Exception(sprintf('Error, extraction of `%s` failed (wrong `%s` password?).', $file, $pw));
             }
             $zip->close();
-            $structure = $extractPath.DIRECTORY_SEPARATOR.'data-structure.sql';
-            $data = $extractPath.DIRECTORY_SEPARATOR.'data.sql';
+            $structure = static::$extractedPath.DIRECTORY_SEPARATOR.'data-structure.sql';
+            $data = static::$extractedPath.DIRECTORY_SEPARATOR.'data.sql';
             if (realpath($structure) && realpath($data)) {
                 static::$statements = array_merge(static::sqlImport($structure), static::sqlImport($data));
                 static::create(md5_file($file), $build, $output);
                 unlink($structure);
                 unlink($data);
             } else {
-                $output->writeln(PHP_EOL.sprintf('Error, cannot parse files in `%s` (file: `%s`), going deeper', $extractPath, $file));
+                $output->writeln(PHP_EOL.sprintf('Error, cannot parse files in `%s` (file: `%s`), going deeper', static::$extractedPath, $file));
                 $application = new DataMergeCommand('Database merge tool');
-                $application->run(new Console\Input\ArrayInput(['--folder' => $extractPath]), $output);
+                $application->run(new Console\Input\ArrayInput(['--folder' => static::$extractedPath]), $output);
             }
         } else {
             $output->writeln(PHP_EOL.sprintf('Error %s opening archive `%s`', $zipStatus, $file));
             ++static::$totalErrors;
         }
-    }
-
-    /**
-     * @see https://github.com/doctrine/dbal/blob/v2.5.12/lib/Doctrine/DBAL/Tools/Console/Command/ImportCommand.php
-     *
-     * @param DBAL\Connection $cn
-     * @param string          $sql
-     *
-     * @return bool
-     */
-    private static function runStatement(DBAL\Connection $cn, $sql)
-    {
-        $stmt = $cn->prepare($sql);
-        $run = $stmt->execute();
-        $stmt->closeCursor();
-
-        return $run;
     }
 
     /**
@@ -128,7 +101,7 @@ class DataExtractCommand extends Console\Command\Command
      *
      * @return array
      */
-    private static function diffInsert(DBAL\Connection $cn, $sql, $name, $msg)
+    private static function diffInsertParser(DBAL\Connection $cn, $sql, $name, $msg)
     {
         preg_match('/VALUES \((.+)\)/', $sql, $_matches);
         $pk = explode('-', $msg, count(static::$versioningTablePrimaryIndex));
@@ -137,14 +110,15 @@ class DataExtractCommand extends Console\Command\Command
         $values = array_map(function ($_) {
             return trim($_, 'NULL');
         }, str_getcsv($_matches[1], ',', '\''));
+
         return [$values, $result, array_diff($values, array_values($result))];
     }
 
     /**
-     * @param DBAL\Connection $cn
-     * @param string          $sql
-     * @param string          $msg
-     * @param string          $name
+     * @param DBAL\Connection                $cn
+     * @param string                         $sql
+     * @param string                         $msg
+     * @param string                         $name
      * @param Console\Output\OutputInterface $output
      *
      * @return bool
@@ -152,10 +126,10 @@ class DataExtractCommand extends Console\Command\Command
     private static function diffInsertColumnsStatement(DBAL\Connection $cn, $sql, $msg, $name, Console\Output\OutputInterface $output)
     {
         if (strpos($msg, '1136 Column count') !== false) {
-            static::runStatement($cn, str_replace($name, $tmpName = $name.'_'.uniqid(), static::$statementsStructure[$name]));
+            DataMergeCommand::runStatement($cn, str_replace($name, $tmpName = $name.'_'.uniqid(), static::$statementsStructure[$name]));
             $sm = $cn->getSchemaManager();
             if (strpos($tmpName, static::$versioningTablePrefix) !== false) {
-                $tmpTable = static::getVersionedTableObj($sm->listTableColumns($tmpName), $tmpName);
+                $tmpTable = DataMergeCommand::getVersionedTableObj($sm->listTableColumns($tmpName), $tmpName);
                 $sm->dropTable($tmpName);
                 $sm->createTable($tmpTable);
             }
@@ -172,7 +146,7 @@ class DataExtractCommand extends Console\Command\Command
                     $output->write(sprintf('Adding %s columns in `%s.%s` -> %s', count($columnsDiff), $cn->getDatabase(), $name, PHP_EOL.PHP_EOL."\t".implode(', ', $columnsDiff).PHP_EOL.PHP_EOL."\t\t\t\t"));
                     $sm->alterTable(new DBAL\Schema\TableDiff($name, $columns));
                     try {
-                        static::runStatement($cn, $sql);
+                        DataMergeCommand::runStatement($cn, $sql);
                     } catch (\Exception $e) {
                         return static::diffInsertTableStatement($cn, $sql, $e->getMessage(), $name, $output);
                     }
@@ -181,14 +155,15 @@ class DataExtractCommand extends Console\Command\Command
                 return true;
             }
         }
+
         return false;
     }
 
     /**
-     * @param DBAL\Connection $cn
-     * @param string          $sql
-     * @param string          $msg
-     * @param string          $name
+     * @param DBAL\Connection                $cn
+     * @param string                         $sql
+     * @param string                         $msg
+     * @param string                         $name
      * @param Console\Output\OutputInterface $output
      *
      * @return bool
@@ -196,14 +171,14 @@ class DataExtractCommand extends Console\Command\Command
     private static function diffInsertTableStatement(DBAL\Connection $cn, $sql, $msg, $name, Console\Output\OutputInterface $output)
     {
         if (strpos($name, static::$versioningTablePrefix) === 0) {
-            dump('previoooooooooooooooooooooooooooooo');
-            $diff = static::diffColumnTable($cn, $sql, $msg, $name);
-            if (is_array($diff)) {
+            if (is_array($diff = static::diffInsertHandler($cn, $sql, $msg, $name))) {
                 $output->writeln($diff['output']);
                 ++static::$totalUpdated;
+
                 return true;
             } elseif ($diff === false) {
                 ++static::$totalIgnored;
+
                 return true;
             }
         }
@@ -220,12 +195,10 @@ class DataExtractCommand extends Console\Command\Command
      *
      * @return array|false
      */
-    private static function diffColumnTable(DBAL\Connection $cn, $sql, $msg, $name, $field = 'id')
+    private static function diffInsertHandler(DBAL\Connection $cn, $sql, $msg, $name, $field = 'id')
     {
-        dump('entrando1');
         if (preg_match(static::$pregDupe, $msg, $_matches)) {
-            dump('entrando2');
-            list($values, $result, $diff) = static::diffInsert($cn, $sql, $name, $_matches[1]);
+            list($values, $result, $diff) = static::diffInsertParser($cn, $sql, $name, $_matches[1]);
             $popsTimestamp = isset($diff[10]) && date_create_from_format('Y-m-d H:i:s.u', $diff[10]) instanceof \DateTime;
 
             if (count($diff) === 2 && isset($diff[3]) && $popsTimestamp) {
@@ -241,38 +214,7 @@ class DataExtractCommand extends Console\Command\Command
 
                 return ['output' => PHP_EOL.PHP_EOL.sprintf(
                 'Differences found in `%s.%s`%sInserted %s row(s), added-diff: %s',
-                        $cn->getDatabase(),
-                        $name,
-                        PHP_EOL.PHP_EOL,
-                        $inserts,
-                        static::printArray($diff).PHP_EOL
-                    )];
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param string          $sql
-     * @param string          $msg
-     * @param string|null     $name
-     *
-     * @return bool
-     */
-    private static function isSkipableStatement($sql, $msg, $name = null)
-    {
-        if ($name && in_array($name, static::$ignoredTables)) {
-            return true;
-        }
-        foreach (static::$ignoredTablePrefixes as $ignoredTablePrefix) {
-            if (strpos($sql, 'CREATE TABLE `'.$ignoredTablePrefix) === 0 || strpos($sql, 'INSERT INTO `'.$ignoredTablePrefix) === 0) {
-                return true;
-            }
-        }
-        foreach (static::$ignoredExceptionMessages as $ignoredSqlExceptionContain) {
-            if (strpos($msg, $ignoredSqlExceptionContain) !== false) {
-                return true;
+                        $cn->getDatabase(), $name, PHP_EOL.PHP_EOL, $inserts, DataMergeCommand::printArray($diff).PHP_EOL)];
             }
         }
 
@@ -316,65 +258,6 @@ class DataExtractCommand extends Console\Command\Command
 
     /**
      * @param DBAL\Connection                $cn
-     * @param array                          $columns
-     * @param string                         $name
-     * @param Console\Output\OutputInterface $output
-     */
-    /*private static function mergeColumns(DBAL\Connection $cn, $columns, $name, Console\Output\OutputInterface $output)
-    {
-        $output->write(sprintf('Merging `%s` columns...', $name));
-        if ($cn->getDatabasePlatform()->getName() === 'mysql') {
-
-            $schemaManager = $cn->getSchemaManager();
-            // @see http://www.craftitonline.com/2014/09/doctrine-migrations-with-schema-api-without-symfony-symfony-cmf-seobundle-sylius-example
-            $nameDiffColumns = [];
-            foreach ($columns as $column) {
-                if (!array_search($column, array_keys($schemaManager->listTableColumns($name)))) {
-                    $nameDiffColumns[] = new DBAL\Schema\Column($column, DBAL\Types\Type::getType('string'), ['length' => 255, 'notnull' => false]);
-                    $output->write(PHP_EOL."\t"."\t".sprintf('`%s`...', $column));
-                }
-            }
-            $output->writeln('');
-            $schemaManager->alterTable(new DBAL\Schema\TableDiff($name, $nameDiffColumns));
-        }
-    }*/
-
-    /**
-     * @param string $name
-     * @param array $columns
-     * @param array $indexes
-     *
-     * @return DBAL\Schema\Table
-     */
-    private static function getTableObj($name, $columns, $indexes = [])
-    {
-        $pkIndex = new DBAL\Schema\Index('pk', static::$versioningTablePrimaryIndex, false, true);
-        return new DBAL\Schema\Table($name, $columns, array_merge([$pkIndex], $indexes));
-    }
-
-    /**
-     * @param array $columns
-     * @param string                            $name
-     * @param array                             $extraFields
-     * @param array                             $extraTypes
-     * @param array                             $extraCommonProperties
-     * @return                                  DBAL\Schema\Table
-     * @throws                                  \Exception
-     */
-    private static function getVersionedTableObj($columns, $name, $extraFields = ['token', 'build'], $extraTypes = ['string', 'string'], $extraCommonProperties = ['length' => 40, 'notnull' => true])
-    {
-        if (count($fields = array_values($extraFields)) !== count($types = array_values($extraTypes))) {
-            throw new \Exception('Fields and types amount mismatch');
-        }
-        $cols = [];
-        foreach ($fields as $k => $field) {
-            array_push($cols, new DBAL\Schema\Column($field, DBAL\Types\Type::getType($types[$k]), $extraCommonProperties));
-        }
-        return static::getTableObj($name, array_merge($cols, $columns));
-    }
-
-    /**
-     * @param DBAL\Connection                $cn
      * @param string                         $sql
      * @param string                         $token
      * @param string                         $build
@@ -395,10 +278,10 @@ class DataExtractCommand extends Console\Command\Command
         try {
             if (strpos($sql, 'CREATE TABLE `') === 0) {
                 static::$statementsStructure[$name] = $sql;
-                static::runStatement($cn, $sql);
+                DataMergeCommand::runStatement($cn, $sql);
                 if (strpos($name, static::$versioningTablePrefix) !== false) {
                     $sm = $cn->getSchemaManager();
-                    $table = static::getVersionedTableObj($sm->listTableColumns($name), $name);
+                    $table = DataMergeCommand::getVersionedTableObj($sm->listTableColumns($name), $name);
                     $sm->dropTable($name);
                     $sm->createTable($table);
                 }
@@ -415,37 +298,56 @@ class DataExtractCommand extends Console\Command\Command
                             }
                             $sql = $_matches[1].'(\''.$build.'\','.$__matches[1].$id.',\''.$token.'\''.$__matches[3].');';
                         }
-                        //dump($sql);
-                        static::runStatement($cn, $sql);
+                        DataMergeCommand::runStatement($cn, $sql);
                         ++static::$totalInserted;
                     }
                 }
                 if (empty($curatedInserts) || empty(static::$ignoredIdColumnPrefixes)) {
-                    static::runStatement($cn, $sql);
+                    DataMergeCommand::runStatement($cn, $sql);
                     ++static::$totalInserted;
                 }
             } elseif (strpos($sql, 'INSERT INTO `') === 0) {
-                static::runStatement($cn, $sql);
+                DataMergeCommand::runStatement($cn, $sql);
                 ++static::$totalInserted;
             } elseif (strpos($sql, 'UPDATE `') === 0) {
-                static::runStatement($cn, $sql);
+                DataMergeCommand::runStatement($cn, $sql);
                 ++static::$totalUpdated;
             }
+
             return true;
         } catch (\Exception $e) {
-            if (static::diffInsertTableStatement($cn, $sql, $e->getMessage(), $name, $output)) {
+            if (static::diffInsertTableStatement($cn, $sql, $msg = $e->getMessage(), $name, $output)) {
                 return true;
-            } elseif (static::isSkipableStatement($sql, $e->getMessage(), $name)) {
+            } elseif (DataMergeCommand::isSkipableStatement($sql, $msg, $name)) {
                 ++static::$totalIgnored;
+
                 return true;
-            } else {
-                $output->writeln(PHP_EOL.PHP_EOL.sprintf('Error found in `%s.%s`%sWith message: %s%s', $cn->getDatabase(), $name, PHP_EOL.PHP_EOL, $e->getMessage(), PHP_EOL));
-                ++static::$totalErrors;
-                dump($sql);
-                throw $e;
+            } elseif ($logPath = static::isPDOException($msg)) {
+                if (!isset(static::$pdoErrors[$logPath])) {
+                    $output->write($curatedMsg = sprintf('Error, see `%s`', $logPath).PHP_EOL."\t\t\t\t");
+                    ++static::$totalErrors;
+                    static::$pdoErrors[$logPath] = $curatedMsg;
+                }
+
+                return true;
             }
+            $output->writeln(PHP_EOL.PHP_EOL.sprintf('Error found in `%s.%s`%sWith message: %s', $cn->getDatabase(), $name, PHP_EOL.PHP_EOL, $msg.PHP_EOL));
+            ++static::$totalErrors;
+            //dump($sql);
+            throw $e;
         }
+
         return false;
+    }
+
+    /**
+     * @param string $msg
+     *
+     * @return string|false
+     */
+    private static function isPDOException($msg)
+    {
+        return strpos($msg, 'SQLSTATE') !== false ? DataMergeCommand::backupAndLog($msg) : false;
     }
 
     /**
@@ -462,7 +364,6 @@ class DataExtractCommand extends Console\Command\Command
         $isMultiLineComment = false;
         $statements = [];
         $sql = '';
-
         while (!feof($file)) {
             $row = fgets($file);
             // 1. ignore empty string, drops, locks and comment row
@@ -485,7 +386,6 @@ class DataExtractCommand extends Console\Command\Command
                 } else {
                     $sql = trim($sql.' '.trim(substr($row, 0, $delimiterOffset)));
                     $statements[] = $sql;
-
                     $row = substr($row, $delimiterOffset + strlen($delimiter));
                     $offset = 0;
                     $sql = '';
@@ -496,7 +396,6 @@ class DataExtractCommand extends Console\Command\Command
         if (strlen($sql) > 0) {
             $statements[] = $row;
         }
-
         fclose($file);
 
         return $statements;
@@ -523,7 +422,6 @@ class DataExtractCommand extends Console\Command\Command
                 return $sql;
             }
         }
-
         $offset = 0;
         while (preg_match('{--\s|#|/\*[^!]}sUi', $sql, $matched, PREG_OFFSET_CAPTURE, $offset)) {
             list($comment, $foundOn) = $matched[0];
@@ -561,7 +459,6 @@ class DataExtractCommand extends Console\Command\Command
         if ($offset > strlen($text)) {
             $offset = strlen($text);
         }
-
         $isQuoted = false;
         for ($i = 0; $i < $offset; ++$i) {
             if ($text[$i] === "'") {
