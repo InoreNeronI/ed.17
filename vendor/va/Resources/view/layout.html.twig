@@ -4,7 +4,7 @@
         <meta charset="UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="description" content="{{ mainTitle|title ~ ' - ' ~ course|title ~ ' - ' ~ title|default|title }}"/>
-        <meta name="author" content="ISEI - IVEI | Irakas Sistema Ebaluatu eta Ikertzeko Erakundea - Instituto Vasco de Evaluación e Investigación Educativa"/>
+        {#<meta name="author" content="ISEI - IVEI | Irakas Sistema Ebaluatu eta Ikertzeko Erakundea - Instituto Vasco de Evaluación e Investigación Educativa"/>#}
         <meta name="viewport" content="width=device-width,initial-scale=1"/>
         <title>{% block title mainTitle|title %}</title>
         <link rel="stylesheet" href="/styles/tachyons.min.css" type="text/css" />
@@ -22,13 +22,11 @@
         {% set fontClassItem = fontClassX2 ~ color %}
         {% set fontClassTitle = fontClassX3 ~ color %}
         {% set buttonClass = fontClassItem ~ 'bg-' ~ colorInverse ~ 'side-submit br--top br--top-m br--top-l br1 br2-m br3-l bw1 bw2-l fw6-l link ph2 pointer pv1 tc' %}
-        {% if ErrorData|default is not empty %}
-            {% include '@App/partial/error-header.html.twig' %}
-        {% endif %}
+        {% if ErrorData|default is not empty %}{% include '@App/partial/error-header.html.twig' %}{% endif %}
         {% block content %}{% endblock %}
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script>window.jQuery || document.write('<script src="scripts/jquery/jquery.min.js"><\/script>')</script>
         {% block scripts %}
-            <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-            <script>window.jQuery || document.write('<script src="scripts/jquery/jquery.min.js"><\/script>')</script>
             <script>{% uglify %}
                 document.addEventListener('touchmove', function(ev) { ev.preventDefault(); });
                 {# @see http://stackoverflow.com/a/20321530 #}

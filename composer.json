@@ -1,28 +1,25 @@
 {
   "require-dev": {
-    "neronmoon/scriptsdev": "@stable",
     "wikimedia/composer-merge-plugin": "@dev"
   },
   "scripts": {
-    "build-assets": ["bash -c ./vendor/va/Resources/script/shell/publish.sh"],
-    "post-install-cmd": ["npm install", "@build-assets", "printf \"\\n\\tDependencies has been installed succesfully\\n\""],
-    "post-update-cmd": ["npm update", "@build-assets", "printf \"\\n\\tDependencies has been updated succesfully\\n\""],
+    "post-install-cmd": "printf \"\\n\\tDependencies has been installed succesfully\\n\"",
+    "post-update-cmd": "printf \"\\n\\tDependencies has been updated succesfully\\n\"",
     "pre-install-cmd": "printf \"\\n\\tInstalling dependencies\\n\\n\"",
     "pre-update-cmd": "printf \"\\n\\tUpdating dependencies\\n\\n\""
   },
   "config": {
     "bin-dir": "bin",
     "optimize-autoloader": true,
-    "platform": {"php": "5.4"},
     "preferred-install": "dist",
-    "vendor-dir": "vendor"
+    "vendor-dir": "app/cache/vendor"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
     "incenteev-parameters": [{
       "file": "app/connection.yml",
-      "dist-file": "app/connection.dist.yml"
+      "dist-file": "vendor/va/Resources/config/connection.dist.yml"
     }],
     "merge-plugin": {
       "require": ["vendor/va/composer.json"],

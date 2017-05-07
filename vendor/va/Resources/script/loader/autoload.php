@@ -5,14 +5,22 @@ if (PHP_VERSION_ID < 50400) {
     /* @throw \Exception */
     throw new \Exception('At least PHP 5.4 is required; using the latest version is highly recommended.');
 }
-
+// Set php-script files' path
+putenv('SCRIPTS_DIR='.dirname(__DIR__));
+// Set resources dir
+putenv('RESOURCES_DIR='.dirname(getenv('SCRIPTS_DIR')));
 // Set root dir
-putenv('ROOT_DIR='.(php_sapi_name() === 'cli' ? getcwd() : dirname(getcwd())));
+putenv('ROOT_DIR='.(dirname(dirname(dirname(getenv('RESOURCES_DIR'))))));
+// Set child dirs
+putenv('CONFIG_DIR='.getenv('RESOURCES_DIR').'/config');
+putenv('PUBLIC_DIR='.getenv('RESOURCES_DIR').'/public');
+putenv('TEMPLATE_FILES_DIR='.getenv('RESOURCES_DIR').'/view');
+putenv('TRANSLATIONS_DIR='.getenv('RESOURCES_DIR').'/translation');
 
 // Require error handler
-require getenv('ROOT_DIR').'/vendor/va/Resources/script/errorHandler.php';
+require getenv('SCRIPTS_DIR').'/errorHandler.php';
 
-// Require loader
+// Require loader if needed
 /* @var Composer\Autoload\ClassLoader */
 if (!class_exists('ClassLoader') && !$loader = require(getenv('ROOT_DIR').'/vendor/autoload.php')) {
     /* @throw \Exception */
@@ -24,20 +32,23 @@ if (!class_exists('ClassLoader') && !$loader = require(getenv('ROOT_DIR').'/vend
 
 // Load `.env` files environment-variables
 if (is_file(getenv('ROOT_DIR').'/.env')) {
-    //(new \Symfony\Component\Dotenv\Dotenv())->load(getenv('ROOT_DIR').'/.env');
     (new \Dotenv\Dotenv(getenv('ROOT_DIR')))->load();
 }
 
-// Set debug
+// Require classes and functions
+require getenv('SCRIPTS_DIR').'/loader/functions.php';
+
+// Other files' path and variables
+putenv('TEMPLATE_CACHE_DIR='.getenv('ROOT_DIR').\def::paths()['cache_dir'].'/twig');
+putenv('UPLOADS_DIR='.getenv('ROOT_DIR').\def::paths()['uploads_dir']);
+putenv('HTDOCS_DIR='.getenv('ROOT_DIR').\def::paths()['htdocs_dir']);
+putenv('DATA_DIR='.getenv('ROOT_DIR').\def::paths()['data_dir']);
+putenv('USER_TABLE='.\defDb::userEntity());
+putenv('EXTRA_TABLE='.\defDb::extraEntity());
+
 // @see http://stackoverflow.com/a/5879078
-if (getenv('DEBUG') !== false) {
+if (getenv('DEBUG') !== "false") {
     Symfony\Component\Debug\Debug::enable();
-} else {
-    putenv('DEBUG=false');
 }
 
-// Require classes and functions
-require getenv('ROOT_DIR').'/vendor/va/Resources/script/loader/functions.php';
-
-// Set config files' path
-putenv('CONFIG_DIR='.getenv('ROOT_DIR').'/vendor/va/Resources/config');
+return new Kernel\KernelBase(getenv('DEBUG'));

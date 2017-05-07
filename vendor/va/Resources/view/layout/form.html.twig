@@ -32,8 +32,8 @@
 {% endblock %}
 
 {% block scripts %}
-    {{ parent() }}
     <script src="scripts/jquery-resize/jquery.debouncedresize.js"></script>
     <script src="scripts/jquery-resize/jquery.throttledresize.js"></script>
     <script src="scripts/form.js"></script>
+    {{ parent() }}
 {% endblock %}

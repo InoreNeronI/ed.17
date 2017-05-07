@@ -31,7 +31,7 @@ final class def extends defDB
     private static function loadCodes()
     {
         if (!static::$dbCodesLoaded) {
-            static::$dbCodes = parseConfig(getenv('CONFIG_DIR').'/security', 'codes')['codes'];
+            static::$dbCodes = parseConfig(getenv('ROOT_DIR').'/app/config', 'codes')['codes'];
             static::$dbCodesLoaded = true;
         }
     }
@@ -39,7 +39,7 @@ final class def extends defDB
     private static function loadCredentials()
     {
         if (!static::$dbCredentialsLoaded) {
-            static::$dbCredentials = parseConfig(getenv('CONFIG_DIR').'/security', 'credentials')['credentials'];
+            static::$dbCredentials = parseConfig(getenv('ROOT_DIR').'/app/config', 'credentials')['credentials'];
             static::$dbCredentialsLoaded = true;
         }
     }
@@ -47,7 +47,7 @@ final class def extends defDB
     private static function loadTargets()
     {
         if (!static::$dbTargetsLoaded) {
-            static::$dbTargets = parseConfig(getenv('CONFIG_DIR').'/security', 'targets')['targets'];
+            static::$dbTargets = parseConfig(getenv('ROOT_DIR').'/app/config', 'targets')['targets'];
             static::$dbTargetsLoaded = true;
         }
     }
@@ -55,7 +55,7 @@ final class def extends defDB
     private static function loadUploaders()
     {
         if (!static::$dbUploadersLoaded) {
-            static::$dbUploaders = parseConfig(getenv('CONFIG_DIR').'/security', 'uploaders')['uploaders'];
+            static::$dbUploaders = parseConfig(getenv('ROOT_DIR').'/app/config', 'uploaders')['uploaders'];
             static::$dbUploadersLoaded = true;
         }
     }
@@ -87,7 +87,7 @@ final class def extends defDB
     private static function loadConfig()
     {
         if (!static::$configLoaded) {
-            $config = parseConfig(getenv('CONFIG_DIR'), 'config')['configuration'];
+            $config = parseConfig(getenv('ROOT_DIR').'/app/config', 'config')['configuration'];
             static::$homePath = $config['homepage_path'];
             static::$homeSlug = $config['homepage_slug'];
             static::$langCodes = $config['languages'];

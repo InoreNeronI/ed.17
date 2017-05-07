@@ -5,8 +5,6 @@
 <div class="dtc mt3 mt4-ns mt5-l fr w-100">
     {% include '@App/partial/fields/bday-fields.html.twig' %}
 </div>
-<input type="hidden" name="studentDay" value="1"/>
-<input type="hidden" name="studentMonth" value="1"/>
 <div class="dtc mt4 mt5-ns fl w-100 tc">
     <label class="dib {{ fontClassX3 }}fw3 lh-copy tc tr-ns pr2-ns v-mid w-100 w-60-ns" for="studentPassword">{{ codpro }}</label>
     <input class="b ba dib input-reset login-field pv1 pv2-l tc v-mid w-60 w-20-ns" type="password" name="studentPassword" id="studentPassword" required oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('{{ validation.option['text'] }}')" autocomplete="off"/>

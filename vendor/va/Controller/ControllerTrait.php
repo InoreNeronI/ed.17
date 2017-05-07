@@ -2,6 +2,7 @@
 
 namespace Controller;
 
+use Doctrine\DBAL;
 use Helper;
 use Security;
 use Symfony\Component\HttpFoundation;
@@ -68,14 +69,19 @@ trait ControllerTrait
             $args = $request->request->all();
             /** @var Security\Authorization $manager */
             $manager = $this->getAuthManager('Security\Authorization', static::authorize($args));
+            /** @var DBAL\Connection $cn */
+            $cn = $manager->getConnection();
+            /** @var string $db */
+            $db = $cn->getDatabase();
 
-            if ($manager->getConnection()->getDatabasePlatform()->getName() === 'sqlite') {
-                $dbName = basename($manager->getConnection()->getDatabase(), '.'.pathinfo($manager->getConnection()->getDatabase(), PATHINFO_EXTENSION));
+            if ($cn->getDatabasePlatform()->getName() === 'sqlite') {
+                $dbName = basename($db, '.'.pathinfo($db, PATHINFO_EXTENSION));
             } else {
-                $dbName = $manager->getConnection()->getDatabase();
+                $dbName = $db;
             }
             /** @var array $data */
             $data = $manager->checkCredentials($args, $dbName, getenv('USER_TABLE'));
+            $cn->close();
         }
 
         return $this->localizeMessages($request, $data);

@@ -18,17 +18,24 @@
   "require-dev": {
     "andig/dbcopy": "@dev",
     "incenteev/composer-parameter-handler": "@stable",
+    "neronmoon/scriptsdev": "@stable",
     "sensiolabs/security-checker": "@stable",
     "symfony/finder": "@stable",
     "symfony/var-dumper": "@stable"
   },
   "scripts": {
-    "post-install-cmd": "printf \"\\n\\tVendors has been installed succesfully\\n\"",
-    "post-update-cmd": "printf \"\\n\\tVendors has been updated succesfully\\n\"",
+    "build-install": "@install --no-ansi --no-dev --no-interaction --no-progress --no-scripts",
+    "build-update": "@update --no-ansi --no-dev --no-interaction --no-progress --no-scripts",
+    "codefix": "php ../../bin/php-cs.phar fix --path-mode=intersection ../.. --config=../../.php_cs",
+    "post-package-install": "sh -c \"Resources/script/shell/clean.sh .. va\"",
+    "post-install-cmd": ["npm --prefix \"Resources/config\" install", "@pre-build", "printf \"\\n\\tVendors has been installed succesfully\\n\""],
+    "post-update-cmd": ["npm --prefix \"Resources/config\" update", "@pre-build", "printf \"\\n\\tVendors has been updated succesfully\\n\""],
+    "pre-autoload-dump": "true",
+    "pre-build": ["@pre-build-assets", "@pre-build-source", "@composer dump-autoload"],
+    "pre-build-assets": "bash -c \"Resources/script/shell/publish.sh ../.. Resources/config\"",
+    "pre-build-source": "cp -Rn .. ../../src",
     "pre-install-cmd": "printf \"\\n\\tInstalling vendors\\n\\n\"",
-    "pre-update-cmd": "printf \"\\n\\tUpdating vendors\\n\\n\"",
-    "production-install": "@install --no-ansi --no-dev --no-interaction --no-progress --no-scripts",
-    "production-update": "@update --no-ansi --no-dev --no-interaction --no-progress --no-scripts"
+    "pre-update-cmd": "printf \"\\n\\tUpdating vendors\\n\\n\""
   },
   "autoload": {
     "psr-4": {"": "."}
@@ -36,6 +43,7 @@
   "config": {
     "bin-dir": "../../bin",
     "optimize-autoloader": true,
+    "platform": {"php": "5.4"},
     "preferred-install": "dist",
     "vendor-dir": ".."
   },
@@ -44,8 +52,8 @@
   "extra": {
     "incenteev-parameters": [{
       "file": "../../app/connection.yml",
-      "dist-file": "../../app/connection.dist.yml"}
-    ],
+      "dist-file": "Resources/config/connection.dist.yml"
+    }],
     "scripts-dev": {
       "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
       "post-install-cmd": ["@build-parameters"],

@@ -1,23 +1,24 @@
 #!/usr/bin/env bash
 
+test $# == 2 || exit 1
 export HTDOCS_DIR
-HTDOCS_DIR=./web
+HTDOCS_DIR=$1/web
 export PUBLIC_DIR
-PUBLIC_DIR=./vendor/va/Resources/public
+PUBLIC_DIR=$1/vendor/va/Resources/public
 
 printf "\\n\\tSyncing Public Vendors\\n\\n"
 [ -d "${HTDOCS_DIR}" ] || mkdir ${HTDOCS_DIR}
 [ -d "${HTDOCS_DIR}/scripts/jquery" ] || mkdir -pv "${HTDOCS_DIR}/scripts/jquery"
-cp -rv ./node_modules/jquery/dist/jquery.* ${HTDOCS_DIR}/scripts/jquery
-#cp -rv ./node_modules/jquery-file-download/src/Scripts/jquery.fileDownload.js ${HTDOCS_DIR}/scripts
+cp -rv $2/node_modules/jquery/dist/jquery.* ${HTDOCS_DIR}/scripts/jquery
+#cp -rv $2/node_modules/jquery-file-download/src/Scripts/jquery.fileDownload.js ${HTDOCS_DIR}/scripts
 [ -d "${HTDOCS_DIR}/scripts/jquery-resize" ] || mkdir -pv "${HTDOCS_DIR}/scripts/jquery-resize"
-cp -rv ./node_modules/jquery-debounced-and-throttled-resize/jquery.* ${HTDOCS_DIR}/scripts/jquery-resize
-cp -rv ./node_modules/jquery-resizable-dom/dist/jquery-* ${HTDOCS_DIR}/scripts/jquery-resize
-cp -rv ./node_modules/tachyons/css ${HTDOCS_DIR}/styles
-cp -rv ./node_modules/font-awesome/css/font-awesome.min.css ${HTDOCS_DIR}/styles
-cp -rv ./node_modules/font-awesome/fonts ${HTDOCS_DIR}
+cp -rv $2/node_modules/jquery-debounced-and-throttled-resize/jquery.* ${HTDOCS_DIR}/scripts/jquery-resize
+cp -rv $2/node_modules/jquery-resizable-dom/dist/jquery-* ${HTDOCS_DIR}/scripts/jquery-resize
+cp -rv $2/node_modules/tachyons/css ${HTDOCS_DIR}/styles
+cp -rv $2/node_modules/font-awesome/css/font-awesome.min.css ${HTDOCS_DIR}/styles
+cp -rv $2/node_modules/font-awesome/fonts ${HTDOCS_DIR}
 [ -d "${HTDOCS_DIR}/images/jquery-resize" ] || mkdir -pv "${HTDOCS_DIR}/images/jquery-resize"
-cp -rv ./node_modules/jquery-resizable-dom/assets/* ${HTDOCS_DIR}/images/jquery-resize
+cp -rv $2/node_modules/jquery-resizable-dom/assets/* ${HTDOCS_DIR}/images/jquery-resize
 printf "\\n\\tSyncing Public Files\\n\\n"
 [ -d "${HTDOCS_DIR}" ] && cp -rv ${PUBLIC_DIR}/*.php ${HTDOCS_DIR}
 [ -d "${HTDOCS_DIR}/fonts" ] || mkdir -pv "${HTDOCS_DIR}/fonts"
