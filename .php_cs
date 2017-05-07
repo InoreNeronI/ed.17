@@ -8,7 +8,7 @@
 ini_set('phar.readonly', 0); // Could be done in php.ini
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__)
+    ->in([__DIR__, 'vendor/va'])
     ->ignoreDotFiles(true)
     ->ignoreVCS(true)
     ->exclude(['app/cache', 'build', 'vendor'])

@@ -17,4 +17,5 @@
 !/vendor/
 /vendor/*
 !/vendor/composer.*
+!/vendor/va
 /web/

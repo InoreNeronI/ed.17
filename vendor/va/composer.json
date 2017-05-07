@@ -1,7 +1,4 @@
 {
-  "name": "isei-ivei/probak-pruebas",
-  "author": "ISEI - IVEI | Irakas Sistema Ebaluatu eta Ikertzeko Erakundea - Instituto Vasco de Evaluación e Investigación Educativa",
-  "homepage": "http://ediagnostikoak.eus",
   "require": {
     "php": ">=5.4",
     "ext-pdo_mysql": "*",
@@ -13,7 +10,6 @@
     "symfony/http-kernel": "@stable",
     "symfony/http-foundation": "@stable",
     "symfony/routing": "@stable",
-    "symfony/security": "@stable",
     "symfony/yaml": "@stable",
     "tholu/php-packer": "@stable",
     "twig/twig": "@stable",
@@ -35,25 +31,25 @@
     "production-update": "@update --no-ansi --no-dev --no-interaction --no-progress --no-scripts"
   },
   "autoload": {
-    "psr-4": {"App\\": "../src"}
+    "psr-4": {"": "."}
+  },
+  "config": {
+    "bin-dir": "../../bin",
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "vendor-dir": ".."
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
     "incenteev-parameters": [{
-      "file": "../app/connection.yml",
-      "dist-file": "../app/connection.dist.yml"}
+      "file": "../../app/connection.yml",
+      "dist-file": "../../app/connection.dist.yml"}
     ],
     "scripts-dev": {
       "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
       "post-install-cmd": ["@build-parameters"],
       "post-update-cmd": ["@build-parameters"]
     }
-  },
-  "config": {
-    "bin-dir": "../bin",
-    "optimize-autoloader": true,
-    "preferred-install": "dist",
-    "vendor-dir": "."
   }
 }

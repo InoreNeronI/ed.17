@@ -1,0 +1,25 @@
+# Base dirs configuration
+paths:
+  # Cache's path
+  cache_dir: /app/cache
+
+  # Data files' path
+  data_dir: /app/config
+
+  # Document root files' pathr
+  htdocs_dir: /web
+
+  # Logs files' path
+  logs_dir: /app/logs
+
+  # Public resource files' path
+  public_resources_dir: /vendor/va/Resources/public
+
+  # Template files' path
+  templates_dir: /vendor/va/Resources/view
+
+  # Translation files' path
+  translations_dir: /vendor/va/Resources/translation
+
+  # Uploaded files' path
+  uploads_dir: /uploads
