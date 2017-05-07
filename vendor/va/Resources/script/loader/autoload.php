@@ -7,7 +7,7 @@ if (PHP_VERSION_ID < 50400) {
 }
 
 // Set root dir
-putenv('ROOT_DIR='.dirname(getcwd()));
+putenv('ROOT_DIR='.(php_sapi_name() === 'cli' ? getcwd() : dirname(getcwd())));
 
 // Require error handler
 require getenv('ROOT_DIR').'/vendor/va/Resources/script/errorHandler.php';

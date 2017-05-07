@@ -36,21 +36,21 @@ class DataMergeCommand extends Console\Command\Command
         if ($path === 'reset') {
             return static::resetDatabase();
         }
-        if (!$path = realpath($path)) {
+        if (!(static::$filesSourcePath = realpath($path))) {
             throw new \Exception(sprintf('Cannot read `%s` path', $path));
         }
-        $output->writeln(PHP_EOL.sprintf('Parsing `%s` folder...', $path));
-        static::parseFiles($path, '/\.zip$/');
+        $output->writeln(PHP_EOL.sprintf('Parsing `%s` folder...', static::$filesSourcePath));
+        static::parseFiles(static::$filesSourcePath, '/\.zip$/');
         $output->writeln(PHP_EOL.sprintf('...Ok! Found %s files', count(static::$files)));
 
-        static::$filesSourcePath = $path;
         $application = new DataExtractCommand('Database extract tool');
         //$conn = static::getConnection();
         $banner = '';
         foreach (static::$files as $filePath => $uploadData) {
+            static::$filesCurrentFolder = dirname($filePath);
             $label = '~~ '.sprintf('%s -> `%s`, version: %s',
                     $uploadData['title'],
-                    basename(static::$filesCurrentFolder = dirname($filePath)).str_replace(static::$filesSourcePath, '', $filePath),
+                    str_replace(static::$filesSourcePath.DIRECTORY_SEPARATOR, '', $filePath),
                     $uploadData['version']).' ~~';
             $banner = '';
             for ($i = 0; $i < strlen($label); ++$i) {
