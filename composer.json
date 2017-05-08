@@ -1,6 +1,5 @@
 {
   "require-dev": {
-    "phpstan/phpstan": "@dev",
     "wikimedia/composer-merge-plugin": "@dev"
   },
   "scripts": {
@@ -36,28 +35,16 @@
       "bin-install": [
         "printf \"\\n\"",
         "[ -d \"bin\" ] || mkdir -v bin",
-        "[ -e \"bin/box.phar\" ] || curl -Lo bin/box.phar https://github.com/box-project/box2/releases/download/2.7.5/box-2.7.5.phar",
-        "[ -e \"bin/box.phar.sig\" ] || curl -Lo bin/box.phar.sig https://github.com/box-project/box2/releases/download/2.7.5/box-2.7.5.phar.sig",
-        "[ -e \"bin/checker.phar\" ] || curl -Lo bin/checker.phar http://get.sensiolabs.org/security-checker.phar",
-        "[ -e \"bin/crypto.phar\" ] || curl -Lo bin/crypto.phar https://github.com/defuse/php-encryption/releases/download/v2.0.3/defuse-crypto.phar",
-        "[ -e \"bin/crypto.phar.sig\" ] || curl -Lo bin/crypto.phar.sig https://github.com/defuse/php-encryption/releases/download/v2.0.3/defuse-crypto.phar.sig",
-        "[ -e \"bin/deptrac.phar\" ] || curl -Lo bin/deptrac.phar http://get.sensiolabs.de/deptrac.phar",
         "[ -e \"bin/php-cs.phar\" ] || curl -Lo bin/php-cs.phar https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.3.1/php-cs-fixer.phar",
-        "[ -e \"bin/phpunit.phar\" ] || curl -Lo bin/phpunit.phar https://phar.phpunit.de/phpunit-old.phar",
-        "[ -e \"bin/phpunit.phar.asc\" ] || curl -Lo bin/phpunit.phar.asc https://phar.phpunit.de/phpunit-old.phar.asc",
-        "[ -e \"bin/upgrade-fixer.phar\" ] || curl -Lo bin/upgrade-fixer.phar https://github.com/umpirsky/Symfony-Upgrade-Fixer/releases/download/v0.1.6/symfony-upgrade-fixer.phar",
         "printf \"\\n\\tBinaries has been installed succesfully\\n\\n\""
       ],
       "bin-update": [
         "@bin-install",
-        "php bin/deptrac.phar selfupdate || true",
         "php bin/php-cs.phar selfupdate || true",
-        "php bin/phpunit.phar --self-update || true",
         "printf \"\\n\\tBinaries has been updated succesfully\\n\\n\""
       ],
       "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
       "codefix": "php bin/php-cs.phar fix --config=vendor/var/.php_cs",
-      "deptrac": "php bin/deptrac.phar",
       "post-install-cmd": ["@bin-install", "@build-parameters"],
       "post-update-cmd": ["@bin-update", "@build-parameters"]
     }
