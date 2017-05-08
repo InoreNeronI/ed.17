@@ -59,7 +59,7 @@ class DataExtractCommand extends Console\Command\Command
                 $application->run(new Console\Input\ArrayInput(['--folder' => static::$extractedPath]), $output);
             }
         } else {
-            $output->writeln(PHP_EOL.sprintf('Error %s opening archive `%s`', $zipStatus, $file));
+            $output->writeln(PHP_EOL.sprintf('Error %s opening archive `%s`', $zipStatus, str_replace(DataMergeCommand::$filesSourcePath.DIRECTORY_SEPARATOR, '', $file)));
             ++static::$totalErrors;
         }
     }
