@@ -25,3 +25,4 @@ node_modules/
 /vendor/vlucas/phpdotenv/*
 !/vendor/vlucas/phpdotenv/src/
 /web/
+!/web/media/*_proba*
