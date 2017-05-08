@@ -164,21 +164,6 @@ class DataMergeCommand extends Console\Command\Command
     }
 
     /**
-     * @param string $name
-     * @param array  $columns
-     * @param array  $indexes
-     * @param string $pkIndexName
-     *
-     * @return DBAL\Schema\Table
-     */
-    private static function getTableObj($name, $columns, $indexes = [], $pkIndexName = 'pk')
-    {
-        $pkIndex = new DBAL\Schema\Index($pkIndexName, DataExtractCommand::$versioningTablePrimaryIndex, false, true);
-
-        return new DBAL\Schema\Table($name, $columns, array_merge([$pkIndex], $indexes));
-    }
-
-    /**
      * @param array  $columns
      * @param string $name
      * @param array  $extraFields
@@ -200,6 +185,21 @@ class DataMergeCommand extends Console\Command\Command
         }
 
         return static::getTableObj($name, array_merge($cols, $columns));
+    }
+
+    /**
+     * @param string $name
+     * @param array  $columns
+     * @param array  $indexes
+     * @param string $pkIndexName
+     *
+     * @return DBAL\Schema\Table
+     */
+    private static function getTableObj($name, $columns, $indexes = [], $pkIndexName = 'pk')
+    {
+        $pkIndex = new DBAL\Schema\Index($pkIndexName, DataExtractCommand::$versioningTablePrimaryIndex, false, true);
+
+        return new DBAL\Schema\Table($name, $columns, array_merge([$pkIndex], $indexes));
     }
 
     /**
@@ -328,6 +328,34 @@ class DataMergeCommand extends Console\Command\Command
     }
 
     /**
+     * @param array $arr
+     *
+     * @return mixed
+     */
+    public static function printArray($arr)
+    {
+        return str_replace('Array', '', str_replace('(', '[', str_replace(')', ']', print_r($arr, true))));
+    }
+
+    /**
+     * @see https://github.com/doctrine/dbal/blob/v2.5.12/lib/Doctrine/DBAL/Tools/Console/Command/ImportCommand.php
+     *
+     * @param DBAL\Connection $cn
+     * @param string          $sql
+     *
+     * @return bool
+     */
+    public static function runStatement(DBAL\Connection $cn = null, $sql)
+    {
+        $cn = $cn ?: static::getConnection();
+        $stmt = $cn->prepare($sql);
+        $run = $stmt->execute();
+        $stmt->closeCursor();
+
+        return $run;
+    }
+
+    /**
      * @param string      $sql
      * @param string      $msg
      * @param string|null $name
@@ -351,33 +379,5 @@ class DataMergeCommand extends Console\Command\Command
         }
 
         return false;
-    }
-
-    /**
-     * @see https://github.com/doctrine/dbal/blob/v2.5.12/lib/Doctrine/DBAL/Tools/Console/Command/ImportCommand.php
-     *
-     * @param DBAL\Connection $cn
-     * @param string          $sql
-     *
-     * @return bool
-     */
-    public static function runStatement(DBAL\Connection $cn = null, $sql)
-    {
-        $cn = $cn ?: static::getConnection();
-        $stmt = $cn->prepare($sql);
-        $run = $stmt->execute();
-        $stmt->closeCursor();
-
-        return $run;
-    }
-
-    /**
-     * @param array $arr
-     *
-     * @return mixed
-     */
-    public static function printArray($arr)
-    {
-        return str_replace('Array', '', str_replace('(', '[', str_replace(')', ']', print_r($arr, true))));
     }
 }
