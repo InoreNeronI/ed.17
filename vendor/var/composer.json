@@ -19,7 +19,7 @@
     "andig/dbcopy": "@dev",
     "incenteev/composer-parameter-handler": "@stable",
     "neronmoon/scriptsdev": "@stable",
-    "sensiolabs/security-checker": "@stable",
+    "symfony/console": "@stable",
     "symfony/finder": "@stable",
     "symfony/var-dumper": "@stable"
   },
