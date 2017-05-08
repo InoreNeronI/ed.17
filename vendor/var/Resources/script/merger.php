@@ -6,7 +6,7 @@ if ($argc !== 2) {
 }
 
 ini_set('memory_limit', '-1');
-require 'loader/autoload.php';
+require 'loader.php';
 
 $application = new \Command\DataMergeCommand('Database merge tool');
 
