@@ -18,7 +18,7 @@ node_modules/
 /uploads/
 !/vendor/
 /vendor/*
-!/vendor/va/
+!/vendor/var/
 !/vendor/vlucas/
 /vendor/vlucas/*
 !/vendor/vlucas/phpdotenv/

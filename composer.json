@@ -19,10 +19,10 @@
   "extra": {
     "incenteev-parameters": [{
       "file": "app/connection.yml",
-      "dist-file": "vendor/va/Resources/config/connection.dist.yml"
+      "dist-file": "vendor/var/Resources/config/connection.dist.yml"
     }],
     "merge-plugin": {
-      "require": ["vendor/va/composer.json"],
+      "require": ["vendor/var/composer.json"],
       "recurse": false,
       "replace": false,
       "merge-dev": true,
@@ -51,7 +51,7 @@
         "printf \"\\n\\tBinaries has been updated succesfully\\n\\n\""
       ],
       "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
-      "codefix": "php bin/php-cs.phar fix --config=vendor/va/.php_cs",
+      "codefix": "php bin/php-cs.phar fix --config=vendor/var/.php_cs",
       "deptrac": "php bin/deptrac.phar",
       "post-install-cmd": ["@bin-install", "@build-parameters"],
       "post-update-cmd": ["@bin-update", "@build-parameters"]
