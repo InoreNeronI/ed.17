@@ -159,9 +159,9 @@ class DataExtractCommand extends Console\Command\Command
                 $sm->alterTable(new DBAL\Schema\TableDiff($name, $columns));
 
                 return static::injectStatement($cn, $sql, $token, $build, $output);
-            } else {
-                return true;
             }
+
+            return true;
         }
 
         return false;
@@ -298,7 +298,6 @@ class DataExtractCommand extends Console\Command\Command
             return true;
         } catch (\Exception $e) {
             if (static::diffInsertStatement($cn, $name, $token, $build, $sql, $msg = $e->getMessage(), $output)) {
-
                 return true;
             } elseif (DataMergeCommand::isSkipableStatement($sql, $msg, $name)) {
                 ++static::$totalIgnored;

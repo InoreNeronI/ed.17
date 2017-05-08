@@ -116,7 +116,7 @@ trait KernelTrait
     }
 
     /**
-     * @link https://github.com/symfony/symfony/blob/3.2/src/Symfony/Component/Debug/Exception/FatalThrowableError.php
+     * @see https://github.com/symfony/symfony/blob/3.2/src/Symfony/Component/Debug/Exception/FatalThrowableError.php
      *
      * @param \Throwable $e
      * @param bool       $notice
@@ -147,13 +147,13 @@ trait KernelTrait
     }
 
     /**
-     * @param int           $code
-     * @param string        $file
-     * @param string        $line
-     * @param string        $message
-     * @param string|bool   $notice
-     * @param string        $title
-     * @param int|bool      $status
+     * @param int         $code
+     * @param string      $file
+     * @param string      $line
+     * @param string      $message
+     * @param string|bool $notice
+     * @param string      $title
+     * @param int|bool    $status
      *
      * @return HttpFoundation\Request
      */
@@ -163,7 +163,7 @@ trait KernelTrait
             $title .= ' #'.$code;
         }
         // Something blew up exception, return a 500 response
-        if (!$status || (int)$status < 200) {
+        if (!$status || (int) $status < 200) {
             $status = HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
         }
         static::$headers = array_merge(static::$headers, ['ErrorData' => [

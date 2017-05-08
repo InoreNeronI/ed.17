@@ -68,7 +68,7 @@ class SessionHandler
             throw new \RuntimeException('Couldn\'t save to Sessions\' default path because write access isn\'t granted');
         }
         $this->options = $options;
-        $this->debug = (bool)getenv('DEBUG');
+        $this->debug = (bool) getenv('DEBUG');
         $this->session = null;
     }
 
@@ -87,7 +87,9 @@ class SessionHandler
      */
     public function startSession()
     {
-        return /*$this->debug ? $this->doctrineSession('ed_2017_session')->start() : */$this->filesystemSession()->start();
+        $session = $this->doctrineSession('session');
+
+        return $session->isStarted() || $session->start();
     }
 
     /**
@@ -206,6 +208,7 @@ class SessionHandler
      */
     private function doctrineSession($entity, $id = 'session_id', $data = 'session_value', $time = 'session_time')
     {
+        $this->setSessionConfig('user');
         /** @var Handler\Session\DoctrineSessionHandler $storage */
         $storage = new HttpFoundation\Session\Storage\NativeSessionStorage(
             $this->options,

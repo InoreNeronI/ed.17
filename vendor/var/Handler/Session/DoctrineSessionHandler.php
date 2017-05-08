@@ -39,16 +39,17 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     /**
      * DoctrineSessionHandler constructor.
      *
-     * @param array $args
+     * @param array      $args
+     * @param array|null $dbParams
      *
      * @throws \InvalidArgumentException When "entity" option is not provided
      */
-    public function __construct(array $args)
+    public function __construct(array $args, $dbParams = null)
     {
         if (!isset($args['entity'])) {
             throw new \InvalidArgumentException('You must provide the "entity" option for a DoctrineSessionStorage.');
         }
-        $this->connection = DBAL\DriverManager::getConnection(\defDb::dbDist());
+        $this->connection = DBAL\DriverManager::getConnection($dbParams ?: \defDb::dbDist());
         $this->entity = $args['entity'];
         $this->idCol = $args['id'];
         $this->dataCol = $args['data'];

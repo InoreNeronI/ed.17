@@ -50,4 +50,4 @@ if (getenv('DEBUG') !== 'false' && getenv('DEBUG') !== 'false') {
     putenv('DEBUG='.false);
 }
 
-return new Kernel\KernelBase((bool)getenv('DEBUG'));
+return new Kernel\KernelBase((bool) getenv('DEBUG'));
