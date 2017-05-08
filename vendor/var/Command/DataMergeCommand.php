@@ -22,7 +22,8 @@ class DataMergeCommand extends Console\Command\Command
         $this->setName('merge-dbs')
             ->setDescription('Merge all databases matching the given prefix')
             ->addOption('folder', 'f', Console\Input\InputOption::VALUE_REQUIRED, 'Path to the folder containing all `data.zip` files')
-            ->addOption('prefix', 'p', Console\Input\InputOption::VALUE_OPTIONAL, 'Child databases prefix');
+            ->addOption('prefix', 'p', Console\Input\InputOption::VALUE_OPTIONAL, 'Child databases prefix')
+            ->addOption('reverse', 'rev', Console\Input\InputOption::VALUE_OPTIONAL, 'Start from de end', false);
     }
 
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
@@ -40,7 +41,7 @@ class DataMergeCommand extends Console\Command\Command
             throw new \Exception(sprintf('Cannot read `%s` path', $path));
         }
         $output->writeln(PHP_EOL.sprintf('Parsing `%s` folder...', static::$filesSourcePath));
-        static::parseFiles(static::$filesSourcePath, '/\.zip$/');
+        static::parseFiles(static::$filesSourcePath, '/\.zip$/', $input->getOption('reverse'));
         $output->writeln(PHP_EOL.sprintf('...Ok! Found %s files', count(static::$files)));
 
         $application = new DataExtractCommand('Database extract tool');
@@ -78,8 +79,9 @@ class DataMergeCommand extends Console\Command\Command
      *
      * @param string $folder
      * @param string $pattern
+     * @param bool   $reverse
      */
-    private static function parseFiles($folder, $pattern)
+    private static function parseFiles($folder, $pattern, $reverse = false)
     {
         // See: http://stackoverflow.com/a/27956187
         $dir = new RecursiveDirectoryIterator($folder, \FilesystemIterator::CURRENT_AS_FILEINFO);
@@ -92,8 +94,8 @@ class DataMergeCommand extends Console\Command\Command
         $count = static::$filesCount;
         foreach ($files as $key => $file) {
             $parent = dirname($key);
-            $vPath = $parent.DIRECTORY_SEPARATOR.'version';
             /*$uploadData = explode('+', basename($parent));*/
+            $vPath = $parent.DIRECTORY_SEPARATOR.'version';
             static::$files[$key] = [
                 'title' => sprintf('File %s of %s', static::$filesCount - --$count, static::$filesCount),
                 'version' => trim(is_file($vPath) ? file_get_contents($vPath) ?: DataExtractCommand::$baseBuild : DataExtractCommand::$baseBuild),
