@@ -96,7 +96,7 @@ class TwigHandler
         $autoescape = false,
         $strictVariables = true)
     {
-        static::load(getenv('TEMPLATE_FILES_DIR'), getenv('TEMPLATE_CACHE_DIR'), $autoescape, getenv('DEBUG'), $strictVariables);
+        static::load(getenv('TEMPLATE_FILES_DIR'), getenv('TEMPLATE_CACHE_DIR'), $autoescape, (bool)getenv('DEBUG'), $strictVariables);
 
         return static::$twig->render(static::getTemplatePath($slug), $context);
     }

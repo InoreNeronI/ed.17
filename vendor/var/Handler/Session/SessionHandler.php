@@ -63,17 +63,12 @@ class SessionHandler
     {
         $this->expireTime = $expireTime;
         // Get session save-path.
-        if (is_null($savePath)) {
-            $savePath = ini_get('session.save_path');
-        } else {
-            $savePath = getenv('ROOT_DIR').$savePath;
-        }
-        if (!is_writable($savePath) && !mkdir($savePath, 0775, true)) {
+        $this->savePath = empty($savePath) ? ini_get('session.save_path') : getenv('ROOT_DIR').$savePath;
+        if (!is_writable($this->savePath) && !mkdir($this->savePath, 0775, true)) {
             throw new \RuntimeException('Couldn\'t save to Sessions\' default path because write access isn\'t granted');
         }
-        $this->savePath = $savePath;
         $this->options = $options;
-        $this->debug = getenv('DEBUG');
+        $this->debug = (bool)getenv('DEBUG');
         $this->session = null;
     }
 
@@ -179,7 +174,7 @@ class SessionHandler
      */
     private function sqliteSession()
     {
-        if (!extension_loaded('sqlite')) {
+        if (!(extension_loaded('sqlite') || extension_loaded('sqlite3'))) {
             throw new \RuntimeException('PHP does not have "sqlite" extension enabled');
         }
         $this->setSessionConfig('sqlite');

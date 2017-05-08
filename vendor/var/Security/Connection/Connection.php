@@ -46,7 +46,7 @@ class Connection implements ConnectionInterface
             'driver' => $driver,
             'driverOptions' => $options,
         ];
-        static::$debug = getenv('DEBUG');
+        static::$debug = (bool)getenv('DEBUG');
     }
 
     /**

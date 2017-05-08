@@ -162,8 +162,8 @@ trait KernelTrait
         if ($code && $code !== 0) {
             $title .= ' #'.$code;
         }
-        if (!$status) {
-            // Something blew up exception, return a 500 response
+        // Something blew up exception, return a 500 response
+        if (!$status || (int)$status < 200) {
             $status = HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
         }
         static::$headers = array_merge(static::$headers, ['ErrorData' => [
