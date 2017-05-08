@@ -1,0 +1,15 @@
+{
+  "main": "vendor/autoload.php",
+  "output": "vendor.phar",
+  "chmod": "0755",
+  "directories": ["vendor"],
+  "finder": [
+    {
+      "name": "*.*",
+      "exclude": ["Tests","tests","composer.json","composer.lock"],
+      "in": "vendor"
+    }
+  ],
+  "git-version": "git_branch",
+  "stub": true
+}
