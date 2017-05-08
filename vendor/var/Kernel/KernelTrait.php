@@ -108,53 +108,70 @@ trait KernelTrait
             return static::getFallbackResponse($e, true);
         } catch (\Exception $e) {
             return static::getFallbackResponse($e);
+        } catch (\Throwable $e) {
+            return static::getFallbackResponse($e);
         }
 
         return $response;
     }
 
     /**
-     * @param \Exception $e
+     * @link https://github.com/symfony/symfony/blob/3.2/src/Symfony/Component/Debug/Exception/FatalThrowableError.php
+     *
+     * @param \Throwable $e
      * @param bool       $notice
      *
      * @return HttpFoundation\Response
      */
-    private static function getFallbackResponse(\Exception $e, $notice = false)
+    private static function getFallbackResponse($e, $notice = false)
     {
-        $controller = new Controller\ControllerBase();
-        $request = static::prepareExceptionRequest($e, $notice);
-        $response = $controller->renderAction($request);
+        if (class_exists('ParseError') && $e instanceof \ParseError) {
+            $title = 'Parse error';
+            $severity = E_PARSE;
+        } elseif (class_exists('TypeError') && $e instanceof \TypeError) {
+            $title = 'Type error';
+            $severity = E_RECOVERABLE_ERROR;
+        // No such route exception, return a 404 response
+        } elseif ($e instanceof Routing\Exception\ResourceNotFoundException || $e instanceof Routing\Exception\MethodNotAllowedException) {
+            $title = 'Resource not found';
+            $severity = HttpFoundation\Response::HTTP_NOT_FOUND;
+        } else {
+            $title = 'Error';
+            $severity = E_ERROR;
+        }
+
+        $request = static::prepareExceptionRequest($e->getCode(), $e->getFile(), $e->getLine(), $e->getMessage(), $notice, $title, $severity);
+        $response = (new Controller\ControllerBase())->renderAction($request);
 
         return static::getResponse($response, HttpFoundation\Response::HTTP_SEE_OTHER);
     }
 
     /**
-     * @param \Exception $exception
-     * @param bool       $notice
-     * @param string     $title
+     * @param int           $code
+     * @param string        $file
+     * @param string        $line
+     * @param string        $message
+     * @param string|bool   $notice
+     * @param string        $title
+     * @param int|bool      $status
      *
      * @return HttpFoundation\Request
      */
-    private static function prepareExceptionRequest(\Exception $exception, $notice = false, $title = 'Error')
+    private static function prepareExceptionRequest($code, $file, $line, $message, $notice = false, $title = 'Error', $status = null)
     {
-        if ($exception instanceof Routing\Exception\ResourceNotFoundException ||
-            $exception instanceof Routing\Exception\MethodNotAllowedException) {
-            $title = 'Resource not found';
-            // No such route exception, return a 404 response
-            $status = HttpFoundation\Response::HTTP_NOT_FOUND;
-        } else {
-            if ($exception->getCode() !== 0) {
-                $title .= ' #'.$exception->getCode();
-            }
+        if ($code && $code !== 0) {
+            $title .= ' #'.$code;
+        }
+        if (!$status) {
             // Something blew up exception, return a 500 response
             $status = HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
         }
         static::$headers = array_merge(static::$headers, ['ErrorData' => [
             'debug' => static::$debug,
-            'file' => $file = $exception->getFile(),
+            'file' => $file,
             'filename' => basename($file),
-            'line' => $exception->getLine(),
-            'message' => $exception->getMessage(),
+            'line' => $line,
+            'message' => $message,
             'status' => $status,
             'notice' => $notice,
             'title' => $title, ]]);

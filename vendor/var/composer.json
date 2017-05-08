@@ -33,7 +33,7 @@
     "pre-autoload-dump": "true",
     "pre-build": ["@pre-build-assets", "@pre-build-source", "@composer dump-autoload"],
     "pre-build-assets": "bash -c \"Resources/script/shell/publish.sh ../.. var\"",
-    "pre-build-source": "#cp -Rn .. ../../src || true",
+    "pre-build-source": "cp -Rn .. ../../src",
     "pre-install-cmd": "printf \"\\n\\tInstalling vendors\\n\\n\"",
     "pre-update-cmd": "printf \"\\n\\tUpdating vendors\\n\\n\""
   },
@@ -43,7 +43,6 @@
   "config": {
     "bin-dir": "../../bin",
     "optimize-autoloader": true,
-    "platform": {"php": "5.4"},
     "preferred-install": "dist",
     "vendor-dir": ".."
   },
