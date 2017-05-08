@@ -47,7 +47,7 @@ putenv('USER_TABLE='.\defDb::userEntity());
 putenv('EXTRA_TABLE='.\defDb::extraEntity());
 
 // @see http://stackoverflow.com/a/5879078
-if (getenv('DEBUG') !== "false") {
+if (getenv('DEBUG') !== 'false') {
     Symfony\Component\Debug\Debug::enable();
 }
 

@@ -26,7 +26,7 @@
   "scripts": {
     "build-install": "@install --no-ansi --no-dev --no-interaction --no-progress --no-scripts",
     "build-update": "@update --no-ansi --no-dev --no-interaction --no-progress --no-scripts",
-    "codefix": "php ../../bin/php-cs.phar fix --path-mode=intersection ../.. --config=../../.php_cs",
+    "codefix": "php ../../bin/php-cs.phar fix --config=.php_cs",
     "post-package-install": "sh -c \"Resources/script/shell/clean.sh .. va\"",
     "post-install-cmd": ["npm --prefix \"Resources/config\" install", "@pre-build", "printf \"\\n\\tVendors has been installed succesfully\\n\""],
     "post-update-cmd": ["npm --prefix \"Resources/config\" update", "@pre-build", "printf \"\\n\\tVendors has been updated succesfully\\n\""],

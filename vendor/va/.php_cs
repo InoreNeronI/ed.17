@@ -8,10 +8,10 @@
 ini_set('phar.readonly', 0); // Could be done in php.ini
 
 $finder = PhpCsFixer\Finder::create()
-    ->in([__DIR__, __DIR__.'/vendor/va'])
+    ->in([$dir = __DIR__, $dir.'/../..'])
     ->ignoreDotFiles(true)
     ->ignoreVCS(true)
-    ->exclude(['app/cache', 'build', 'src', 'vendor'])
+    ->exclude([$dir.'/../../app/cache', $dir.'/../../build', $dir.'/../../target', $dir.'/../../vendor'])
     ->files()
     ->name('*.php');
 
