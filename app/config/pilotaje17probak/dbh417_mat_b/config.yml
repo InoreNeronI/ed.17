@@ -1,0 +1,119 @@
+
+pageImages:
+  p00:
+    - p00b_cen_t02_t02_50_img.png
+  p01:
+    - p01a_cen_t02_t02_90_cas.png
+    - p01a_cen_t02_t02_90_eus.png
+  p02:
+    - p02a_cen_t02_t02_90_cas.png
+    - p02a_cen_t02_t02_90_eus.png
+  p03:
+    - p03a_dch_t02_t02_20_img.png
+    - p03a_cen_t03_t03_90_cas.png
+    - p03a_cen_t03_t03_90_eus.png
+  p04:
+    - p04a_dch_t02_t02_20_img.png
+    - p04a_cen_t03_t03_90_cas.png
+    - p04a_cen_t03_t03_90_eus.png
+    - p04b_cen_t06_t06_80_cas.png
+    - p04b_cen_t06_t06_80_eus.png
+  p05:
+    - p05a_cen_t01_t01_30_img.png
+    - p05a_cen_t02_t02_70_cas.png
+    - p05a_cen_t02_t02_70_eus.png
+    - p05b_cen_t03_t03_100_img.png
+    - p05b_cen_t04_t04_100_img.png
+    - p05b_cen_t05_t05_100_img.png
+    - p05b_cen_t06_t06_100_img.png
+  p06:
+    - p06a_cen_t01_t01_30_img.png
+    - p06a_cen_t02_t02_70_cas.png
+    - p06a_cen_t02_t02_70_eus.png
+  p07:
+    - p07a_cen_t01_t01_30_img.png
+    - p07a_cen_t02_t02_70_cas.png
+    - p07a_cen_t02_t02_70_eus.png
+  p08:
+    - p08a_cen_t01_t01_30_img.png
+    - p08a_cen_t02_t02_70_cas.png
+    - p08a_cen_t02_t02_70_eus.png
+    - p08b_cen_t01_t01_60_cas.png
+    - p08b_cen_t01_t01_60_eus.png
+  p09:
+    - p09a_dch_t02_t02_30_img.png
+    - p09a_cen_t03_t03_80_cas.png
+    - p09a_cen_t03_t03_80_eus.png
+  p10:
+    - p10a_dch_t02_t02_30_img.png
+    - p10a_cen_t03_t03_80_cas.png
+    - p10a_cen_t03_t03_80_eus.png
+  p11:
+    - p11a_cen_t01_t01_40_img.png
+    - p11a_cen_t02_t02_90_cas.png
+    - p11a_cen_t02_t02_90_eus.png
+    - p11b_cen_t02_t02_100_img.png
+    - p11b_cen_t03_t03_100_img.png
+    - p11b_cen_t04_t04_100_img.png
+    - p11b_cen_t05_t05_100_img.png
+  p12:
+    - p12a_cen_t01_t01_50_img.png
+    - p12a_cen_t02_t02_90_cas.png
+    - p12a_cen_t02_t02_90_eus.png
+  p13:
+    - p13a_cen_t01_t01_50_img.png
+    - p13a_cen_t02_t02_90_cas.png
+    - p13a_cen_t02_t02_90_eus.png
+  p14:
+    - p14a_cen_t02_t02_100_img.png
+  p15:
+    - p15a_cen_t02_t02_80_img.png
+    - p15b_cen_t01_t01_70_img.png
+  p16:
+    - p16a_cen_t02_t02_80_img.png
+    - p16b_cen_t01_t01_70_img.png
+  p17:
+    - p17a_cen_t02_t02_80_img.png
+    - p17b_cen_t01_t01_30_img.png
+  p18:
+    - p18a_cen_t02_t02_80_img.png
+  p19:   
+    - p19b_cen_t01_t01_60_img.jpg
+   
+pageTitles:
+  - p00b_t01
+  - p01a_t01
+  - p02a_t01
+  - p03a_t01
+  - p04a_t01
+  - p05a_t01
+  - p06a_t01
+  - p07a_t01
+  - p08a_t01
+  - p09a_t01
+  - p10a_t01
+  - p11a_t01
+  - p12a_t01
+  - p13a_t01
+  - p14a_t01
+  - p15a_t01
+  - p16a_t01
+  - p17a_t01
+  - p18a_t01
+  - p19a_t03
+ 
+
+pageAreaWidths:
+  p00:
+    b: 100
+  p05:
+    a: 40
+    b: 60
+  p11:
+    a: 40
+    b: 60  
+  p19:
+    b: 100
+
+
+totalPages: 19

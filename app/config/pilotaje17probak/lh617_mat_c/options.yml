@@ -111,7 +111,7 @@ p10:
 
 p11:
   text:
-  libre-xs:
+  simple:
     - p11b_t08
     - p11b_t09
     - p11b_t10
@@ -137,7 +137,7 @@ p13:
     - p13b_t18_f4
 
 p14:
-  libre-xs:
+  libre-m:
     - p14b_t10_f2
     - p14b_t14_f3
     - p14b_t16_f4
@@ -145,10 +145,11 @@ p14:
 
 p15:
   simple:
-    - p15b_t03
-    - p15b_t04
     - p15b_t05
     - p15b_t06
+    - p15b_t07
+    - p15b_t08
+    
 p16:
   simple:
     - p16b_t03
@@ -158,8 +159,6 @@ p16:
 
 p17:
   text:
-    - p17b_t02
-    - p17b_t03
   libre-xs:
     - p17b_t04
   simple:

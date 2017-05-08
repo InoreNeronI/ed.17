@@ -313,6 +313,10 @@ p22:
 
 p23:
   text:
+  - p23a_t05
+  - p23a_t06
+  - p23a_t07
+  - p23a_t08
 
   simple:
     - p23b_t02

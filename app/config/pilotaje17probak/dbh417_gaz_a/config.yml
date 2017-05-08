@@ -48,7 +48,7 @@ pageTitles:
   - p09b_t02
   - p10a_t01
   - p11b_t01
-  - p11b_t02
+  - p11b_t03
 pageAreaWidths:
   p00:
     b: 100
@@ -62,4 +62,4 @@ pageAreaWidths:
     b: 100
   p11:
     b: 100
-totalPages: 12
+totalPages: 11

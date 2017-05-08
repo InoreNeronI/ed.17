@@ -50,6 +50,7 @@ pageTitles:
   - p09a_t01
   - p09a_t02
   - p10b_t01
+  - p11b_t01
   - p11b_t03
 pageAreaWidths:
   p00:
@@ -66,4 +67,4 @@ pageAreaWidths:
     b: 100
   p11:
     b: 100
-totalPages: 12
+totalPages: 11

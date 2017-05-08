@@ -1,0 +1,361 @@
+p00:
+  text:
+    - p00b_t02
+    - p00b_t03
+    - p00b_t04
+    - p00b_t05
+    - p00b_t06
+    - p00b_t07
+p01:
+  text:
+  simple:
+    - p01b_t02
+    - p01b_t03
+    - p01b_t04
+    - p01b_t05
+    - p01b_t07
+    - p01b_t08
+    - p01b_t09
+    - p01b_t10
+p02:
+  libre-l:
+    - p02b_t03
+p03:
+  text:
+  simple:
+    - p03b_t02
+    - p03b_t03
+    - p03b_t04
+    - p03b_t05
+p04:
+  text:
+  simple:
+    - p04b_t02
+    - p04b_t03
+    - p04b_t04
+    - p04b_t05
+p05:
+  text:
+  simple:
+    - p05b_t02
+    - p05b_t03
+    - p05b_t04
+    - p05b_t05
+p06:
+  text:
+  simple:
+    - p06b_t02
+    - p06b_t03
+    - p06b_t04
+    - p06b_t05
+p07:
+  text:
+  libre-s:
+    - p07b_t05_f1
+    - p07b_t07_f2
+    - p07b_t09_f3
+    - p07b_t11_f4
+p08:
+  text:
+  simple:
+    - p08b_t02
+    - p08b_t03
+    - p08b_t04
+    - p08b_t05
+
+p09:
+  text:
+  simple:
+    - p09b_t06_f1
+    - p09b_t07_f1
+    - p09b_t09_f2
+    - p09b_t10_f2
+    - p09b_t12_f3
+    - p09b_t13_f3
+    - p09b_t15_f4
+    - p09b_t16_f4
+    - p09b_t18_f5
+    - p09b_t19_f5
+    - p09b_t21_f6
+    - p09b_t22_f6
+p10:
+  text:
+  simple:
+    - p10b_t02
+    - p10b_t03
+    - p10b_t04
+    - p10b_t05
+p11:
+  text:
+  simple:
+    - p11b_t03
+    - p11b_t04
+    - p11b_t05
+    - p11b_t06
+
+p12:
+  simple:
+    - p12b_t02
+    - p12b_t03
+    - p12b_t04
+    - p12b_t05
+    - p12b_t07
+    - p12b_t08
+    - p12b_t09
+    - p12b_t10
+p13:
+  text:
+  simple:
+    - p13b_t02
+    - p13b_t03
+    - p13b_t04
+    - p13b_t05
+p14:
+  text:
+  simple:
+    - p14b_t03
+    - p14b_t04
+    - p14b_t05
+    - p14b_t06
+p15:
+  text:
+  simple:
+    - p15b_t06_f1
+    - p15b_t07_f1
+    - p15b_t09_f2
+    - p15b_t10_f2
+    - p15b_t12_f3
+    - p15b_t13_f3
+    - p15b_t15_f4
+    - p15b_t16_f4
+    - p15b_t18_f5
+    - p15b_t19_f5
+    - p15b_t21_f6
+    - p15b_t22_f6
+  libre-s:
+    - p15b_t32_f2
+    - p15b_t35_f3
+    - p15b_t38_f4
+    - p15b_t41_f5
+    - p15b_t51_f2
+    - p15b_t54_f3
+    - p15b_t57_f4
+  libre-l:
+    - p15b_t60
+    - p15b_t62
+    - p15b_t64
+    - p15b_t66
+    - p15b_t68
+    - p15b_t70
+    - p15b_t72
+p16:
+  text:
+  simple:
+    - p16b_t02
+    - p16b_t03
+    - p16b_t04
+    - p16b_t05
+p17:
+  text:
+  simple:
+    - p17b_t02
+    - p17b_t03
+    - p17b_t04
+    - p17b_t05
+p18:
+  text:
+  libre-l:
+    - p18b_t05_f1
+    - p18b_t07_f2
+    - p18b_t09_f3
+p19:
+  text:
+  simple:
+    - p19b_t06_f1
+    - p19b_t07_f1
+    - p19b_t09_f2
+    - p19b_t10_f2
+    - p19b_t12_f3
+    - p19b_t13_f3
+    - p19b_t15_f4
+    - p19b_t16_f4
+    - p19b_t18
+    - p19b_t19
+    - p19b_t20
+    - p19b_t21
+p20:
+  text:
+  simple:
+    - p20b_t02
+    - p20b_t03
+    - p20b_t04
+    - p20b_t05
+    - p20b_t11_f1
+    - p20b_t12_f1
+    - p20b_t14_f2
+    - p20b_t15_f2
+    - p20b_t17_f3
+    - p20b_t18_f3
+    - p20b_t20_f4
+    - p20b_t21_f4
+    - p20b_t23_f5
+    - p20b_t24_f5
+    - p20b_t26_f6
+    - p20b_t27_f6
+    - p20b_t29_f7
+    - p20b_t30_f7
+    - p20b_t32_f8
+    - p20b_t33_f8
+p21:
+  text:
+  simple:
+    - p21b_t02
+    - p21b_t03
+    - p21b_t04
+    - p21b_t05
+    - p21b_t11_f1
+    - p21b_t12_f1
+    - p21b_t14_f2
+    - p21b_t15_f2
+    - p21b_t17_f3
+    - p21b_t18_f3
+    - p21b_t20_f4
+    - p21b_t21_f4
+    - p21b_t23_f5
+    - p21b_t24_f5
+    - p21b_t26_f6
+    - p21b_t27_f6
+    - p21b_t29_f7
+    - p21b_t30_f7
+    - p21b_t32_f8
+    - p21b_t33_f8
+p22:
+  simple:
+    - p22b_t02
+    - p22b_t03
+    - p22b_t04
+    - p22b_t05
+    - p22b_t07
+    - p22b_t08
+    - p22b_t09
+    - p22b_t10
+p23:
+  text:
+  libre-s:
+    - p23b_t05_f1
+    - p23b_t07_f2
+    - p23b_t09_f3
+    - p23b_t11_f4
+    - p23b_t21_f1
+    - p23b_t23_f2
+    - p23b_t25_f3
+    - p23b_t27_f4
+    - p23b_t29_f5
+  simple:
+    - p23b_t13
+    - p23b_t14
+    - p23b_t15
+    - p23b_t16
+    - p23b_t31
+    - p23b_t32
+    - p23b_t33
+    - p23b_t34    
+    
+p24:
+  text:
+  simple:
+    - p24b_t06_f1
+    - p24b_t07_f1
+    - p24b_t09_f2
+    - p24b_t10_f2
+    - p24b_t12_f3
+    - p24b_t13_f3
+    - p24b_t15_f4
+    - p24b_t16_f4
+    - p24b_t18_f5
+    - p24b_t19_f5
+    - p24b_t21_f6
+    - p24b_t22_f6
+    - p24b_t24_f7
+    - p24b_t25_f7
+    - p24b_t27
+    - p24b_t28
+    - p24b_t29
+    - p24b_t30
+    - p24b_t32
+    - p24b_t33
+    - p24b_t34
+    - p24b_t35
+p25:
+  text:
+  simple:
+    - p25b_t06_f1
+    - p25b_t07_f1
+    - p25b_t09_f2
+    - p25b_t10_f2
+    - p25b_t12_f3
+    - p25b_t13_f3
+    - p25b_t15_f4
+    - p25b_t16_f4
+    - p25b_t18_f5
+    - p25b_t19_f5
+    - p25b_t21_f6
+    - p25b_t22_f6
+    - p25b_t24
+    - p25b_t25
+    - p25b_t26
+    - p25b_t27
+p26:
+  text:
+  simple:
+    - p26b_t02
+    - p26b_t03
+    - p26b_t04
+    - p26b_t05
+p27:
+  text:
+  simple:
+    - p27b_t02
+    - p27b_t03
+    - p27b_t04
+    - p27b_t05
+p28:
+  text:
+  simple:
+    - p28b_t02
+    - p28b_t03
+    - p28b_t04
+    - p28b_t05
+p29:
+  text:
+  simple:
+    - p29b_t02
+    - p29b_t03
+    - p29b_t04
+    - p29b_t05
+p30:
+  text:
+  simple:
+    - p30b_t02
+    - p30b_t03
+    - p30b_t04
+    - p30b_t05
+    - p30b_t07
+    - p30b_t08
+    - p30b_t09
+    - p30b_t10
+    - p30b_t12
+    - p30b_t13
+    - p30b_t14
+    - p30b_t15
+    - p30b_t17
+    - p30b_t18
+    - p30b_t19
+    - p30b_t20
+p31:
+  text:
+  simple:
+    - p31b_t02
+    - p31b_t03
+    - p31b_t04
+    - p31b_t05

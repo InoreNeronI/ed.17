@@ -59,7 +59,7 @@ pageAreaWidths:
   p04:
     b: 100
   p07:
-    b: 35
+    a: 70
   p08:
     b: 100
 

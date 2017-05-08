@@ -129,18 +129,18 @@ p11:
   text:
 
   simple:
-    - p11b_t05_f1
     - p11b_t06_f1
-    - p11b_t08_f2
+    - p11b_t07_f1
     - p11b_t09_f2
-    - p11b_t11_f3
+    - p11b_t10_f2
     - p11b_t12_f3
-    - p11b_t14_f4
+    - p11b_t13_f3
     - p11b_t15_f4
-    - p11b_t17_f5
+    - p11b_t16_f4
     - p11b_t18_f5
-    - p11b_t20_f6
+    - p11b_t19_f5
     - p11b_t21_f6
+    - p11b_t22_f6
 
 p12:
   libre-s:
@@ -209,10 +209,10 @@ p17:
     - p17b_t02
 
   simple:
+    - p17b_t02
     - p17b_t03
     - p17b_t04
     - p17b_t05
-    - p17b_t06
 p18:
   text:
 

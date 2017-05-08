@@ -2,8 +2,8 @@
 pageImages:
 
   p04:
-    - p04a_cen_t03_t03_90_cas.png
-    - p04a_cen_t03_t03_90_eus.png
+    - p04a_cen_t03_t03_100_cas.png
+    - p04a_cen_t03_t03_100_eus.png
   p05:
     - p05a_cen_t02_t02_100_cas.png
     - p05a_cen_t02_t02_100_eus.png
@@ -35,8 +35,8 @@ pageImages:
     - p17a_cen_t03_t03_100_cas.png
     - p17a_cen_t03_t03_100_eus.png
   p18:
-    - p18a_cen_t06_t06_100_cas.png
-    - p18a_cen_t06_t06_100_eus.png
+    - p18a_cen_t03_t03_100_cas.png
+    - p18a_cen_t03_t03_100_eus.png
   p19:
     - p19a_cen_t04_t04_100_cas.png
     - p19a_cen_t04_t04_100_eus.png
@@ -97,7 +97,12 @@ pageTitles: # All centered texts' codes
 
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
-
+  p18:
+    a: 40
+    b: 60
+  p19:
+    a: 60
+    b: 40  
   p30:
     b: 100
 

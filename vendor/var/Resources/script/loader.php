@@ -1,12 +1,8 @@
 <?php
 
 /** @author Martin Mozos <martinmozos@gmail.com> */
-if (PHP_VERSION_ID < 50400) {
-    /* @throw \Exception */
-    throw new \Exception('At least PHP 5.4 is required; using the latest version is highly recommended.');
-}
 // Set php-script files' path
-putenv('SCRIPTS_DIR='.dirname(__DIR__));
+putenv('SCRIPTS_DIR='.__DIR__);
 // Set resources dir
 putenv('RESOURCES_DIR='.dirname(getenv('SCRIPTS_DIR')));
 // Set root dir
@@ -18,7 +14,7 @@ putenv('TEMPLATE_FILES_DIR='.getenv('RESOURCES_DIR').'/view');
 putenv('TRANSLATIONS_DIR='.getenv('RESOURCES_DIR').'/translation');
 
 // Require error handler
-require getenv('SCRIPTS_DIR').'/errorHandler.php';
+require getenv('SCRIPTS_DIR').'/misc/errorHandler.php';
 
 // Require loader if needed
 /* @var Composer\Autoload\ClassLoader */
@@ -36,7 +32,7 @@ if (is_file(getenv('ROOT_DIR').'/.env')) {
 }
 
 // Require classes and functions
-require getenv('SCRIPTS_DIR').'/loader/functions.php';
+require getenv('SCRIPTS_DIR').'/misc/functions.php';
 
 // Other files' path and variables
 putenv('TEMPLATE_CACHE_DIR='.getenv('ROOT_DIR').\def::paths()['cache_dir'].'/twig');

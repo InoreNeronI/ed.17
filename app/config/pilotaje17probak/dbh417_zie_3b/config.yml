@@ -18,7 +18,7 @@ pageImages:
     - p12a_cen_t02_t02_100_cas.png
     - p12a_cen_t02_t02_100_eus.png
   p13:
-    - p13a_cen_t03_t03_100_img.png
+    - p13a_cen_t03_t03_70_img.png
     - p13b_cen_t01_t01_100_img.png
   p14:
     - p14a_cen_t02_t02_100_eus.png
@@ -26,7 +26,7 @@ pageImages:
   p15:
     - p15a_cen_t01_t01_60_img.png
   p16:
-    - p16a_cen_t02_t02_70_img.png
+    - p16a_cen_t02_t02_50_img.png
   p18:
     - p18a_cen_t02_t02_100_eus.png
     - p18a_cen_t02_t02_100_cas.png 
@@ -37,10 +37,10 @@ pageImages:
     - p19a_cen_t02_t02_100_cas.png
   p20:  
     - p20a_cen_t02_t02_80_img.png
-    - p20b_cen_t01_t01_90_eus.png
-    - p20b_cen_t01_t01_90_cas.png
-    - p20b_cen_t06_t06_90_eus.png
-    - p20b_cen_t06_t06_90_cas.png
+    - p20b_cen_t01_t01_70_eus.png
+    - p20b_cen_t01_t01_70_cas.png
+    - p20b_cen_t06_t06_70_eus.png
+    - p20b_cen_t06_t06_70_cas.png
   p21:
     - p21a_cen_t02_t02_100_cas.png
     - p21a_cen_t02_t02_100_eus.png
@@ -52,13 +52,13 @@ pageImages:
     - p23a_cen_t02_t02_100_eus.png
     - p23a_cen_t02_t02_100_cas.png
   p25: 
-    - p25a_cen_t01_t01_90_img.png
+    - p25a_cen_t01_t01_70_img.png
   p26: 
-    - p26a_cen_t03_t03_80_cas.png
-    - p26a_cen_t03_t03_80_eus.png
+    - p26a_cen_t03_t03_50_cas.png
+    - p26a_cen_t03_t03_50_eus.png
   p27: 
-    - p27a_cen_t02_t02_90_cas.png
-    - p27a_cen_t02_t02_90_eus.png
+    - p27a_cen_t02_t02_70_cas.png
+    - p27a_cen_t02_t02_70_eus.png
   p28: 
     - p28a_cen_t02_t02_100_eus.png
     - p28a_cen_t02_t02_100_cas.png
@@ -67,19 +67,19 @@ pageImages:
     - p28a_cen_t04_t04_100_eus.png
     - p28a_cen_t04_t04_100_cas.png
   p29: 
-    - p29a_cen_t06_t06_100_eus.png
-    - p29a_cen_t06_t06_100_cas.png
+    - p29a_cen_t04_t04_100_eus.png
+    - p29a_cen_t04_t04_100_cas.png
   p30:
-    - p30a_cen_t02_t02_90_img.png
+    - p30a_cen_t02_t02_60_img.jpg
     - p30a_cen_t04_t04_90_cas.png
     - p30a_cen_t04_t04_90_eus.png
     - p30b_cen_t01_t01_60_img.jpg
   p31:
-    - p31a_cen_t02_t02_80_img.png
+    - p31a_cen_t02_t02_100_img.jpg
   p32:
     - p32a_cen_t02_t02_100_img.png
   p33:
-    - p33a_cen_t02_t02_60_img.png
+    - p33a_cen_t02_t02_80_img.png
     - p33b_cen_t06_t06_100_eus.png
     - p33b_cen_t06_t06_100_cas.png
   p34:
@@ -143,13 +143,26 @@ pageTitles: # All centered texts' codes
   - p37a_t01
   - p38a_t01
   - p39a_t01
-  - p40a_t03   
+  - p40a_t01
+  - p40a_t03     
   
 
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
  
+  p13:
+    a: 40
+    b: 60  
+  p21:
+    a: 70
+    b: 30 
+  p27:
+    a: 40
+    b: 60
+  p36:
+    a: 60
+    b: 40
   p40:
     b: 100
 
-totalPages: 41  
+totalPages: 40  

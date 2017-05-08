@@ -88,6 +88,9 @@ pageTitles:
 pageAreaWidths:
   p00:
     b: 100
+  p01:
+    a: 40
+    b: 60
   p05:
     b: 100
   p08:

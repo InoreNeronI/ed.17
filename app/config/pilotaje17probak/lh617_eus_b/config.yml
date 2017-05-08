@@ -46,6 +46,8 @@ pageAreaWidths:
     b: 100
   p03:
     b: 100
+  p04:
+    b: 40
   p07:
     b: 100
 
