@@ -32,7 +32,7 @@
     "post-update-cmd": ["npm --prefix \"Resources/config\" update", "@pre-build", "printf \"\\n\\tVendors has been updated succesfully\\n\""],
     "pre-autoload-dump": "true",
     "pre-build": ["@pre-build-assets", "@pre-build-source", "@composer dump-autoload"],
-    "pre-build-assets": "bash -c \"Resources/script/shell/publish.sh ../.. Resources/config\"",
+    "pre-build-assets": "bash -c \"Resources/script/shell/publish.sh ../.. var\"",
     "pre-build-source": "cp -Rn .. ../../src",
     "pre-install-cmd": "printf \"\\n\\tInstalling vendors\\n\\n\"",
     "pre-update-cmd": "printf \"\\n\\tUpdating vendors\\n\\n\""
