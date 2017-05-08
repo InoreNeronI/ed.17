@@ -25,7 +25,7 @@ codes:
     # DBH4 Eusk
     dbh417_testuak_eus_a:         dbh417_eus_a
     dbh417_testuak_eus_b:         dbh417_eus_b
-    dbh417_testuak_gaz_c:         dbh417_gaz_c
+    dbh417_testuak_eus_c:         dbh417_eus_c
     # DBH4 Gazte
     dbh417_testuak_gaz_a:         dbh417_gaz_a
     dbh417_testuak_gaz_b:         dbh417_gaz_b
@@ -36,11 +36,11 @@ codes:
     dbh417_testuak_zie_bga:       dbh417_zie_bga
     dbh417_testuak_zie_bgb:       dbh417_zie_bgb
     dbh417_testuak_zie_fqa:       dbh417_zie_fqa
-#    dbh417_testuak_zie_fqb:       dbh417_zie_fqb
+    dbh417_testuak_zie_fqb:       dbh417_zie_fqb
     # DBH4 Mate
     dbh417_testuak_mat_a:         dbh417_mat_a
     dbh417_testuak_mat_b:         dbh417_mat_b
-#    dbh417_testuak_mat_c:         dbh417_mat_c
+    dbh417_testuak_mat_c:         dbh417_mat_c
     # DBH4 Inge
     dbh417_testuak_ing_a:         dbh417_ing_a
     dbh417_testuak_ing_b:         dbh417_ing_b

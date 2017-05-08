@@ -116,59 +116,16 @@ class DataExtractCommand extends Console\Command\Command
 
     /**
      * @param DBAL\Connection                $cn
+     * @param string                         $name
+     * @param string                         $token
+     * @param string                         $build
      * @param string                         $sql
      * @param string                         $msg
-     * @param string                         $name
      * @param Console\Output\OutputInterface $output
      *
      * @return bool
      */
-    private static function diffInsertColumnsStatement(DBAL\Connection $cn, $sql, $msg, $name, Console\Output\OutputInterface $output)
-    {
-        if (strpos($msg, '1136 Column count') !== false) {
-            DataMergeCommand::runStatement($cn, str_replace($name, $tmpName = $name.'_'.uniqid(), static::$statementsStructure[$name]));
-            $sm = $cn->getSchemaManager();
-            if (strpos($tmpName, static::$versioningTablePrefix) !== false) {
-                $tmpTable = DataMergeCommand::getVersionedTableObj($sm->listTableColumns($tmpName), $tmpName);
-                $sm->dropTable($tmpName);
-                $sm->createTable($tmpTable);
-            }
-            $oldColumns = $sm->listTableColumns($name);
-            $newColumns = $sm->listTableColumns($tmpName);
-            $sm->dropTable($tmpName);
-
-            if (count($newColumns) > count($oldColumns)) {
-                $columns = [];
-                foreach ($columnsDiff = array_diff(array_keys($newColumns), array_keys($oldColumns)) as $diff) {
-                    array_push($columns, new DBAL\Schema\Column($diff, $newColumns[$diff]->getType(), $newColumns[$diff]->toArray()));
-                }
-                if (!empty($columnsDiff)) {
-                    $output->write(sprintf('Adding %s columns in `%s.%s` -> %s', count($columnsDiff), $cn->getDatabase(), $name, PHP_EOL.PHP_EOL."\t".implode(', ', $columnsDiff).PHP_EOL.PHP_EOL."\t\t\t\t"));
-                    $sm->alterTable(new DBAL\Schema\TableDiff($name, $columns));
-                    try {
-                        DataMergeCommand::runStatement($cn, $sql);
-                    } catch (\Exception $e) {
-                        return static::diffInsertTableStatement($cn, $sql, $e->getMessage(), $name, $output);
-                    }
-                }
-            } else {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param DBAL\Connection                $cn
-     * @param string                         $sql
-     * @param string                         $msg
-     * @param string                         $name
-     * @param Console\Output\OutputInterface $output
-     *
-     * @return bool
-     */
-    private static function diffInsertTableStatement(DBAL\Connection $cn, $sql, $msg, $name, Console\Output\OutputInterface $output)
+    private static function diffInsertStatement(DBAL\Connection $cn, $name, $token, $build, $sql, $msg, Console\Output\OutputInterface $output)
     {
         if (strpos($name, static::$versioningTablePrefix) === 0) {
             if (is_array($diff = static::diffInsertHandler($cn, $sql, $msg, $name))) {
@@ -182,8 +139,32 @@ class DataExtractCommand extends Console\Command\Command
                 return true;
             }
         }
+        if (strpos($msg, '1136 Column count') !== false) {
+            DataMergeCommand::runStatement($cn, str_replace($name, $tmpName = $name.'_'.uniqid(), static::$statementsStructure[$name]));
+            $sm = $cn->getSchemaManager();
+            if (strpos($tmpName, static::$versioningTablePrefix) !== false) {
+                $tmpTable = DataMergeCommand::getVersionedTableObj($sm->listTableColumns($tmpName), $tmpName);
+                $sm->dropTable($tmpName);
+                $sm->createTable($tmpTable);
+            }
+            $oldColumns = $sm->listTableColumns($name);
+            $newColumns = $sm->listTableColumns($tmpName);
+            $columns = [];
+            foreach ($columnsDiff = array_diff(array_keys($newColumns), array_keys($oldColumns)) as $diff) {
+                array_push($columns, new DBAL\Schema\Column($diff, $newColumns[$diff]->getType(), $newColumns[$diff]->toArray()));
+            }
+            $sm->dropTable($tmpName);
+            if (count($newColumns) > count($oldColumns)) {
+                $output->write(sprintf('Adding %s columns in `%s.%s` -> %s', count($columnsDiff), $cn->getDatabase(), $name, PHP_EOL.PHP_EOL."\t".implode(', ', $columnsDiff).PHP_EOL.PHP_EOL."\t\t\t\t"));
+                $sm->alterTable(new DBAL\Schema\TableDiff($name, $columns));
 
-        return static::diffInsertColumnsStatement($cn, $sql, $msg, $name, $output);
+                return static::injectStatement($cn, $sql, $token, $build, $output);
+            } else {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -316,7 +297,8 @@ class DataExtractCommand extends Console\Command\Command
 
             return true;
         } catch (\Exception $e) {
-            if (static::diffInsertTableStatement($cn, $sql, $msg = $e->getMessage(), $name, $output)) {
+            if (static::diffInsertStatement($cn, $name, $token, $build, $sql, $msg = $e->getMessage(), $output)) {
+
                 return true;
             } elseif (DataMergeCommand::isSkipableStatement($sql, $msg, $name)) {
                 ++static::$totalIgnored;
