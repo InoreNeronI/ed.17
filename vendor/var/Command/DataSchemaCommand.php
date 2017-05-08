@@ -59,7 +59,7 @@ class DataSchemaCommand extends CreateCommand
      * @param DBAL\Schema\Table $table
      * @param string            $collation
      */
-    protected function addDefaultCollation(DBAL\Schema\Table $table, $collation = 'utf8mb4_unicode_ci')
+    protected function addDefaultCollation(DBAL\Schema\Table $table, $collation = 'utf8_unicode_ci')
     {
         /** @var DBAL\Schema\Column $column */
         foreach ($table->getColumns() as $column) {

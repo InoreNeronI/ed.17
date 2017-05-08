@@ -228,7 +228,7 @@ class DataExtractCommand extends Console\Command\Command
         $output->write(PHP_EOL.sprintf('Processing %s statements...', count(static::$statements))."\t");
         $cn = DBAL\DriverManager::getConnection($dbTargetParams);
         if ($cn->getDatabasePlatform()->getName() === 'mysql') {
-            $cn->executeQuery('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;');
+            $cn->executeQuery('SET NAMES utf8 COLLATE utf8_unicode_ci;');
             foreach (static::$statements as $sql) {
                 static::injectStatement($cn, $sql, $token, $build, $output);
             }

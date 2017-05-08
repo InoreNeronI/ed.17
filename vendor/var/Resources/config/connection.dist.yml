@@ -11,7 +11,7 @@ parameters:
             dbname:   ed17probak
             user:     ed17erab
             password: ~
-            charset:  utf8mb4
+            charset:  utf8
             server_version: 5.7
         local:
             driver:   pdo_sqlite

@@ -85,7 +85,7 @@ trait DataCommandTrait
         // make sure all connections are UTF8 in source
         try {
             if ($this->sc->getDatabasePlatform()->getName() === 'mysql') {
-                $this->sc->executeQuery('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;');
+                $this->sc->executeQuery('SET NAMES utf8 COLLATE utf8_unicode_ci;');
             }
         } catch (\Exception $e) {
             if (strpos($e->getMessage(), 'No connection')) {
@@ -99,7 +99,7 @@ trait DataCommandTrait
         $dbTarget = $this->tc->getDatabase();
         try {
             if ($this->tc->getDatabasePlatform()->getName() === 'mysql') {
-                $this->tc->executeQuery('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;');
+                $this->tc->executeQuery('SET NAMES utf8 COLLATE utf8_unicode_ci;');
                 $exists = //$this->tc->executeQuery("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbTarget';")->rowCount() > 0;
                     in_array($dbTarget, $this->tc->getSchemaManager()->listDatabases());
                 if ($exists || $this->tc->connect() || $this->tc->isConnected()) {
