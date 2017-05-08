@@ -1,0 +1,167 @@
+
+<form class="b--black-10 ba br2-ns center mv1 mv2-m mv3-l mw7 ph1 ph2-m ph3-l" action="{{ formAction }}" accept-charset="utf-8" method="{{ formMethod|default('post') }}" autocomplete="off">
+    {% include '@App/partial/fields/hidden-fields.html.twig' %}
+    <input name="flabel" type="hidden" value="{{ flabel }}" />
+    <input name="referrer" type="hidden" value="{{ page }}" />
+
+    {% set isOption = false %}
+    {% set isTable = false %}
+    {% set media = null %}
+    {% for key, text in texts[side] %}
+        {% set key = key|trim|lower %}
+        {% set clonekey = key %}
+        {% set isItemText = key in numbers[side]|keys %}
+        {% set isPlainText = pageOptions['text'] is defined ? key in pageOptions['text'] : false %}
+        {% set isTitleText = key in pageTitles %}
+        {% set isSimpleOption = pageOptions['simple'] is defined ? key in pageOptions['simple'] : false %}
+        {% set isLibreOption = pageOptions['libre'] is defined ? key in pageOptions['libre'] : false %}
+        {% set isLibreOption = pageOptions['libre-m'] is defined ? key in pageOptions['libre-m'] : isLibreOption %}
+        {% set isLibreOptionLarge = pageOptions['libre-l'] is defined ? key in pageOptions['libre-l'] : false %}
+        {% set isLibreOptionSmall = pageOptions['libre-s'] is defined ? key in pageOptions['libre-s'] : false %}
+        {% set isLibreOptionExtraSmall = pageOptions['libre-xs'] is defined ? key in pageOptions['libre-xs'] : false %}
+        {% set isLibreOptionExtraLarge = pageOptions['libre-xl'] is defined ? key in pageOptions['libre-xl'] : false %}
+        {% set isMultipleOption = pageOptions['multiple'] is defined ? key in pageOptions['multiple'] : false %}
+        {% set isOption = isSimpleOption or isMultipleOption or isLibreOptionLarge or isLibreOptionSmall or isLibreOptionExtraSmall or isLibreOptionExtraLarge or isLibreOption %}
+        {% set class = isOption ? 'option' : isPlainText ? 'text' : 'description' %}
+        {% set fontClass = isItemText ? fontClassItem : isTitleText ? fontClassTitle : fontClassDefault %}
+        {% set textNum = key|split('t')[1]|number_format %}
+        {% if isItemText or isTitleText %}
+            {% set class = class ~ ' pt1 pt2-ns pt3-l pb1' %}
+        {% else %}
+            {% set class = class ~ ' pv1' %}
+        {% endif %}
+        {% if isItemText %}
+            {% set text = '<span class="white bg-gray br1 br2-l lh-copy mh1 mh2-ns ph1 ph2-l pv1-l">' ~ numbers[side][key] ~ '</span> ' ~ text %}
+        {% endif %}
+        {% if key|split('_c')|length is same as(2) %}
+            {% set tableColNumParts = key|split('_c') %}
+            {% set key = tableColNumParts[0] %}
+            {% set tableColNum = tableColNumParts[1]|number_format %}
+        {% else %}
+            {% set tableColNum = null %}
+        {% endif %}
+        {% if key|split('_f')|length is same as(2) %}
+            {% set tableRowNumParts = key|split('_f') %}
+            {% set key = tableRowNumParts[0] %}
+            {% set tableRowNum = tableRowNumParts[1]|number_format %}
+        {% else %}
+            {% set tableRowNum = null %}
+        {% endif %}
+        {% if tableColNum is not null %}
+            {% set tableRowNum = tableColNum %}
+        {% endif %}
+        {% set textAlignParts = key|slice(key|length-1,1) %}
+        {% set textAlignLeft = textAlignParts is same as('a') ? true : false %}
+        {% set textAlignRight = textAlignParts is same as('b') ? true : false %}
+        {% set isTextAligned = textAlignLeft or textAlignRight %}
+        {% if pageMedia[side]['audio'] is defined and key in pageMedia[side]['audio']|keys %}
+            {% set media = pageMedia[side]['audio'][key] %}
+        {% elseif pageMedia[side]['img'] is defined and key in pageMedia[side]['img']|keys %}
+            {% set media = pageMedia[side]['img'][key] %}
+        {% elseif pageMedia[side]['video'] is defined and key in pageMedia[side]['video']|keys %}
+            {% set media = pageMedia[side]['video'][key] %}
+        {% endif %}
+        {% if media is not null %}
+            {% if textNum <= media['till']|number_format and (isOption or media['align'] is same as('dch') or media['align'] is same as('izq')) %}
+                {% if media['align'] is same as('izq') %}
+                    {% set class = class ~ ' fr' %}
+                {% elseif media['align'] is same as('dch') %}
+                    {% set class = class ~ ' fl' %}
+                {% endif %}
+                {% set class = class ~ ' dib ' ~ media['offset'] %}
+            {% else %}
+                {% set class = class ~ ' cb' %}
+                {% if textNum > media['till']|number_format %}
+                    {% set media = null %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% if media is null and not isOption %}
+            {% set class = class ~ ' cl' %}
+        {% endif %}
+
+        {% if isTextAligned and not isOption %}
+            {% if textAlignLeft %}
+                <div class="dib w-100">
+            {% endif %}
+            <div class="{{ textAlignLeft ? 'fl ' : textAlignRight ? 'dib ' : '' }}w-50">
+        {% elseif isTextAligned and isOption %}
+            {% set class = class ~ ' fl' %}
+        {% endif %}
+
+        {% set text = text|trim %}
+        {% if key in pageTextReplaces|keys %}
+            {% set wildcardParams = pageTextReplaces[key]['parameters'] is defined ? pageTextReplaces[key]['parameters'] : [] %}
+            {% set wildcard %}
+                {% include pageTextReplaces[key]['template'] with wildcardParams %}
+            {% endset %}
+            {% set text = text|format(wildcard) %}
+        {% endif %}
+
+        {% if not isOption and media is not null and tableRowNum is null %}
+            {% include '@App/partial/media-pre.html.twig' %}
+        {% endif %}
+
+        {% if tableRowNum is not null %}
+            {% if parentRowNum is not defined or parentRowNum is defined and tableRowNum > parentRowNum %}
+                {% set column = 1 %}
+            {% else %}
+                {% set column = column + 1 %}
+            {% endif %}
+            {% include '@App/partial/sideform-tablecell.html.twig' %}
+            {% if not isOption and media is not null %}
+                {% include '@App/partial/media-pre.html.twig' %}
+            {% endif %}
+            {% set isTable = true %}
+            {% set parentRowNum = tableRowNum %}
+
+        {% else %}
+            {% set class = isOption or isPlainText ? class ~ ' pl1 pl2-s pl3-m pl3-l' : class %}
+            {% set class = isTitleText ? class ~ ' tc' : class %}
+            {% if isTable %}
+                {% if not isOption and media is not null %}
+                    {% include '@App/partial/media-post.html.twig' %}
+                {% endif %}
+                {% set isTable = false %}
+                {% set parentRowNum = null %}
+                </div></div>
+            {% endif %}
+            <div class="{{ class }}">
+        {% endif %}
+
+        {% if isOption %}
+            {% include '@App/partial/answer-option.html.twig' %}
+        {% else %}
+            {% include '@App/field/label.html.twig' with {'labelClass': (isItemText or isTitleText ? 'b ' : '') ~ 'pa0'} %}
+            {% if tableColNum is null or tableRowNum is null %}{% set parent = key %}{% endif %}
+        {% endif %}
+        </div>
+
+        {% if not isOption and media is not null and tableRowNum is null %}
+            {% include '@App/partial/media-post.html.twig' %}
+        {% endif %}
+        {% if isTextAligned and not isOption %}
+            </div>
+            {% if textAlignRight %}
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
+    {% if isTable %}</div></div>{% endif %}
+
+    <div class="cb pt1 pt2-ns pt3-l tc">
+        {% if pageAreaSkip is not null and not isFirstPage %}
+            <div class="fl tc w-100 w-50-ns">
+                <button type="submit" class="{{ leftButtonClass }}">{{ leftButtonText }}</button>
+            </div>
+            <div class="dib tc w-100 w-50-ns">
+                <button type="submit" class="{{ rightButtonClass }}">{{ rightButtonText }}</button>
+            </div>
+        {% elseif not isFirstPage and side is same as('a') %}
+            <button type="submit" class="{{ leftButtonClass }}">{{ leftButtonText }}</button>
+        {% elseif side is same as('b') %}
+            <button type="submit" class="{{ rightButtonClass }}">{{ rightButtonText }}</button>
+        {% endif %}
+    </div>
+</form>

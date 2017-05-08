@@ -1,0 +1,85 @@
+title:
+  eu: 'Identifikazioa'
+  es: 'Identificación'
+  en: ''
+formAction: '/go!'
+code:
+  eu: 'Ikaslearen kodea'
+  es: 'Código del alumno-a'
+  en: ''
+bdate:
+  eu: 'Jaiotze data'
+  es: 'Fecha nacimiento'
+  en: ''
+bday:
+  eu: 'Eguna'
+  es: 'Día'
+  en: ''
+bmonth:
+  eu: 'Hilabetea'
+  es: 'Mes'
+  en: ''
+jan:
+  eu: 'urtarrila'
+  es: 'enero'
+  en: ''
+feb:
+  eu: 'otsaila'
+  es: 'febrero'
+  en: ''
+mar:
+  eu: 'martxoa'
+  es: 'marzo'
+  en: ''
+apr:
+  eu: 'apirila'
+  es: 'abril'
+  en: ''
+may:
+  eu: 'maiatza'
+  es: 'mayo'
+  en: ''
+jun:
+  eu: 'ekaina'
+  es: 'junio'
+  en: ''
+jul:
+  eu: 'uztaila'
+  es: 'julio'
+  en: ''
+aug:
+  eu: 'abuztua'
+  es: 'agosto'
+  en: ''
+sep:
+  eu: 'iraila'
+  es: 'septiembre'
+  en: ''
+oct:
+  eu: 'urria'
+  es: 'octubre'
+  en: ''
+nov:
+  eu: 'azaroa'
+  es: 'noviembre'
+  en: ''
+dec:
+  eu: 'abendua'
+  es: 'diciembre'
+  en: ''
+codpro:
+  eu: 'Probaren kodea'
+  es: 'Código de la prueba'
+  en: ''
+audio_file_path:
+  mp3: 'https://www.dropbox.com/s/gg8pgbfl4uqq3ui/Karaoke.mp3?dl=1'
+  ogg: 'https://www.dropbox.com/s/nu449m4v7w0pmki/Karaoke.ogg?dl=1'
+audio_file_size: 'x3'
+audio_file_tip:
+  eu: 'Audio proba'
+  es: 'Prueba de audio'
+  en: ''
+submit_text:
+  eu: 'Sartu'
+  es: 'Entrar'
+  en: ''

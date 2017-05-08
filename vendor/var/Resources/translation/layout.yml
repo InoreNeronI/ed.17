@@ -1,0 +1,37 @@
+# Do not repeat variable names that are in 'common', neither the ones that are other blocks like 'home' and 'login', or just the last one will remain.
+course: '2017'
+mainTitle:
+  eu: 'Ebaluazio diagnostikoa'
+  es: 'Evaluación diagnóstica'
+  en: ''
+validation:
+  option:
+    text:
+      eu: 'Bete eremu hau'
+      es: 'Rellena este campo'
+      en-US: 'Please fill out this field'
+    checkbox:
+      eu: 'Markatu lauki hauetako baten bat edo beste'
+      es: 'Marca alguna(s) casilla(s)'
+      en-US: 'Please check one of these boxes'
+    radio:
+      eu: 'Hautatu aukera hauetako bat'
+      es: 'Selecciona una de estas opciones'
+      en-US: 'Please select one of these options'
+    select:
+      eu: 'Hautatu zerrendako elementu bat'
+      es: 'Selecciona un elemento de la lista'
+      en-US: 'Please select an item in the list'
+images:
+  backgrounds:
+    - '/images/ikasleak/ikasleak_1.jpg'
+    - '/images/ikasleak/ikasleak_2.jpg'
+    - '/images/ikasleak/ikasleak_3.jpg'
+    - '/images/ikasleak/ikasleak_4.jpg'
+    - '/images/ikasleak/ikasleak_5.jpg'
+    - '/images/ikasleak/ikasleak_6.jpg'
+    - '/images/ikasleak/ikasleak_7.jpg'
+    - '/images/ikasleak/ikasleak_8.jpg'
+    - '/images/ikasleak/ikasleak_9.jpg'
+  logoUrl: '/images/logoed.jpg'
+  logoUrlFooter: '/images/logo.png'

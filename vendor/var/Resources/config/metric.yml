@@ -1,0 +1,75 @@
+# Metric: levels, percentages, heights, widths...
+metric:
+  basics:
+    x1: s
+    x2: m
+    x3: l
+    percentages:
+      xs: 10
+      s: 25
+      m: 50
+      l: 75
+      xl: 90
+  levels:
+    s: 1x
+    m: 3x
+    l: 5x
+    percentages:
+      s: 10
+      m: 20
+      l: 25
+  # @see https://github.com/tachyons-css/tachyons/blob/v4.7.1/css/tachyons.css#L1775-L1784
+  fonts:
+    x1: f7
+    x2: f6
+    x3: f5
+    x4: f4
+    x5: f3
+    x6: f2
+    x7: f1
+    xl: f-5
+    xxl: f-6
+  # @see https://github.com/tachyons-css/tachyons/blob/v4.7.1/css/tachyons.css#L868-L888
+  heights:
+    # String Properties
+    auto: h-auto
+    inherit: h-inherit
+    # Font size multiples
+    x1: h1
+    x2: h2
+    x3: h3
+    x4: h4
+    x5: h5
+    # Height Percentages - Based off of height of parent
+    25: h-25
+    50: h-50
+    75: h-75
+    100: h-100
+    min-100: min-h-100
+  # @see https://github.com/tachyons-css/tachyons/blob/v4.7.1/css/tachyons.css#L1020-L1042
+  widths:
+    # String Properties
+    tercio: w-third
+    dos-tercios: w-two-thirds
+    auto: w-auto
+    # Font size multiples
+    x1: w1
+    x2: w2
+    x3: w3
+    x4: w4
+    x5: w5
+    # Width Percentages - Based off of width of parent
+    10: w-10
+    20: w-20
+    25: w-25
+    30: w-30
+    33: w-33
+    34: w-34
+    40: w-40
+    50: w-50
+    60: w-60
+    70: w-70
+    75: w-75
+    80: w-80
+    90: w-90
+    100: w-100

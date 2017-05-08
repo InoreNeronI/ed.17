@@ -1,0 +1,24 @@
+{% extends '@App/layout/form.html.twig' %}
+
+{% block title title ~ ' :: ' ~ course ~ ' :: ' ~ mainTitle|title %}
+
+{% block content_form %}
+    <div class="absolute-ns {{ colorInverse }}dn dib-ns dn-m fl pl2 title-shadow w-30-ns w-25-m w-20-l">
+        <h3 class="{{ fontClassX3 }}fw6 mb2 pl4"><strong>{{ entrance }}</strong></h3>
+    </div>
+    <div class="ba b--black-30 bg-black-20 br3 dt fr h-100 mr2-ns w-100 w-70-ns w-75-m w-80-l">
+        {% block content_actions %}
+            <article class="dtc pa2 tc v-mid">
+                {% for key, value in actions %}
+                    <button class="{{ fontClass ~ (key is same as(table) ? ' b form-logo-bg navy br2 br3-ns pointer ' : ' arrow ba bg-transparent ') ~ colorInverse }} br1 br2-l lh-copy measure mh1 mv2 ph3 pv2 w-30-ns w-40-m" name="{{ key }}"{{ (key is not same as(table)) ? ' disabled="disabled"' }}>
+                        {{ value }}
+                    </button>
+                    {% if (key is same as(table)) %}
+                        <input name="flabel" type="hidden" value="{{ value }}"/>
+                    {% endif %}
+                {% endfor %}
+                {% include '@App/partial/fields/hidden-fields.html.twig' %}
+            </article>
+        {% endblock %}
+    </div>
+{% endblock %}

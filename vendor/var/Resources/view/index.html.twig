@@ -1,0 +1,1 @@
+{% extends '@App/page/' ~ app.request.attributes.get('_route') | replace({'_' : '-'}) ~ '.html.twig' %}

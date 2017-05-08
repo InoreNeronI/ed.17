@@ -1,0 +1,18 @@
+title:
+  eu: '`data.zip` fitxategia igo'
+  es: 'subir el fichero `data.zip`'
+  en: ''
+formAction: '/import'
+entrance:
+  eu: 'Inportatu'
+  es: 'Importar'
+  en: ''
+downloadMsg:
+  eu: ' {count} deskargatu d(it)uzu'
+  es: ' has descargado {count}(s)'
+  en: ''
+uploadMsg:
+  eu: ' {count} fitxategi igo d(it)uzu'
+  es: ' has subido {count} fichero(s)'
+  en: ''
+bgUrl: ''

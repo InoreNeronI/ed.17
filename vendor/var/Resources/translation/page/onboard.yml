@@ -1,0 +1,20 @@
+leftButton:
+    eu: 'Aurrekoa'
+    es: 'Anterior'
+    en: 'Previous'
+rightButton:
+    eu: 'Hurrengoa'
+    es: 'Siguiente'
+    en: 'Next'
+startButton:
+    eu: 'Hasi'
+    es: 'Comenzar'
+    en: 'Start'
+finishButton:
+    eu: 'Amaitu'
+    es: 'Terminar'
+    en: 'Finish'
+textPlaceholder:
+    eu: 'Idatzi hemen...'
+    es: 'Escribe aquí...'
+    en: 'Write here...'

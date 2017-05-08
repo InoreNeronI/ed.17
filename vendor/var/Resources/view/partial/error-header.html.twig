@@ -1,0 +1,41 @@
+<div class="absolute bg-white-80 cf flex h4 items-center justify-center pa3 navy tc w-100 w-75-ns z-5">
+    {% if not ErrorData['notice'] %}
+        <div class="center lh-solid mh0 ph0 w-10">
+            <i class="absolute dark-red fa fa-warning fa-4x" style="left: .5rem; line-height: 0; margin-top: -1.5rem;"></i>
+            <span class="absolute b dark-red f1" style="left: 0; line-height: 0; margin-top: 2rem;">{{ ErrorData['status'] }}</span>
+        </div>
+    {% endif %}
+    <blockquote class="center fs-normal lh-solid mh0 ph0 tracked ttu w-90">
+        {% if ErrorData['debug'] %}
+            <details class="fl pointer w-100 w-50-ns" open>
+                {% if ErrorData['title']|default %}
+                    <summary class="b dark-red lh-title">
+                        {{ ErrorData['title'] }}
+                        <i class="fa fa-arrow-down"></i>
+                    </summary>
+                {% endif %}
+                {{ ErrorData['message'] }}
+            </details>
+            <details class="dib pointer w-100 w-50-ns" open>
+                <summary class="b lh-title">
+                    On line <span class="b dark-red">{{ ErrorData['line'] }}</span>
+                    <i class="fa fa-arrow-down"></i>
+                </summary>
+                <code class="dark-blue bg-white ba br-pill lh-solid ph1">
+                    <a title="{{ ErrorData['file'] }}" class="dark-blue link" href="file://{{ ErrorData['file'] }}" ondblclick="let f=this.innerHTML;this.innerHTML=this.title;this.title=f;">
+                        {{ ErrorData['filename'] }}
+                    </a>
+                </code>
+            </details>
+        {% else %}
+            {% set errorMessage = ErrorData['message'] is empty ? ErrorData['title'] : ErrorData['message'] %}
+            <code class="dib dark-red lh-solid">{{ errorMessage }}</code>
+        {% endif %}
+    </blockquote>
+    {% if not ErrorData['notice'] %}
+        <div class="center lh-solid mh0 ph0 w-10">
+            <i class="absolute dark-red fa fa-exclamation-triangle fa-4x" style="right: .5rem; line-height: 0; margin-top: -1.5rem;"></i>
+            <span class="absolute b dark-red f1" style="right: 0; line-height: 0; margin-top: 2rem;">{{ ErrorData['status'] }}</span>
+        </div>
+    {% endif %}
+</div>

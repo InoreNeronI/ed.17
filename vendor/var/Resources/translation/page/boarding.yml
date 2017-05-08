@@ -1,0 +1,93 @@
+title:
+  dbh:
+    eu: 'DBHko ebaluazio probak'
+    es: 'Pruebas de evaluación de la ESO'
+    en: ''
+  lh:
+    eu: 'LHko ebaluazio probak'
+    es: 'Pruebas de evaluación de EP'
+    en: ''
+formAction: '/0'
+entrance:
+  eu: 'Sarrera'
+  es: 'Entrada'
+  en: ''
+actions:
+  # Eusk
+  edg051_testuak_dbh_eusa:
+    eu: 'Euskara A'
+    es: 'Euskara A'
+    en: ''
+  edg051_testuak_dbh_eusbd:
+    eu: 'Euskara BD'
+    es: 'Euskara BD'
+    en: ''
+  edg051_testuak_lh_eusa:
+    eu: 'Euskara A'
+    es: 'Euskara A'
+    en: ''
+  edg051_testuak_lh_eusbd:
+    eu: 'Euskara BD'
+    es: 'Euskara BD'
+    en: ''
+  # Gazte
+  edg051_testuak_dbh_gaz:
+    eu: 'Castellano'
+    es: 'Castellano'
+    en: ''
+  edg051_testuak_lh_gaz:
+    eu: 'Castellano'
+    es: 'Castellano'
+    en: ''
+  # Inge
+  edg051_testuak_dbh_ing:
+    eu: 'Ingelesa'
+    es: 'Inglés'
+    en: ''
+  edg051_testuak_lh_ing:
+    eu: 'Ingelesa'
+    es: 'Inglés'
+    en: ''
+  # Mate
+  edg051_testuak_dbh_mat:
+    eu: 'Matematika'
+    es: 'Matemáticas'
+    en: ''
+  edg051_testuak_lh_mat:
+    eu: 'Matematika'
+    es: 'Matemáticas'
+    en: ''
+  # Zie
+  edg051_testuak_dbh_zie:
+    eu: 'Zientziak'
+    es: 'Ciencias'
+    en: ''
+  edg051_testuak_lh_zie:
+    eu: 'Zientziak'
+    es: 'Ciencias'
+    en: ''
+  # G. sortak
+  edg051_testuak_dbh_gsorta_a:
+    eu: 'Galdera sorta A'
+    es: 'Cuestionario A'
+    en: ''
+  edg051_testuak_dbh_gsorta_b:
+    eu: 'Galdera sorta B'
+    es: 'Cuestionario B'
+    en: ''
+  edg051_testuak_dbh_gsorta_c:
+    eu: 'Galdera sorta C'
+    es: 'Cuestionario C'
+    en: ''
+  edg051_testuak_lh_gsorta_a:
+    eu: 'Galdera sorta A'
+    es: 'Cuestionario A'
+    en: ''
+  edg051_testuak_lh_gsorta_b:
+    eu: 'Galdera sorta B'
+    es: 'Cuestionario B'
+    en: ''
+  edg051_testuak_lh_gsorta_c:
+    eu: 'Galdera sorta C'
+    es: 'Cuestionario C'
+    en: ''

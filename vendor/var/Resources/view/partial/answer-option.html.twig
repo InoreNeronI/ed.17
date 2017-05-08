@@ -1,0 +1,85 @@
+{% import _self as macro %}
+
+{% macro clickValue(parent, textNum) %}
+    {{ textNum|number_format - parent|split('t')[1]|number_format }}
+{% endmacro %}
+
+{% macro inputClass(inputType, metric) %}
+    {% if inputType is same as('simple') or inputType is same as('multiple') %}
+        {{ 'bn mt1 pointer' }}
+    {% elseif inputType is same as('libre-xs') %}
+        {{ 'br2-ns br--left-ns pl1 w-' ~ metric.basics.percentages['xs'] }}
+    {% elseif inputType is same as('libre-s') %}
+        {{ 'br2-ns br--left-ns pl1 w-' ~ metric.basics.percentages['s'] }}
+    {% elseif inputType is same as('libre-m') %}
+        {{ 'br2-ns br--left-ns pl1 w-' ~ metric.basics.percentages['m'] }}
+    {% elseif inputType is same as('libre-l') %}
+        {{ 'br2-ns br--left-ns pl1 w-' ~ metric.basics.percentages['l'] }}
+    {% elseif inputType is same as('libre-xl') %}
+        {{ 'br2-ns br--left-ns pl1 w-' ~ metric.basics.percentages['xl'] }}
+    {% endif %}
+{% endmacro %}
+
+{% macro inputTextClass(isLibreOptionLarge, isLibreOptionSmall, isLibreOptionExtraSmall, isLibreOptionExtraLarge, isLibreOption, metric) %}
+    {% import _self as macro %}
+    {{ macro.inputClass(isLibreOptionExtraLarge ? 'libre-xl' : isLibreOptionLarge ? 'libre-l' : isLibreOptionExtraSmall ? 'libre-xs' : isLibreOptionSmall ? 'libre-s' : 'libre-m', metric) }}
+{% endmacro %}
+
+{% if isSimpleOption and tableRowNum is null %}
+    {% set inputClass = macro.inputClass('simple', metric) %}
+    {% set value = macro.clickValue(parent, textNum)|trim %}
+    {% set name = parent %}
+    {% set type = 'radio' %}
+    {% set checked = values[name]|default is same as(value) ? 'checked' : null %}
+
+{% elseif isMultipleOption and tableRowNum is null %}
+    {% set inputClass = macro.inputClass('multiple', metric) %}
+    {% set value = macro.clickValue(parent, textNum)|trim %}
+    {% set name = parent ~ '_' ~ value %}
+    {% set type = 'checkbox' %}
+    {% set checked = values[name]|default is same as(value) ? 'checked' : null %}
+
+{% elseif (isLibreOptionLarge or isLibreOptionSmall or isLibreOptionExtraSmall or isLibreOptionExtraLarge or isLibreOption) and tableRowNum is null %}
+    {% set inputClass = macro.inputTextClass(isLibreOptionLarge, isLibreOptionSmall, isLibreOptionExtraSmall, isLibreOptionExtraLarge, isLibreOption, metric) %}
+    {% set name = parent ~ '_' ~ key %}
+    {% set type = 'text' %}
+    {% set value = values[name]|default is not empty ? values[name] : null %}
+
+{% elseif isSimpleOption %}
+    {% set inputClass = macro.inputClass('simple', metric) %}
+    {% set value = tableColNum is null ? macro.clickValue(parent, textNum)|trim : tableColNum %}
+    {% set name = tableColNum is null ? parent ~ '_' ~ tableRowNum : parent ~ '_' ~ column %}
+    {% set type = 'radio' %}
+    {% set checked = values[name]|default is same as(value) ? 'checked' : null %}
+
+{% elseif isMultipleOption %}
+    {% set inputClass = macro.inputClass('multiple', metric) %}
+    {% set value = tableColNum is null ? macro.clickValue(parent, textNum)|trim : tableColNum %}
+    {% set name = parent ~ '_' ~ value %}
+    {% set type = 'checkbox' %}
+    {% set checked = values[name]|default is same as(value) ? 'checked' : null %}
+
+{% elseif isLibreOptionLarge or isLibreOptionSmall or isLibreOptionExtraSmall or isLibreOptionExtraLarge or isLibreOption %}
+    {% set inputClass = macro.inputTextClass(isLibreOptionLarge, isLibreOptionSmall, isLibreOptionExtraSmall, isLibreOptionExtraLarge, isLibreOption, metric) %}
+    {% set name = parent ~ '_' ~ key %}
+    {% set type = 'text' %}
+    {% set value = values[name]|default is not empty ? values[name] : null %}
+{% endif %}
+
+{% set id = parent ~ '-' ~ key %}
+{% set text %}
+    {% if media is not null and media['align'] is same as('cen') and media['since'] == textNum and media['till'] == textNum %}
+        {% set inputClass = macro.inputClass ~ ' v-top' %}
+    {% endif %}
+    {% if clonekey|default(key) in pageOptionAttributes|keys %}
+        {% include '@App/field/input.html.twig' with pageOptionAttributes[clonekey|default(key)] %}
+    {% else %}
+        {% include '@App/field/input.html.twig' %}
+    {% endif %}
+    <span{% if text is not empty %} class="mr2"{% endif %}></span>{{ text|default }}
+    {% if media is not null and media['align'] is same as('cen') and media['since'] == textNum and media['till'] == textNum %}
+        {% include '@App/field/' ~ media['tag'] ~ '.html.twig' with { 'cssClassContent': media['width'], 'src': media['path'] } %}
+    {% endif %}
+{% endset %}
+
+{% include '@App/field/label.html.twig' %}
