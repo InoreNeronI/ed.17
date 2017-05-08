@@ -43,6 +43,7 @@
   "config": {
     "bin-dir": "../../bin",
     "optimize-autoloader": true,
+    "platform": {"php": "5.4"},
     "preferred-install": "dist",
     "vendor-dir": ".."
   },
