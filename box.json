@@ -1,15 +1,13 @@
 {
-  "main": "vendor/autoload.php",
+  "main": "vendor/var/Resources/script/loader.php",
   "output": "vendor.phar",
   "chmod": "0755",
+  "compression": "BZ2",
   "directories": ["vendor"],
-  "finder": [
-    {
-      "name": "*.*",
-      "exclude": ["Tests","tests","composer.json","composer.lock"],
-      "in": "vendor"
-    }
-  ],
+  "finder": [{
+    "in": "vendor\\var",
+    "exclude": ["Command"]
+  }],
   "git-version": "git_branch",
   "stub": true
 }

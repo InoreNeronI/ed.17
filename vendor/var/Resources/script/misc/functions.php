@@ -12,6 +12,7 @@ if (PHP_VERSION_ID < 50400) {
 final class def extends defDB
 {
     private static $configLoaded = false;
+    private static $configPath;
     private static $dbCodes;
     private static $dbCodesLoaded;
     private static $dbCredentials;
@@ -32,10 +33,30 @@ final class def extends defDB
     private static $routesLoaded = false;
     private static $routes;
 
+    private static function loadConfig()
+    {
+        if (!static::$configLoaded) {
+            // See: https://github.com/squizlabs/PHP_CodeSniffer/commit/a90531b3cbcc771fb7cf777484ac50dcf0223f7b
+            $rootDir = Phar::running(false);
+            if ($rootDir !== '') {
+                static::$configPath = str_replace('phar://', '', dirname($rootDir)) . '/app/config';
+            } else {
+                static::$configPath = getenv('ROOT_DIR') . '/app/config';
+            }
+            $config = parseConfig(static::$configPath, 'config')['configuration'];
+            static::$homePath = $config['homepage_path'];
+            static::$homeSlug = $config['homepage_slug'];
+            static::$langCodes = $config['languages'];
+            static::$langISOCodes = array_unique(array_values($config['languages']));
+            static::$stages = $config['stages'];
+            static::$configLoaded = true;
+        }
+    }
+
     private static function loadCodes()
     {
         if (!static::$dbCodesLoaded) {
-            static::$dbCodes = parseConfig(getenv('ROOT_DIR').'/app/config', 'codes')['codes'];
+            static::$dbCodes = parseConfig(static::$configPath, 'codes')['codes'];
             static::$dbCodesLoaded = true;
         }
     }
@@ -43,7 +64,7 @@ final class def extends defDB
     private static function loadCredentials()
     {
         if (!static::$dbCredentialsLoaded) {
-            static::$dbCredentials = parseConfig(getenv('ROOT_DIR').'/app/config', 'credentials')['credentials'];
+            static::$dbCredentials = parseConfig(static::$configPath, 'credentials')['credentials'];
             static::$dbCredentialsLoaded = true;
         }
     }
@@ -51,7 +72,7 @@ final class def extends defDB
     private static function loadTargets()
     {
         if (!static::$dbTargetsLoaded) {
-            static::$dbTargets = parseConfig(getenv('ROOT_DIR').'/app/config', 'targets')['targets'];
+            static::$dbTargets = parseConfig(static::$configPath, 'targets')['targets'];
             static::$dbTargetsLoaded = true;
         }
     }
@@ -59,7 +80,7 @@ final class def extends defDB
     private static function loadUploaders()
     {
         if (!static::$dbUploadersLoaded) {
-            static::$dbUploaders = parseConfig(getenv('ROOT_DIR').'/app/config', 'uploaders')['uploaders'];
+            static::$dbUploaders = parseConfig(static::$configPath, 'uploaders')['uploaders'];
             static::$dbUploadersLoaded = true;
         }
     }
@@ -85,19 +106,6 @@ final class def extends defDB
         if (!static::$metricLoaded) {
             static::$metric = parseConfig(getenv('CONFIG_DIR'), 'metric')['metric'];
             static::$metricLoaded = true;
-        }
-    }
-
-    private static function loadConfig()
-    {
-        if (!static::$configLoaded) {
-            $config = parseConfig(getenv('ROOT_DIR').'/app/config', 'config')['configuration'];
-            static::$homePath = $config['homepage_path'];
-            static::$homeSlug = $config['homepage_slug'];
-            static::$langCodes = $config['languages'];
-            static::$langISOCodes = array_unique(array_values($config['languages']));
-            static::$stages = $config['stages'];
-            static::$configLoaded = true;
         }
     }
 
