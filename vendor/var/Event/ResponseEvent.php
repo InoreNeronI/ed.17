@@ -47,9 +47,6 @@ class ResponseEvent extends EventDispatcher\Event
         return $this->request;
     }
 
-    /**
-     *
-     */
     private function handleSession()
     {
         $sessionHandler = new Handler\Session\SessionHandler();

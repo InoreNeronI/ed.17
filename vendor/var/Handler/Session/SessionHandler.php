@@ -29,33 +29,33 @@ class SessionHandler
     /**
      * SessionHandler constructor.
      *
-     * @param array  $options    Session configuration options:
-     *                           cache_limiter, "" (use "0" to prevent headers from being sent entirely).
-     *                           cookie_domain, ""
-     *                           cookie_httponly, ""
-     *                           cookie_lifetime, "0"
-     *                           cookie_path, "/"
-     *                           cookie_secure, ""
-     *                           entropy_file, ""
-     *                           entropy_length, "0"
-     *                           gc_divisor, "100"
-     *                           gc_maxlifetime, "1440"
-     *                           gc_probability, "1"
-     *                           hash_bits_per_character, "4"
-     *                           hash_function, "0"
-     *                           name, "PHPSESSID"
-     *                           referer_check, ""
-     *                           serialize_handler, "php"
-     *                           use_cookies, "1"
-     *                           use_only_cookies, "1"
-     *                           use_trans_sid, "0"
-     *                           upload_progress.enabled, "1"
-     *                           upload_progress.cleanup, "1"
-     *                           upload_progress.prefix, "upload_progress_"
-     *                           upload_progress.name, "PHP_SESSION_UPLOAD_PROGRESS"
-     *                           upload_progress.freq, "1%"
-     *                           upload_progress.min-freq, "1"
-     *                           url_rewriter.tags, "a=href,area=href,frame=src,form=,fieldset="
+     * @param array $options Session configuration options:
+     *                       cache_limiter, "" (use "0" to prevent headers from being sent entirely).
+     *                       cookie_domain, ""
+     *                       cookie_httponly, ""
+     *                       cookie_lifetime, "0"
+     *                       cookie_path, "/"
+     *                       cookie_secure, ""
+     *                       entropy_file, ""
+     *                       entropy_length, "0"
+     *                       gc_divisor, "100"
+     *                       gc_maxlifetime, "1440"
+     *                       gc_probability, "1"
+     *                       hash_bits_per_character, "4"
+     *                       hash_function, "0"
+     *                       name, "PHPSESSID"
+     *                       referer_check, ""
+     *                       serialize_handler, "php"
+     *                       use_cookies, "1"
+     *                       use_only_cookies, "1"
+     *                       use_trans_sid, "0"
+     *                       upload_progress.enabled, "1"
+     *                       upload_progress.cleanup, "1"
+     *                       upload_progress.prefix, "upload_progress_"
+     *                       upload_progress.name, "PHP_SESSION_UPLOAD_PROGRESS"
+     *                       upload_progress.freq, "1%"
+     *                       upload_progress.min-freq, "1"
+     *                       url_rewriter.tags, "a=href,area=href,frame=src,form=,fieldset="
      */
     public function __construct(array $options = [])
     {
@@ -80,8 +80,8 @@ class SessionHandler
     }
 
     /**
-     * @param bool          $isError
-     * @param string|null   $errorData
+     * @param bool        $isError
+     * @param string|null $errorData
      *
      * @return HttpFoundation\Session\Session
      */
@@ -92,6 +92,7 @@ class SessionHandler
         } elseif (time() - $this->session->getMetadataBag()->getLastUsed() > $this->expireTime || $this->hasError()) {
             $this->session->invalidate();   //throw new SessionExpired; // redirect to expired session page
         }
+
         return $this->session;
     }
 
@@ -118,8 +119,8 @@ class SessionHandler
     }
 
     /**
-     * @param string        $handler
-     * @param string|null   $savePath
+     * @param string      $handler
+     * @param string|null $savePath
      */
     private function setSessionConfig($handler = 'files', $savePath = null)
     {
