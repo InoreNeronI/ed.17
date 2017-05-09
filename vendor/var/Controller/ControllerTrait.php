@@ -103,8 +103,6 @@ trait ControllerTrait
             /** @var array $args */
             $args = $request->request->all();
 
-            var_dump($args);
-            var_dump($page);
             /** @var Helper\PagesHelper $manager */
             $manager = $this->getAuthManager('Helper\PagesHelper', static::authorize($args));
             $manager->saveData($args);
