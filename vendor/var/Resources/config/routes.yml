@@ -1,6 +1,6 @@
 # Routes configuration
 routes:
   - /sample
-  - { path: /, methods: [GET] }
+  - { path: /, methods: [GET,POST] }
   - { path: /go!, name: boarding, methods: [POST] }
   - { path: '/{page}', action: pageRender, name: onboard, methods: [POST], requirements: { page: \d+ } }

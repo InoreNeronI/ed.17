@@ -57,31 +57,35 @@ trait ControllerTrait
     }
 
     /**
-     * @param HttpFoundation\Request $request
+     * @param HttpFoundation\Request    $request
+     * @param string                    $mustHave
      *
      * @return array
      */
-    private function getData(HttpFoundation\Request $request)
+    private function getData(HttpFoundation\Request $request, $mustHave = 'studentPassword')
     {
         $data = [];
         if ($request->getMethod() === 'POST') {
             /** @var array $args */
             $args = $request->request->all();
-            /** @var Security\Authorization $manager */
-            $manager = $this->getAuthManager('Security\Authorization', static::authorize($args));
-            /** @var DBAL\Connection $cn */
-            $cn = $manager->getConnection();
-            /** @var string $db */
-            $db = $cn->getDatabase();
 
-            if ($cn->getDatabasePlatform()->getName() === 'sqlite') {
-                $dbName = basename($db, '.'.pathinfo($db, PATHINFO_EXTENSION));
-            } else {
-                $dbName = $db;
+            if (isset($args[$mustHave])) {
+                /** @var Security\Authorization $manager */
+                $manager = $this->getAuthManager('Security\Authorization', static::authorize($args));
+                /** @var DBAL\Connection $cn */
+                $cn = $manager->getConnection();
+                /** @var string $db */
+                $db = $cn->getDatabase();
+
+                if ($cn->getDatabasePlatform()->getName() === 'sqlite') {
+                    $dbName = basename($db, '.'.pathinfo($db, PATHINFO_EXTENSION));
+                } else {
+                    $dbName = $db;
+                }
+                /** @var array $data */
+                $data = $manager->checkCredentials($args, $dbName, getenv('USER_TABLE'));
+                $cn->close();
             }
-            /** @var array $data */
-            $data = $manager->checkCredentials($args, $dbName, getenv('USER_TABLE'));
-            $cn->close();
         }
 
         return $this->localizeMessages($request, $data);

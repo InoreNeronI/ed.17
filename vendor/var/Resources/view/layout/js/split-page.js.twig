@@ -91,14 +91,11 @@ $.each(forms, function(index, elem) {
             $(this).next('span').css('color', $(this).is(':invalid') ? 'red' : 'inherit');
         });
         if ($(this).hasClass('left-button')) {
-            $(forms[1]).not(':submit').find('input').clone().hide().appendTo(
-                form.attr('action', parseInt({{ page|number_format }})-1)
-            );
+            $(forms[1]).not(':submit').find('input').clone().hide().appendTo(form);
         }
-        {% if page|number_format == totalPages|number_format %}
-            if ($(this).hasClass('right-button')) {
-                form.attr('action', '/').attr('method', 'get');
-            }
-        {% endif %}
+        if ($(this).hasClass('right-button')) {
+            $(forms[0]).not(':submit').find('input').clone().hide().appendTo(form);
+            {% if page|number_format == totalPages|number_format %}form.attr('action', '/');{% endif %}
+        }
     });
 });
