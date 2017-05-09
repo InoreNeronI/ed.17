@@ -57,8 +57,8 @@ trait ControllerTrait
     }
 
     /**
-     * @param HttpFoundation\Request    $request
-     * @param string                    $mustHave
+     * @param HttpFoundation\Request $request
+     * @param string                 $mustHave
      *
      * @return array
      */
