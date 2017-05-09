@@ -24,5 +24,8 @@ node_modules/
 !/vendor/vlucas/phpdotenv/
 /vendor/vlucas/phpdotenv/*
 !/vendor/vlucas/phpdotenv/src/
-/web/
+!/web/
+/web/*
+!/web/media/
+/web/media/*
 !/web/media/*_proba*
