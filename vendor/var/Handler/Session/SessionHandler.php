@@ -29,8 +29,6 @@ class SessionHandler
     /**
      * SessionHandler constructor.
      *
-     * @param string $savePath   path to session file itself
-     * @param int    $expireTime
      * @param array  $options    Session configuration options:
      *                           cache_limiter, "" (use "0" to prevent headers from being sent entirely).
      *                           cookie_domain, ""
@@ -59,24 +57,41 @@ class SessionHandler
      *                           upload_progress.min-freq, "1"
      *                           url_rewriter.tags, "a=href,area=href,frame=src,form=,fieldset="
      */
-    public function __construct($savePath = null, $expireTime = 10, array $options = [])
+    public function __construct(array $options = [])
     {
-        $this->expireTime = $expireTime;
+        $this->debug = (bool) getenv('DEBUG');
+        $this->options = $options;
+        $this->initSession();
+    }
+
+    /**
+     * @param string $savePath   path to session file itself
+     * @param int    $expireTime
+     */
+    public function initSession($savePath = null, $expireTime = 10)
+    {
         // Get session save-path.
         $this->savePath = empty($savePath) ? ini_get('session.save_path') : getenv('ROOT_DIR').$savePath;
         if (!is_writable($this->savePath) && !mkdir($this->savePath, 0775, true)) {
             throw new \RuntimeException('Couldn\'t save to Sessions\' default path because write access isn\'t granted');
         }
-        $this->options = $options;
-        $this->debug = (bool) getenv('DEBUG');
+        $this->expireTime = $expireTime;
         $this->session = null;
     }
 
     /**
+     * @param bool          $isError
+     * @param string|null   $errorData
+     *
      * @return HttpFoundation\Session\Session
      */
-    public function getSession()
+    public function getSession($isError = false, $errorData = null)
     {
+        if ($isError) {
+            $this->session->set('ErrorData', $errorData);
+        } elseif (time() - $this->session->getMetadataBag()->getLastUsed() > $this->expireTime || $this->hasError()) {
+            $this->session->invalidate();   //throw new SessionExpired; // redirect to expired session page
+        }
         return $this->session;
     }
 
@@ -87,7 +102,7 @@ class SessionHandler
      */
     public function startSession()
     {
-        $session = $this->doctrineSession('session');
+        $session = call_user_func([$this, getenv('SESSION_STORAGE').'Session']);
 
         return $session->isStarted() || $session->start();
     }
@@ -103,13 +118,14 @@ class SessionHandler
     }
 
     /**
-     * @param string $handler
+     * @param string        $handler
+     * @param string|null   $savePath
      */
-    private function setSessionConfig($handler = 'files')
+    private function setSessionConfig($handler = 'files', $savePath = null)
     {
         // Set any ini values.
         ini_set('session.save_handler', $handler);
-        ini_set('session.save_path', $this->savePath);
+        ini_set('session.save_path', $savePath ?: $this->savePath);
         // Set session lifetime.
         /* @link http://stackoverflow.com/a/19597247 */
         ini_set('session.cookie_lifetime', $this->expireTime);
@@ -153,7 +169,7 @@ class SessionHandler
         if (!extension_loaded('memcache')) {
             throw new \RuntimeException('PHP does not have "memcache" extension enabled');
         }
-        $this->setSessionConfig('memcache');
+        $this->setSessionConfig('memcache', 'tcp://127.0.0.1:11211');
         $memcache = new \MemcachePool();
         $memcache->connect($host, $port);
         $storage = new HttpFoundation\Session\Storage\NativeSessionStorage($this->options, new Handler\Session\LockingSessionHandler($memcache, [
@@ -206,7 +222,7 @@ class SessionHandler
      *
      * @return HttpFoundation\Session\Session
      */
-    private function doctrineSession($entity, $id = 'session_id', $data = 'session_value', $time = 'session_time')
+    private function doctrineSession($entity = 'sessions', $id = 'session_id', $data = 'session_value', $time = 'session_time')
     {
         $this->setSessionConfig('user');
         /** @var Handler\Session\DoctrineSessionHandler $storage */

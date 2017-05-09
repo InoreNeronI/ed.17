@@ -28,7 +28,7 @@ class ResponseEvent extends EventDispatcher\Event
     {
         $this->response = $response;
         $this->request = $request;
-        $this->handleSession('/app/cache/session');
+        $this->handleSession();
     }
 
     /**
@@ -48,20 +48,14 @@ class ResponseEvent extends EventDispatcher\Event
     }
 
     /**
-     * @param string $savePath
-     * @param int    $expireTime
+     *
      */
-    private function handleSession($savePath, $expireTime = 1)
+    private function handleSession()
     {
-        $sessionHandler = new Handler\Session\SessionHandler($savePath, $expireTime);
+        $sessionHandler = new Handler\Session\SessionHandler();
         if ($sessionHandler->startSession()) {
-            $session = $sessionHandler->getSession();
-            $isError = $this->response->isRedirect() || $this->response->getContent() === '';
-            if ($isError && $this->response->headers->has('ErrorData')) {
-                $session->set('ErrorData', $this->response->headers->get('ErrorData'));
-            } elseif (time() - $session->getMetadataBag()->getLastUsed() > $expireTime || $sessionHandler->hasError()) {
-                $session->invalidate();   //throw new SessionExpired; // redirect to expired session page
-            }
+            $hasError = $this->response->headers->has('ErrorData') && $this->response->isRedirect() || $this->response->getContent() === '';
+            $session = $sessionHandler->getSession($hasError, $this->response->headers->get('ErrorData') ?: null);
             $this->request->setSession($session);
         }
     }
