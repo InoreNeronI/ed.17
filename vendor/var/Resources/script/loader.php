@@ -43,11 +43,15 @@ putenv('USER_TABLE='.\defDb::userEntity());
 putenv('EXTRA_TABLE='.\defDb::extraEntity());
 
 // @see http://stackoverflow.com/a/5879078
-if (getenv('DEBUG') !== 'false' && getenv('DEBUG') !== 'false') {
+if (getenv('DEBUG') && getenv('DEBUG') !== 'false') {
     putenv('DEBUG='.true);
     Symfony\Component\Debug\Debug::enable();
 } else {
     putenv('DEBUG='.false);
+}
+
+if (!getenv('SESSION_STORAGE')) {
+    putenv('SESSION_STORAGE=filesystem');
 }
 
 return new Kernel\KernelBase((bool) getenv('DEBUG'));
