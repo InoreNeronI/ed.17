@@ -102,6 +102,10 @@ trait KernelTrait
             // The dispatcher, the central object of the event dispatcher system, notifies listeners of an event dispatched to it.
             // Put another way: your code dispatches an event to the dispatcher, the dispatcher notifies all registered listeners for the event, and each listener do whatever it wants with the event.
             $this->dispatcher->dispatch('response', new Event\ResponseEvent($response, $request));
+        } catch (\RuntimeException $e) {
+            if (strpos($e->getMessage(), 'Failed to start the session because headers have already been sent') === false) {
+                return static::getFallbackResponse($e);
+            }
         } catch (\NoticeException $e) {
             return static::getFallbackResponse($e, true);
         } catch (\WarningException $e) {
