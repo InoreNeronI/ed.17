@@ -21,10 +21,10 @@ pageImages:
 
 pageAudios:
   p01:
-    - p01a_cen_t06_t06_x2_eus.ogg
+    - p01a_cen_t06_t06_x2_eus.mp3
     - p01a_cen_t06_t06_x2_eus.mp3
   p02:
-    - p02a_cen_t05_t05_x2_eus.ogg
+    - p02a_cen_t05_t05_x2_eus.mp3
     - p02a_cen_t05_t05_x2_eus.mp3
   p03:
     - p03a_cen_t05_t05_x2_eus.ogg
@@ -52,10 +52,10 @@ pageAreaWidths:
   p00:
     b: 100
   p04:
-    b: 100
+    b: 100 
   p05:
     a: 50
-    b: 50
+    b: 50 
   p09:
     b: 100
 

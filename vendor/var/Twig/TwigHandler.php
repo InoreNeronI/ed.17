@@ -60,7 +60,7 @@ class TwigHandler
             'debug' => $debug,
             'strict_variables' => $strictVariables,
         ]);
-        $filter = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? new Filter\UglifyJs2Filter(static::$uglifyJsWindowsPath) : new Filter\UglifyJs2Filter();
+        $filter = defined('PHP_WINDOWS_VERSION_MAJOR') ? new Filter\UglifyJs2Filter(static::$uglifyJsWindowsPath) : new Filter\UglifyJs2Filter();
         $filter->setMangle(true);
         $filter->setCompress([
             'sequences' => true,

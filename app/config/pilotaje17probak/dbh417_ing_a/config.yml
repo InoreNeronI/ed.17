@@ -54,9 +54,8 @@ pageTitles:
   - p10b_t03
 
 pageAreaWidths:
-  p00:  # Page affected with any custom side-width
-    b: 100  
-    # side-letter: window-relative-width-percentage
+  p00:  
+    b: 100 
   p05:
     b: 100
   p08:

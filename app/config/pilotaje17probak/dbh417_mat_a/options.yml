@@ -1,4 +1,5 @@
 p01:
+  text:
   simple:
     - p01b_t03
     - p01b_t04
@@ -9,6 +10,7 @@ p01:
     - p01b_t10
     - p01b_t11
 p02:
+  text:
   simple:
     - p02b_t03
     - p02b_t04
@@ -89,12 +91,14 @@ p09:
     - p09b_t06
     - p09b_t07
 p10:
+  text:
   simple:
     - p10b_t03
     - p10b_t04
     - p10b_t05
     - p10b_t06
 p11:
+  text:
   simple:
     - p11b_t02
     - p11b_t03
@@ -109,6 +113,7 @@ p11:
     - p11b_t14
     - p11b_t15
 p12:
+  text:
   simple:
     - p12b_t02
     - p12b_t03
