@@ -41,7 +41,7 @@ class DataExtractCommand extends Console\Command\Command
         $zipStatus = $zip->open($file);
         static::$extractedPath = sys_get_temp_dir().DIRECTORY_SEPARATOR;
         static::$extractedPath .= DataMergeCommand::$filesCurrentFolder ? basename(DataMergeCommand::$filesCurrentFolder) : 'extracted';
-        if ($zipStatus === true) {
+        if (true === $zipStatus) {
             if (!$zip->setPassword($pw) || !$zip->extractTo(static::$extractedPath)) {
                 throw new \Exception(sprintf('Error, extraction of `%s` failed (wrong `%s` password?).', $file, $pw));
             }
@@ -127,22 +127,22 @@ class DataExtractCommand extends Console\Command\Command
      */
     private static function diffInsertStatement(DBAL\Connection $cn, $name, $token, $build, $sql, $msg, Console\Output\OutputInterface $output)
     {
-        if (strpos($name, static::$versioningTablePrefix) === 0) {
+        if (0 === strpos($name, static::$versioningTablePrefix)) {
             if (is_array($diff = static::diffInsertHandler($cn, $sql, $msg, $name))) {
                 $output->writeln($diff['output']);
                 ++static::$totalUpdated;
 
                 return true;
-            } elseif ($diff === false) {
+            } elseif (false === $diff) {
                 ++static::$totalIgnored;
 
                 return true;
             }
         }
-        if (strpos($msg, '1136 Column count') !== false) {
+        if (false !== strpos($msg, '1136 Column count')) {
             DataMergeCommand::runStatement($cn, str_replace($name, $tmpName = $name.'_'.uniqid(), static::$statementsStructure[$name]));
             $sm = $cn->getSchemaManager();
-            if (strpos($tmpName, static::$versioningTablePrefix) !== false) {
+            if (false !== strpos($tmpName, static::$versioningTablePrefix)) {
                 $tmpTable = DataMergeCommand::getVersionedTableObj($sm->listTableColumns($tmpName), $tmpName);
                 $sm->dropTable($tmpName);
                 $sm->createTable($tmpTable);
@@ -182,9 +182,9 @@ class DataExtractCommand extends Console\Command\Command
             list($values, $result, $diff) = static::diffInsertParser($cn, $sql, $name, $_matches[1]);
             $popsTimestamp = isset($diff[10]) && date_create_from_format('Y-m-d H:i:s.u', $diff[10]) instanceof \DateTime;
 
-            if (count($diff) === 2 && isset($diff[3]) && $popsTimestamp) {
+            if (2 === count($diff) && isset($diff[3]) && $popsTimestamp) {
                 return false;
-            } elseif (count($diff) === 1 && isset($diff[3]) || $popsTimestamp) {
+            } elseif (1 === count($diff) && isset($diff[3]) || $popsTimestamp) {
                 return false;
             } elseif (count($diff) > 0 && $popsTimestamp &&
                 is_int($inserts = static::insertDupe($cn, $name, $result[$field], $values, array_flip($keys = array_keys($result))))) {
@@ -227,7 +227,7 @@ class DataExtractCommand extends Console\Command\Command
         //$dbTargetParams['wrapperClass'] = 'Doctrine\DBAL\Driver\PDOConnection';*/
         $output->write(PHP_EOL.sprintf('Processing %s statements...', count(static::$statements))."\t");
         $cn = DBAL\DriverManager::getConnection($dbTargetParams);
-        if ($cn->getDatabasePlatform()->getName() === 'mysql') {
+        if ('mysql' === $cn->getDatabasePlatform()->getName()) {
             $cn->executeQuery('SET NAMES utf8 COLLATE utf8_unicode_ci;');
             foreach (static::$statements as $sql) {
                 static::injectStatement($cn, $sql, $token, $build, $output);
@@ -251,29 +251,29 @@ class DataExtractCommand extends Console\Command\Command
     private static function injectStatement(DBAL\Connection $cn, $sql, $token, $build, Console\Output\OutputInterface $output)
     {
         preg_match('/`(\w+)`/', $sql, $_matches);
-        if (strpos($name = $_matches[1], static::$versioningTableNamePrefix) === 0) {
+        if (0 === strpos($name = $_matches[1], static::$versioningTableNamePrefix)) {
             $oldName = $name;
             $name = str_replace(static::$versioningTableNamePrefix, str_replace('.', '', $build).'_', $oldName);
             $sql = str_replace($oldName, $name, $sql);
         }
         try {
-            if (strpos($sql, 'CREATE TABLE `') === 0) {
+            if (0 === strpos($sql, 'CREATE TABLE `')) {
                 static::$statementsStructure[$name] = $sql;
                 DataMergeCommand::runStatement($cn, $sql);
-                if (strpos($name, static::$versioningTablePrefix) !== false) {
+                if (false !== strpos($name, static::$versioningTablePrefix)) {
                     $sm = $cn->getSchemaManager();
                     $table = DataMergeCommand::getVersionedTableObj($sm->listTableColumns($name), $name);
                     $sm->dropTable($name);
                     $sm->createTable($table);
                 }
                 ++static::$totalCreated;
-            } elseif (preg_match('/^(INSERT INTO `'.static::$versioningTablePrefix.'\w+` VALUES )(.+)$/', $sql, $_matches) !== false) {
+            } elseif (false !== preg_match('/^(INSERT INTO `'.static::$versioningTablePrefix.'\w+` VALUES )(.+)$/', $sql, $_matches)) {
                 $curatedSql = preg_replace('/(\)\s*,\s*\()/', '{#}', substr($_matches[2], 1, -1));
                 $curatedInserts = explode('{#}', $curatedSql);
                 foreach (static::$ignoredIdColumnPrefixes as $ignoredIdColumnPrefix) {
                     foreach ($curatedInserts as $insert) {
                         if (preg_match('/^(\'\w+\',)(\'\w+-\w+\')(.+)/', $insert, $__matches)) {
-                            if (strpos($id = strtolower($__matches[2]), '\''.$ignoredIdColumnPrefix) === 0) {
+                            if (0 === strpos($id = strtolower($__matches[2]), '\''.$ignoredIdColumnPrefix)) {
                                 ++static::$totalIgnored;
                                 continue;
                             }
@@ -287,10 +287,10 @@ class DataExtractCommand extends Console\Command\Command
                     DataMergeCommand::runStatement($cn, $sql);
                     ++static::$totalInserted;
                 }
-            } elseif (strpos($sql, 'INSERT INTO `') === 0) {
+            } elseif (0 === strpos($sql, 'INSERT INTO `')) {
                 DataMergeCommand::runStatement($cn, $sql);
                 ++static::$totalInserted;
-            } elseif (strpos($sql, 'UPDATE `') === 0) {
+            } elseif (0 === strpos($sql, 'UPDATE `')) {
                 DataMergeCommand::runStatement($cn, $sql);
                 ++static::$totalUpdated;
             }
@@ -328,7 +328,7 @@ class DataExtractCommand extends Console\Command\Command
      */
     private static function isPDOException($msg)
     {
-        return strpos($msg, 'SQLSTATE') !== false ? DataMergeCommand::backupAndLog($msg) : false;
+        return false !== strpos($msg, 'SQLSTATE') ? DataMergeCommand::backupAndLog($msg) : false;
     }
 
     /**
@@ -348,7 +348,7 @@ class DataExtractCommand extends Console\Command\Command
         while (!feof($file)) {
             $row = fgets($file);
             // 1. ignore empty string, drops, locks and comment row
-            if (trim($row) === '' || strpos($row, 'DROP TABLE') !== false || strpos($row, 'LOCK TABLE') !== false || preg_match('/^\s*(#|--\s|\/\*)/sUi', $row)) {
+            if ('' === trim($row) || false !== strpos($row, 'DROP TABLE') || false !== strpos($row, 'LOCK TABLE') || preg_match('/^\s*(#|--\s|\/\*)/sUi', $row)) {
                 continue;
             }
             // 2. clear comments
@@ -360,7 +360,7 @@ class DataExtractCommand extends Console\Command\Command
             }
             // 4. separate sql queries by delimiter
             $offset = 0;
-            while (strpos($row, $delimiter, $offset) !== false) {
+            while (false !== strpos($row, $delimiter, $offset)) {
                 $delimiterOffset = strpos($row, $delimiter, $offset);
                 if (static::isQuoted($delimiterOffset, $row)) {
                     $offset = $delimiterOffset + strlen($delimiter);
@@ -399,7 +399,7 @@ class DataExtractCommand extends Console\Command\Command
             } else {
                 $sql = '';
             }
-            if (trim($sql) === '') {
+            if ('' === trim($sql)) {
                 return $sql;
             }
         }
@@ -409,9 +409,9 @@ class DataExtractCommand extends Console\Command\Command
             if (static::isQuoted($foundOn, $sql)) {
                 $offset = $foundOn + strlen($comment);
             } else {
-                if (substr($comment, 0, 2) === '/*') {
+                if ('/*' === substr($comment, 0, 2)) {
                     $closedOn = strpos($sql, '*/', $foundOn);
-                    if ($closedOn !== false) {
+                    if (false !== $closedOn) {
                         $sql = substr($sql, 0, $foundOn).substr($sql, $closedOn + 2);
                     } else {
                         $sql = substr($sql, 0, $foundOn);
@@ -442,10 +442,10 @@ class DataExtractCommand extends Console\Command\Command
         }
         $isQuoted = false;
         for ($i = 0; $i < $offset; ++$i) {
-            if ($text[$i] === "'") {
+            if ("'" === $text[$i]) {
                 $isQuoted = !$isQuoted;
             }
-            if ($text[$i] === '\\' && $isQuoted) {
+            if ('\\' === $text[$i] && $isQuoted) {
                 ++$i;
             }
         }

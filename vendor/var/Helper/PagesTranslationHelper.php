@@ -125,8 +125,8 @@ final class PagesTranslationHelper
         $mediaExt = strtolower($mediaData[1]);
         $mediaData = explode('_', $mediaData[0]);
         if (in_array($mediaExt, static::$library[$tag]['ext']) && ($mediaData[5] === $args['lengua'] || $mediaData[5] === $tag)) {
-            $baseDir = $tag === 'img' ? '/images/' : '/media/';
-            if (/*$tag === 'font' || */$tag === 'audio' || $tag === 'video') {
+            $baseDir = 'img' === $tag ? '/images/' : '/media/';
+            if (/*$tag === 'font' || */'audio' === $tag || 'video' === $tag) {
                 $path = [];
                 foreach (static::$library[$tag]['ext'] as $ext) {
                     $path[$ext] = $mediaExt === $ext ? $baseDir.$args['code'].'/'.$media : '';
@@ -134,7 +134,7 @@ final class PagesTranslationHelper
             } else {
                 $path = $baseDir.$args['code'].'/'.$media;
             }
-            if ($tag === 'font' || $tag === 'audio') {
+            if ('font' === $tag || 'audio' === $tag) {
                 $level = $args['metric']['basics'][$mediaData[4]];
                 $size = $args['metric']['levels'][$level];
                 $width = $args['metric']['levels']['percentages'][$level];

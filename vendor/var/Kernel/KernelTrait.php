@@ -103,7 +103,7 @@ trait KernelTrait
             // Put another way: your code dispatches an event to the dispatcher, the dispatcher notifies all registered listeners for the event, and each listener do whatever it wants with the event.
             $this->dispatcher->dispatch('response', new Event\ResponseEvent($response, $request));
         } catch (\RuntimeException $e) {
-            if (strpos($e->getMessage(), 'Failed to start the session because headers have already been sent') === false) {
+            if (false === strpos($e->getMessage(), 'Failed to start the session because headers have already been sent')) {
                 return static::getFallbackResponse($e);
             }
         } catch (\NoticeException $e) {
@@ -163,7 +163,7 @@ trait KernelTrait
      */
     private static function prepareExceptionRequest($code, $file, $line, $message, $notice = false, $title = 'Error', $status = null)
     {
-        if ($code && $code !== 0) {
+        if ($code && 0 !== $code) {
             $title .= ' #'.$code;
         }
         // Something blew up exception, return a 500 response

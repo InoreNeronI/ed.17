@@ -33,12 +33,12 @@ final class PagesHelper extends Security\Authorization
         $pageAreaSkip = null;
         foreach ($pageAreaWidths as $side => $sideWith) {
             if (in_array($sideWith, array_keys(Helper\PagesTranslationHelper::$widthStyle))) {
-                if ($sideWith === 100) {
+                if (100 === $sideWith) {
                     unset(static::$pageAreaPercents[$side]);
                     $pageAreaSkip = array_keys(static::$pageAreaPercents)[0];
                 }
                 $pageAreaWidths[$side] = Helper\PagesTranslationHelper::$widthStyle[$sideWith];
-                $sideOpposite = $side === 'a' ? 'b' : 'a';
+                $sideOpposite = 'a' === $side ? 'b' : 'a';
                 $sideWithOpposite = 100 - intval($sideWith);
                 isset($pageAreaWidths[$sideOpposite]) ?
                     $pageAreaWidths[$sideOpposite] = isset(Helper\PagesTranslationHelper::$widthStyle[$sideWithOpposite]) ?
@@ -48,8 +48,8 @@ final class PagesHelper extends Security\Authorization
             }
         }
         // Load texts
-        $pageAreaSkip !== 'a' ? $this->loadData($lang, $table, $course, $page, 'a') : null;
-        $pageAreaSkip !== 'b' ? $this->loadData($lang, $table, $course, $page, 'b') : null;
+        'a' !== $pageAreaSkip ? $this->loadData($lang, $table, $course, $page, 'a') : null;
+        'b' !== $pageAreaSkip ? $this->loadData($lang, $table, $course, $page, 'b') : null;
 
         return array_merge(static::$pageTexts, ['pageAreaSkip' => $pageAreaSkip, 'pageAreaWidths' => $pageAreaWidths]);
     }

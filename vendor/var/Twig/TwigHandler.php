@@ -23,7 +23,7 @@ class TwigHandler
     private static $loaded = false;
 
     /** @var string */
-    private static $uglifyJsWindowsPath = '%APPDATA%\npm\uglifyjs.cmd';
+    private static $uglifyJsWindowsPath = 'C:\Users\M\AppData\Local\Yarn\bin\uglifyjs.cmd';
 
     /**
      * Construct won't be called inside this class and is uncallable from the outside. This prevents instantiating this class.
@@ -39,11 +39,13 @@ class TwigHandler
      * This loader can find templates in folders on the file system and is the preferred way to load them.
      *
      * @param string $loaderDir
-     * @param bool   $autoescape
      * @param null   $cacheDir
+     * @param bool   $autoescape
      * @param bool   $debug
      * @param bool   $strictVariables
      * @param string $namespace
+     *
+     * @throws \Twig_Error_Loader
      */
     private static function load($loaderDir, $cacheDir = null, $autoescape = false, $debug = false, $strictVariables = true, $namespace = 'App')
     {
@@ -89,6 +91,10 @@ class TwigHandler
      * @param bool   $strictVariables
      *
      * @return string
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public static function render(
         $slug = 'index',
@@ -111,7 +117,7 @@ class TwigHandler
     public static function getTemplatePath($slug)
     {
         /** @var string $path */
-        $path = $slug === 'index' ? '' : '/page';
+        $path = 'index' === $slug ? '' : '/page';
 
         return "$path/$slug.html.twig"; // path + slug + extension
     }

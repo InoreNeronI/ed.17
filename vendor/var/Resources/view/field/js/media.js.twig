@@ -2,10 +2,11 @@
 {# @see http://stackoverflow.com/a/15587181 #}
 $('.play{{ tag|capitalize }}').each(function() {
     $(this).on('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
         var son = $(this).children().first();
-        if (son.hasClass('fa-play')) {
-            var grandson = son.children().length === 1 ? son.children() : $(this).prev();
-            if (grandson.is('audio') || grandson.is('video')) {
+        var grandson = son.children().length === 1 ? son.children() : $(this).prev();
+        if (grandson.is('audio') || grandson.is('video')) {
             {% if type|default is same as('full') %}
                 grandson.on('pause', function() {
                     son.removeClass('fa-pause').addClass(this.ended ? 'fa-undo' : 'fa-play');
@@ -28,13 +29,10 @@ $('.play{{ tag|capitalize }}').each(function() {
                 grandson.on('playing', function () {
                     son.removeClass('fa-undo').addClass('fa-play');
                 });
-                if (grandson.get(0).paused) {
+                if (grandson.get(0).ended) {
                     grandson.get(0).play();
                 }
             {% endif %}
-            }
         }
-        event.preventDefault();
-        event.stopPropagation();
     });
 });

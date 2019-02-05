@@ -24,7 +24,7 @@ class DataSchemaCommand extends CreateCommand
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
         $this->init($input);
-        if ($this->sc->getDatabasePlatform()->getName() === 'sqlite') {
+        if ('sqlite' === $this->sc->getDatabasePlatform()->getName()) {
             $dbName = basename($this->sc->getDatabase(), '.'.pathinfo($this->sc->getDatabase(), PATHINFO_EXTENSION));
         } else {
             $dbName = $this->sc->getDatabase();
@@ -64,7 +64,7 @@ class DataSchemaCommand extends CreateCommand
         /** @var DBAL\Schema\Column $column */
         foreach ($table->getColumns() as $column) {
             $options = $column->getPlatformOptions();
-            if (!$column->hasPlatformOption('collation') || $options['collation'] === 'BINARY') {
+            if (!$column->hasPlatformOption('collation') || 'BINARY' === $options['collation']) {
                 $options['collation'] = $collation;
                 $column->setPlatformOptions($options);
             }

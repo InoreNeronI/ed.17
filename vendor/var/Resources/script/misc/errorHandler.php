@@ -5,7 +5,7 @@ class NoticeException extends Exception
 {
     public function __toString()
     {
-        return sprintf("Notice%s: {$this->message}", $this->code !== 0 ? " #{$this->code}" : '');
+        return sprintf("Notice%s: {$this->message}", 0 !== $this->code ? " #{$this->code}" : '');
     }
 }
 
@@ -13,7 +13,7 @@ class WarningException extends Exception
 {
     public function __toString()
     {
-        return sprintf("Warning%s: {$this->message}", $this->code !== 0 ? " #{$this->code}" : '');
+        return sprintf("Warning%s: {$this->message}", 0 !== $this->code ? " #{$this->code}" : '');
     }
 }
 /*// @see: http://stackoverflow.com/a/4410769

@@ -46,6 +46,8 @@ trait DataCommandTrait
      * @param string                       $target
      *
      * @return string
+     *
+     * @throws DBAL\DBALException
      */
     private function init(Console\Input\InputInterface $input, $source = 'source', $target = 'target')
     {
@@ -84,7 +86,7 @@ trait DataCommandTrait
     {
         // make sure all connections are UTF8 in source
         try {
-            if ($this->sc->getDatabasePlatform()->getName() === 'mysql') {
+            if ('mysql' === $this->sc->getDatabasePlatform()->getName()) {
                 $this->sc->executeQuery('SET NAMES utf8 COLLATE utf8_unicode_ci;');
             }
         } catch (\Exception $e) {
@@ -98,14 +100,14 @@ trait DataCommandTrait
         // make sure all connections are UTF8 in target
         $dbTarget = $this->tc->getDatabase();
         try {
-            if ($this->tc->getDatabasePlatform()->getName() === 'mysql') {
+            if ('mysql' === $this->tc->getDatabasePlatform()->getName()) {
                 $this->tc->executeQuery('SET NAMES utf8 COLLATE utf8_unicode_ci;');
                 $exists = //$this->tc->executeQuery("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbTarget';")->rowCount() > 0;
                     in_array($dbTarget, $this->tc->getSchemaManager()->listDatabases());
                 if ($exists || $this->tc->connect() || $this->tc->isConnected()) {
                     throw new \Exception(sprintf('Target database `%s` already exists.', $dbTarget));
                 }
-            } elseif ($this->tc->getDatabasePlatform()->getName() === 'sqlite' && $file = realpath($this->getConfig('target.path'))) {
+            } elseif ('sqlite' === $this->tc->getDatabasePlatform()->getName() && $file = realpath($this->getConfig('target.path'))) {
                 $this->output->writeln(sprintf('Database `%s` already exists.', $dbTarget).PHP_EOL);
                 $path = dirname($file).DIRECTORY_SEPARATOR;
                 $oldFilename = str_replace($path, '', $file);
@@ -140,6 +142,9 @@ trait DataCommandTrait
     /**
      * @param string $table
      * @param bool   $keyColumn
+     *
+     * @throws DBAL\ConnectionException
+     * @throws DBAL\DBALException
      */
     protected function copyTable($table, $keyColumn = false)
     {
@@ -194,7 +199,7 @@ trait DataCommandTrait
             } else {
                 $sql .= ' LIMIT '.$this->batch.' OFFSET '.($this->batch * $loopOffsetIndex++);
             }
-            if (count($rows = $this->sc->fetchAll($sql, $sqlParameters)) === 0) {
+            if (0 === count($rows = $this->sc->fetchAll($sql, $sqlParameters))) {
                 // avoid div by zero in progress->advance
                 break;
             }

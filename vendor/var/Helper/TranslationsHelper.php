@@ -42,9 +42,9 @@ class TranslationsHelper
         $lang = is_null($lang) && isset($messages['lang']) ? $messages['lang'] : $lang;
         $stage = is_null($stage) && isset($messages['stage']) ? $messages['stage'] : $stage;
         foreach ($messages as $key => $message) {
-            if ($key === 'actions'/* && !is_null($stage)*/) {
+            if ('actions' === $key/* && !is_null($stage)*/) {
                 foreach ($message as $k => $v) {
-                    if (strpos($k, $stage) === false) {
+                    if (false === strpos($k, $stage)) {
                         unset($messages[$key][$k]);
                     }
                 }
@@ -52,12 +52,12 @@ class TranslationsHelper
             } elseif (is_array($message)) {
                 static::$localizedMsg = [];
                 foreach ($message as $msg_key => $msg_value) {
-                    if (($msg = static::localizeMessage($msg_key, $msg_value, $lang, $stage)) !== false) {
+                    if (false !== ($msg = static::localizeMessage($msg_key, $msg_value, $lang, $stage))) {
                         $messages[$key] = $msg;
                     }
                 }
                 empty(static::$localizedMsg) ?: $messages[$key] = implode(' / ', static::$localizedMsg);
-            } elseif (($msg = static::localizeMessage($key, $message, $lang, $stage)) !== false) {
+            } elseif (false !== ($msg = static::localizeMessage($key, $message, $lang, $stage))) {
                 $messages = $msg;
             }
         }

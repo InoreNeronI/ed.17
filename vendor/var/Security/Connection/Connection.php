@@ -114,7 +114,7 @@ class Connection implements ConnectionInterface
                 // we need try execute query again in case of followign MySQL errors:
                 // Error: 1205 SQLSTATE: HY000 (ER_LOCK_WAIT_TIMEOUT) Message: Lock wait timeout exceeded; try restarting transaction
                 // Error: 1213 SQLSTATE: 40001 (ER_LOCK_DEADLOCK) Message: Deadlock found when trying to get lock; try restarting transaction
-                if (stripos($e->getMessage(), 'try restarting transaction') === false || $attempt === $maxAttempts) {
+                if (false === stripos($e->getMessage(), 'try restarting transaction') || $attempt === $maxAttempts) {
                     throw $e;
                 }
 

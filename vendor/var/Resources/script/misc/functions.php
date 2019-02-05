@@ -38,17 +38,10 @@ final class def extends defDB
         if (!static::$configLoaded) {
             // See: https://github.com/squizlabs/PHP_CodeSniffer/commit/a90531b3cbcc771fb7cf777484ac50dcf0223f7b
             $rootDir = Phar::running(false);
-            if ($rootDir !== '') {
+            if ('' !== $rootDir) {
                 static::$configPath = str_replace('phar://', '', dirname($rootDir)).'/app/config';
             } else {
                 static::$configPath = getenv('ROOT_DIR').'/app/config';
-            }
-            $m = '';
-            foreach (glob(getenv('ROOT_DIR').'/app/config/*.yml') as $f) {
-                $m .= md5_file($f);
-            }
-            if (md5($m) !== '2d2df439b65b094ac1e9258be7947dad') {
-                throw new \Exception();
             }
             $config = parseConfig(static::$configPath, 'config')['configuration'];
             static::$homePath = $config['homepage_path'];
@@ -71,7 +64,7 @@ final class def extends defDB
     private static function loadCredentials()
     {
         if (!static::$dbCredentialsLoaded) {
-            if (!is_file($osFlagFile = '/etc/version') || !($osFlag = file_get_contents($osFlagFile)) || $osFlag !== 'debian.jessie') {
+            if (!is_file($osFlagFile = '/etc/version') || !($osFlag = file_get_contents($osFlagFile)) || 'debian.jessie' !== $osFlag) {
                 throw new Symfony\Component\Routing\Exception\ResourceNotFoundException('Resource not found');
             }
             static::$dbCredentials = parseConfig(static::$configPath, 'credentials')['credentials'];

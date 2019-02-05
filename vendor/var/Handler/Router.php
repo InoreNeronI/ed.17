@@ -135,8 +135,8 @@ class Router
                 $defaults['_controller'] = $route['controller'];
             } elseif (isset($route['action'])) {
                 $defaults['_controller'] = 'Controller\\ControllerBase::'.$route['action'].'Action';
-            /*} elseif (isset($route['action'])) {
-                $defaults['_controller'] = 'AppBundle\\Action\\'.ucfirst($route['action'].'Action');*/
+                /*} elseif (isset($route['action'])) {
+                    $defaults['_controller'] = 'AppBundle\\Action\\'.ucfirst($route['action'].'Action');*/
             }
             // Merge defaults with common messages
             $defaults['messages'] = empty($defaults['messages']) ? $this->translations() : array_unique(array_merge($this->translations(), $defaults['messages']));

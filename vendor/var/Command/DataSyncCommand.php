@@ -30,7 +30,7 @@ class DataSyncCommand extends BackupCommand
         /** @var \Doctrine\DBAL\Schema\AbstractSchemaManager $tm */
         $tm = $this->tc->getSchemaManager();
 
-        if ($this->sc->getDatabasePlatform()->getName() === 'sqlite') {
+        if ('sqlite' === $this->sc->getDatabasePlatform()->getName()) {
             $dbName = basename($this->sc->getDatabase(), '.'.pathinfo($this->sc->getDatabase(), PATHINFO_EXTENSION));
         } else {
             $dbName = $this->sc->getDatabase();
@@ -39,7 +39,7 @@ class DataSyncCommand extends BackupCommand
         /** @var array|null $tables */
         $tables = $this->getOptionalConfig('tables')[$dbName];
 
-        if ($tables === null) {
+        if (null === $tables) {
             $output->writeln('Tables not configured - discovering from source schema'.PHP_EOL);
             foreach ($this->getTables($sm) as $tableName) {
                 $output->writeln(sprintf('`%s` discovered', $tableName));

@@ -1,11 +1,13 @@
 {
-  "require-dev": {
-    "wikimedia/composer-merge-plugin": "@dev"
+  "require": {
+    "incenteev/composer-parameter-handler": "@stable",
+    "neronmoon/scriptsdev": "@stable",
+    "symfony/yaml": "^2.8"
   },
   "scripts": {
-    "build-pack": "php bin/box.phar -v",
-    "post-install-cmd": "printf \"\\n\\tDependencies has been installed succesfully\\n\"",
-    "post-update-cmd": "printf \"\\n\\tDependencies has been updated succesfully\\n\"",
+    "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
+    "post-install-cmd": ["@bin-install", "@build-parameters", "@composer install -d vendor/var", "printf \"\\n\\tDependencies has been installed successfully\\n\""],
+    "post-update-cmd": ["@bin-update", "@build-parameters", "@composer update -d vendor/var", "printf \"\\n\\tDependencies has been updated successfully\\n\""],
     "pre-install-cmd": "printf \"\\n\\tInstalling dependencies\\n\\n\"",
     "pre-update-cmd": "printf \"\\n\\tUpdating dependencies\\n\\n\""
   },
@@ -15,38 +17,28 @@
     "preferred-install": "dist",
     "vendor-dir": "app/cache/vendor"
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "extra": {
     "incenteev-parameters": [{
       "file": "app/connection.yml",
       "dist-file": "vendor/var/Resources/config/connection.dist.yml"
     }],
-    "merge-plugin": {
-      "require": ["vendor/var/composer.json"],
-      "recurse": false,
-      "replace": false,
-      "merge-dev": true,
-      "merge-extra": true,
-      "merge-extra-deep": false,
-      "merge-scripts": true
-    },
     "scripts-dev": {
       "bin-install": [
         "printf \"\\n\"",
         "[ -d \"bin\" ] || mkdir -v bin",
-        "[ -e \"bin/php-cs.phar\" ] || curl -Lo bin/php-cs.phar https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.3.1/php-cs-fixer.phar",
-        "printf \"\\n\\tBinaries has been installed succesfully\\n\\n\""
+        "[ -e \"bin/box.phar\" ] || curl -Lo bin/box.phar https://github.com/box-project/box2/releases/download/2.7.5/box-2.7.5.phar",
+        "[ -e \"bin/php-cs.phar\" ] || curl -Lo bin/php-cs.phar https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.14.0/php-cs-fixer.phar",
+        "printf \"\\n\\tBinaries has been installed successfully\\n\\n\""
       ],
       "bin-update": [
         "@bin-install",
-        "php bin/php-cs.phar selfupdate || true",
-        "printf \"\\n\\tBinaries has been updated succesfully\\n\\n\""
+        "@php bin/php-cs.phar selfupdate",
+        "printf \"\\n\\tBinaries has been updated successfully\\n\\n\""
       ],
-      "build-parameters": ["printf \"\\n\\tBuilding parameters\\n\\n\"", "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"],
-      "codefix": "php bin/php-cs.phar fix --config=vendor/var/.php_cs",
-      "post-install-cmd": ["@bin-install", "@build-parameters"],
-      "post-update-cmd": ["@bin-update", "@build-parameters"]
+      "fix": "@php bin/php-cs.phar fix --config=vendor/var/.php_cs",
+      "pack": "@php bin/box.phar -v"
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

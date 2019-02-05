@@ -128,7 +128,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
 
             return '';
         } catch (\Exception $e) {
-            if (strpos($e->getMessage(), 'Base table or view not found') !== false) {
+            if (false !== strpos($e->getMessage(), 'Base table or view not found')) {
                 $table = new DBAL\Schema\Table($this->entity);
                 $table->addColumn('id', 'bigint', ['unsigned' => true, 'autoincrement' => true]);
                 $table->addColumn($this->idCol, 'string', ['length' => 255]);

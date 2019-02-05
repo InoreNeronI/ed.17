@@ -31,10 +31,10 @@ class DataMergeCommand extends Console\Command\Command
         $startTime = time();
         $output->writeln(PHP_EOL.sprintf('Started at %s...', date('Y-m-d H:i:s', $startTime)));
         $path = $input->getOption('folder');
-        if ($path === 'clear') {
+        if ('clear' === $path) {
             return static::clearDatabases($output);
         }
-        if ($path === 'reset') {
+        if ('reset' === $path) {
             return static::resetDatabase();
         }
         if (!(static::$filesSourcePath = realpath($path))) {
@@ -156,7 +156,7 @@ class DataMergeCommand extends Console\Command\Command
         }
 
         foreach ($conn->getSchemaManager()->listDatabases() as $database) {
-            if ($database !== $prefix && strpos($database, $prefix) === 0) {
+            if ($database !== $prefix && 0 === strpos($database, $prefix)) {
                 static::$databases[] = $database;
             }
         }
@@ -233,8 +233,8 @@ class DataMergeCommand extends Console\Command\Command
     {
         $target = static::backupPath(DataExtractCommand::$extractedPath, /*'failed-'.*/basename(DataExtractCommand::$extractedPath));
 
-        return $target !== false &&
-            file_put_contents($path = $target.DIRECTORY_SEPARATOR.$errorFilename, $msg) !== false ? str_replace(getcwd().DIRECTORY_SEPARATOR, '', $path) : false;
+        return false !== $target &&
+            false !== file_put_contents($path = $target.DIRECTORY_SEPARATOR.$errorFilename, $msg) ? str_replace(getcwd().DIRECTORY_SEPARATOR, '', $path) : false;
     }
 
     /**
@@ -295,7 +295,7 @@ class DataMergeCommand extends Console\Command\Command
         $dir = dir($source);
         while (false !== $entry = $dir->read()) {
             // Skip pointers
-            if ($entry === '.' || $entry === '..') {
+            if ('.' === $entry || '..' === $entry) {
                 continue;
             }
             // Deep copy directories
@@ -315,7 +315,7 @@ class DataMergeCommand extends Console\Command\Command
         if (is_dir($dir)) {
             $objects = scandir($dir);
             foreach ($objects as $object) {
-                if ($object !== '.' && $object !== '..') {
+                if ('.' !== $object && '..' !== $object) {
                     if (is_dir($dir.'/'.$object)) {
                         static::rrmdir($dir.'/'.$object);
                     } else {
@@ -368,12 +368,12 @@ class DataMergeCommand extends Console\Command\Command
             return true;
         }
         foreach (static::$ignoredTablePrefixes as $ignoredTablePrefix) {
-            if (strpos($sql, 'CREATE TABLE `'.$ignoredTablePrefix) === 0 || strpos($sql, 'INSERT INTO `'.$ignoredTablePrefix) === 0) {
+            if (0 === strpos($sql, 'CREATE TABLE `'.$ignoredTablePrefix) || 0 === strpos($sql, 'INSERT INTO `'.$ignoredTablePrefix)) {
                 return true;
             }
         }
         foreach (static::$ignoredExceptionMessages as $ignoredSqlExceptionContain) {
-            if (strpos($msg, $ignoredSqlExceptionContain) !== false) {
+            if (false !== strpos($msg, $ignoredSqlExceptionContain)) {
                 return true;
             }
         }

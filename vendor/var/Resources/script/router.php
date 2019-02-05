@@ -2,6 +2,7 @@
 
 /** @author: Michał Pipa <michal.pipa.xsolve@gmail.com>
  *  @author: Albert Jessurum <ajessu@gmail.com>
+ *
  *  @see https://github.com/symfony/framework-bundle/blob/2.8/Resources/config/router_prod.php */
 
 // Workaround https://bugs.php.net/64566

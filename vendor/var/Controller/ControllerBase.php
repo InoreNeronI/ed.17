@@ -87,7 +87,7 @@ class ControllerBase
      */
     public function renderAction(HttpFoundation\Request $request, $expiryMinutes = 1)
     {
-        if ($request->isXmlHttpRequest() && $request->getMethod() === 'POST' && $user = $request->request->get('user')) {
+        if ($request->isXmlHttpRequest() && 'POST' === $request->getMethod() && $user = $request->request->get('user')) {
             /** @var string $clientIp */
             $clientIp = $request->getClientIp();
             /** @var Handler\Uploader $doc */
@@ -109,12 +109,12 @@ class ControllerBase
         }
         $data = $this->getData($request);
         $route = $request->get('_route');
-        if ($route === 'boarding' && (strpos($data['code'], 'simul') !== false || strpos($data['code'], 'dbh417') !== false || strpos($data['code'], 'lh617') !== false)) {
+        if ('boarding' === $route && (false !== strpos($data['code'], 'simul') || false !== strpos($data['code'], 'dbh417') || false !== strpos($data['code'], 'lh617'))) {
             $route = 'onboard';
             $messages = Helper\TranslationsHelper::localize(parseConfig(getenv('TRANSLATIONS_DIR').'/page', $route), $data, $this->langISOCodes);
             $request = HttpFoundation\Request::create(null, $request->getMethod(), array_merge($request->request->all(), $messages/*, ['flabel' => null]*/));
             $data = $this->getSplitPageData($request);
-        } elseif ($route === 'boarding' && !isset($data['code'])) {
+        } elseif ('boarding' === $route && !isset($data['code'])) {
             $route = 'upload';
             $messages = Helper\TranslationsHelper::localize(parseConfig(getenv('TRANSLATIONS_DIR').'/page', $route), [], $this->langISOCodes);
             $data = array_merge($data, $messages);

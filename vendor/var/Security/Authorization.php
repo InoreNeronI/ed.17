@@ -57,7 +57,7 @@ class Authorization extends Security\Connection\Connection
             'studentMonth' => $args['studentMonth'],
         ];
         if ($this->checkUploaders($args)) {
-            return array_merge($args, ['is_admin' => strtolower($args['studentCode']) === 'ed17-100']);
+            return array_merge($args, ['is_admin' => 'ed17-100' === strtolower($args['studentCode'])]);
         }
         /** @var \Doctrine\DBAL\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->getQueryBuilder()
@@ -125,7 +125,7 @@ class Authorization extends Security\Connection\Connection
     {
         $data = static::getAccess($user, $args);
         foreach (\def::stages() as $stage) {
-            if (strpos($data['table'], $stage) !== false/* && empty($data['stage'])*/) {
+            if (false !== strpos($data['table'], $stage)/* && empty($data['stage'])*/) {
                 $data['stage'] = $stage;
                 break;
             }
@@ -146,35 +146,35 @@ class Authorization extends Security\Connection\Connection
     {
         if (is_array($args)) {
             foreach ($args as $key => $item) {
-                if (/* Eusk: */(strpos($item, 'eus') !== false &&
-                        (strtolower($key) === strtolower($user['tipo_eus']) || strpos(strtolower($key), lcfirst($user['codmodelo'])) !== false) &&
+                if (/* Eusk: */(false !== strpos($item, 'eus') &&
+                        (strtolower($key) === strtolower($user['tipo_eus']) || false !== strpos(strtolower($key), lcfirst($user['codmodelo']))) &&
                         $mod = 'eus') ||
                     /* Gazte: */
-                    ((strpos($item, 'cas') !== false || strpos($item, 'gaz') !== false) /*&& lcfirst($key) === lcfirst($user['tipo_cas'])*/ && $mod = 'cas') ||
+                    ((false !== strpos($item, 'cas') || false !== strpos($item, 'gaz')) /*&& lcfirst($key) === lcfirst($user['tipo_cas'])*/ && $mod = 'cas') ||
                     /* G. sortak: */
-                    (strpos($item, 'gsorta') !== false && lcfirst($key) === lcfirst($user['tipo_gso']) && $mod = 'gso') ||
+                    (false !== strpos($item, 'gsorta') && lcfirst($key) === lcfirst($user['tipo_gso']) && $mod = 'gso') ||
                     /* Inge: */
-                    (strpos($item, 'ing') !== false /*&& lcfirst($key) === lcfirst($user['tipo_ing'])*/ && $mod = 'ing') ||
+                    (false !== strpos($item, 'ing') /*&& lcfirst($key) === lcfirst($user['tipo_ing'])*/ && $mod = 'ing') ||
                     /* Mate: */
-                    (strpos($item, 'mat') !== false /*&& lcfirst($key) === lcfirst($user['tipo_mat'])*/ && $mod = 'mat') ||
+                    (false !== strpos($item, 'mat') /*&& lcfirst($key) === lcfirst($user['tipo_mat'])*/ && $mod = 'mat') ||
                     /* Zie: */
-                    (strpos($item, 'zie') !== false /*&& lcfirst($key) === lcfirst($user['tipo_zie'])*/ && $mod = 'zie')) {
+                    (false !== strpos($item, 'zie') /*&& lcfirst($key) === lcfirst($user['tipo_zie'])*/ && $mod = 'zie')) {
                     return ['lengua' => $lengua = static::getLanguage($user, $mod), 'lang' => \def::langCodes()[$lengua], 'table' => $item];
                 }
             }
-        } elseif (/* Eusk: */(strpos($args, 'eus') !== false && $mod = 'eus') ||
+        } elseif (/* Eusk: */(false !== strpos($args, 'eus') && $mod = 'eus') ||
             /* Gazte: */
-            ((strpos($args, 'cas') !== false || strpos($args, 'gaz') !== false) && $mod = 'cas') ||
+            ((false !== strpos($args, 'cas') || false !== strpos($args, 'gaz')) && $mod = 'cas') ||
             /* G. sortak: */
-            (strpos($args, 'gsorta') !== false && $mod = 'gso') ||
+            (false !== strpos($args, 'gsorta') && $mod = 'gso') ||
             /* Inge: */
-            (strpos($args, 'ing') !== false && $mod = 'ing') ||
+            (false !== strpos($args, 'ing') && $mod = 'ing') ||
             /* Mate: */
-            (strpos($args, 'mat') !== false && $mod = 'mat') ||
+            (false !== strpos($args, 'mat') && $mod = 'mat') ||
             /* Zie: */
-            (strpos($args, 'zie') !== false && $mod = 'zie') ||
+            (false !== strpos($args, 'zie') && $mod = 'zie') ||
             /* Simul: */
-            (strpos($args, 'simul') !== false && $mod = 'mat')) {
+            (false !== strpos($args, 'simul') && $mod = 'mat')) {
             return ['lengua' => $lengua = static::getLanguage($user, $mod), 'lang' => \def::langCodes()[$lengua], 'table' => $args];
         } else {
             throw new \NoticeException(sprintf('Access denied for student \'%s\'', $user['codalumno']));
@@ -186,16 +186,16 @@ class Authorization extends Security\Connection\Connection
      * @param string $default
      * @param array  $asIs
      *
-     * @return null|string
+     * @return string|null
      *
      * @throws \NoticeException
      */
     private static function getLanguage($user, $default, $asIs = ['eus', 'cas'])
     {
-        if ($user['lengua_tipo'] === 'fam') {
+        if ('fam' === $user['lengua_tipo']) {
             return $user['lengua'];
         }
-        if ($user['lengua_tipo'] === 'ins' && isset($user['lengua_'.$default])) {
+        if ('ins' === $user['lengua_tipo'] && isset($user['lengua_'.$default])) {
             return $user['lengua_'.$default];
         }
         if (in_array($default, $asIs)) {

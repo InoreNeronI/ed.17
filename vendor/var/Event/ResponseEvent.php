@@ -51,7 +51,7 @@ class ResponseEvent extends EventDispatcher\Event
     {
         $sessionHandler = new Handler\Session\SessionHandler();
         if ($sessionHandler->startSession()) {
-            $hasError = $this->response->headers->has('ErrorData') && $this->response->isRedirect() || $this->response->getContent() === '';
+            $hasError = $this->response->headers->has('ErrorData') && $this->response->isRedirect() || '' === $this->response->getContent();
             $session = $sessionHandler->getSession($hasError, $this->response->headers->get('ErrorData') ?: null);
             $this->request->setSession($session);
         }

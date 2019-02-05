@@ -65,7 +65,7 @@ trait ControllerTrait
     private function getData(HttpFoundation\Request $request, $mustHave = 'studentPassword')
     {
         $data = [];
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             /** @var array $args */
             $args = $request->request->all();
 
@@ -77,7 +77,7 @@ trait ControllerTrait
                 /** @var string $db */
                 $db = $cn->getDatabase();
 
-                if ($cn->getDatabasePlatform()->getName() === 'sqlite') {
+                if ('sqlite' === $cn->getDatabasePlatform()->getName()) {
                     $dbName = basename($db, '.'.pathinfo($db, PATHINFO_EXTENSION));
                 } else {
                     $dbName = $db;
@@ -99,7 +99,7 @@ trait ControllerTrait
      */
     private function getSplitPageData(HttpFoundation\Request $request, $page = 0)
     {
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             /** @var array $args */
             $args = $request->request->all();
 

@@ -111,9 +111,9 @@ class Uploader
     private function isNewFile()
     {
         $mimeType = $this->file->getMimeType();
-        if ($mimeType === 'text/plain') {
+        if ('text/plain' === $mimeType) {
             return true;
-        } elseif ($mimeType === 'application/zip') {
+        } elseif ('application/zip' === $mimeType) {
             $count = 0;
             $md5 = md5_file($this->file->getPathname());
             foreach (static::getTargetDirs(static::getUploadDirectory()) as $dir) {
@@ -128,7 +128,7 @@ class Uploader
                 }
             }
 
-            return $count === 0 ? true : false;
+            return 0 === $count ? true : false;
         }
 
         return false;
@@ -171,7 +171,7 @@ class Uploader
         $purges = [];
         foreach (static::getTargetDirs(static::getUploadDirectory()) as $dir) {
             $files = static::getTargetFiles($dir);
-            if (count($files) === 1 && ($file = realpath($files[0])) && mime_content_type($file) === 'text/plain' && unlink($file) && $folder = dirname($file)) {
+            if (1 === count($files) && ($file = realpath($files[0])) && 'text/plain' === mime_content_type($file) && unlink($file) && $folder = dirname($file)) {
                 /*$exists = false;
                 foreach ($this->getFilePersistencePath() as $key => $fresh) {
                     if (strpos(array_pop($fresh), $folder)) {

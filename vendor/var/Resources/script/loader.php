@@ -1,6 +1,6 @@
 <?php
 
-/** @author Martin Mozos <martinmozos@gmail.com> */
+/* @author Martin Mozos <martinmozos@gmail.com> */
 // Set php-script files' path
 putenv('SCRIPTS_DIR='.__DIR__);
 // Set resources dir
@@ -26,11 +26,6 @@ if (!class_exists('ClassLoader') && !$loader = require(getenv('ROOT_DIR').'/vend
         'php composer.phar install'.PHP_EOL);
 }
 
-// Load `.env` files environment-variables
-if (is_file(getenv('ROOT_DIR').'/.env')) {
-    (new \Dotenv\Dotenv(getenv('ROOT_DIR')))->load();
-}
-
 // Require classes and functions
 require getenv('SCRIPTS_DIR').'/misc/functions.php';
 
@@ -43,7 +38,7 @@ putenv('USER_TABLE='.\defDb::userEntity());
 putenv('EXTRA_TABLE='.\defDb::extraEntity());
 
 // @see http://stackoverflow.com/a/5879078
-if (getenv('DEBUG') && getenv('DEBUG') !== 'false') {
+if (getenv('DEBUG') && 'false' !== getenv('DEBUG')) {
     putenv('DEBUG='.true);
     Symfony\Component\Debug\Debug::enable();
 } else {

@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-if ($argc !== 2) {
+if (2 !== $argc) {
     throw new Exception('Please, provide path to the folder containing archives');
 }
 

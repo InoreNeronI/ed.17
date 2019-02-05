@@ -11,7 +11,7 @@ define('ROOT_DIR', dirname(dirname(dirname(dirname(__DIR__)))));
 /* @link https://gist.github.com/azihassan/3093972 */
 define('USAGE', 'Usage: php '.$argv[0].' --package package_name --path '.ROOT_DIR.DIRECTORY_SEPARATOR.'tazpkgs [--dependencies] [--overwrite] [--nocache] [--withdepends] [--help]');
 
-if ($argc === 1) {
+if (1 === $argc) {
     \packager::getUsage(USAGE);
 }
 \packager::getTazPkg($argv, 'cooking');
@@ -74,7 +74,7 @@ class packager
         static::$version = $version;
         try {
             list($package_name, $target_dir, $dependencies, $help, $overwrite, $no_cache, $with_depends) = static::parseTazArguments();
-            if ($help === true) {
+            if (true === $help) {
                 static::getUsage(USAGE);
             }
             echo PHP_EOL.'Extracting the links...'.PHP_EOL;
@@ -104,16 +104,16 @@ class packager
             return [null, null, null, true, null, null];
         }
 
-        if (($key = array_search('--package', static::$arguments)) !== false) {
+        if (false !== ($key = array_search('--package', static::$arguments))) {
             /* @link http://stackoverflow.com/a/3766319 */
             list($package_name) = explode(' ', trim(static::$arguments[$key + 1]));
         } else {
             throw new \Exception(sprintf('%s%sERROR: Argument `--package` is mandatory. Type --help for usage.', PHP_EOL, "\t"));
         }
 
-        if (($key = array_search('--path', static::$arguments)) !== false) {
+        if (false !== ($key = array_search('--path', static::$arguments))) {
             $target_dir = static::$arguments[$key + 1];
-            if (!is_writable($target_dir) && mkdir($target_dir) === false) {
+            if (!is_writable($target_dir) && false === mkdir($target_dir)) {
                 throw new \Exception(sprintf('%s%sERROR: `%s` is not writable. Try again with another path or leave it empty for the current path.', PHP_EOL, "\t", $target_dir));
             }
         } else {
@@ -146,7 +146,7 @@ class packager
         $query .= $dependencies ? 'depends='.$package_name : 'package='.$package_name;
         $query .= '&version='.static::$branches[static::$version];
 
-        if (is_readable($tmp) && $no_cache === false) {
+        if (is_readable($tmp) && false === $no_cache) {
             curl_close($ch);
 
             return file_get_contents($tmp);
@@ -158,7 +158,7 @@ class packager
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; rv:13.0) Gecko/20100101 Firefox/13.0.1');
 
         $result = curl_exec($ch);
-        if ($result === false) {
+        if (false === $result) {
             $err = curl_error($ch);
             curl_close($ch);
             throw new \Exception(sprintf('%s%sERROR: Failed to retrieve the source%s%s', PHP_EOL, "\t", "\t", $err));
@@ -189,11 +189,11 @@ class packager
         $standalone = false;
 
         foreach ($extract as $key => $link) {
-            if (!empty($package_name) && strpos($link->nodeValue, '?receipt=') === 0 && str_replace('?receipt=', '', $link->nodeValue) === $package_name) {
+            if (!empty($package_name) && 0 === strpos($link->nodeValue, '?receipt=') && str_replace('?receipt=', '', $link->nodeValue) === $package_name) {
                 $standalone = $key;
             }
-            if (pathinfo($link->nodeValue, PATHINFO_EXTENSION) === 'tazpkg') {
-                if ($standalone !== false) {
+            if ('tazpkg' === pathinfo($link->nodeValue, PATHINFO_EXTENSION)) {
+                if (false !== $standalone) {
                     return [$extract[--$standalone]->nodeValue];
                 }
                 $links[] = $link->nodeValue;
@@ -218,15 +218,15 @@ class packager
         if (empty($links) && empty($package_name)) {
             $package_arg_key = array_search('--package', static::$arguments) + 1;
             $package_name = static::$arguments[$package_arg_key];
-            $nocache = array_search('--nocache', static::$arguments) !== false;
+            $nocache = false !== array_search('--nocache', static::$arguments);
             $src = static::getTazPkgsSource('http://pkgs.slitaz.org/search.sh', $package_name, false, $nocache);
             $links = static::extractTazPkgsStrings($src, $package_name);
 
             if (!empty($links)) {
-                if (count($links) === 1) {
+                if (1 === count($links)) {
                     return [$package_name => $links[0]];
                 }
-                $message = array_search('--withdepends', static::$arguments) !== false ?
+                $message = false !== array_search('--withdepends', static::$arguments) ?
                     'Which of the following matches and its\' dependencies do you want to be downloaded? Type a number to continue:' :
                     'Which of the following matches\' dependencies do you want to be downloaded? Type a number to continue:';
                 $choice = self::beautifyAndPromptCandidates($links, $message);
@@ -235,7 +235,7 @@ class packager
                 return static::getTazPkg(static::$arguments, static::$version);
             }
         } elseif (!empty($links) && !empty($package_name)) {
-            if (count($links) === 1) {
+            if (1 === count($links)) {
                 return [$package_name => $links[0]];
             }
             $choice = self::beautifyAndPromptCandidates($links, 'Which of the following matches do you want to be downloaded? Type a number to continue:');
@@ -269,7 +269,7 @@ class packager
             throw new \Exception(sprintf('NOTICE: Package `%s` already exists.', $filename));
         }
 
-        if (($f = fopen($path, 'wb')) === false) {
+        if (false === ($f = fopen($path, 'wb'))) {
             throw new \Exception(sprintf('ERROR: Folder `%s` is not writable.', $path));
         }
 
@@ -288,13 +288,13 @@ class packager
             $dlnowulnow)    // the current upload bytecount (or 0 if not uploading)
         use ($filename, $microtime) {
             static $calls = 0;
-            if (++$calls % 4 !== 0) {
+            if (0 !== ++$calls % 4) {
                 /* The rest of the code will be executed only 1/4 times
                  * This fixes a bug where the progress was displayed three times
                  * when it goes near 100% */
                 return;
             }
-            if ($dlnowdltotal !== 0) {
+            if (0 !== $dlnowdltotal) {
                 $percentage = round($dlnowdlnow / $dlnowdltotal, 2) * 100;
                 $human_size = static::bytesToSize($dlnowdltotal);
                 $milisecs_offset = microtime(true) * 1000 - $microtime;
@@ -313,8 +313,8 @@ class packager
         fclose($f);
         curl_close($ch);
 
-        if ($result === false) {
-            if (is_file($path) && filesize($path) === 0) {
+        if (false === $result) {
+            if (is_file($path) && 0 === filesize($path)) {
                 unlink($path);
             }
             throw new \Exception(sprintf('ERROR: %s%sWhile trying to download `%s`', $err, "\t", $filename));
