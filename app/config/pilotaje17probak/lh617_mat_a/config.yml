@@ -101,7 +101,6 @@ pageImages:
     - p33b_cen_t01_t01_50_img.png
   p34:
     - p34b_cen_t01_t01_60_img.jpg
-
 pageTitles:
   - p00b_t01
   - p01b_t01
@@ -133,7 +132,6 @@ pageTitles:
   - p32a_t01
   - p33a_t01
   - p34b_t03
-
 pageAreaWidths:
   p00:
     b: 100
@@ -153,5 +151,4 @@ pageAreaWidths:
     b: 100
   p34:
     b: 100
-
 totalPages: 34

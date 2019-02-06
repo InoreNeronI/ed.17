@@ -93,7 +93,6 @@ p08:
     - p08b_t16_f4
     - p08b_t18_f5
     - p08b_t19_f5
-
 p09:
   text:
   simple:
@@ -119,7 +118,6 @@ p11:
     - p11b_t09
     - p11b_t10
     - p11b_t11
-
 p12:
   simple:
     - p12b_t02
@@ -167,7 +165,6 @@ p18:
     - p18b_t03
     - p18b_t04
     - p18b_t05
-
 p19:
   text:
   simple:
@@ -192,7 +189,7 @@ p20:
     - p20b_t21
 p21:
   text:
-  libre-s:   
+  libre-s:
     - p21b_t12_f1
     - p21b_t14_f2
     - p21b_t16_f3
@@ -253,8 +250,7 @@ p24:
     - p24b_t09
     - p24b_t10
     - p24b_t11
- 
-  libre-l:   
+  libre-l:
     - p24b_t13
 p25:
   text:
@@ -269,7 +265,7 @@ p25:
     - p25b_t12
 p26:
   text:
-  libre-l:   
+  libre-l:
     - p26b_t03
     - p26b_t04
     - p26b_t05

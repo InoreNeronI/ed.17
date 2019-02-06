@@ -14,7 +14,6 @@ pageAudios:
     - p04a_cen_t05_t05_x3_eus.mp3
     - p04a_cen_t05_t05_x3_cas.ogg
     - p04a_cen_t05_t05_x3_eus.ogg
-
 pageImages:
   p00:
     - p00a_izq_t05_t06_30_img.png
@@ -45,7 +44,6 @@ pageImages:
     - p10a_cen_t07_t07_100_img.png
   p11:
     - p11b_cen_t01_t01_60_img.jpg
-
 pageTitles:
   - p00a_t01
   - p00a_t02
@@ -64,7 +62,6 @@ pageTitles:
   - p09a_t02
   - p10a_t02
   - p11b_t03
-
 pageAreaWidths:
   p05:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage
@@ -76,5 +73,4 @@ pageAreaWidths:
     a: 60
   p11:
     b: 100
-
 totalPages: 11  # The final total pages

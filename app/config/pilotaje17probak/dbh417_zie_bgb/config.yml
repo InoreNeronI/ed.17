@@ -1,6 +1,5 @@
 
 pageImages:
-
   p01:
     - p01a_cen_t02_t02_70_img.jpg
   p02:
@@ -91,7 +90,6 @@ pageImages:
     - p30a_cen_t03_t03_50_eus.png
   p31:
     - p31a_cen_t03_t03_80_cas.jpg
-
 pageTitles: # All centered texts' codes
   - p00a_t01
   - p00a_t04
@@ -137,5 +135,4 @@ pageAreaWidths:
     b: 60
   p32:
     b: 100
-
-totalPages: 32  
+totalPages: 32

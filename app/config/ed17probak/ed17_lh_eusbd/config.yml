@@ -38,19 +38,16 @@ pageImages:
     - p13a_dch_t04_t11_30_img.png
   p14:
     - p14b_cen_t01_t01_60_img.jpg
-
 pageOptionAttributes:
   p10:
     p10b_t04:
       readonly: readonly
       value: 1
-
 pageAudios:
   p01:
     - p01a_cen_t06_t06_x3_eus.mp3
   p02:
     - p02a_cen_t05_t05_x3_eus.mp3
-
 pageTitles:
   - p00a_t01
   - p00a_t02
@@ -78,7 +75,6 @@ pageTitles:
   - p13a_t01
   - p13a_t03
   - p14b_t03
-
 pageAreaWidths:
   p03:
     a: 60
@@ -92,5 +88,4 @@ pageAreaWidths:
     a: 60
   p14:
     b: 100
-
 totalPages: 14

@@ -12,7 +12,6 @@ p01:
     - p01b_t21_f3
     - p01b_t24_f4
     - p01b_t26_f4
-
 p02:
   text:
   libre-m:
@@ -26,7 +25,6 @@ p02:
     - p02b_t20_f3
     - p02b_t23_f4
     - p02b_t25_f4
-
 p03:
   libre-m:
     - p03b_t03_f0
@@ -39,7 +37,6 @@ p03:
     - p03b_t20_f3
     - p03b_t23_f4
     - p03b_t25_f4
-
 p04:
   libre-m:
     - p04b_t03_f0
@@ -52,7 +49,6 @@ p04:
     - p04b_t20_f3
     - p04b_t23_f4
     - p04b_t25_f4
-
 p05:
   libre-m:
     - p05b_t03_f0
@@ -65,7 +61,6 @@ p05:
     - p05b_t20_f3
     - p05b_t23_f4
     - p05b_t25_f4
-
 p06:
   libre-m:
     - p06b_t03_f0
@@ -78,7 +73,6 @@ p06:
     - p06b_t20_f3
     - p06b_t23_f4
     - p06b_t25_f4
-
 p07:
   text:
 p08:
@@ -166,7 +160,6 @@ p18:
     - p18b_t04
     - p18b_t05
     - p18b_t06
-
 p19:
   text:
   simple:
@@ -178,7 +171,6 @@ p19:
     - p19b_t10
     - p19b_t11
     - p19b_t12
-
 p20:
   text:
   libre-s:
@@ -277,7 +269,6 @@ p28:
     - p28b_t28_f3
     - p28b_t30_f4
     - p28b_t31_f4
-
 p29:
   text:
   libre-m:
@@ -316,4 +307,4 @@ p31:
     - p31b_t21
     - p31b_t22
     - p31b_t23
-    - p31b_t24    
+    - p31b_t24

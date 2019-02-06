@@ -22,7 +22,6 @@ pageImages:
     - p07a_cen_t03_t03_100_img.png
   p08:
     - p08b_cen_t01_t01_60_img.jpg
-
 pageAudios:
   p01:
     - p01a_cen_t06_t06_x2_eus.ogg
@@ -33,7 +32,6 @@ pageAudios:
   p03:
     - p03a_cen_t06_t06_x2_eus.ogg
     - p03a_cen_t06_t06_x2_eus.mp3
-
 pageTitles:
   - p00b_t01
   - p01a_t01
@@ -52,7 +50,6 @@ pageTitles:
   - p07a_t02
   - p07b_t00
   - p08b_t03
-
 pageAreaWidths:
   p00:
     b: 100
@@ -62,5 +59,4 @@ pageAreaWidths:
     a: 70
   p08:
     b: 100
-
 totalPages: 8

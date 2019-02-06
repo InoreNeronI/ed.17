@@ -3,9 +3,7 @@ configuration:
   # Homepage route configuration
   homepage_path: /
   homepage_slug: login
-
   # Local languages' map
   languages: { eus: eu, cas: es, gaz: es, eng: en, ing: en }
-
   # Supported stages
   stages: [ dbh, lh ]

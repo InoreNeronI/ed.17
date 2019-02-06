@@ -16,9 +16,8 @@ pageImages:
     - p07a_dch_t06_t06_30_img.jpg
   p08:
     - p08a_cen_t04_t04_60_img.jpg
-  p09: 
+  p09:
     - p09b_cen_t01_t01_60_img.jpg
-
 pageAudios:
   p01:
     - p01a_cen_t06_t06_x2_eus.ogg
@@ -56,5 +55,4 @@ pageAreaWidths:
     b: 100
   p09:
     b: 100
-
 totalPages: 10

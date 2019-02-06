@@ -62,9 +62,8 @@ pageImages:
     - p15b_cen_t07_t07_50_eus.png
   p16:
     - p16a_cen_t02_t02_90_img.png
-  p17:  
+  p17:
     - p17b_cen_t01_t01_60_img.jpg
-   
 pageTitles:
   - p00b_t01
   - p01a_t01
@@ -84,13 +83,9 @@ pageTitles:
   - p15a_t01
   - p16a_t01
   - p17b_t03
- 
-
 pageAreaWidths:
   p00:
     b: 100
   p17:
     b: 100
-
-
 totalPages: 17

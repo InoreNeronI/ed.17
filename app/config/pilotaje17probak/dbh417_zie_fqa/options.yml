@@ -93,7 +93,6 @@ p08:
     - p08b_t16_f4
     - p08b_t18_f5
     - p08b_t19_f5
-
 p09:
   text:
   simple:
@@ -119,7 +118,6 @@ p11:
     - p11b_t09
     - p11b_t10
     - p11b_t11
-
 p12:
   simple:
     - p12b_t02
@@ -167,7 +165,6 @@ p18:
     - p18b_t03
     - p18b_t04
     - p18b_t05
-
 p19:
   text:
   simple:

@@ -92,7 +92,6 @@ pageTextReplaces:
     p05b_t09:
       #parameters: { width: 10 }
       template: 'field/input.html.twig'
-
 pageTitles:
   - p00b_t01
   - p01a_t01
@@ -115,7 +114,6 @@ pageTitles:
   - p17a_t01
   - p18a_t01
   - p19b_t03
-
 pageAreaWidths:
   p00:
     b: 100
@@ -151,5 +149,4 @@ pageAreaWidths:
     a: 40
   p19:
     b: 100
-
 totalPages: 19

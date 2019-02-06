@@ -77,9 +77,8 @@ pageImages:
     - p17b_cen_t01_t01_30_img.png
   p18:
     - p18a_cen_t02_t02_80_img.png
-  p19:   
+  p19:
     - p19b_cen_t01_t01_60_img.jpg
-   
 pageTitles:
   - p00b_t01
   - p01a_t01
@@ -101,8 +100,6 @@ pageTitles:
   - p17a_t01
   - p18a_t01
   - p19a_t03
- 
-
 pageAreaWidths:
   p00:
     b: 100
@@ -111,9 +108,7 @@ pageAreaWidths:
     b: 60
   p11:
     a: 40
-    b: 60  
+    b: 60
   p19:
     b: 100
-
-
 totalPages: 19

@@ -32,7 +32,6 @@ pageImages:
     - p14a_cen_t03_t03_60_img.png
     - p14a_izq_t02_t02_40_img.png
     - p14b_cen_t01_t01_35_img.png
-
   p15:
     - p15a_cen_t03_t03_60_img.png
     - p15a_izq_t02_t02_40_img.png
@@ -91,7 +90,6 @@ pageImages:
     - p31b_cen_t02_t02_100_eus.png
   p32:
     - p32b_cen_t01_t01_60_img.jpg
-
 pageTitles:
   - p00b_t01
   - p01b_t01
@@ -121,8 +119,6 @@ pageTitles:
   - p30a_t01
   - p31a_t01
   - p32b_t03
-
-
 pageAreaWidths:
   p00:
     b: 100
@@ -144,5 +140,4 @@ pageAreaWidths:
     b: 100
   p32:
     b: 100
-
 totalPages: 32

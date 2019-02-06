@@ -40,14 +40,12 @@ p04:
     - p04b_t09
     - p04b_t10
     - p04b_t11
-
 p05:
   simple:
     - p05b_t03
     - p05b_t04
     - p05b_t05
     - p05b_t06
-
 p06:
   simple:
     - p06b_t06_f1
@@ -60,7 +58,6 @@ p06:
     - p06b_t16_f4
     - p06b_t18_f5
     - p06b_t19_f5
-
 p07:
   text:
   simple:

@@ -5,7 +5,6 @@ pageTitles: # All centered texts' codes
   - p05b_t03
   - p06b_t01
   - p13b_t01
-
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage
@@ -35,7 +34,6 @@ pageAreaWidths:
     b: 100
   p13:
     b: 100
-
 pageOptionRequired:  # All required item texts' codes
   p03:
     - p03b_t02
@@ -86,9 +84,9 @@ pageOptionRequired:  # All required item texts' codes
     - p03b_t62_f07
   p04:
     - p04b_t07
-    - p04b_t08 
+    - p04b_t08
     - p04b_t09
-    - p04b_t10   
+    - p04b_t10
   p05:
     - p05b_t02
   p06:
@@ -154,7 +152,6 @@ pageOptionRequired:  # All required item texts' codes
     - p09b_t21
     - p09b_t22
     - p09b_t23
-     
   p10:
     - p10b_t07_f01
     - p10b_t08_f01
@@ -192,7 +189,6 @@ pageOptionRequired:  # All required item texts' codes
     - p10b_t51_f12
     - p10b_t52_f12
     - p10b_t53_f12
-    
   p11:
     - p11b_t07_f01
     - p11b_t08_f01
@@ -233,7 +229,6 @@ pageOptionRequired:  # All required item texts' codes
     - p11b_t55_f13
     - p11b_t56_f13
     - p11b_t57_f13
-  
   p12:
     - p12b_t07_f01
     - p12b_t08_f01

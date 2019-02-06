@@ -9,12 +9,10 @@ pageAudios:
   p04:
     - p04a_cen_t02_t02_x3_eus.ogg
     - p04a_cen_t02_t02_x3_eus.mp3
-     
 pageVideos:
   p03:
     - p03a_cen_t02_t02_90_eus.mp4
     - p03a_cen_t02_t02_90_eus.wmv
-    
 pageImages:
   p00:
     - p00b_cen_t04_t04_50_img.jpg
@@ -52,10 +50,9 @@ pageTitles:
   - p09a_t01
   - p10b_t01
   - p10b_t03
-
 pageAreaWidths:
-  p00:  
-    b: 100 
+  p00:
+    b: 100
   p05:
     b: 100
   p08:
@@ -63,6 +60,5 @@ pageAreaWidths:
     b: 30
   p10:
     b: 100
-
-totalPages: 11 
+totalPages: 11
  # The final total pages

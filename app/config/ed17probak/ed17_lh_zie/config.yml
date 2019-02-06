@@ -43,7 +43,6 @@ pageImages:
     - p17a_cen_t02_t02_60_img.png
   p18:
     - p18b_cen_t01_t01_60_img.jpg
-
 pageTitles: # All centered texts' codes
   - p00b_t01
   - p01a_t01
@@ -65,7 +64,6 @@ pageTitles: # All centered texts' codes
   - p16a_t01
   - p17a_t01
   - p18b_t03
-
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage
@@ -77,5 +75,4 @@ pageAreaWidths:
     a: 60
   p18:
     b: 100
-
 totalPages: 18  # The final total pages

@@ -64,7 +64,7 @@ p02:
 p03:
   text:
     - p03a_t02
-  libre:  
+  libre:
     - p03b_t11_f01
     - p03b_t12_f01
     - p03b_t13_f01
@@ -150,7 +150,7 @@ p05:
     - p05b_t10
     - p05b_t11
     - p05b_t12
-    - p05b_t13  
+    - p05b_t13
   libre:
     - p05b_t08
 p06:

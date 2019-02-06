@@ -32,7 +32,6 @@ pageImages:
     - p07a_cen_t02_t02_100_img.png
   p08:
     - p08b_cen_t01_t01_60_img.jpg
-
 pageTitles:
   - p00a_t01
   - p00a_t02
@@ -47,7 +46,6 @@ pageTitles:
   - p06a_t02
   - p07a_t02
   - p08b_t03
-
 pageAreaWidths:
   p03:
     b: 100

@@ -1,9 +1,7 @@
 p00:
   text:
-
 p01:
   text:
-
   simple:
     - p01b_t02
     - p01b_t03
@@ -29,7 +27,6 @@ p02:
     - p02b_t27_f6
 p03:
   text:
-
   simple:
     - p03b_t02
     - p03b_t03
@@ -37,7 +34,6 @@ p03:
     - p03b_t05
 p04:
   text:
-
   simple:
     - p04b_t02
     - p04b_t03
@@ -45,7 +41,6 @@ p04:
     - p04b_t05
 p05:
   text:
-
   simple:
     - p05b_t05
     - p05b_t06
@@ -53,8 +48,6 @@ p05:
     - p05b_t08
 p06:
   text:
-
-
   simple:
     - p06b_t06_f1
     - p06b_t07_f1
@@ -72,10 +65,8 @@ p06:
     - p06b_t25
     - p06b_t26
     - p06b_t27
-
 p07:
   text:
-
   simple:
     - p07b_t02
     - p07b_t03
@@ -87,7 +78,6 @@ p07:
     - p07b_t10
 p08:
   text:
-
   simple:
     - p08b_t02
     - p08b_t03
@@ -97,10 +87,8 @@ p08:
     - p08b_t08
     - p08b_t09
     - p08b_t10
-
 p09:
   text:
-
   simple:
     - p09b_t02
     - p09b_t03
@@ -110,19 +98,15 @@ p09:
     - p09b_t08
     - p09b_t09
     - p09b_t10
-
 p10:
   text:
-
   simple:
     - p10b_t02
     - p10b_t03
     - p10b_t04
     - p10b_t05
-
 p11:
   text:
-
   simple:
     - p11b_t06_f1
     - p11b_t07_f1
@@ -136,8 +120,6 @@ p11:
     - p11b_t19_f5
     - p11b_t21_f6
     - p11b_t22_f6
-
-
 p12:
   simple:
     - p12b_t06_f1
@@ -152,12 +134,8 @@ p12:
     - p12b_t19_f5
     - p12b_t21_f6
     - p12b_t22_f6
-
-
 p13:
   text:
-
-
   simple:
     - p13b_t02
     - p13b_t03
@@ -167,10 +145,8 @@ p13:
     - p13b_t08
     - p13b_t09
     - p13b_t10
-
 p14:
   text:
-
   simple:
     - p14b_t02
     - p14b_t03
@@ -210,10 +186,8 @@ p14:
     - p14b_t59_f6
     - p14b_t61_f7
     - p14b_t62_f7
-
 p15:
   text:
-
   simple:
     - p15b_t02
     - p15b_t03
@@ -227,10 +201,8 @@ p15:
     - p15b_t13
     - p15b_t14
     - p15b_t15
-
 p16:
   text:
-
   simple:
     - p16b_t02
     - p16b_t03
@@ -242,16 +214,13 @@ p16:
     - p16b_t10
 p17:
   text:
-
   simple:
     - p17b_t02
     - p17b_t03
     - p17b_t04
     - p17b_t05
-
 p18:
   text:
-
   simple:
    - p18b_t06_f1
    - p18b_t07_f1
@@ -267,10 +236,8 @@ p18:
    - p18b_t22_f6
    - p18b_t24_f7
    - p18b_t25_f7
-
 p19:
   text:
-
   simple:
     - p19b_t06_f1
     - p19b_t07_f1
@@ -315,15 +282,12 @@ p19:
     - p19b_t65
 p20:
   text:
-
   simple:
     - p20b_t02
     - p20b_t03
     - p20b_t04
     - p20b_t05
-
 p21:
-
   simple:
     - p21b_t02
     - p21b_t03
@@ -349,20 +313,14 @@ p21:
     - p21b_t35_f7
     - p21b_t37_f8
     - p21b_t38_f8
-
-
 p22:
-
   simple:
   - p22b_t02
   - p22b_t03
   - p22b_t04
   - p22b_t05
-
-
 p23:
   text:
-
   simple:
     - p23b_t02
     - p23b_t03
@@ -372,10 +330,8 @@ p23:
     - p23b_t08
     - p23b_t09
     - p23b_t10
-
 p24:
   text:
-
   simple:
     - p24b_t06_f1
     - p24b_t07_f1
@@ -389,5 +345,3 @@ p24:
     - p24b_t19_f5
     - p24b_t21_f6
     - p24b_t22_f6
-
-

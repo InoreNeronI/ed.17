@@ -1,6 +1,5 @@
 
 pageImages:
-
   p04:
     - p04a_cen_t03_t03_100_cas.png
     - p04a_cen_t03_t03_100_eus.png
@@ -60,7 +59,6 @@ pageImages:
     - p29a_cen_t02_t02_80_eus.png
   p30:
     - p30b_cen_t01_t01_60_img.jpg
-
 pageTitles: # All centered texts' codes
   - p00a_t01
   - p00b_t01
@@ -94,11 +92,8 @@ pageTitles: # All centered texts' codes
   - p28a_t01
   - p29a_t01
   - p30b_t03
-
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
-
   p30:
     b: 100
-
 totalPages: 30  # The final total pages

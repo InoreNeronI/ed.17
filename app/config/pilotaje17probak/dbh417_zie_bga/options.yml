@@ -8,7 +8,6 @@ p00:
     - p00b_t07
 p01:
   text:
-
   simple:
     - p01b_t02
     - p01b_t03
@@ -63,7 +62,6 @@ p08:
     - p08b_t03
     - p08b_t04
     - p08b_t05
-
 p09:
   text:
   simple:
@@ -93,7 +91,6 @@ p11:
     - p11b_t04
     - p11b_t05
     - p11b_t06
-
 p12:
   simple:
     - p12b_t02
@@ -154,7 +151,6 @@ p18:
     - p18b_t04
     - p18b_t05
     - p18b_t06
-
 p19:
   text:
   simple:

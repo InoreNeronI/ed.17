@@ -85,7 +85,6 @@ pageImages:
     - p18b_cen_t05_t05_100_eus.png
   p19:
     - p19b_cen_t01_t01_60_img.jpg
-
 pageTitles: # All centered texts' codes
   - p00b_t01
   - p00b_t02
@@ -109,13 +108,11 @@ pageTitles: # All centered texts' codes
   - p17a_t01
   - p18a_t01
   - p19b_t01
-
 pageTextReplaces:
   p00:  # Page where any replace's being done
     p00b_t06: # Items' code with "%s" in its texts
       parameters: {maxLength: 10, minLength: 0, width: 20}  # Parameter(s) for the replacing template
       template: 'field/input.html.twig' # Templates' location path (TEMPLATE_FILES_DIR relative)
-
 pageAreaWidths:
   p00:  # Page affected with any custom side-width
     b: 100  # side-letter: window-relative-width-percentage
@@ -133,5 +130,4 @@ pageAreaWidths:
     b: 70
   p19:
     b: 100
-
 totalPages: 19  # The final total pages

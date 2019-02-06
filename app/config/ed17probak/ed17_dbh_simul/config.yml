@@ -2,10 +2,9 @@
 pageAudios:
   p04:
     - p04a_cen_t01_t01_x3_eus.ogg
-
 pageImages:
   p00:
-    - p00a_izq_t00_t00_80_img.png 
+    - p00a_izq_t00_t00_80_img.png
   p01:
     - p01a_izq_t00_t00_80_img.png
   p03:
@@ -18,10 +17,9 @@ pageImages:
     - p05a_izq_t03_t07_40_img.png
     - p05b_cen_t09_t09_80_eus.png
   p06:
-    - p06a_cen_t02_t02_100_img.png  
+    - p06a_cen_t02_t02_100_img.png
   p07:
     - p07a_cenq_t00_t00_30_img.png
-
 pageTitles:
   - p00a_t03
   - p00a_t04
@@ -42,7 +40,6 @@ pageTitles:
   - p06a_t01
   - p06a_t02
   - p07b_t01
-
 pageAreaWidths:
   p03:
     b: 100
@@ -51,12 +48,10 @@ pageAreaWidths:
     b: 40
   p07:
     b: 100
-
 pageOptionRequired:  # All required item texts' codes
   p02:
     - p02b_t02
     - p02b_t03
     - p02b_t04
     - p02b_t05
-
 totalPages: 8

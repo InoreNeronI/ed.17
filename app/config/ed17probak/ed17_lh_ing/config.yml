@@ -69,7 +69,6 @@ pageImages:
     - p10a_cen_t03_t03_90_img.png
   p11:
     - p11b_cen_t01_t01_60_img.jpg
-
 pageTitles: # All centered texts' codes
   - p00b_t01
   - p00b_t02
@@ -89,7 +88,6 @@ pageTitles: # All centered texts' codes
   - p09a_t02
   - p10a_t02
   - p11b_t03
-
 pageAudios:
   p01:
     - p01a_cen_t06_t06_x3_cas.mp3
@@ -103,7 +101,6 @@ pageAudios:
   p04:
     - p04a_cen_t06_t06_x3_cas.mp3
     - p04a_cen_t06_t06_x3_eus.mp3
-
 pageAreaWidths:
  p00:
     b: 100
@@ -117,6 +114,4 @@ pageAreaWidths:
     b: 40
  p11:
     b: 100
-
-
 totalPages: 11  # The final total pages
